@@ -98,8 +98,8 @@ let translate_en =
     home_page:
     {
         title: 'Thunder Bolt',
-        menu_appearance: 'Select Appearance',
-        menu_agreement: 'Terms & Conditions',
+        menu_appearance: 'Skin',
+        menu_agreement: 'TOU',
     },
 
     register_page:
