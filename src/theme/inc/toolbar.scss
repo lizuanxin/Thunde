@@ -1,0 +1,35 @@
+ion-toolbar{
+    @each $bg in $background-list {
+        @if ($bg == 'spots' or $bg == 'nature' or $bg == 'strengths'){
+            &.#{$bg}-footer{
+                .toolbar-background {
+                    background:rgba(0,0,0,.05);
+                }
+                .state{
+                    background-color:rgba(0,0,0,.5);
+                    button,span{
+                        color:white;
+                    }
+                }
+            } 
+             
+        }@else {
+            &.#{$bg}-footer{
+                .toolbar-background {
+                    background:rgba(0,0,0,.8);
+                }
+                .state{
+                    background-color:rgba(255,255,255,.2);
+                    
+                } 
+            } 
+        }
+    }
+    &.toolbar{
+        &.o-light{
+            .toolbar-background{
+                background:rgba(255,255,255,.1)
+            }
+        } 
+    }
+}

@@ -1,0 +1,141 @@
+ion-list{
+    &[split-thin]{
+       .item-block{
+           margin-top:2px;
+       }
+   }
+   &[split-medium]{
+       .item-block{
+           margin-top:3px;
+       }
+   }
+   &[holder-light]{
+       input::-webkit-input-placeholder {
+            color: white;
+        }
+   }
+   &[transparent]{
+       ion-item,.item-ios,.item-md{
+           background-color:transparent;
+       }
+   }
+
+   &[text-light]{
+       *{
+           color:color($colors, light, base);
+       }
+       ion-item,ion-item-divider{
+           h1,h2,p,ion-note{
+               color:color($colors, light, base);
+           }
+       }
+   }
+   &[no-margin]{
+       ion-item{
+           ion-label{
+               margin:0;
+           }
+       }
+   }
+
+   &[no-padding]{
+       ion-item{
+        padding:0;
+       }
+   }
+
+   &[v-padding]{
+       ion-item,ion-item-divider{
+        padding:10px 0;
+       }
+   }
+
+   &[v-border-light]{
+     .item{
+         &:first-child{
+                border-top:solid 3px color($colors, light, base);
+            }
+            &:last-child{
+                border-bottom:solid 3px color($colors, light, base);
+            }
+            border-bottom:solid 3px color($colors, light, base);
+            .item-inner{
+                border-bottom-width:0;
+            }
+     }
+     .item-block{
+            &:first-child{
+                border-top:solid 2px color($colors, light, base);
+            }
+            &:last-child{
+                border-bottom:solid 2px color($colors, light, base);
+            }
+            border-bottom:solid 2px color($colors, light, base);
+            .item-inner{
+                border-bottom-width:0;
+            }
+       }
+   }
+   ion-item-divider{
+       &[transparent]{
+           background:transparent;
+       }
+    }
+}
+
+ion-item,ion-item-divider{
+  
+    &.item{
+        
+        span{
+            &[super]{
+                position:relative;
+                min-width:36px;
+                min-height:2.8rem;
+                display: inline-block;
+                vertical-align: middle;
+                ion-icon{
+                    z-index:1;
+                    position:absolute;
+                    left:0;
+                    top:0;
+                    font-size:2.6rem;
+                    min-height:2.6rem;
+                    line-height:1;
+                    &:last-child{
+                        z-index:0;
+                        font-size:2.4rem;
+                        top:2px;
+                        left:6px;
+                    }
+                }
+            }
+        }  
+    }
+}
+
+.item{
+    &[no-margin-left]{
+        ion-icon[item-left] + .item-inner{
+            margin-left:0;
+        }    
+    }
+}
+
+div{
+    &[list-warning]{
+        h6{
+            *{
+                display: inline;
+                vertical-align: middle; 
+            }
+            i{
+                margin-right:5px;
+            }
+        }
+        li{
+            font-size:1.2rem;
+            padding:5px 0;
+        }
+    }
+}

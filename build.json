@@ -1,0 +1,20 @@
+{
+    "android":
+    {
+        "debug": {
+            "keystore": "thunderbolt.keystore",
+            "storePassword": "dasboot121212",
+            "alias": "thunderbolt",
+            "password" : "dasboot121212",
+            "keystoreType": ""
+        },
+        "release":
+        {
+            "keystore": "thunderbolt.keystore",
+            "storePassword": "dasboot121212",
+            "alias": "thunderbolt",
+            "password" : "dasboot121212",
+            "keystoreType": ""
+        }
+    }
+}

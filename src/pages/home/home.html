@@ -1,0 +1,55 @@
+<ion-menu [content]="content" type="overlay" side="right" overlay>
+  <ion-content transparent>
+    <p text-center>
+      <button menuToggle ion-button icon-only large clear>
+        <ion-icon text-light>&#xf114;</ion-icon>
+      </button>
+    </p>
+    <ion-list no-lines transparent>
+        <button menuToggle ion-item no-margin-left text-light detail-none (click)="SelectSkin()">
+            <ion-icon app-icon item-left [ngStyle]="{'min-height': '1.8rem','font-size': '1.8rem'}">
+                &#xe907;
+            </ion-icon>
+            {{'home_page.menu_appearance'|translate}}
+        </button>
+        <button menuToggle ion-item no-margin-left text-light detail-none (click)="ShowAgreement()">
+            <ion-icon item-left [ngStyle]="{'min-height': '1.8rem','font-size': '1.8rem'}">
+                &#xf496;
+            </ion-icon>
+            {{'home_page.menu_agreement'|translate}}
+        </button>
+      </ion-list>
+  </ion-content>
+</ion-menu>
+<ion-header no-shadow no-border>
+  <ion-toolbar transparent>
+    <ion-buttons left>
+      <button ion-button icon-only>
+          <ion-icon [ngClass]="app.SkinColor" app-icon>&#xe908;</ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons right>
+      <button ion-button menuToggle>
+          <ion-icon [ngClass]="app.SkinColor" app-icon>&#xe906;</ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title text-center>
+      <span id="title" [ngClass]="app.SkinColor">{{'home_page.title'|translate}}</span>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content no-scroll #content [ngClass]="app.Skin('home')" color="light">
+  <canvas style="width:100%;" height=360 id="content_canvas" [ngStyle]="{'position':'absolute'}"></canvas>
+</ion-content>
+<ion-footer no-shadow no-border>
+  <ion-toolbar [ngClass]="app.Skin('footer')" no-padding>
+    <ion-row>
+      <ion-col text-center [ngClass]="StateCategory(Category)" *ngFor="let Category of Categories" (click)="SelectCategory(Category)">
+        <button ion-button icon-only block clear no-margin [ngClass]="app.SkinColor" [ngStyle]="{'height':'2.2em'}">
+          <ion-icon app-icon>{{Category.IconChar}}</ion-icon>
+        </button>
+       <span text-nowrap f-12 [ngClass]="app.SkinColor">{{Category.Name_LangId|translate}}</span>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

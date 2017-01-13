@@ -1,0 +1,12 @@
+{
+  "rules": {
+    "no-duplicate-variable": true,
+    "no-unused-variable": [true],
+    "adjacent-overload-signatures": true,
+    "triple-equals": true,
+    "indent": [true, "spaces"]
+  },
+  "rulesDirectory": [
+    "node_modules/tslint-eslint-rules/dist/rules"
+  ]
+}

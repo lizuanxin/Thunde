@@ -1,0 +1,22 @@
+[orientate],.orientate{
+    [area],.area{
+        position:relative;
+        [aims],.aims{
+            position:absolute;
+            &[round],.round{
+                width:9vw;
+                height:9vw;
+                border-radius: 9vw;                
+                background-image: -webkit-radial-gradient(circle,hsla(0,50%,50%,1),hsla(0,100%,100%,0)); 
+                background-image: radial-gradient(circle,hsla(0,50%,50%,1),hsla(0,100%,100%,0));
+            }
+            &[oval],.oval{
+                width:9vw;
+                height:16vw;
+                border-radius: 9vw;                
+                background-image: -webkit-radial-gradient(circle,hsla(0,50%,50%,1),hsla(0,100%,100%,0)); 
+                background-image: radial-gradient(circle,hsla(0,50%,50%,1),hsla(0,100%,100%,0));
+            }
+        }
+    }
+}

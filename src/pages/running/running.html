@@ -1,0 +1,57 @@
+<ion-header no-shadow no-border>
+  <ion-toolbar transparent>
+    <ion-title text-center><span [ngClass] = "app.SkinColor">{{ScriptFile.Name_LangId|translate}}</span></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content no-scroll padding [ngClass]="app.Skin('running')">
+  <div text-light f-48 text-center>{{TickingDownHint}}
+    <ion-list transparent no-margin>
+      <ion-item no-lines>
+        <ion-range min="0" max="100" [ngModel]="Ticking / ScriptFile.Duration * 100" color="secondary" disabled progress-bar>
+          <ion-label range-right [ngClass] = "app.SkinColor" [ngStyle]="{'margin':'0 0 0 5px'}">{{TotalMinute}}</ion-label>
+        </ion-range>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <ion-row id = "pool" [ngStyle]="{'margin-top':ComputeScreen()}">
+    <ion-col no-padding>
+       <div id = "box">
+         <div id = "point" class="point" [ngStyle] = "{'-webkit-transform':PointRotate()}"></div>
+         <div id = "textVal" class="text" f-48 [ngClass] = "app.SkinColor">
+              {{Intensity}}
+              <div class="bg-value" [ngStyle] = "{'animation-duration':Strength}"></div>
+          </div>
+          <div id="controlBtn" class="controlBtn">
+            <ion-row>
+              <ion-col width-33 text-center padding>
+                <button ion-button icon-only outline text-uppercase [ngClass] = "app.SkinBorderColor" (click)="AdjustIntensity(-1)" tappable>
+                      <ion-icon>&#xf368;</ion-icon>
+                </button>
+              </ion-col>
+              <ion-col width-33></ion-col>
+              <ion-col width-33 text-center padding>
+                <button ion-button icon-only outline text-uppercase [ngClass] = "app.SkinBorderColor" (click)="AdjustIntensity(1)" tappable>
+                    <ion-icon>&#xf273;</ion-icon>
+              </button>
+              </ion-col>
+            </ion-row>
+          </div>
+        </div>
+    </ion-col>
+  </ion-row>
+
+  <ion-fab bottom center large outline high-light *ngIf="! IsShowingDeviceList">
+    <button large ion-fab text-uppercase color="secondary" (click)="Shutdown()" tappable>
+                <ion-icon>&#xf359;</ion-icon>
+            </button>
+  </ion-fab>
+    <!--<ion-fab bottom right low-light [ngStyle]="{'right':'50px'}">
+    <button large ion-fab text-uppercase color="light" (click)="AdjustIntensity(1)" tappable>
+          <ion-icon text-light>&#xf273;</ion-icon>
+    </button>
+  </ion-fab>-->
+  <!--<div [ngClass]="'mask-bottom'"></div>-->
+
+</ion-content>
