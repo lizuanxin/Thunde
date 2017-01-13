@@ -209,8 +209,6 @@ let translate_en =
         terms_conditions: `<h6 color="danger"><ion-icon app-icon text-danger>&#xe900;</ion-icon> <span>禁止</span></h6>
             <ul>
                 <li>不应用于未经确诊的疼痛</li>
-                <li>不应用于未经确诊的疼痛</li>
-                <li>不应用于未经确诊的疼痛</li>
                 <li>切勿于癌症伤口上使用本产品</li>
                 <li>不宜应用在肿胀，感染，发炎区或皮疹(例如静脉炎，血栓性静脉炎等)</li>
                 <li>使用心脏起搏器或任何植入式心震颤去除器的患者请勿使用.心脏病患者使用前需咨询医生指引。</li>
@@ -374,8 +372,6 @@ let translate_zh =
         agree: '我已阅读并接受使用条款',
         terms_conditions: `<h6 class="text-danger"><i class="app-icon">&#xe900;</i><span>禁止</span></h6>
             <ul>
-                <li>不应用于未经确诊的疼痛</li>
-                <li>不应用于未经确诊的疼痛</li>
                 <li>不应用于未经确诊的疼痛</li>
                 <li>切勿于癌症伤口上使用本产品</li>
                 <li>不宜应用在肿胀，感染，发炎区或皮疹(例如静脉炎，血栓性静脉炎等)</li>
