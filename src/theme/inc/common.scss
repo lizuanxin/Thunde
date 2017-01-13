@@ -54,8 +54,8 @@
                     height:$conFooterHeight;
                 }
                 &[large]{
-                    min-width:24vw;
-                    min-height:24vw;
+                    width:24vw;
+                    height:24vw;
                     font-size:10vw;
                     &[outline]{
                         border-width:1.5vw;
