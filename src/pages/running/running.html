@@ -41,17 +41,15 @@
         </div>
     </ion-col>
   </ion-row>
-
-  <ion-fab bottom center large outline high-light *ngIf="! IsShowingDeviceList">
-    <button large ion-fab text-uppercase color="secondary" (click)="Shutdown()" tappable>
-                <ion-icon>&#xf359;</ion-icon>
-            </button>
-  </ion-fab>
-    <!--<ion-fab bottom right low-light [ngStyle]="{'right':'50px'}">
-    <button large ion-fab text-uppercase color="light" (click)="AdjustIntensity(1)" tappable>
-          <ion-icon text-light>&#xf273;</ion-icon>
-    </button>
-  </ion-fab>-->
-  <!--<div [ngClass]="'mask-bottom'"></div>-->
-
 </ion-content>
+<ion-footer no-border>
+  <div content-footer>
+     <div wrap>
+            <div aims center-up *ngIf="! IsShowingDeviceList">
+                <button large round outline text-uppercase text-light gradient-secondary (click)="Shutdown()" tappable>
+                    <ion-icon>&#xf359;</ion-icon>
+                </button>
+            </div>
+     </div>
+  </div>
+</ion-footer>

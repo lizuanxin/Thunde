@@ -67,44 +67,13 @@ ion-content{
 
     &[has-fab-bottom]{
         .scroll-content{
-            overflow: scroll;
+            // overflow: scroll;
             margin-bottom:$hasContentFooter;
         }
 
     }
 
-    div{
-        &[content-footer]{
-            position:fixed;                        
-            width:100%;
-            bottom:0;
-            min-height:$conFooterHeight;
-            &.light{
-                background:rgba(255,255,255,.05);
-            }
-            &.dark{
-                background:rgba(0,0,0,.05);
-            }
-
-            div[wrap]{
-                position:relative;
-                height:$conFooterHeight;
-                button{
-                    position:absolute;
-                    margin:0;
-                    &[mini-fix]{
-                        height:$conFooterHeight;
-                    }
-                    &[left]{
-                        left:0;             
-                    }
-                    &[right]{
-                        right:0;             
-                    }
-                }                              
-            }
-        }
-    }
+    
 }
 
 ion-menu{
@@ -117,41 +86,7 @@ ion-menu{
 
 
 
-ion-fab{
 
-    &[large]{
-        margin-left:-46px;
-        button.fab{
-            width:$fab-large;
-            height:$fab-large;
-            line-height:$fab-large;
-            font-size:$fab-large-font;
-            ion-icon{
-                font-size:4.4rem;
-            }
-        }
-    }
-
-    &[outline]{
-       button.fab{
-           border:solid 6px rgba(255,255,255,1);
-       } 
-    }
-
-    &[low-light]{
-        button.fab{
-            background-color:rgba(255,255,255,.3)
-        }
-    }
-
-    &[high-light]{
-        button.fab{
-	        box-shadow: inset rgba(0,0,0,.4) 0 -0.4em 0.6em, 
-                        inset rgba(0,0,0,.5) 0 0.2em .8em, /* inner shadow */ 
-						// rgba(0,0,0,0.8) 0 .1em 15px; /* drop shadow */
-        }
-    }
-}
 .outer-circle{
     position:relative;
     margin:auto;

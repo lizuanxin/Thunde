@@ -14,24 +14,24 @@ export namespace const_data
     //     {Id: '{00000000-0000-4000-1000-000000000003}', Name: 'train',       Icon: 0xE91E, en_Name: 'Train'},
     // ]
 
-    export const Body =
-    [
-        {Id: '{00000000-0000-4000-2000-000000000001}', Name: 'upper_back',  Icon: 0xE91F, en_Name: 'Upper back'},
-        {Id: '{00000000-0000-4000-2000-000000000002}', Name: 'back',        Icon: 0xE904, en_Name: 'Back'},
-        {Id: '{00000000-0000-4000-2000-000000000003}', Name: 'lower_back',  Icon: 0xE915, en_Name: 'Lower back'},
-        {Id: '{00000000-0000-4000-2000-000000000004}', Name: 'abdomen',     Icon: 0xE900, en_Name: 'Abdomen'},
-        {Id: '{00000000-0000-4000-2000-000000000005}', Name: 'buttock',     Icon: 0xE905, en_Name: 'Buttock'},
-        {Id: '{00000000-0000-4000-2000-000000000006}', Name: 'thigh',       Icon: 0xE91D, en_Name: 'Thigh'},
-        {Id: '{00000000-0000-4000-2000-000000000007}', Name: 'knee',        Icon: 0xE913, en_Name: 'Knee'},
-        {Id: '{00000000-0000-4000-2000-000000000008}', Name: 'calf',        Icon: 0xE906, en_Name: 'Calf'},
-        {Id: '{00000000-0000-4000-2000-000000000009}', Name: 'ankle',       Icon: 0xE902, en_Name: 'Ankle'},
-        {Id: '{00000000-0000-4000-2000-00000000000A}', Name: 'foot',        Icon: 0xE90F, en_Name: 'Foot'},
-        {Id: '{00000000-0000-4000-2000-00000000000B}', Name: 'upper_arm',   Icon: 0xE903, en_Name: 'Upper arm'},
-        {Id: '{00000000-0000-4000-2000-00000000000C}', Name: 'elbow',       Icon: 0xE90E, en_Name: 'Elbow'},
-        {Id: '{00000000-0000-4000-2000-00000000000D}', Name: 'forearm',     Icon: 0xE910, en_Name: 'Forearm'},
-        {Id: '{00000000-0000-4000-2000-00000000000E}', Name: 'wrist',       Icon: 0xE920, en_Name: 'Wrist'},
-        {Id: '{00000000-0000-4000-2000-00000000000F}', Name: 'shoulder',    Icon: 0xE91A, en_Name: 'Shoulder'},
-    ]
+    // export const Body =
+    // [
+    //     {Id: '{00000000-0000-4000-2000-000000000001}', Name: 'upper_back',  Icon: 0xE91F, en_Name: 'Upper back'},
+    //     {Id: '{00000000-0000-4000-2000-000000000002}', Name: 'back',        Icon: 0xE904, en_Name: 'Back'},
+    //     {Id: '{00000000-0000-4000-2000-000000000003}', Name: 'lower_back',  Icon: 0xE915, en_Name: 'Lower back'},
+    //     {Id: '{00000000-0000-4000-2000-000000000004}', Name: 'abdomen',     Icon: 0xE900, en_Name: 'Abdomen'},
+    //     {Id: '{00000000-0000-4000-2000-000000000005}', Name: 'buttock',     Icon: 0xE905, en_Name: 'Buttock'},
+    //     {Id: '{00000000-0000-4000-2000-000000000006}', Name: 'thigh',       Icon: 0xE91D, en_Name: 'Thigh'},
+    //     {Id: '{00000000-0000-4000-2000-000000000007}', Name: 'knee',        Icon: 0xE913, en_Name: 'Knee'},
+    //     {Id: '{00000000-0000-4000-2000-000000000008}', Name: 'calf',        Icon: 0xE906, en_Name: 'Calf'},
+    //     {Id: '{00000000-0000-4000-2000-000000000009}', Name: 'ankle',       Icon: 0xE902, en_Name: 'Ankle'},
+    //     {Id: '{00000000-0000-4000-2000-00000000000A}', Name: 'foot',        Icon: 0xE90F, en_Name: 'Foot'},
+    //     {Id: '{00000000-0000-4000-2000-00000000000B}', Name: 'upper_arm',   Icon: 0xE903, en_Name: 'Upper arm'},
+    //     {Id: '{00000000-0000-4000-2000-00000000000C}', Name: 'elbow',       Icon: 0xE90E, en_Name: 'Elbow'},
+    //     {Id: '{00000000-0000-4000-2000-00000000000D}', Name: 'forearm',     Icon: 0xE910, en_Name: 'Forearm'},
+    //     {Id: '{00000000-0000-4000-2000-00000000000E}', Name: 'wrist',       Icon: 0xE920, en_Name: 'Wrist'},
+    //     {Id: '{00000000-0000-4000-2000-00000000000F}', Name: 'shoulder',    Icon: 0xE91A, en_Name: 'Shoulder'},
+    // ]
 
     export const Category =
     [

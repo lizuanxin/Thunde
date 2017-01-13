@@ -1,3 +1,4 @@
+
 [orientate],.orientate{
     [area],.area{
         position:relative;
@@ -7,16 +8,86 @@
                 width:9vw;
                 height:9vw;
                 border-radius: 9vw;                
-                background-image: -webkit-radial-gradient(circle,hsla(0,50%,50%,1),hsla(0,100%,100%,0)); 
-                background-image: radial-gradient(circle,hsla(0,50%,50%,1),hsla(0,100%,100%,0));
+                background-image: -webkit-radial-gradient(circle,hsla(0,50%,50%,1),hsla(0,50%,50%,0)); 
+                background-image: radial-gradient(circle,hsla(0,50%,50%,1),hsla(0,50%,50%,0));
             }
             &[oval],.oval{
                 width:9vw;
                 height:16vw;
                 border-radius: 9vw;                
-                background-image: -webkit-radial-gradient(circle,hsla(0,50%,50%,1),hsla(0,100%,100%,0)); 
-                background-image: radial-gradient(circle,hsla(0,50%,50%,1),hsla(0,100%,100%,0));
+                background-image: -webkit-radial-gradient(circle,hsla(0,50%,50%,1),hsla(0,50%,50%,0)); 
+                background-image: radial-gradient(circle,hsla(0,50%,50%,1),hsla(0,50%,50%,0));
             }
         }
     }
 }
+
+
+[content-footer]{                    
+    width:100%;    
+    min-height:$conFooterHeight;
+    &.light{
+        background:rgba(255,255,255,.05);
+    }
+    &.dark{
+        background:rgba(0,0,0,.05);
+    }
+
+    [wrap]{
+        position:relative;
+        height:$conFooterHeight;
+        [aims],.aims{
+            position:absolute;
+            &[left]{
+                left:0;
+            }
+            &[right]{
+                right:0;             
+            }
+            &[center-up]{
+                top:-12vw;
+               left: 40vw;
+            }
+            button{
+                margin:0;
+                &[mini]{
+                    height:$conFooterHeight;
+                }
+                &[large]{
+                    min-width:24vw;
+                    min-height:24vw;
+                    font-size:10vw;
+                    &[outline]{
+                        border-width:1.5vw;
+                    }
+                }
+                &[outline]{
+                    border-color:#fff;
+                    border-style: solid;
+                }
+                &[round]{
+                    border-radius:50%;
+                }
+                &[thin-outline]{
+                    border:solid 1px;
+                }
+                &[medium-outline]{
+                    border:solid 2vw;
+                }
+
+                &[gradient-purple]{
+                    background-color:color($colors,purple,base);
+                    box-shadow: inset rgba(0,0,0,.4) 0 -0.4em 0.6em, 
+                                inset rgba(0,0,0,.5) 0 0.2em .8em,
+                }
+                &[gradient-secondary]{
+                    background-color:color($colors,secondary,base);
+                    box-shadow: inset rgba(0,0,0,.4) 0 -0.4em 0.6em, 
+                                inset rgba(0,0,0,.5) 0 0.2em .8em,
+                }
+            }
+        }
+                             
+    }
+}
+

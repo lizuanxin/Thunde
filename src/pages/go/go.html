@@ -31,65 +31,71 @@
             <span>{{'go_page.plug_device'|translate}}</span>
         </ion-item>
     </ion-list>
-    <ion-row margin-top orientate wrap>
+    <ion-row margin-top orientate wrap [ngClass]="app.SkinColor">
         <ion-col width-50 text-center area>
             <span aims round [ngStyle]="{'left':'21vw','top':'18vw'}"></span>
-            <ion-icon app-icon v-w-44>&#xe90a;</ion-icon>
+            <ion-icon app-icon v-w-42>&#xe90a;</ion-icon>
         </ion-col>
         <ion-col width-50 text-center area>
             <span aims round [ngStyle]="{'left':'21vw','top':'9vw'}"></span>
-            <ion-icon app-icon v-w-44>&#xe909;</ion-icon>
+            <ion-icon app-icon v-w-42>&#xe909;</ion-icon>
         </ion-col>
 
         <ion-col width-50 text-center area>
             <span aims round [ngStyle]="{'left':'8vw','top':'18vw'}"></span>
-            <ion-icon app-icon v-w-44>&#xe913;</ion-icon>
+            <ion-icon app-icon v-w-42>&#xe913;</ion-icon>
         </ion-col>
         <ion-col width-50 text-center area>
             <span aims oval [ngStyle]="{'left':'21vw','top':'20vw'}"></span>
-            <ion-icon app-icon v-w-44>&#xe90f;</ion-icon>
+            <ion-icon app-icon v-w-42>&#xe90f;</ion-icon>
         </ion-col>
 
         <ion-col width-50 text-center area>
             <span aims round [ngStyle]="{'left':'17vw','top':'16vw'}"></span>
-            <ion-icon app-icon v-w-44>&#xe90e;</ion-icon>
+            <ion-icon app-icon v-w-42>&#xe90e;</ion-icon>
         </ion-col>
         <ion-col width-50 text-center area>
             <span aims round [ngStyle]="{'left':'10vw','top':'32vw'}"></span>
-            <ion-icon app-icon v-w-44>&#xe912;</ion-icon>
+            <ion-icon app-icon v-w-42>&#xe912;</ion-icon>
         </ion-col>
 
         <ion-col width-50 text-center area>
             <span aims oval [ngStyle]="{'left':'20vw','top':'18vw'}"></span>
-            <ion-icon app-icon v-w-44>&#xe90c;</ion-icon>
+            <ion-icon app-icon v-w-42>&#xe90c;</ion-icon>
         </ion-col>
         <ion-col width-50 text-center area>
             <span aims round [ngStyle]="{'left':'20vw','top':'17vw'}"></span>
-            <ion-icon app-icon v-w-44>&#xe90d;</ion-icon>
+            <ion-icon app-icon v-w-42>&#xe90d;</ion-icon>
         </ion-col>
 
         <ion-col width-50 text-center area>
             <span aims round [ngStyle]="{'left':'21vw','top':'15vw'}"></span>
-            <ion-icon app-icon v-w-44>&#xe910;</ion-icon>
+            <ion-icon app-icon v-w-42>&#xe910;</ion-icon>
         </ion-col>
         <ion-col width-50 text-center area>
             <span aims round [ngStyle]="{'left':'22vw','top':'18vw'}"></span>
-            <ion-icon app-icon v-w-44>&#xe911;</ion-icon>
+            <ion-icon app-icon v-w-42>&#xe911;</ion-icon>
         </ion-col>
     </ion-row>
 
+
+    
+    
+</ion-content>
+<ion-footer no-border>
     <div content-footer [ngClass]="app.SkinConFooter">
         <div wrap>
-            <button ion-button icon-only mini-fix clear (click)="nav.pop()" tappable left>
-                <ion-icon app-icon [ngClass] = "app.SkinColor">&#xe92b;</ion-icon>
-            </button>
+            <div aims left>
+                <button ion-button icon-only mini clear (click)="nav.pop()" tappable>
+                    <ion-icon app-icon [ngClass] = "app.SkinColor">&#xe92b;</ion-icon>
+                </button>
+            </div>
+            <div aims center-up *ngIf="! IsShowingDeviceList">
+                <button large round outline text-uppercase text-light gradient-purple (click)="Go()" tappable>
+                    <ion-icon>&#xf488;</ion-icon>
+                </button>
+            </div>
         </div>
     </div>
-    <ion-fab bottom center large outline high-light *ngIf="! IsShowingDeviceList">
-        <button large ion-fab text-uppercase color="purple" (click)="Go()" tappable>
-            <ion-icon>&#xf488;</ion-icon>
-        </button>
-    </ion-fab>
 
-    <!--<div [ngClass]="'mask-bottom'"></div>-->
-</ion-content>
+</ion-footer>
