@@ -6,13 +6,13 @@
       </button>
     </p>
     <ion-list no-lines transparent>
-        <button menuToggle ion-item no-margin-left text-light detail-none (click)="SelectSkin()">
+        <button menuToggle ion-item no-margin-left text-light detail-none (click)="SelectSkin()" tappable>
             <ion-icon app-icon item-left [ngStyle]="{'min-height': '1.8rem','font-size': '1.8rem'}">
                 &#xe907;
             </ion-icon>
             {{'home_page.menu_appearance'|translate}}
         </button>
-        <button menuToggle ion-item no-margin-left text-light detail-none (click)="ShowAgreement()">
+        <button menuToggle ion-item no-margin-left text-light detail-none (click)="ShowAgreement()" tappable>
             <ion-icon item-left [ngStyle]="{'min-height': '1.8rem','font-size': '1.8rem'}">
                 &#xf496;
             </ion-icon>
@@ -39,12 +39,12 @@
   </ion-toolbar>
 </ion-header>
 <ion-content no-scroll #content [ngClass]="app.Skin('home')" color="light">
-  <canvas style="width:100%;" height=360 id="content_canvas" [ngStyle]="{'position':'absolute'}"></canvas>
+  <canvas style="width:100%;" height=360 id="content_canvas" [ngStyle]="{'position':'absolute'}" tappable></canvas>
 </ion-content>
 <ion-footer no-shadow no-border>
   <ion-toolbar [ngClass]="app.Skin('footer')" no-padding>
     <ion-row>
-      <ion-col text-center [ngClass]="StateCategory(Category)" *ngFor="let Category of Categories" (click)="SelectCategory(Category)">
+      <ion-col text-center [ngClass]="StateCategory(Category)" *ngFor="let Category of Categories" (click)="SelectCategory(Category)" tappable>
         <button ion-button icon-only block clear no-margin [ngClass]="app.SkinColor" [ngStyle]="{'height':'2.2em'}">
           <ion-icon app-icon>{{Category.IconChar}}</ion-icon>
         </button>
