@@ -1,4 +1,16 @@
 ion-list{
+    &[list-side]{
+        .item{
+            font-size:1.5rem;
+            ion-icon{
+                min-height:2rem;
+                font-size:2rem;
+            }
+            .item-inner{
+                margin-left:0;
+            }
+        }
+    }
     &[split-thin]{
        .item-block{
            margin-top:2px;
@@ -114,13 +126,6 @@ ion-item,ion-item-divider{
     }
 }
 
-.item{
-    &[no-margin-left]{
-        ion-icon[item-left] + .item-inner{
-            margin-left:0;
-        }    
-    }
-}
 
 div{
     &[list-warning]{
@@ -134,7 +139,8 @@ div{
             }
         }
         li{
-            font-size:1.2rem;
+            font-size:1.4rem;
+            letter-spacing: .2rem;
             padding:5px 0;
         }
     }
