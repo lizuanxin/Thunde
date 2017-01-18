@@ -2,13 +2,6 @@
     <ion-toolbar transparent>
         <ion-title text-center><span [ngClass]="app.SkinColor">{{ScriptFile.Name_LangId|translate}}</span></ion-title>
     </ion-toolbar>
-    <!--<ion-toolbar transparent padding-horizontal class="o-light">
-        <ion-buttons end>
-            <button ion-button icon-only clear item-right [ngClass]="app.SkinColor">
-                    <ion-icon>&#xf4b2;</ion-icon>
-            </button>
-        </ion-buttons>
-    </ion-toolbar>-->
 </ion-header>
 <ion-content [ngClass]="app.Skin('go')" has-fab-bottom>
     <template [ngIf]="!IsShowingDeviceList">

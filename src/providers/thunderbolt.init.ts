@@ -21,7 +21,7 @@ export namespace Initialization
                     Init = Storage.Get('db_version')
                         .then(Value =>
                         {
-                            if (Value !== '2')
+                            if (Value !== '3')
                                 return Storage.ExecSQL(DestroyTableSQL);
                         })
                         .catch(err => Storage.ExecSQL(DestroyTableSQL))
@@ -32,6 +32,7 @@ export namespace Initialization
                 return Init.then(() => Storage.ExecSQL(InitTableSQL));
             })
             .then(() => Storage.ExecSQL(InitDataSQL))
+            .then(()=> InitBody(Storage))
             .then(()=> InitCategory(Storage))
             .then(()=> InitScriptFile(Storage))
             .catch((err) => console.log(err.message))       // data initialization ends here
@@ -39,6 +40,19 @@ export namespace Initialization
             .then(()=> TAssetService.Initialize(Storage))
             .then(() => TShell.StartOTG())
             .catch((err) => console.log(err.message));
+    }
+
+    function InitBody(Storage: TSqliteStorage): Promise<void>
+    {
+        let queries = [];
+        for (let iter of const_data.Body)
+        {
+            // Id, ObjectName, Name, Desc, ExtraProp, en_Name, en_Desc
+            queries.push(new TSqlQuery(InsertAsset, [iter.Id, 'Body', iter.Name, null, null, iter.en_Name, null]));
+            queries.push(new TSqlQuery(InsertBody, [iter.Id, iter.Icon]));
+        }
+
+        return Storage.ExecQuery(queries).then(() => {});
     }
 
     function InitCategory(Storage: TSqliteStorage): Promise<void>
@@ -102,10 +116,12 @@ export namespace Initialization
             'ExtraProp TEXT);',                 // extra properties persist in json
         'CREATE INDEX IF NOT EXISTS IDX_Asset_ObjectName ON Asset(ObjectName, Name);',
 
+        /*
         'CREATE TABLE IF NOT EXISTS Mode(' +
             'Id VARCHAR(38) NOT NULL PRIMARY KEY,' +
             'Icon INT NOT NULL,' +
             'FOREIGN KEY(Id) REFERENCES Asset(Id) ON UPDATE CASCADE ON DELETE CASCADE);',
+        */
 
         'CREATE TABLE IF NOT EXISTS Body(' +
             'Id VARCHAR(38) NOT NULL PRIMARY KEY,' +
@@ -131,6 +147,12 @@ export namespace Initialization
             'FOREIGN KEY(Category_Id) REFERENCES Category(Id) ON UPDATE CASCADE ON DELETE CASCADE,' +
             'FOREIGN KEY(Body_Id) REFERENCES Body(Id) ON UPDATE CASCADE ON DELETE CASCADE,' +
             'FOREIGN KEY(Mode_Id) REFERENCES Mode(Id) ON UPDATE CASCADE ON DELETE CASCADE);',
+
+        'CREATE TABLE IF NOT EXISTS ScriptFile_Body(' +
+            'ScriptFile_Id VARCHAR(38) NOT NULL,' +
+            'Body_Id VARCHAR(38) NOT NULL,' +
+            'FOREIGN KEY(ScriptFile_Id) REFERENCES ScriptFile(Id) ON UPDATE CASCADE ON DELETE CASCADE,' +
+            'FOREIGN KEY(Body_Id) REFERENCES Body(Id) ON UPDATE CASCADE ON DELETE CASCADE);',
 
         'CREATE TABLE IF NOT EXISTS ScriptFileDesc(' +
             'Id VARCHAR(38) NOT NULL PRIMARY KEY,' +
@@ -164,8 +186,8 @@ export namespace Initialization
     ];
 
     const InsertAsset = 'INSERT OR REPLACE INTO Asset(Id, ObjectName, Name, Desc, ExtraProp) VALUES(?,?,?,?,?)';
-    //const InsertBody = 'INSERT OR REPLACE INTO Body(Id, Icon) VALUES(?,?)';
-    //const InsertMode = 'INSERT OR REPLACE INTO Mode(Id, Icon) VALUES(?,?)';
+    const InsertBody = 'INSERT OR REPLACE INTO Body(Id, Icon) VALUES(?,?)';
+    // const InsertMode = 'INSERT OR REPLACE INTO Mode(Id, Icon) VALUES(?,?)';
     const InsertCategory = 'INSERT OR REPLACE INTO Category(Id, Icon) VALUES(?, ?)';
     const InsertScriptFile = 'INSERT OR REPLACE INTO ScriptFile(Id, Category_Id, Mode_Id, Body_Id, Author, Content) VALUES(?,?,?,?,?,?)';
 }

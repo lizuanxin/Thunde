@@ -219,17 +219,17 @@ class TContentCanvas
             let b = (this.Oy - Offset);
             let x = Math.sqrt(this.Radius * this.Radius - b * b) + this.Ox;
 
-            if (Offset < this.Padding)
-            {
-                Ctx.globalAlpha = Offset / this.Padding;
-                Ctx.globalAlpha *= Ctx.globalAlpha * Ctx.globalAlpha;
-            }
-            else if (Offset > this.DisplayHeight)
-            {
-                Ctx.globalAlpha = (Canvas.height - Offset) / (Canvas.height - this.DisplayHeight);
-                Ctx.globalAlpha *= Ctx.globalAlpha * Ctx.globalAlpha;
-            }
-            else
+            // if (Offset < this.Padding)
+            // {
+            //     Ctx.globalAlpha = Offset / this.Padding;
+            //     Ctx.globalAlpha *= Ctx.globalAlpha * Ctx.globalAlpha;
+            // }
+            // else if (Offset > this.DisplayHeight)
+            // {
+            //     Ctx.globalAlpha = (Canvas.height - Offset) / (Canvas.height - this.DisplayHeight);
+            //     Ctx.globalAlpha *= Ctx.globalAlpha * Ctx.globalAlpha;
+            // }
+            // else
                 Ctx.globalAlpha = 1.0;
 
             Ctx.textBaseline = 'bottom';
@@ -252,17 +252,6 @@ class TContentCanvas
             x += TextWidth * 1.2;
             Ctx.strokeText(Str, x, Offset);
             Ctx.fillText(Str, x, Offset);
-
-            /*
-            // file desc
-            Ctx.globalAlpha = Ctx.globalAlpha * 0.5;
-            Ctx.textBaseline = "top"
-            Ctx.textAlign = 'left';
-            Ctx.font = this.FileDescFont.toString();
-            x += Ctx.measureText('--').width;
-            Str = this.Localize.Translate(ScriptFile.Desc_LangId) as string;
-            Ctx.fillText(Str, x, Offset);
-            */
 
             // minute
             Ctx.textAlign = 'right'
