@@ -32,6 +32,7 @@ export namespace Initialization
                 return Init.then(() => Storage.ExecSQL(InitTableSQL));
             })
             .then(() => Storage.ExecSQL(InitDataSQL))
+            .then(() => InitMode(Storage))
             .then(()=> InitBody(Storage))
             .then(()=> InitCategory(Storage))
             .then(()=> InitScriptFile(Storage))
@@ -42,13 +43,26 @@ export namespace Initialization
             .catch((err) => console.log(err.message));
     }
 
+    function InitMode(Storage: TSqliteStorage): Promise<void>
+    {
+        let queries = [];
+        for (let iter of const_data.Mode)
+        {
+            // Id, ObjectName, Name, Desc, ExtraProp
+            queries.push(new TSqlQuery(InsertAsset, [iter.Id, 'Mode', iter.Name, null, null]));
+            queries.push(new TSqlQuery(InsertMode, [iter.Id, iter.Icon]));
+        }
+
+        return Storage.ExecQuery(queries).then(() => {});
+    }
+
     function InitBody(Storage: TSqliteStorage): Promise<void>
     {
         let queries = [];
         for (let iter of const_data.Body)
         {
-            // Id, ObjectName, Name, Desc, ExtraProp, en_Name, en_Desc
-            queries.push(new TSqlQuery(InsertAsset, [iter.Id, 'Body', iter.Name, null, null, iter.en_Name, null]));
+            // Id, ObjectName, Name, Desc, ExtraProp
+            queries.push(new TSqlQuery(InsertAsset, [iter.Id, 'Body', iter.Name, null, null]));
             queries.push(new TSqlQuery(InsertBody, [iter.Id, iter.Icon]));
         }
 
@@ -60,7 +74,7 @@ export namespace Initialization
         let queries = [];
         for (let iter of const_data.Category)
         {
-            // Id, ObjectName, Name, Desc, ExtraProp, en_Name, en_Desc
+            // Id, ObjectName, Name, Desc, ExtraProp
             queries.push(new TSqlQuery(InsertAsset, [iter.Id, 'Category', iter.Name, iter.Desc, null]));
             queries.push(new TSqlQuery(InsertCategory, [iter.Id, iter.Icon]));
         }
@@ -116,12 +130,10 @@ export namespace Initialization
             'ExtraProp TEXT);',                 // extra properties persist in json
         'CREATE INDEX IF NOT EXISTS IDX_Asset_ObjectName ON Asset(ObjectName, Name);',
 
-        /*
         'CREATE TABLE IF NOT EXISTS Mode(' +
             'Id VARCHAR(38) NOT NULL PRIMARY KEY,' +
             'Icon INT NOT NULL,' +
             'FOREIGN KEY(Id) REFERENCES Asset(Id) ON UPDATE CASCADE ON DELETE CASCADE);',
-        */
 
         'CREATE TABLE IF NOT EXISTS Body(' +
             'Id VARCHAR(38) NOT NULL PRIMARY KEY,' +
@@ -187,7 +199,7 @@ export namespace Initialization
 
     const InsertAsset = 'INSERT OR REPLACE INTO Asset(Id, ObjectName, Name, Desc, ExtraProp) VALUES(?,?,?,?,?)';
     const InsertBody = 'INSERT OR REPLACE INTO Body(Id, Icon) VALUES(?,?)';
-    // const InsertMode = 'INSERT OR REPLACE INTO Mode(Id, Icon) VALUES(?,?)';
+    const InsertMode = 'INSERT OR REPLACE INTO Mode(Id, Icon) VALUES(?,?)';
     const InsertCategory = 'INSERT OR REPLACE INTO Category(Id, Icon) VALUES(?, ?)';
     const InsertScriptFile = 'INSERT OR REPLACE INTO ScriptFile(Id, Category_Id, Mode_Id, Body_Id, Author, Content) VALUES(?,?,?,?,?,?)';
 }

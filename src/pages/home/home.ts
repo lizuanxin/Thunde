@@ -133,12 +133,24 @@ class TContentCanvas
             this.Radius = Math.trunc(this.Oy * 9 / 10);
         }
 
-        let Cache = document.createElement('canvas') as HTMLCanvasElement;
+        this.Bg = document.createElement('canvas') as HTMLCanvasElement;
+        let Cache = this.Bg;
         Cache.style.width = Canvas.style.width;
         Cache.style.height = Canvas.style.height;
         Cache.width = Canvas.width;
         Cache.height = Canvas.height;
-        this.Bg = Cache;
+
+        this.CacheItems = new Array<HTMLCanvasElement>();
+        for (let i = 0; i < 50; i ++)
+        {
+            Cache = document.createElement('canvas') as HTMLCanvasElement;
+
+            Cache.style.width = Canvas.style.width;
+            Cache.style.height = this.ItemHeight;
+            Cache.width = Canvas.width;
+            Cache.height = this.ItemHeight;
+            this.CacheItems.push(Cache);
+        }
     }
 
     Disponse()
@@ -219,17 +231,17 @@ class TContentCanvas
             let b = (this.Oy - Offset);
             let x = Math.sqrt(this.Radius * this.Radius - b * b) + this.Ox;
 
-            // if (Offset < this.Padding)
-            // {
-            //     Ctx.globalAlpha = Offset / this.Padding;
-            //     Ctx.globalAlpha *= Ctx.globalAlpha * Ctx.globalAlpha;
-            // }
-            // else if (Offset > this.DisplayHeight)
-            // {
-            //     Ctx.globalAlpha = (Canvas.height - Offset) / (Canvas.height - this.DisplayHeight);
-            //     Ctx.globalAlpha *= Ctx.globalAlpha * Ctx.globalAlpha;
-            // }
-            // else
+            if (Offset < this.Padding)
+            {
+                Ctx.globalAlpha = Offset / this.Padding;
+                Ctx.globalAlpha *= Ctx.globalAlpha * Ctx.globalAlpha;
+            }
+            else if (Offset > this.DisplayHeight)
+            {
+                Ctx.globalAlpha = (Canvas.height - Offset) / (Canvas.height - this.DisplayHeight);
+                Ctx.globalAlpha *= Ctx.globalAlpha * Ctx.globalAlpha;
+            }
+            else
                 Ctx.globalAlpha = 1.0;
 
             Ctx.textBaseline = 'bottom';
@@ -415,6 +427,7 @@ class TContentCanvas
 
     private Ctx: CanvasRenderingContext2D;
     private Bg: HTMLCanvasElement;
+    private CacheItems: HTMLCanvasElement[];
 
     private Padding;
     private Ox: number;
