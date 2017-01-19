@@ -11,6 +11,13 @@ ion-content{
             &.#{$bg}-home {
                 background-image:url('../assets/img/class/#{$bg}.jpg');
                 background-size:cover;
+                canvas{
+                    background-image:url(../assets/img/bg_canvas_dark.png);
+                    background-repeat:no-repeat;
+                    background-position-x: 36%;
+                    background-size: cover;
+                }
+                
             }
 
             &.#{$bg}-go {
@@ -33,8 +40,15 @@ ion-content{
 
         } @else {
             &.#{$bg}-home {
-            background-image:url('../assets/img/class/#{$bg}.jpg');
-            background-size:cover;
+                background-image:url('../assets/img/class/#{$bg}.jpg');
+                background-size:cover;
+                canvas{
+                    background-image:url(../assets/img/bg_canvas_light.png);
+                    background-repeat:no-repeat;
+                    background-position-x: 36%;
+                    background-size: cover;
+                }
+
             }
 
             &.#{$bg}-go {
