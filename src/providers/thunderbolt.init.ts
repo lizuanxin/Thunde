@@ -46,7 +46,7 @@ export namespace Initialization
     function InitMode(Storage: TSqliteStorage): Promise<void>
     {
         let queries = [];
-        for (let iter of const_data.Mode)
+        for (let iter of const_data.Modes)
         {
             // Id, ObjectName, Name, Desc, ExtraProp
             queries.push(new TSqlQuery(InsertAsset, [iter.Id, 'Mode', iter.Name, null, null]));
@@ -59,7 +59,7 @@ export namespace Initialization
     function InitBody(Storage: TSqliteStorage): Promise<void>
     {
         let queries = [];
-        for (let iter of const_data.Body)
+        for (let iter of const_data.BodyParts)
         {
             // Id, ObjectName, Name, Desc, ExtraProp
             queries.push(new TSqlQuery(InsertAsset, [iter.Id, 'Body', iter.Name, null, null]));
@@ -72,7 +72,7 @@ export namespace Initialization
     function InitCategory(Storage: TSqliteStorage): Promise<void>
     {
         let queries = [];
-        for (let iter of const_data.Category)
+        for (let iter of const_data.Categories)
         {
             // Id, ObjectName, Name, Desc, ExtraProp
             queries.push(new TSqlQuery(InsertAsset, [iter.Id, 'Category', iter.Name, iter.Desc, null]));
@@ -97,7 +97,7 @@ export namespace Initialization
             // Id, ObjectName, Name, Desc, ExtraProp
             queries.push(new TSqlQuery(InsertAsset, [iter.Id, 'ScriptFile', iter.Name, DescId, null]));
             // Id, Category_Id, Mode_Id, Body_Id, Author, Content
-            queries.push(new TSqlQuery(InsertScriptFile, [iter.Id, iter.Category_Id, iter.Mode_Id, iter.Body_Id, iter.Author, iter.content]));
+            queries.push(new TSqlQuery(InsertScriptFile, [iter.Id, iter.Category_Id, iter.Mode_Id, iter.Body_Id, iter.Author, iter.Content]));
         }
 
         return Storage.ExecQuery(queries).then(() => {});

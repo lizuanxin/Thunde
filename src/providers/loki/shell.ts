@@ -880,7 +880,7 @@ export class TOTARequest extends TProxyShellRequest
     {
         console.log('Ensure the connection before send ota header');
         this.Shell.Connect()
-            .then(() => 
+            .then(() =>
             {
                 setTimeout(() => this.Shell.PromiseSend(cmd)
                     .catch(err => this.error(new Error('send failed'))), 800);
@@ -940,7 +940,7 @@ export class TOTARequest extends TProxyShellRequest
         function loopSendBlock()
         {
             that.StartSendingSplitBlock(sendOffset)
-                .then(() => 
+                .then(() =>
                 {
                     console.log('send ' + sendOffset + ' block success');
                     resendCount = 0;
@@ -957,14 +957,14 @@ export class TOTARequest extends TProxyShellRequest
                             .catch(() => {});
                     }
                 })
-                .catch(() => 
+                .catch(() =>
                 {
                     console.log('send err, resend: ' + sendOffset);
                     if (resendCount < 3)
                         setTimeout(() => loopSendBlock(), 500);
                     else
                         that.error(new Error('send failed'));
-                    
+
                     resendCount ++;
                     that.RefreshTimeout();
                 });
@@ -975,7 +975,7 @@ export class TOTARequest extends TProxyShellRequest
 
     private StartWaitReplyBeforeSend(sendOffset: number): Promise<void>
     {
-        return new Promise<void>((resolve, reject) => 
+        return new Promise<void>((resolve, reject) =>
         {
             let waitTime = 0;
             let sendedPackets = sendOffset * 64;
@@ -992,7 +992,7 @@ export class TOTARequest extends TProxyShellRequest
                 waitTime = 500;
 
             let waitTimer = Timer.startNew(100, Infinity, waitTime);
-            waitTimer.subscribe((counter) => 
+            waitTimer.subscribe((counter) =>
             {
                 waitTime += 100;
                 if (waitTime > 2900 || (sendedPackets - this.replyPackets < 5))
@@ -1004,17 +1004,17 @@ export class TOTARequest extends TProxyShellRequest
                     console.log('wait ' + waitTime + 'ms');
 
                 this.RefreshTimeout();
-            }); 
+            });
         });
     }
 
     private StartWaitReplyAllPackets(): Promise<void>
     {
-        return new Promise<void>((resolve, reject) => 
+        return new Promise<void>((resolve, reject) =>
         {
             let waitTime = 2000;
             let waitTimer = Timer.startNew(1000, Infinity, waitTime);
-            waitTimer.subscribe((counter) => 
+            waitTimer.subscribe((counter) =>
             {
                 waitTime += 1000;
                 if (this.SendSplitPacketCount === this.replyPackets)
@@ -1045,15 +1045,15 @@ export class TOTARequest extends TProxyShellRequest
 
         if (end > this.SendPacket.length)
             end = this.SendPacket.length;
-        
+
         console.log('send block ' + offset +  ' start: ' + start + ' end: ' + end);
 
         return new Promise<number>((resolve, reject) =>
         {
             this.Shell.ObserveSend(this.SendPacket.subarray(start, end))
-                .then((observer) => 
+                .then((observer) =>
                 {
-                    observer.subscribe(count => 
+                    observer.subscribe(count =>
                     {
                         //console.log('send: ' + count / 20);
                         if (count === (end - start))
@@ -1062,7 +1062,7 @@ export class TOTARequest extends TProxyShellRequest
                         this.RefreshTimeout();
                     });
                 })
-                .catch((err) => 
+                .catch((err) =>
                 {
                     reject();
                 });
@@ -1090,4 +1090,3 @@ export class TOTARequest extends TProxyShellRequest
     private replyPackets: number = 0;
     private cmdHeader: string = '';
 }
-

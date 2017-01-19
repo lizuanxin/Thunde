@@ -121,6 +121,16 @@ let translate_en =
         title: 'Appearance',
     },
 
+    body:
+    {
+        back: 'Back',
+        forelimb: 'Forelimb',
+        lowerlimb: 'Lowerlimb',
+        abdomen: 'Abdomen',
+        foot: 'Foot',
+        joint: 'Joint'
+    },
+
     category:
     {
         'null': 'No Description',
@@ -295,6 +305,16 @@ let translate_zh =
     skin_page:
     {
         title: '选择外观',
+    },
+
+    body:
+    {
+        back: '背部',
+        forelimb: '手部',
+        lowerlimb: '腿部',
+        abdomen: '腹部',
+        foot: '脚底',
+        joint: '关节'
     },
 
     category:
