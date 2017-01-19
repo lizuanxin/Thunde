@@ -21,14 +21,10 @@
         <ion-checkbox class="skin-default" [(ngModel)]="app.AcceptedTerms"></ion-checkbox>
       </ion-item>
     </ion-list>
-
-    <ion-row *ngIf="IsFirstTime">
-      <ion-col><button ion-button block [disabled]="!app.AcceptedTerms" (click)="nav.pop()">{{'button.ok'|translate}}</button></ion-col>
-    </ion-row>
   </div>
 </ion-content>
-<ion-footer padding no-shadow no-border *ngIf="!IsFirstTime">
+<ion-footer padding no-shadow no-border>
   <ion-row>
-    <ion-col><button ion-button block [disabled]="!app.AcceptedTerms" (click)="nav.pop()">{{'button.ok'|translate}}</button></ion-col>
+    <ion-col><button ion-button block [disabled]="! app.AcceptedTerms" (click)="nav.pop()">{{'button.ok'|translate}}</button></ion-col>
   </ion-row>
 </ion-footer>

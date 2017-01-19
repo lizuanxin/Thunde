@@ -42,7 +42,6 @@ export class HomePage implements OnInit, OnDestroy
         let title = document.getElementById('title');
         let style = window.getComputedStyle(title);
         this.Content.Color = style.color;
-        this.Content.BackgroundColor = this.app.SkinShadowColor;
 
         if (! TypeInfo.Assigned(this.SelectedCategory))
         {
@@ -162,22 +161,6 @@ class TContentCanvas
     set Color(Value: string)
     {
         this.Ctx.fillStyle = Value;
-    }
-
-    get BackgroundColor(): string
-    {
-        return this.Ctx.strokeStyle as string;
-    }
-
-    set BackgroundColor(Value: string)
-    {
-        let Ctx = this.Bg.getContext('2d', {});
-        Ctx.fillStyle = Value;
-        Ctx.strokeStyle = Value;
-        this.DrawBackground(this.Bg, Ctx, this.Ox, this.Oy, this.Radius - 30);
-
-        this.Ctx.strokeStyle = Value;
-        this.Ctx.shadowColor = Value;
     }
 
     NewFileList(FileList: Array<TScriptFile>)
@@ -321,48 +304,6 @@ class TContentCanvas
         let Idx = Math.trunc((Offset - this.ScrollingY - this.Padding) / this.ItemHeight);
         if (Idx >= 0 && Idx < this.FileList.length)
             this.OnSelectionFile.emit(this.FileList[Idx]);
-    }
-
-    private DrawBackground(Canvas: HTMLCanvasElement, Ctx: CanvasRenderingContext2D,
-        Ox: number, Oy: number, Radius: number)
-    {
-        Ctx.clearRect(0, 0, Canvas.width, Canvas.height);
-
-        /*
-        const TargetAlpha = 0.2;
-        const Step = 120;
-
-        Ctx.globalAlpha = 0.0;
-        Ctx.lineWidth = 20;
-        let AlphaStep = TargetAlpha * Ctx.lineWidth / Step;
-
-        for (let i = 0; i < Step / Ctx.lineWidth; i ++)
-        {
-            Radius += Ctx.lineWidth;
-
-            Ctx.moveTo(Ox - Radius, Oy - Radius);
-            Ctx.beginPath();
-            Ctx.arc(Ox, Oy, Radius, 0, Math.PI * 2);
-            Ctx.closePath();
-
-            Ctx.globalAlpha += AlphaStep;
-            Ctx.stroke();
-        }
-        Radius += Ctx.lineWidth / 2;
-        Ctx.lineWidth = 1;
-        */
-
-        Ctx.globalAlpha = 0.2;
-        Ctx.beginPath();
-        Ctx.lineTo(0, Canvas.height);
-        Ctx.lineTo(Canvas.width, Canvas.height);
-        Ctx.lineTo(Canvas.width, 0);
-        Ctx.lineTo(0, 0);
-        Ctx.moveTo(Ox - Radius, Oy - Radius);
-        Ctx.arcTo(Ox + Radius, Oy - Radius, Ox + Radius, Oy, Radius);
-        Ctx.arcTo(Ox + Radius, Oy + Radius, Ox, Oy + Radius, Radius);
-        Ctx.closePath();
-        Ctx.fill();
     }
 
     /**
