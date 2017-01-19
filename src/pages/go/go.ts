@@ -2,6 +2,7 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs/Rx'
 import {Platform, NavController, ViewController, NavParams} from 'ionic-angular';
 import {RunningPage} from '../running/running';
+import {OtaUpdatePage} from '../ota_update/ota_update';
 
 import {BLE, Loki, TApplication, TLocalizeService, TAssetService, TCategory, TScriptFile} from '../services';
 import {TypeInfo} from '../../UltraCreation/Core';
@@ -64,8 +65,25 @@ export class GoPage implements OnInit, OnDestroy
         let params = this.navParams.data;
         params.DeviceId = DeviceId;
 
+        this.app.ShowAlert({
+            title: 'Force to run ota update ?',
+            buttons: 
+            [
+                {text: 'Yes', handler: () => this.GoToOtaUpdatePage(params)},
+                {text: 'No', handler: () => this.GoToRunningPage(params)}
+            ]
+        });
+    }
+
+    private GoToRunningPage(params: any)
+    {
         this.nav.push(RunningPage, params)
             .then(() => this.nav.remove(1, this.view.index, {animate: false}));
+    }
+
+    private GoToOtaUpdatePage(params: any)
+    {
+        this.nav.push(OtaUpdatePage, params)
     }
 
     private StartScan()

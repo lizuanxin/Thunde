@@ -1,0 +1,18 @@
+<ion-header no-border>
+    <ion-toolbar>
+        <ion-buttons left>
+            <button color="light" ion-button icon-only (click)="navBackClicked()" [ngStyle]="{'padding':'0 8px'}">
+                <ion-icon>&#xf3cf;</ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title text-center light>OTA Update</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="progress-outer">
+        <div class="progress-inner" [style.width]="otaUpdatePercent + '%'">
+            {{otaUpdatePercent}}%
+        </div>
+    </div>
+</ion-content>
