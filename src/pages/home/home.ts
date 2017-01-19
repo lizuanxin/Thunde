@@ -109,8 +109,6 @@ class TContentCanvas
 
         let width = window.innerWidth;
         let height = window.innerHeight;
-        if (height > window.innerHeight - 100)
-            height = window.innerHeight - 100;
 
         Canvas.style.width = width.toString();
         Canvas.style.height = height.toString();
@@ -135,8 +133,6 @@ class TContentCanvas
 
         this.Bg = document.createElement('canvas') as HTMLCanvasElement;
         let Cache = this.Bg;
-        Cache.style.width = Canvas.style.width;
-        Cache.style.height = Canvas.style.height;
         Cache.width = Canvas.width;
         Cache.height = Canvas.height;
 
