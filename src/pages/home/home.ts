@@ -193,7 +193,7 @@ class TContentCanvas
     {
         this.Ctx.clearRect(0, 0, this.Canvas.width, this.Canvas.height);
         this.Ctx.globalAlpha = 1.0;
-        this.Ctx.drawImage(this.Bg, 0, 0);
+        // this.Ctx.drawImage(this.Bg, 0, 0);
 
         this.PaintTo(this.Canvas, this.Ctx);
     }
