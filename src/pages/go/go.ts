@@ -65,6 +65,15 @@ export class GoPage implements OnInit, OnDestroy
         let params = this.navParams.data;
         params.DeviceId = DeviceId;
 
+        if (DeviceId === 'USB')
+        {
+            params.FirmwareName = 'Mini.bin';
+        }
+        else
+        {
+            params.FirmwareName = 'Thunderbolt.bin';
+        }
+
         this.app.ShowAlert({
             title: 'Force to run ota update ?',
             buttons: 

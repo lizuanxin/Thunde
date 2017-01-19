@@ -43,21 +43,21 @@ export class OtaUpdatePage implements OnInit, OnDestroy
 {
     constructor(private app: TApplication, private nav: NavController, private navParams: NavParams)
     {
-        let DeviceId = navParams.get('DeviceId');
-        this.Shell = Loki.TShell.Get(DeviceId);
+        this.deviceId = navParams.get('DeviceId');
+        this.Shell = Loki.TShell.Get(this.deviceId);
     }
 
     ngOnInit()
     {
         PowerManagement.acquire().then(() => console.log('acquired power lock'));
         
-        this.loopCheckTimer = Timer.startNew(1000, Infinity, 600);
+        this.loopCheckTimer = Timer.startNew(1500, Infinity, 600);
         this.loopCheckTimer.subscribe((count) => 
         {
             if (count === 0)
                 this.otaUpdate();
-            else
-                console.log('percent: ' + this.otaUpdatePercent);
+            // else
+            //     console.log('percent: ' + this.otaUpdatePercent);
         });
     }
 
@@ -77,10 +77,10 @@ export class OtaUpdatePage implements OnInit, OnDestroy
 
     otaUpdate()
     {
-        console.log('path: ' + cordova.file.applicationDirectory);
+        console.log('path: ' + cordova.file.applicationDirectory + this.navParams.get('FirmwareName'));
         this.otaUpdatePercent = 0;
         this.otaJumpFlag = false;
-        File.readAsArrayBuffer(cordova.file.applicationDirectory + 'www/assets', 'Mini.bin')
+        File.readAsArrayBuffer(cordova.file.applicationDirectory + 'www/assets', this.navParams.get('FirmwareName'))
             .then((arrayBuffer) => 
             {
                 console.log('read success...');
@@ -122,49 +122,37 @@ export class OtaUpdatePage implements OnInit, OnDestroy
     {
         return new Promise((resolve, reject) => 
         {
-            let retrytimes = 1;
-
-            function loopRequest(Self: any)
+            this.Shell.OTARequest(buffer).then((request) => 
             {
-                Self.Shell.OTARequest(buffer).then((request) => 
-                {
-                    request.subscribe(
-                        (value) => 
+                request.subscribe(
+                    (value) => 
+                    {
+                        this.otaUpdatePercent = value;
+                        if (this.otaUpdatePercent === 100)
                         {
-                            Self.otaUpdatePercent = value;
-                            if (Self.otaUpdatePercent === 100)
-                            {
-                                request.unsubscribe();
-                                resolve();
-                            }
-                        },
-                        (error) =>
-                        {
-                            console.log('ota err: ' + error);
-                            if (error.includes('jump'))
-                                Self.otaJumpFlag = true;
-                            reject(error);
-                        },
-                        () => 
-                        {
-                            console.log('ota write complete...');
+                            request.unsubscribe();
                             resolve();
                         }
-                    );
-                })
-                .catch(() => 
-                {
-                    console.log('request error, retry ota request');
-                    if (retrytimes > 0)
-                        setTimeout(() => loopRequest(Self), 1000);
-                    else
-                        reject('request err');
-                    
-                    retrytimes --;
-                });
-            }
-
-            setTimeout(() => loopRequest(this), 10);
+                    },
+                    (error) =>
+                    {
+                        console.log('ota err: ' + error);
+                        if (error.message.includes('jump'))
+                            this.otaJumpFlag = true;
+                        reject(error);
+                    },
+                    () => 
+                    {
+                        console.log('ota write complete...');
+                        resolve();
+                    }
+                );
+            })
+            .catch(() => 
+            {
+                console.log('OTARequest error');
+                reject('OTARequest err');
+            });
         });
     }
 
@@ -174,16 +162,17 @@ export class OtaUpdatePage implements OnInit, OnDestroy
         {
             this.app.ShowLoading('update ota success, restart device...').then((load) => 
             {
-                //setTimeout(() => this.Shell.Detach(), 5 * 1000);
+                let loadingDelayTime = 6 * 1000;
+                if (this.isUSBDevice())
+                    loadingDelayTime = 3 * 1000;
+
                 setTimeout(() => 
                 {
-                    Loki.TShell.StartOTG();
-                }, 3 * 1000);
-                setTimeout(() => load.dismiss(), 5 * 1000)
+                    this.restartDevice().then(() => load.dismiss());
+                }, loadingDelayTime);
+
                 load.onDidDismiss(() => 
                 {
-                    if (Loki.TShell.IsUsbPlugin)
-                        this.Shell = Loki.TShell.Get('USB');
                     this.Shell.VersionRequest().then((value) => 
                     {
                         this.app.ShowAlert({title: 'New ver: ' + this.getVersion(value),
@@ -224,20 +213,8 @@ export class OtaUpdatePage implements OnInit, OnDestroy
 
     private retryOtaUpdate()
     {
-        if (this.otaUpdatePercent === 0) 
-        {
-            Loki.TShell.StartOTG();
-            setTimeout(() => 
-            {
-                console.log('start new connect');
-                if (Loki.TShell.IsUsbPlugin)
-                    this.Shell = Loki.TShell.Get('USB');
-                    
-                this.otaUpdate();
-            }, 500);
-        }
+        return this.restartDevice().then(() => this.otaUpdate());
     }
-
 
     private getVersion(value: number)
     {
@@ -249,6 +226,33 @@ export class OtaUpdatePage implements OnInit, OnDestroy
         return retStr;
     }
 
+    private restartDevice(): Promise<boolean>
+    {
+        return new Promise((resolve, reject) => 
+        {
+            if (this.isUSBDevice())
+            {
+                Loki.TShell.StartOTG();
+            }
+            else
+            {
+                Loki.TShell.StartScan();
+            }
+
+            setTimeout(() => 
+            {
+                this.Shell = Loki.TShell.Get(this.deviceId);
+                resolve(this.deviceId === 'USB');
+            }, 1000);
+        });
+    }
+
+    private isUSBDevice(): boolean
+    {
+        return this.deviceId === 'USB';
+    }
+
+
     private Shell: Loki.TShell;
 
     protected otaUpdatePercent: number = 0;
@@ -256,4 +260,5 @@ export class OtaUpdatePage implements OnInit, OnDestroy
     protected loopCheckTimer: Timer;
 
     protected otaJumpFlag: boolean = false;
+    private deviceId: string;
 }

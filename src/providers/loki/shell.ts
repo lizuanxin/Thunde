@@ -847,7 +847,7 @@ export class TOTARequest extends TProxyShellRequest
         this.PackPacketWithCRC(view);
 
         this.cmdHeader = '>ota -s=' + view.length + ' -c=' + crc;
-        this.StartSendOtaHeader(this.cmdHeader);
+        this.StartSendOtaHeader(this.cmdHeader);   
     }
 
     Notification(Line: string)
@@ -857,7 +857,7 @@ export class TOTARequest extends TProxyShellRequest
         {
             console.log('notify: ' + Line);
             //setTimeout(() => this.StartSendOtaHeader(this.cmdHeader), 500);
-            this.error('jump ota');
+            this.error(new Error('jump ota'));
         }
         if (Line === '0: ok [ota]')
         {
@@ -896,10 +896,6 @@ export class TOTARequest extends TProxyShellRequest
         {
             viewData = new Uint8Array(firmware.byteLength + 16 - multipleLeft);
             viewData.set(new Uint8Array(firmware), 0);
-            // for (let i = firmware.byteLength; i < viewData.length; i ++)
-            // {
-            //     viewData[i] = 0xFF;
-            // }
         }
         else
             viewData = new Uint8Array(firmware);
@@ -994,15 +990,14 @@ export class TOTARequest extends TProxyShellRequest
             let waitTimer = Timer.startNew(100, Infinity, waitTime);
             waitTimer.subscribe((counter) =>
             {
-                waitTime += 100;
-                if (waitTime > 2900 || (sendedPackets - this.replyPackets < 5))
+                if (waitTime >= 4000 || (sendedPackets - this.replyPackets < 5))
                 {
+                    console.log('wait ' + waitTime + 'ms');
                     waitTimer.stop();
                     resolve();
                 }
-                else
-                    console.log('wait ' + waitTime + 'ms');
 
+                waitTime += 100;
                 this.RefreshTimeout();
             });
         });
