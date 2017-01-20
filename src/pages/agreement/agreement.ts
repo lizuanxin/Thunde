@@ -21,7 +21,7 @@ export class AgreementPage
 
     get TopArea(): string
     {
-        let topArea = Math.trunc(screen.height / 5)
+        let topArea = Math.trunc(screen.height / 5);
         return topArea + 'px';
     }
 
