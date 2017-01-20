@@ -3,7 +3,7 @@
         <ion-title text-center><span [ngClass]="app.SkinColor">{{ScriptFile.Name_LangId|translate}}</span></ion-title>
     </ion-toolbar>
 </ion-header>
-<ion-content [ngClass]="app.Skin('go')" has-fab-bottom>
+<ion-content [ngClass]="app.Skin('go')">
     <template [ngIf]="!IsShowingDeviceList">
         <div explain padding [ngStyle]="{'border-left-width':0,'border-right-width':0}" [ngClass]="app.SkinColor" [innerHTML]="ScriptFile.Desc_LangId|translate">
         </div>

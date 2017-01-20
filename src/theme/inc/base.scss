@@ -4,9 +4,6 @@
 }
 body,*{
   font-family: brandontext_normal,'microsoft yahei';
-  &[text-shadow]{
-      text-shadow:1px 1px 1px #202020;
-  }
 }
 
 
@@ -23,8 +20,13 @@ ion-icon{
         }
         $i:$i+1;
     }
+
     &.high-light{
         text-shadow: 1px 1px 0px rgba(255,255,255,.7);
+    }
+
+    &[text-shadow]{
+      text-shadow:1px 1px 1px #202020;
     }
 
     &[text-light],&.text-light{
@@ -54,7 +56,6 @@ ion-icon{
 }
 
 ion-content{
-
     &[no-scroll]{
         .scroll-content{
             overflow-y:hidden;
@@ -63,16 +64,7 @@ ion-content{
 
     &[transparent]{
         background-color:transparent;
-    }
-
-    &[has-fab-bottom]{
-        .scroll-content{
-            // overflow: scroll;
-            margin-bottom:$hasContentFooter;
-        }
-
-    }
-
+    }    
     
 }
 

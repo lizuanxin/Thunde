@@ -3,8 +3,11 @@ ion-list{
         .item{
             font-size:1.5rem;
             ion-icon{
-                min-height:2rem;
                 font-size:2rem;
+                margin-top:-.3rem;
+                &[inline-left]{
+                    margin-right:.5rem;
+                }
             }
             .item-inner{
                 margin-left:0;
@@ -64,29 +67,29 @@ ion-list{
 
    &[v-border-light]{
      .item{
-         &:first-child{
-                border-top:solid 3px color($colors, light, base);
-            }
-            &:last-child{
-                border-bottom:solid 3px color($colors, light, base);
-            }
+        &:first-child{
+            border-top:solid 3px color($colors, light, base);
+        }
+        &:last-child{
             border-bottom:solid 3px color($colors, light, base);
-            .item-inner{
-                border-bottom-width:0;
-            }
+        }
+        border-bottom:solid 3px color($colors, light, base);
+        .item-inner{
+            border-bottom-width:0;
+        }
      }
      .item-block{
-            &:first-child{
-                border-top:solid 2px color($colors, light, base);
-            }
-            &:last-child{
-                border-bottom:solid 2px color($colors, light, base);
-            }
+        &:first-child{
+            border-top:solid 2px color($colors, light, base);
+        }
+        &:last-child{
             border-bottom:solid 2px color($colors, light, base);
-            .item-inner{
-                border-bottom-width:0;
-            }
-       }
+        }
+        border-bottom:solid 2px color($colors, light, base);
+        .item-inner{
+            border-bottom-width:0;
+        }
+      }
    }
    ion-item-divider{
        &[transparent]{
@@ -97,8 +100,7 @@ ion-list{
 
 ion-item,ion-item-divider{
   
-    &.item{
-        
+    &.item{       
         span{
             &[super]{
                 position:relative;
