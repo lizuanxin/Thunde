@@ -943,7 +943,8 @@ export class TOTARequest extends TProxyShellRequest
                     sendOffset ++;
                     if (sendOffset < loopSendCount)
                     {
-                        that.StartWaitReplyBeforeSend(sendOffset).then(() => loopSendBlock());
+                        that.StartWaitReplyBeforeSend(sendOffset).then(() => loopSendBlock())
+                            .catch(() => that.error(new Error('send failed')));
                     }
                     else
                     {
@@ -990,11 +991,15 @@ export class TOTARequest extends TProxyShellRequest
             let waitTimer = Timer.startNew(100, Infinity, waitTime);
             waitTimer.subscribe((counter) =>
             {
-                if (waitTime >= 4000 || (sendedPackets - this.replyPackets < 5))
+                if (waitTime >= 5000 || (sendedPackets - this.replyPackets <= 5))
                 {
-                    console.log('wait ' + waitTime + 'ms');
+                    console.log('wait ' + waitTime + 'ms' + ' reply: ' + this.replyPackets);
                     waitTimer.stop();
-                    resolve();
+
+                    if (sendedPackets - this.replyPackets >= 4 * 64)
+                        reject();
+                    else
+                        resolve();
                 }
 
                 waitTime += 100;

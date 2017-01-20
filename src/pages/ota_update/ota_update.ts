@@ -51,13 +51,13 @@ export class OtaUpdatePage implements OnInit, OnDestroy
     {
         PowerManagement.acquire().then(() => console.log('acquired power lock'));
         
-        this.loopCheckTimer = Timer.startNew(1500, Infinity, 600);
+        this.loopCheckTimer = Timer.startNew(1000, Infinity, 600);
         this.loopCheckTimer.subscribe((count) => 
         {
             if (count === 0)
                 this.otaUpdate();
-            // else
-            //     console.log('percent: ' + this.otaUpdatePercent);
+            else
+                console.log('percent: ' + this.otaUpdatePercent);
         });
     }
 
@@ -166,21 +166,29 @@ export class OtaUpdatePage implements OnInit, OnDestroy
                 if (this.isUSBDevice())
                     loadingDelayTime = 3 * 1000;
 
-                setTimeout(() => 
-                {
-                    this.restartDevice().then(() => load.dismiss());
-                }, loadingDelayTime);
+                setTimeout(() => this.restartDevice().then(() => load.dismiss()), loadingDelayTime);
 
                 load.onDidDismiss(() => 
                 {
-                    this.Shell.VersionRequest().then((value) => 
+                    if (! this.isUSBDevice() || Loki.TShell.IsUsbPlugin)
                     {
-                        this.app.ShowAlert({title: 'New ver: ' + this.getVersion(value),
+                        this.Shell.VersionRequest().then((value) => 
+                        {
+                            this.app.ShowAlert({title: 'New ver: ' + this.getVersion(value),
+                                buttons: 
+                                [
+                                    {text: 'OK', handler: () => this.nav.pop()},
+                                ]});
+                        }).catch(() => this.nav.pop());
+                    }
+                    else
+                    {
+                        this.app.ShowAlert({title: 'OTA update success !',
                             buttons: 
                             [
                                 {text: 'OK', handler: () => this.nav.pop()},
                             ]});
-                    }).catch(() => this.nav.pop());
+                    }
                 });
             });
         }, 500);
@@ -226,7 +234,7 @@ export class OtaUpdatePage implements OnInit, OnDestroy
         return retStr;
     }
 
-    private restartDevice(): Promise<boolean>
+    private restartDevice(): Promise<void>
     {
         return new Promise((resolve, reject) => 
         {
@@ -242,7 +250,7 @@ export class OtaUpdatePage implements OnInit, OnDestroy
             setTimeout(() => 
             {
                 this.Shell = Loki.TShell.Get(this.deviceId);
-                resolve(this.deviceId === 'USB');
+                resolve();
             }, 1000);
         });
     }
