@@ -55,6 +55,30 @@ export class TShell extends TAbstractShell
         _Proxy.Owner = this;
     }    
 
+/* TAbstractShell */
+    Attach(): void
+    {
+        this._Proxy.Attach();
+    }
+
+    Detach(): void
+    {
+        this.StopTicking();
+
+        this._Proxy.Detach();
+        this._Proxy = null;
+    }
+
+    Execute(Cmd: string, Timeout: number = 0, IsResponseCallback?: (Line: string) => boolean): Promise<any>
+    {
+        return this._Proxy.Execute(Cmd, Timeout, IsResponseCallback);
+    }
+
+    RequestStart(RequestClass: typeof TShellRequest, Timeout: number = 0, ...args: any[]): Promise<TShellRequest>
+    {
+        return this._Proxy.RequestStart(RequestClass, Timeout, this, ...args);
+    }
+
 /* USB only */
     static StartOTG()
     {
@@ -415,30 +439,7 @@ export class TShell extends TAbstractShell
             return false;
     }
 
-/* TAbstractShell */
-    Attach(): void
-    {
-        this._Proxy.Attach();
-    }
-
-    Detach(): void
-    {
-        this.StopTicking();
-
-        this._Proxy.Detach();
-        this._Proxy = null;
-    }
-
-    Execute(Cmd: string, Timeout: number = 0, IsResponseCallback?: (Line: string) => boolean): Promise<any>
-    {
-        return this._Proxy.Execute(Cmd, Timeout, IsResponseCallback);
-    }
-
-    RequestStart(RequestClass: typeof TShellRequest, Timeout: number = 0, ...args: any[]): Promise<TShellRequest>
-    {
-        return this._Proxy.RequestStart(RequestClass, Timeout, this, ...args);
-    }
-
+/* proxy to shell */
     // @private called from _Proxy
     _DeviceConnected(Proxy: IProxyShell): Promise<void>
     {

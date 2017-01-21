@@ -39,7 +39,7 @@ export class TDistributeService
             return Promise.resolve(RetVal);
     }
 
-    ReadFirmware(): Promise<ArrayBuffer>
+    ReadFirmware(Version: number): Promise<ArrayBuffer>
     {
         return null;
     }
