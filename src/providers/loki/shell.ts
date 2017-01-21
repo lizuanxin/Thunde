@@ -40,49 +40,49 @@ export class TShell extends TAbstractShell
     {
         if (DeviceId === 'USB')
         {
-            return new this(this.Usb_Proxy);
+            return new this(this.UsbProxy);
         }
         else
-        {
-            let _Proxy = TProxyBLEShell.Get(DeviceId, BLE_CONNECTION_TIMEOUT) as TProxyBLEShell;
-            return new this(_Proxy);
+        {               
+            let Proxy = TProxyBLEShell.Get(DeviceId, BLE_CONNECTION_TIMEOUT) as TProxyBLEShell;
+            return new this(Proxy);
         }
     }
 
-    constructor (private _Proxy: IProxyShell)
+    constructor (private Proxy: IProxyShell)
     {
         super(0);
-        _Proxy.Owner = this;
+        Proxy.Owner = this;
     }    
 
 /* TAbstractShell */
     Attach(): void
     {
-        this._Proxy.Attach();
+        this.Proxy.Attach();
     }
 
     Detach(): void
     {
         this.StopTicking();
 
-        this._Proxy.Detach();
-        this._Proxy = null;
+        this.Proxy.Detach();
+        this.Proxy = null;
     }
 
     Execute(Cmd: string, Timeout: number = 0, IsResponseCallback?: (Line: string) => boolean): Promise<any>
     {
-        return this._Proxy.Execute(Cmd, Timeout, IsResponseCallback);
+        return this.Proxy.Execute(Cmd, Timeout, IsResponseCallback);
     }
 
     RequestStart(RequestClass: typeof TShellRequest, Timeout: number = 0, ...args: any[]): Promise<TShellRequest>
     {
-        return this._Proxy.RequestStart(RequestClass, Timeout, this, ...args);
+        return this.Proxy.RequestStart(RequestClass, Timeout, this, ...args);
     }
 
 /* USB only */
     static StartOTG()
     {
-        this.Usb_Proxy = new TProxyUsbShell();
+        this.UsbProxy = new TProxyUsbShell();
 
         USBSerial.OTG.Start(USB_VENDOR, USB_PRODUCT).subscribe(
             next => {},
@@ -91,7 +91,7 @@ export class TShell extends TAbstractShell
 
     static get IsUsbPlugin(): boolean
     {
-        return TypeInfo.Assigned(this.Usb_Proxy) && this.Usb_Proxy.IsAttached;
+        return TypeInfo.Assigned(this.UsbProxy) && this.UsbProxy.IsAttached;
     }
 
 /** BLE only */
@@ -440,10 +440,10 @@ export class TShell extends TAbstractShell
     }
 
 /* proxy to shell */
-    // @private called from _Proxy
+    // @private called from Proxy
     _DeviceConnected(Proxy: IProxyShell): Promise<void>
     {
-        if (Proxy !== this._Proxy)
+        if (Proxy !== this.Proxy)
             return Promise.reject(new EAbort());
 
         return this.StatusRequest()
@@ -454,16 +454,16 @@ export class TShell extends TAbstractShell
 
     _DeviceDisconnected(Proxy: IProxyShell)
     {
-        if (Proxy !== this._Proxy)
+        if (Proxy !== this.Proxy)
             return;
 
         this._DeviceNotification(Proxy, ['NOTIFY', 'disconnect'])
     }
 
-    // @private called from _Proxy
+    // @private called from Proxy
     _DeviceTimeout(Proxy: IProxyShell): void
     {
-        if (Proxy !== this._Proxy)
+        if (Proxy !== this.Proxy)
         {
             this.Detach();
             return;
@@ -474,10 +474,10 @@ export class TShell extends TAbstractShell
             .catch(err => {});
     }
 
-    // @private called from _Proxy
+    // @private called from Proxy
     _DeviceNotification(Proxy: IProxyShell, Params: string[])
     {
-        if (Proxy !== this._Proxy)
+        if (Proxy !== this.Proxy)
         {
             this.Detach();
             return;
@@ -534,7 +534,7 @@ export class TShell extends TAbstractShell
     private _DefaultFileMd5: string;
     private _LastFileMd5: string;
 
-    private static Usb_Proxy: TProxyUsbShell;
+    private static UsbProxy: TProxyUsbShell;
 }
 
 /* IProxyShell */
@@ -544,7 +544,7 @@ export interface IProxyShell extends TAbstractShell
     Owner: TShell;
 }
 
-/** _Proxy to BLE Shell */
+/** Proxy to BLE Shell */
 
 export class TProxyBLEShell extends BLE_Shell.TShell implements IProxyShell
 {
@@ -587,7 +587,7 @@ export class TProxyBLEShell extends BLE_Shell.TShell implements IProxyShell
     }
 }
 
-/** _Proxy to USB Shell */
+/** Proxy to USB Shell */
 export class TProxyUsbShell extends USBSerial.TShell implements IProxyShell
 {
     constructor()
@@ -637,19 +637,19 @@ export abstract class TProxyShellRequest extends TShellRequest
     // TProxyShellRequest always has first Owner parameter
     //  *NOTE*
     //      this.Shell still derived from TShellRequest
-    abstract Start(_Proxy: TShell, ...args: any[]): void;
+    abstract Start(Proxy: TShell, ...args: any[]): void;
 }
 
 /* TCatRequest */
 export class TCatRequest extends TProxyShellRequest
 {
     /// @override
-    Start(_Proxy: TShell, FileName: string, FileBuffer: Uint8Array, Md5: string): void
+    Start(Proxy: TShell, FileName: string, FileBuffer: Uint8Array, Md5: string): void
     {
         let Count = FileBuffer.byteLength;
 
-        _Proxy.StopOutput()
-            .then(() => _Proxy.FileMd5(FileName))
+        Proxy.StopOutput()
+            .then(() => Proxy.FileMd5(FileName))
             .then(value =>
             {
                 if (value === Md5)
@@ -657,7 +657,7 @@ export class TCatRequest extends TProxyShellRequest
                 else
                     return Promise.resolve();
             })
-            .then(() => _Proxy.RemoveFile(FileName))
+            .then(() => Proxy.RemoveFile(FileName))
             .then(() => this.Shell.PromiseSend('>cat '+ FileName + ' -l=' + FileBuffer.byteLength))
             .then(() => this.Shell.ObserveSend(FileBuffer))
             .then(Observer =>
