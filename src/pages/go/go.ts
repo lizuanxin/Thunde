@@ -1,11 +1,12 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs/Rx'
 import {Platform, NavController, ViewController, NavParams} from 'ionic-angular';
-import {RunningPage} from '../running/running';
-import {OtaUpdatePage} from '../ota_update/ota_update';
+
+import {TypeInfo} from '../../UltraCreation/Core';
 
 import {BLE, Loki, TApplication, TLocalizeService, TAssetService, TCategory, TScriptFile} from '../services';
-import {TypeInfo} from '../../UltraCreation/Core';
+import {RunningPage} from '../running/running';
+import {OtaUpdatePage} from '../ota_update/ota_update';
 
 @Component({selector: 'page-go', templateUrl: 'go.html'})
 export class GoPage implements OnInit, OnDestroy

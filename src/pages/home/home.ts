@@ -129,23 +129,6 @@ class TContentCanvas
             this.Ox = this.Radius - this.Oy;
             this.Radius = Math.trunc(this.Oy * 9 / 10);
         }
-
-        this.Bg = document.createElement('canvas') as HTMLCanvasElement;
-        let Cache = this.Bg;
-        Cache.width = Canvas.width;
-        Cache.height = Canvas.height;
-
-        this.CacheItems = new Array<HTMLCanvasElement>();
-        for (let i = 0; i < 50; i ++)
-        {
-            Cache = document.createElement('canvas') as HTMLCanvasElement;
-
-            Cache.style.width = Canvas.style.width;
-            Cache.style.height = this.ItemHeight;
-            Cache.width = Canvas.width;
-            Cache.height = this.ItemHeight;
-            this.CacheItems.push(Cache);
-        }
     }
 
     Disponse()
@@ -363,8 +346,6 @@ class TContentCanvas
     OnSelectionFile = new EventEmitter<TScriptFile>();
 
     private Ctx: CanvasRenderingContext2D;
-    private Bg: HTMLCanvasElement;
-    private CacheItems: HTMLCanvasElement[];
 
     private Padding;
     private Ox: number;

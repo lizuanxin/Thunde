@@ -33,31 +33,32 @@ export type TShellNotifyEvent = Subject<TShellNotify>;
 export class EShellExecution extends Exception
     {}
 
-export class TShell
+export class TShell extends TAbstractShell
 {
     /// @override
     static Get(DeviceId: string): TShell
     {
         if (DeviceId === 'USB')
         {
-            return new this(this.UsbProxy);
+            return new this(this.Usb_Proxy);
         }
         else
         {
-            let Proxy = TProxyBLEShell.Get(DeviceId, BLE_CONNECTION_TIMEOUT) as TProxyBLEShell;
-            return new this(Proxy);
+            let _Proxy = TProxyBLEShell.Get(DeviceId, BLE_CONNECTION_TIMEOUT) as TProxyBLEShell;
+            return new this(_Proxy);
         }
     }
 
-    constructor (private Proxy: IProxyShell)
+    constructor (private _Proxy: IProxyShell)
     {
-        Proxy.Owner = this;
-    }
+        super(0);
+        _Proxy.Owner = this;
+    }    
 
 /* USB only */
     static StartOTG()
     {
-        this.UsbProxy = new TProxyUsbShell();
+        this.Usb_Proxy = new TProxyUsbShell();
 
         USBSerial.OTG.Start(USB_VENDOR, USB_PRODUCT).subscribe(
             next => {},
@@ -66,7 +67,7 @@ export class TShell
 
     static get IsUsbPlugin(): boolean
     {
-        return TypeInfo.Assigned(this.UsbProxy) && this.UsbProxy.IsAttached;
+        return TypeInfo.Assigned(this.Usb_Proxy) && this.Usb_Proxy.IsAttached;
     }
 
 /** BLE only */
@@ -414,34 +415,34 @@ export class TShell
             return false;
     }
 
-/** Proxy to Device depend Shell */
+/* TAbstractShell */
     Attach(): void
     {
-        this.Proxy.Attach();
+        this._Proxy.Attach();
     }
 
     Detach(): void
     {
         this.StopTicking();
 
-        this.Proxy.Detach();
-        this.Proxy = null;
+        this._Proxy.Detach();
+        this._Proxy = null;
     }
 
-    private Execute(Cmd: string, Timeout: number = 0, IsResponseCallback?: (Line: string) => boolean): Promise<any>
+    Execute(Cmd: string, Timeout: number = 0, IsResponseCallback?: (Line: string) => boolean): Promise<any>
     {
-        return this.Proxy.Execute(Cmd, Timeout, IsResponseCallback);
+        return this._Proxy.Execute(Cmd, Timeout, IsResponseCallback);
     }
 
-    private RequestStart(RequestClass: typeof TShellRequest, Timeout: number = 0, ...args: any[]): Promise<TShellRequest>
+    RequestStart(RequestClass: typeof TShellRequest, Timeout: number = 0, ...args: any[]): Promise<TShellRequest>
     {
-        return this.Proxy.RequestStart(RequestClass, Timeout, this, ...args);
+        return this._Proxy.RequestStart(RequestClass, Timeout, this, ...args);
     }
 
-    // @private called from proxy
+    // @private called from _Proxy
     _DeviceConnected(Proxy: IProxyShell): Promise<void>
     {
-        if (Proxy !== this.Proxy)
+        if (Proxy !== this._Proxy)
             return Promise.reject(new EAbort());
 
         return this.StatusRequest()
@@ -452,16 +453,16 @@ export class TShell
 
     _DeviceDisconnected(Proxy: IProxyShell)
     {
-        if (Proxy !== this.Proxy)
+        if (Proxy !== this._Proxy)
             return;
 
         this._DeviceNotification(Proxy, ['NOTIFY', 'disconnect'])
     }
 
-    // @private called from proxy
+    // @private called from _Proxy
     _DeviceTimeout(Proxy: IProxyShell): void
     {
-        if (Proxy !== this.Proxy)
+        if (Proxy !== this._Proxy)
         {
             this.Detach();
             return;
@@ -472,10 +473,10 @@ export class TShell
             .catch(err => {});
     }
 
-    // @private called from proxy
+    // @private called from _Proxy
     _DeviceNotification(Proxy: IProxyShell, Params: string[])
     {
-        if (Proxy !== this.Proxy)
+        if (Proxy !== this._Proxy)
         {
             this.Detach();
             return;
@@ -532,7 +533,7 @@ export class TShell
     private _DefaultFileMd5: string;
     private _LastFileMd5: string;
 
-    private static UsbProxy: TProxyUsbShell;
+    private static Usb_Proxy: TProxyUsbShell;
 }
 
 /* IProxyShell */
@@ -542,7 +543,7 @@ export interface IProxyShell extends TAbstractShell
     Owner: TShell;
 }
 
-/** Proxy to BLE Shell */
+/** _Proxy to BLE Shell */
 
 export class TProxyBLEShell extends BLE_Shell.TShell implements IProxyShell
 {
@@ -585,7 +586,7 @@ export class TProxyBLEShell extends BLE_Shell.TShell implements IProxyShell
     }
 }
 
-/** Proxy to USB Shell */
+/** _Proxy to USB Shell */
 export class TProxyUsbShell extends USBSerial.TShell implements IProxyShell
 {
     constructor()
@@ -635,19 +636,19 @@ export abstract class TProxyShellRequest extends TShellRequest
     // TProxyShellRequest always has first Owner parameter
     //  *NOTE*
     //      this.Shell still derived from TShellRequest
-    abstract Start(Proxy: TShell, ...args: any[]): void;
+    abstract Start(_Proxy: TShell, ...args: any[]): void;
 }
 
 /* TCatRequest */
 export class TCatRequest extends TProxyShellRequest
 {
     /// @override
-    Start(Proxy: TShell, FileName: string, FileBuffer: Uint8Array, Md5: string): void
+    Start(_Proxy: TShell, FileName: string, FileBuffer: Uint8Array, Md5: string): void
     {
         let Count = FileBuffer.byteLength;
 
-        Proxy.StopOutput()
-            .then(() => Proxy.FileMd5(FileName))
+        _Proxy.StopOutput()
+            .then(() => _Proxy.FileMd5(FileName))
             .then(value =>
             {
                 if (value === Md5)
@@ -655,7 +656,7 @@ export class TCatRequest extends TProxyShellRequest
                 else
                     return Promise.resolve();
             })
-            .then(() => Proxy.RemoveFile(FileName))
+            .then(() => _Proxy.RemoveFile(FileName))
             .then(() => this.Shell.PromiseSend('>cat '+ FileName + ' -l=' + FileBuffer.byteLength))
             .then(() => this.Shell.ObserveSend(FileBuffer))
             .then(Observer =>
@@ -852,13 +853,6 @@ export class TOTARequest extends TProxyShellRequest
 
     Notification(Line: string)
     {
-        //console.log('notify: ' + Line);
-        if (Line.includes('jump'))
-        {
-            console.log('notify: ' + Line);
-            //setTimeout(() => this.StartSendOtaHeader(this.cmdHeader), 500);
-            this.error(new Error('jump ota'));
-        }
         if (Line === '0: ok [ota]')
         {
             if (this.SendedPercent === 0)
@@ -866,6 +860,13 @@ export class TOTARequest extends TProxyShellRequest
             else
                 this.complete();
         }
+
+        if (Line.includes('jump'))
+        {
+            console.log('notify: ' + Line);
+            this.error(new Error('jump ota'));
+        }
+
         else if (Line === '32768: err [ota]')
             this.error(new Error('ota failure'));
         else if (Line === 'crc error')
