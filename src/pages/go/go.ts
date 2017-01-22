@@ -6,7 +6,7 @@ import {TypeInfo} from '../../UltraCreation/Core';
 
 import {BLE, Loki, TApplication, TLocalizeService, TAssetService, TCategory, TScriptFile, TDistributeService} from '../services';
 import {RunningPage} from '../running/running';
-import {OtaUpdatePage} from '../ota_update/ota_update';
+// import {OtaUpdatePage} from '../ota_update/ota_update';
 
 @Component({selector: 'page-go', templateUrl: 'go.html'})
 export class GoPage implements OnInit, OnDestroy
@@ -88,6 +88,7 @@ export class GoPage implements OnInit, OnDestroy
         // });
     }
 
+/*
     private CheckOtaUpdate(deviceId: string): Promise<number>
     {
         let shell = Loki.TShell.Get(deviceId);
@@ -127,6 +128,7 @@ export class GoPage implements OnInit, OnDestroy
     {
         this.nav.push(OtaUpdatePage, params)
     }
+*/
 
     private StartScan()
     {
