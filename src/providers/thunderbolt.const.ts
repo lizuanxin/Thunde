@@ -53,19 +53,14 @@ export namespace const_data
         Id: string;
         Icon: number;
         Name: string;
-        Desc: string;
     }
 
     export const Categories: Array<ICategory> =
     [
-        {Id: '{00000000-0000-4000-3000-000000000001}', Icon: 0xe90b,
-            Name: 'therapy',            Desc: 'therapy_desc'},
-        {Id: '{00000000-0000-4000-3000-000000000002}', Icon: 0xe905,
-            Name: 'fat_burning',        Desc: 'fat_burning_desc'},
-        {Id: '{00000000-0000-4000-3000-000000000003}', Icon: 0xe91e,
-            Name: 'muscle_training',    Desc: 'muscle_training_desc'},
-        {Id: '{00000000-0000-4000-3000-000000000004}', Icon: 0xe917,
-            Name: 'relax',              Desc: 'relax_desc'},
+        {Id: '{00000000-0000-4000-3000-000000000001}', Icon: 0xe90b, Name: 'therapy'},
+        {Id: '{00000000-0000-4000-3000-000000000002}', Icon: 0xe905, Name: 'fat_burning'},
+        {Id: '{00000000-0000-4000-3000-000000000003}', Icon: 0xe91e, Name: 'muscle_training'},
+        {Id: '{00000000-0000-4000-3000-000000000004}', Icon: 0xe917, Name: 'relax'},
     ]
 
     interface IScriptFile
@@ -78,7 +73,6 @@ export namespace const_data
         Body_Id: string;
 
         Name: string;
-        Desc?: string;
         Content: string;
         BodyParts: Array<IBodyPart>;
     };

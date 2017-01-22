@@ -1,5 +1,9 @@
 import {Injectable} from '@angular/core';
 
+import {Observable} from 'rxjs/Rx'
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/toPromise';
+
 import {TypeInfo} from '../UltraCreation/Core'
 import {TUtf8Encoding} from '../UltraCreation/Encoding'
 import {THashMd5} from '../UltraCreation/Hash'
@@ -30,7 +34,7 @@ export class TDistributeService
             LokiFile.LoadFrom(RetVal);
 
             ScriptFile.Edit();
-            ScriptFile.Duration = Math.trunc(LokiFile.TimeEst() / 1000);
+            ScriptFile.Duration = Math.trunc(((LokiFile.TimeEst() / 1000) + 30) / 60 * 60);
         }
 
         if (ScriptFile.IsEditing)
@@ -41,6 +45,40 @@ export class TDistributeService
 
     ReadFirmware(Version: number): Promise<ArrayBuffer>
     {
-        return null;
+        return this.HttpRequest('./assets/Firmware.json', 'GET', 'json')
+            .then((value: string) =>
+            {
+                console.log('xxxxxxxxxxxxxxxxx:' + JSON.stringify(value));
+                return value;
+            });
+    }
+
+    HttpRequest(Url: string,
+        method: 'GET' | 'POST' | 'PUT' | 'DELETE',
+        ResponseType: 'arraybuffer' | 'blob' | 'document' | 'json' | 'text'): Promise<any>
+    {
+        return Observable.create(observer =>
+        {
+            let req = new XMLHttpRequest();
+
+            req.open(method, Url);
+            req.responseType = ResponseType;
+
+            req.onreadystatechange =
+                () =>
+                {
+                    if (req.readyState === 4 && req.status === 200)
+                    {
+                        //console.log(req);
+                        observer.next(req.response);
+                        observer.complete();
+                    }
+                };
+            req.onerror =
+                (ev) => observer.error('XMLHttpRequest Failure.');
+
+            req.send();
+        })
+        .toPromise();
     }
 }

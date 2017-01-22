@@ -72,7 +72,8 @@ export class HomePage implements OnInit, OnDestroy
 
     ShowAgreement()
     {
-        this.nav.push(AgreementPage);
+        // this.nav.push(AgreementPage);
+        this.Distrubute.ReadFirmware(1);
     }
 
     StateCategory(Category: TCategory)
@@ -159,7 +160,6 @@ class TContentCanvas
     {
         this.Ctx.clearRect(0, 0, this.Canvas.width, this.Canvas.height);
         this.Ctx.globalAlpha = 1.0;
-        // this.Ctx.drawImage(this.Bg, 0, 0);
 
         this.PaintTo(this.Canvas, this.Ctx);
     }

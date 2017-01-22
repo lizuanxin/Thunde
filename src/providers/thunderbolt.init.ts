@@ -1,4 +1,3 @@
-import {TypeInfo} from '../UltraCreation/Core'
 import {TSqliteStorage, TSqlQuery} from '../UltraCreation/Storage'
 
 import {const_data} from './thunderbolt.const'
@@ -75,7 +74,7 @@ export namespace Initialization
         for (let iter of const_data.Categories)
         {
             // Id, ObjectName, Name, Desc, ExtraProp
-            queries.push(new TSqlQuery(InsertAsset, [iter.Id, 'Category', iter.Name, iter.Desc, null]));
+            queries.push(new TSqlQuery(InsertAsset, [iter.Id, 'Category', iter.Name, iter.Name + '_desc', null]));
             queries.push(new TSqlQuery(InsertCategory, [iter.Id, iter.Icon]));
         }
 
@@ -87,15 +86,8 @@ export namespace Initialization
         let queries = [];
         for (let iter of const_data.ScriptFile)
         {
-            let DescId: string = null;
-
-            if (TypeInfo.Assigned((iter as any).Desc))
-                DescId = (iter as any).Desc;
-            else
-                DescId = iter.Name + '_desc';
-
             // Id, ObjectName, Name, Desc, ExtraProp
-            queries.push(new TSqlQuery(InsertAsset, [iter.Id, 'ScriptFile', iter.Name, DescId, null]));
+            queries.push(new TSqlQuery(InsertAsset, [iter.Id, 'ScriptFile', iter.Name, iter.Name + '_desc', null]));
             // Id, Category_Id, Mode_Id, Body_Id, Author, Content
             queries.push(new TSqlQuery(InsertScriptFile, [iter.Id, iter.Category_Id, iter.Mode_Id, iter.Body_Id, iter.Author, iter.Content]));
         }

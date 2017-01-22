@@ -66,6 +66,10 @@ export class GoPage implements OnInit, OnDestroy
         let params = this.navParams.data;
         params.DeviceId = DeviceId;
 
+        this.nav.push(RunningPage, params)
+            .then(() => this.nav.remove(1, this.view.index, {animate: false}));
+
+        /*
         if (DeviceId === 'USB')
         {
             params.FirmwareName = 'Mini.bin';
@@ -77,18 +81,13 @@ export class GoPage implements OnInit, OnDestroy
 
         this.app.ShowAlert({
             title: 'Force to run ota update ?',
-            buttons: 
+            buttons:
             [
                 {text: 'Yes', handler: () => this.GoToOtaUpdatePage(params)},
                 {text: 'No', handler: () => this.GoToRunningPage(params)}
             ]
         });
-    }
-
-    private GoToRunningPage(params: any)
-    {
-        this.nav.push(RunningPage, params)
-            .then(() => this.nav.remove(1, this.view.index, {animate: false}));
+        */
     }
 
     private GoToOtaUpdatePage(params: any)

@@ -1,6 +1,5 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {NavController, ViewController, NavParams} from 'ionic-angular';
-import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
+import {NavController, NavParams} from 'ionic-angular';
 import {Timer} from '../../UltraCreation/Core/Timer';
 
 // import {TAppController} from '../../UltraCreation/ng2-ion/ion-appcontroller';
@@ -15,8 +14,8 @@ declare var cordova: any;
     selector: 'ota-update',
     templateUrl: 'ota_update.html',
     styles: [
-        `   
-        .progress-outer 
+        `
+        .progress-outer
         {
             width: 96%;
             margin: 10px 2%;
@@ -27,7 +26,7 @@ declare var cordova: any;
             color: #fff;
             border-radius: 20px;
         }
-        .progress-inner 
+        .progress-inner
         {
             min-width: 10%;
             white-space: nowrap;
@@ -50,9 +49,9 @@ export class OtaUpdatePage implements OnInit, OnDestroy
     ngOnInit()
     {
         PowerManagement.acquire().then(() => console.log('acquired power lock'));
-        
+
         this.loopCheckTimer = Timer.startNew(1000, Infinity, 600);
-        this.loopCheckTimer.subscribe((count) => 
+        this.loopCheckTimer.subscribe((count) =>
         {
             if (count === 0)
                 this.otaUpdate();
@@ -81,7 +80,7 @@ export class OtaUpdatePage implements OnInit, OnDestroy
         this.otaUpdatePercent = 0;
         this.otaJumpFlag = false;
         File.readAsArrayBuffer(cordova.file.applicationDirectory + 'www/assets', this.navParams.get('FirmwareName'))
-            .then((arrayBuffer) => 
+            .then((arrayBuffer) =>
             {
                 console.log('read success...');
 
@@ -90,7 +89,7 @@ export class OtaUpdatePage implements OnInit, OnDestroy
                 else
                     console.log('firmware read err...');
             })
-            .catch((err) => 
+            .catch((err) =>
             {
                 console.log('firmware read error....');
             });
@@ -101,13 +100,13 @@ export class OtaUpdatePage implements OnInit, OnDestroy
         this.isAllowNavBack = false;
         console.log('size: ' + buffer.byteLength);
         this.app.ShowLoading('OTA update, please wait less 3 minute')
-            .then((loading) => 
+            .then((loading) =>
             {
                 this.startUpdateOta(buffer)
                     .then(() => loading.dismiss())
                     .catch(() => loading.dismiss());
 
-                loading.onDidDismiss(() => 
+                loading.onDidDismiss(() =>
                 {
                     this.isAllowNavBack = true;
                     if (this.otaUpdatePercent === 100)
@@ -120,12 +119,12 @@ export class OtaUpdatePage implements OnInit, OnDestroy
 
     private startUpdateOta(buffer)
     {
-        return new Promise((resolve, reject) => 
+        return new Promise((resolve, reject) =>
         {
-            this.Shell.OTARequest(buffer).then((request) => 
+            this.Shell.OTARequest(buffer).then((request) =>
             {
                 request.subscribe(
-                    (value) => 
+                    (value) =>
                     {
                         this.otaUpdatePercent = value;
                         if (this.otaUpdatePercent === 100)
@@ -141,14 +140,14 @@ export class OtaUpdatePage implements OnInit, OnDestroy
                             this.otaJumpFlag = true;
                         reject(error);
                     },
-                    () => 
+                    () =>
                     {
                         console.log('ota write complete...');
                         resolve();
                     }
                 );
             })
-            .catch(() => 
+            .catch(() =>
             {
                 console.log('OTARequest error');
                 reject('OTARequest err');
@@ -158,9 +157,9 @@ export class OtaUpdatePage implements OnInit, OnDestroy
 
     private otaUpdateSuccess()
     {
-        setTimeout(() => 
+        setTimeout(() =>
         {
-            this.app.ShowLoading('update ota success, restart device...').then((load) => 
+            this.app.ShowLoading('update ota success, restart device...').then((load) =>
             {
                 let loadingDelayTime = 6 * 1000;
                 if (this.isUSBDevice())
@@ -168,14 +167,14 @@ export class OtaUpdatePage implements OnInit, OnDestroy
 
                 setTimeout(() => this.restartDevice().then(() => load.dismiss()), loadingDelayTime);
 
-                load.onDidDismiss(() => 
+                load.onDidDismiss(() =>
                 {
                     if (! this.isUSBDevice() || Loki.TShell.IsUsbPlugin)
                     {
-                        this.Shell.VersionRequest().then((value) => 
+                        this.Shell.VersionRequest().then((value) =>
                         {
                             this.app.ShowAlert({title: 'New ver: ' + this.getVersion(value),
-                                buttons: 
+                                buttons:
                                 [
                                     {text: 'OK', handler: () => this.nav.pop()},
                                 ]});
@@ -184,7 +183,7 @@ export class OtaUpdatePage implements OnInit, OnDestroy
                     else
                     {
                         this.app.ShowAlert({title: 'OTA update success !',
-                            buttons: 
+                            buttons:
                             [
                                 {text: 'OK', handler: () => this.nav.pop()},
                             ]});
@@ -196,12 +195,12 @@ export class OtaUpdatePage implements OnInit, OnDestroy
 
     private otaUpdateFail()
     {
-        setTimeout(() => 
+        setTimeout(() =>
         {
             if (this.otaJumpFlag)
             {
                 this.app.ShowAlert({title: 'Device Reset, Need to update again',
-                    buttons: 
+                    buttons:
                     [
                         {text: 'OK', handler: () =>  this.retryOtaUpdate()},
                     ]});
@@ -209,13 +208,13 @@ export class OtaUpdatePage implements OnInit, OnDestroy
             else
             {
                 this.app.ShowAlert({title: 'OTA update failed',
-                    buttons: 
+                    buttons:
                     [
                         {text: 'Retry', handler: () =>  this.retryOtaUpdate()},
                         {text: 'Cancel', role: 'cancel'}
                     ]});
             }
-            
+
         }, 500);
     }
 
@@ -236,7 +235,7 @@ export class OtaUpdatePage implements OnInit, OnDestroy
 
     private restartDevice(): Promise<void>
     {
-        return new Promise((resolve, reject) => 
+        return new Promise((resolve, reject) =>
         {
             if (this.isUSBDevice())
             {
@@ -247,7 +246,7 @@ export class OtaUpdatePage implements OnInit, OnDestroy
                 Loki.TShell.StartScan();
             }
 
-            setTimeout(() => 
+            setTimeout(() =>
             {
                 this.Shell = Loki.TShell.Get(this.deviceId);
                 resolve();
