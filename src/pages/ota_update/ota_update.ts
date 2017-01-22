@@ -4,11 +4,9 @@ import {Timer} from '../../UltraCreation/Core/Timer';
 
 // import {TAppController} from '../../UltraCreation/ng2-ion/ion-appcontroller';
 
-import {TApplication, Loki} from '../services';
+import {TApplication, Loki, TDistributeService} from '../services';
 
 import {PowerManagement} from 'ionic-native';
-import {File} from 'ionic-native';
-declare var cordova: any;
 
 @Component({
     selector: 'ota-update',
@@ -40,7 +38,8 @@ declare var cordova: any;
 })
 export class OtaUpdatePage implements OnInit, OnDestroy
 {
-    constructor(private app: TApplication, private nav: NavController, private navParams: NavParams)
+    constructor(private app: TApplication, private nav: NavController, private navParams: NavParams, 
+        private DisSvc: TDistributeService)
     {
         this.deviceId = navParams.get('DeviceId');
         this.Shell = Loki.TShell.Get(this.deviceId);
@@ -76,33 +75,29 @@ export class OtaUpdatePage implements OnInit, OnDestroy
 
     otaUpdate()
     {
-        console.log('path: ' + cordova.file.applicationDirectory + this.navParams.get('FirmwareName'));
         this.otaUpdatePercent = 0;
         this.otaJumpFlag = false;
-        File.readAsArrayBuffer(cordova.file.applicationDirectory + 'www/assets', this.navParams.get('FirmwareName'))
-            .then((arrayBuffer) =>
+        this.DisSvc.ReadFirmware(this.navParams.get('Version'))
+            .then((data) =>
             {
-                console.log('read success...');
-
-                if (arrayBuffer instanceof ArrayBuffer)
-                    this.startSendData(arrayBuffer);
-                else
-                    console.log('firmware read err...');
+                console.log('read firmware success: ' + data.byteLength);
+                this.startUpdateOta(data);
             })
-            .catch((err) =>
+            .catch(() => 
             {
-                console.log('firmware read error....');
-            });
+                console.log('read firmware failed');
+                this.otaUpdateFail();
+            })
     }
 
-    private startSendData(buffer: ArrayBuffer)
+    private startUpdateOta(buffer: ArrayBuffer)
     {
         this.isAllowNavBack = false;
         console.log('size: ' + buffer.byteLength);
         this.app.ShowLoading('OTA update, please wait less 3 minute')
             .then((loading) =>
             {
-                this.startUpdateOta(buffer)
+                this.startSendData(buffer)
                     .then(() => loading.dismiss())
                     .catch(() => loading.dismiss());
 
@@ -117,7 +112,7 @@ export class OtaUpdatePage implements OnInit, OnDestroy
             });
     }
 
-    private startUpdateOta(buffer)
+    private startSendData(buffer)
     {
         return new Promise((resolve, reject) =>
         {
