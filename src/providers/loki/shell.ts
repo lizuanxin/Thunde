@@ -25,9 +25,9 @@ const FILE_CLEAR_MAX_COUNT = 64;
 const USB_VENDOR = 0x10C4;
 const USB_PRODUCT = 0x0003;
 
+const OTA_WINDOW_SIZE = 32;
 const OTA_SPLIT_PACKET_SIZE = 16;
 const OTA_PACKET_SIZE = OTA_SPLIT_PACKET_SIZE + 4;
-const OTA_WINDOW_SIZE = 32;
 
 export enum TShellNotify
     {Shutdown, Disconnected, NoLoad, Stopped, Intensity, HardwareError, LowBattery, Battery, Ticking};
@@ -903,9 +903,6 @@ export class TOTARequest extends TProxyShellRequest
     SplitPacket(Firmware: ArrayBuffer): number
     {
         let Count = Math.trunc((Firmware.byteLength + OTA_SPLIT_PACKET_SIZE - 1) / OTA_SPLIT_PACKET_SIZE);
-        this.Confirmed = new Array<boolean>(Count);
-        for (let i = 0; i < Count; i ++)
-            this.Confirmed[i] = false;
         this.PacketBuffer = new ArrayBuffer(Count * OTA_PACKET_SIZE);
 
         let CRC = new THashCrc16();
@@ -944,13 +941,13 @@ export class TOTARequest extends TProxyShellRequest
     {
         if (this.isStopped)
             return;
-        if (this.LastSentOffset === this.PacketBuffer.byteLength)
+        if (this.LastSentOffset === this.FirmwareSize)
             return;
 
         if (Count !== 1)
         {
             this.LastSentOffset = Offset + Count * OTA_SPLIT_PACKET_SIZE;
-            console.log('last sent: ' + this.LastSentOffset);
+            this.next(this.LastSentOffset / this.FirmwareSize)
         }
         
         Offset = Offset / OTA_SPLIT_PACKET_SIZE * OTA_PACKET_SIZE;
@@ -960,7 +957,7 @@ export class TOTARequest extends TProxyShellRequest
         {
             Size = this.PacketBuffer.byteLength - Offset;
             Count = Size / OTA_PACKET_SIZE;
-            this.LastSentOffset = this.PacketBuffer.byteLength;
+            this.LastSentOffset = this.FirmwareSize;
         }
 
         let View = new Uint8Array(this.PacketBuffer, Offset, Size);
@@ -976,19 +973,7 @@ export class TOTARequest extends TProxyShellRequest
         this.OutgoingCount --;
         
         let Offset = parseInt(Line);
-        if (! isNaN(Offset))
-        {
-            
-            let Idx = Offset / OTA_SPLIT_PACKET_SIZE;
-            if (! this.Confirmed[Idx])
-            {
-                this.Sent += OTA_SPLIT_PACKET_SIZE;
-                this.Confirmed[Idx] = true;
-
-                this.next(this.Sent / this.FirmwareSize);
-            }
-        }
-        else
+        if (isNaN(Offset))
             console.log('NaN Offset? ' + Line);            
 
         if (this.OutgoingCount < Math.trunc(OTA_WINDOW_SIZE / 4))
@@ -999,21 +984,12 @@ export class TOTARequest extends TProxyShellRequest
     {
         if (! this.isStopped)
         {
-            // for a long time OutgoingCount has not been changed, meaning packet loss is happening
+            // for a long time OutgoingCount has not been changed=
             if (LastCount <= OTA_WINDOW_SIZE / 4 && LastCount === this.OutgoingCount)
             {
                 // reset outgoing window
                 this.OutgoingCount = 0;
                 this.SendPacket(this.LastSentOffset, OTA_WINDOW_SIZE);
-/*
-                for (let i = 0; i < this.LastSentOffset / OTA_SPLIT_PACKET_SIZE; i ++)
-                {
-                    if (! this.Confirmed[i])
-                        this.SendPacket(i * OTA_SPLIT_PACKET_SIZE, 1);
-                }
-
-                console.log('resend packet count: ' + this.OutgoingCount);
-*/
             }
 
             setTimeout(() => this.MonitorOutgoing(this.OutgoingCount), 1500);
@@ -1033,6 +1009,5 @@ export class TOTARequest extends TProxyShellRequest
     private Sent: number = 0;
     private LastSentOffset: number;
     private FirmwareSize: number;
-    private Confirmed: Array<boolean>;
     private OutgoingCount: number = 0;
 }
