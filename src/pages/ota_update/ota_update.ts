@@ -1,12 +1,9 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, AfterViewInit} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
-import {Timer} from '../../UltraCreation/Core/Timer';
-
-// import {TAppController} from '../../UltraCreation/ng2-ion/ion-appcontroller';
+import 'rxjs/add/operator/toPromise';
+import {PowerManagement} from 'ionic-native';
 
 import {TApplication, Loki, TDistributeService} from '../services';
-
-import {PowerManagement} from 'ionic-native';
 
 @Component({
     selector: 'ota-update',
@@ -36,231 +33,40 @@ import {PowerManagement} from 'ionic-native';
         `
     ]
 })
-export class OtaUpdatePage implements OnInit, OnDestroy
+export class OtaUpdatePage implements AfterViewInit
 {
     constructor(private app: TApplication, private nav: NavController, private navParams: NavParams, 
         private DisSvc: TDistributeService)
     {
-        this.deviceId = navParams.get('DeviceId');
-        this.Shell = Loki.TShell.Get(this.deviceId);
+        this.Shell = navParams.get('Shell')
+        this.Firmware = navParams.get('Firmware');
     }
 
-    ngOnInit()
+    ngAfterViewInit()
     {
-        PowerManagement.acquire().then(() => console.log('acquired power lock'));
-
-        this.loopCheckTimer = Timer.startNew(1000, Infinity, 600);
-        this.loopCheckTimer.subscribe((count) =>
-        {
-            if (count === 0)
-                this.otaUpdate();
-            else
-                console.log('percent: ' + this.otaUpdatePercent);
-        });
-    }
-
-    ngOnDestroy()
-    {
-        this.Shell.Detach();
-        this.loopCheckTimer.unsubscribe();
-        this.loopCheckTimer.stop();
-        PowerManagement.release().then(() => console.log('released power lock'));
-    }
-
-    navBackClicked()
-    {
-        if (this.isAllowNavBack)
-            this.nav.pop();
-    }
-
-    otaUpdate()
-    {
-        this.otaUpdatePercent = 0;
-        this.otaJumpFlag = false;
-        this.DisSvc.ReadFirmware(this.navParams.get('Version'))
-            .then((data) =>
+        /*PowerManagement.acquire()
+            .then(() => */this.Shell.OTARequest(this.Firmware)
+            .then(Progress =>
             {
-                console.log('read firmware success: ' + data.byteLength);
-                this.startUpdateOta(data);
+                Progress.subscribe(next => this.Percent = Math.trunc(next * 100));
+                return Progress.toPromise();
             })
-            .catch(() => 
+            //.then(() => PowerManagement.release())
+            .then(() =>
             {
-                console.log('read firmware failed');
-                this.otaUpdateFail();
+                this.Shell.Detach();
+                return this.nav.pop();
             })
-    }
-
-    private startUpdateOta(buffer: ArrayBuffer)
-    {
-        this.isAllowNavBack = false;
-        console.log('size: ' + buffer.byteLength);
-        this.app.ShowLoading('OTA update, please wait less 3 minute')
-            .then((loading) =>
+            .catch(err =>
             {
-                this.startSendData(buffer)
-                    .then(() => loading.dismiss())
-                    .catch(() => loading.dismiss());
-
-                loading.onDidDismiss(() =>
-                {
-                    this.isAllowNavBack = true;
-                    if (this.otaUpdatePercent === 100)
-                        this.otaUpdateSuccess();
-                    else
-                        this.otaUpdateFail();
-                });
+                //PowerManagement.release().catch(err => {});
+                this.app.HideLoading()
+                    .then(() => this.app.ShowHintId(err.message))
             });
     }
 
-    private startSendData(buffer)
-    {
-        return new Promise((resolve, reject) =>
-        {
-            this.Shell.OTARequest(buffer).then((request) =>
-            {
-                request.subscribe(
-                    (value) =>
-                    {
-                        this.otaUpdatePercent = value;
-                        if (this.otaUpdatePercent === 100)
-                        {
-                            request.unsubscribe();
-                            resolve();
-                        }
-                    },
-                    (error) =>
-                    {
-                        console.log('ota err: ' + error);
-                        if (error.message.includes('jump'))
-                            this.otaJumpFlag = true;
-                        reject(error);
-                    },
-                    () =>
-                    {
-                        console.log('ota write complete...');
-                        resolve();
-                    }
-                );
-            })
-            .catch(() =>
-            {
-                console.log('OTARequest error');
-                reject('OTARequest err');
-            });
-        });
-    }
-
-    private otaUpdateSuccess()
-    {
-        setTimeout(() =>
-        {
-            this.app.ShowLoading('update ota success, restart device...').then((load) =>
-            {
-                let loadingDelayTime = 6 * 1000;
-                if (this.isUSBDevice())
-                    loadingDelayTime = 3 * 1000;
-
-                setTimeout(() => this.restartDevice().then(() => load.dismiss()), loadingDelayTime);
-
-                load.onDidDismiss(() =>
-                {
-                    if (! this.isUSBDevice() || Loki.TShell.IsUsbPlugin)
-                    {
-                        this.Shell.VersionRequest().then((value) =>
-                        {
-                            this.app.ShowAlert({title: 'New ver: ' + this.getVersion(value),
-                                buttons:
-                                [
-                                    {text: 'OK', handler: () => this.nav.pop()},
-                                ]});
-                        }).catch(() => this.nav.pop());
-                    }
-                    else
-                    {
-                        this.app.ShowAlert({title: 'OTA update success !',
-                            buttons:
-                            [
-                                {text: 'OK', handler: () => this.nav.pop()},
-                            ]});
-                    }
-                });
-            });
-        }, 500);
-    }
-
-    private otaUpdateFail()
-    {
-        setTimeout(() =>
-        {
-            if (this.otaJumpFlag)
-            {
-                this.app.ShowAlert({title: 'Device Reset, Need to update again',
-                    buttons:
-                    [
-                        {text: 'OK', handler: () =>  this.retryOtaUpdate()},
-                    ]});
-            }
-            else
-            {
-                this.app.ShowAlert({title: 'OTA update failed',
-                    buttons:
-                    [
-                        {text: 'Retry', handler: () =>  this.retryOtaUpdate()},
-                        {text: 'Cancel', role: 'cancel'}
-                    ]});
-            }
-
-        }, 500);
-    }
-
-    private retryOtaUpdate()
-    {
-        return this.restartDevice().then(() => this.otaUpdate());
-    }
-
-    private getVersion(value: number)
-    {
-        let retStr: string = '';
-        let minor = value % 10000;
-        let middle = (value - minor) % (10000 * 1000);
-        let major = Math.floor(value / 1000 / 10000);
-        retStr = major.toString() + '.' + middle.toString() + '.' + minor.toString();
-        return retStr;
-    }
-
-    private restartDevice(): Promise<void>
-    {
-        return new Promise((resolve, reject) =>
-        {
-            if (this.isUSBDevice())
-            {
-                Loki.TShell.StartOTG();
-            }
-            else
-            {
-                Loki.TShell.StartScan();
-            }
-
-            setTimeout(() =>
-            {
-                this.Shell = Loki.TShell.Get(this.deviceId);
-                resolve();
-            }, 1000);
-        });
-    }
-
-    private isUSBDevice(): boolean
-    {
-        return this.deviceId === 'USB';
-    }
-
+    Percent: number = 0;
 
     private Shell: Loki.TShell;
-
-    protected otaUpdatePercent: number = 0;
-    protected isAllowNavBack: boolean = false;
-    protected loopCheckTimer: Timer;
-
-    protected otaJumpFlag: boolean = false;
-    private deviceId: string;
+    private Firmware: ArrayBuffer;
 }

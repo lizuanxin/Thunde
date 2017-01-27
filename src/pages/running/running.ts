@@ -16,7 +16,6 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
         let DeviceId = navParams.get('DeviceId');
 
         this.Shell = Loki.TShell.Get(DeviceId);
-        this.Start();
     }
 
     ngOnInit()
@@ -68,6 +67,9 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
     ngAfterViewInit()
     {
         this.AddDialElement();
+
+        this.nav.remove(1, this.view.index - 1, {animate: false})
+            .then(() => this.Start());
     }
 
     ngOnDestroy(): void
@@ -148,34 +150,31 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     private Start()
     {
-        this.app.ShowLoading().then(loading =>
-        {
-            return this.Shell.ClearFileSystem([this.ScriptFile.Name])
-                .then(() => this.Distibute.ReadScriptFile(this.ScriptFile))
-                .then(buf => this.Shell.CatFile(this.ScriptFile.Name, buf, this.ScriptFile.Md5))
-                .then(progress=>
-                {
-                    this.Downloading = true;
-                    progress.subscribe(next => this.Ticking = this.ScriptFile.Duration * next)
+        return this.Shell.ClearFileSystem([this.ScriptFile.Name])
+            .then(() => this.Distibute.ReadScriptFile(this.ScriptFile))
+            .then(buf => this.Shell.CatFile(this.ScriptFile.Name, buf, this.ScriptFile.Md5))
+            .then(progress =>
+            {
+                this.Downloading = true;
+                progress.subscribe(next => this.Ticking = this.ScriptFile.Duration * next)
 
-                    return progress.toPromise()
-                        .then(() =>
-                        {
-                            this.Ticking = 0;
-                            this.Downloading = false;
-                        });
-                })
-                .then(() =>
-                {
-                    return loading.dismiss().then(() => this.Shell.StartScriptFile(this.ScriptFile.Name));
-                })
-                .catch(err=>
-                {
-                    loading.dismiss()
-                        .then(() => this.app.ShowHintId(err.message))
-                        .then(() => this.ClosePage());
-                });
-        })
+                return progress.toPromise()
+                    .then(() =>
+                    {
+                        this.Ticking = 0;
+                        this.Downloading = false;
+                    });
+            })
+            .then(() =>
+            {
+                return this.app.HideLoading().then(() => this.Shell.StartScriptFile(this.ScriptFile.Name));
+            })
+            .catch(err=>
+            {
+                this.app.HideLoading()
+                    .then(() => this.app.ShowHintId(err.message))
+                    .then(() => this.ClosePage());
+            });
     }
 
     private UpdateIntensity()

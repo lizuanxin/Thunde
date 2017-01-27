@@ -4,7 +4,7 @@ import {Observable} from 'rxjs/Rx'
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 
-import {TypeInfo} from '../UltraCreation/Core'
+import {TypeInfo, EAbort} from '../UltraCreation/Core'
 import {TUtf8Encoding} from '../UltraCreation/Encoding'
 import {THashMd5} from '../UltraCreation/Hash'
 import {TAssetService, TScriptFile} from './asset'
@@ -16,7 +16,6 @@ export class TDistributeService
     constructor (private Asset: TAssetService)
     {
         console.log('TDistributeService construct');
-        setTimeout(() => this.CheckFirmware(), 1000);
     }
 
     ReadScriptFile(ScriptFile: TScriptFile): Promise<Uint8Array>
@@ -46,73 +45,40 @@ export class TDistributeService
 
     ReadFirmware(Version: number): Promise<ArrayBuffer>
     {
-        let firmwareInfo = this.GetFirmwareInfo(Version);
-        if (TypeInfo.Assigned(firmwareInfo))
-            return this.readFirmwareByXHR(firmwareInfo.Name);
-        else
-            return Promise.reject('');
-    }
+        // 1XXXBBBB
+        let Major = Math.trunc(Version / 10000000);
+        let Rev = Version % 10000000;
+        let FileName: string;
 
-    IsNeedToUpdateFirmware(Version: number): boolean
-    {
-        if (! TypeInfo.Assigned(this.firmwareInfoList))
-            return false;
-
-        let firmwareInfo = this.GetFirmwareInfo(Version);
-        if (TypeInfo.Assigned(firmwareInfo) && firmwareInfo.Ver > Version)
-            return true;
-
-        return false;
-    }
-
-    GetNewFirmwareVer(Version: number): number
-    {
-        if (! TypeInfo.Assigned(this.firmwareInfoList))
-            return 0;
-
-        return this.GetFirmwareInfo(Version).Ver;
-    }
-
-    private CheckFirmware()
-    {
-        console.log('start check new firmware ver...');
-        this.HttpRequest('./assets/Firmware.json', 'GET', 'json').then((infoList) => 
+        switch (Major)
         {
-            // console.log('read ver success: ' + JSON.stringify(infoList));
-            this.firmwareInfoList = [];
-            for (let key in infoList)
-            {
-                console.log('key: ' + key + 'name: ' + infoList[key]);
-                this.firmwareInfoList.push({Name: key, Ver: this.ParseVersion(infoList[key])})
-            }
-        });
-    }
+        case 1:
+            FileName = 'MiniQ';
+            break;
+        case 2:
+            FileName = 'ThunderboltQ';
+            break;
+        case 3:
+            FileName = 'Thunderbolt'
+            break;
 
-    private GetFirmwareInfo(Version: number)
-    {
-        for (let firmwareInfo of this.firmwareInfoList)
-        {
-            if (this.IsDeviceVerSame(firmwareInfo.Ver, Version))
-            {
-                return firmwareInfo;
-            }
+        default:
+            return Promise.reject(new EAbort())
         }
-        return null;
-    }
 
-    private IsDeviceVerSame(newVer: number, oldVer: number): boolean
-    {
-        if (Math.floor(newVer / 1000 / 10000) === Math.floor(oldVer / 1000 / 10000))
-            return true;
-        else
-            return false;
-    }
+        return this.HttpRequest('./assets/Firmware.json', 'GET', 'json')
+            .then(Info =>
+            {
+                let NewVersion = Info[FileName].split('.');
+                if (NewVersion.length !== 3)
+                    return Promise.reject(new EAbort());
 
-    private readFirmwareByXHR(fileName: string)
-    {
-        if (! fileName.includes('.bin'))
-            fileName += '.bin';
-        return this.HttpRequest('./assets/' + fileName, 'GET', 'arraybuffer');
+                let NewRev = parseInt(NewVersion[1]) * 10000 + parseInt(NewVersion[2]);
+                if (NewRev <= Rev)
+                    return Promise.reject(new EAbort());
+
+                return this.HttpRequest('./assets/' + FileName + '.bin', 'GET', 'arraybuffer') as Promise<ArrayBuffer>;
+            })
     }
 
     private HttpRequest(Url: string,
@@ -135,6 +101,7 @@ export class TDistributeService
                         observer.next(req.response);
                         observer.complete();
                     }
+ 
                 };
             req.onerror =
                 (ev) => observer.error('XMLHttpRequest Failure.');
@@ -143,14 +110,4 @@ export class TDistributeService
         })
         .toPromise();
     }
-
-    private ParseVersion(Version: string): number
-    {
-        let keyvalue = Version.split('.');
-        
-        // 1XXXBBBB
-        return (parseInt(keyvalue[0]) * 1000 + parseInt(keyvalue[1])) * 10000 + parseInt(keyvalue[2]);
-    }
-
-    private  firmwareInfoList: Array<{Name: string, Ver: number}>;
 }

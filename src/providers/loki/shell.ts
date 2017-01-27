@@ -1,17 +1,16 @@
 import {Subject} from 'rxjs/Rx';
 import 'rxjs/add/operator/toPromise';
 
-import {TypeInfo, Exception, EAbort} from '../../UltraCreation/Core';
+import {TypeInfo, EAbort} from '../../UltraCreation/Core';
 import {TUtf8Encoding} from '../../UltraCreation/Encoding/Utf8';
 
-import {TAbstractShell, TShellRequest} from '../../UltraCreation/Native/Abstract.Shell'
+import {TAbstractShell, TShellRequest, EDisconnected} from '../../UltraCreation/Native/Abstract.Shell'
 import * as BLE from '../../UltraCreation/Native/BluetoothLE';
 import * as BLE_Shell from '../../UltraCreation/Native/BluetoothLE.Shell';
 
 import {USBSerial} from '../../UltraCreation/Native';
 
 import {THashCrc16} from '../../UltraCreation/Hash';
-import {Timer} from '../../UltraCreation/Core/Timer';
 
 const REQUEST_TIMEOUT = 3000;
 
@@ -26,12 +25,13 @@ const FILE_CLEAR_MAX_COUNT = 64;
 const USB_VENDOR = 0x10C4;
 const USB_PRODUCT = 0x0003;
 
+const OTA_SPLIT_PACKET_SIZE = 16;
+const OTA_PACKET_SIZE = OTA_SPLIT_PACKET_SIZE + 4;
+const OTA_WINDOW_SIZE = 32;
+
 export enum TShellNotify
     {Shutdown, Disconnected, NoLoad, Stopped, Intensity, HardwareError, LowBattery, Battery, Ticking};
 export type TShellNotifyEvent = Subject<TShellNotify>;
-
-export class EShellExecution extends Exception
-    {}
 
 export class TShell extends TAbstractShell
 {
@@ -61,12 +61,27 @@ export class TShell extends TAbstractShell
         this.Proxy.Attach();
     }
 
+    get IsAttached(): boolean
+    {
+        return TypeInfo.Assigned(this.Proxy) && this.Proxy.IsAttached;
+    }
+
     Detach(): void
     {
         this.StopTicking();
 
         this.Proxy.Detach();
         this.Proxy = null;
+    }
+
+    Connect(): Promise<void>
+    {
+        return this.Proxy.Connect();
+    }
+
+    Disconnect(): Promise<void>
+    {
+        return this.Proxy.Disconnect();
     }
 
     Execute(Cmd: string, Timeout: number = 0, IsResponseCallback?: (Line: string) => boolean): Promise<any>
@@ -102,7 +117,7 @@ export class TShell extends TAbstractShell
 
     static StartScan(): Subject<Array<BLE.IScanDiscovery>>
     {
-        // BLE.TGatt.BrowserFakeDevice = true;
+        BLE.TGatt.BrowserFakeDevice = true;
         return BLE.TGattScaner.Start([], this.ScanFilter, BLE_SCAN_TIMEOUT);
     }
 
@@ -265,7 +280,6 @@ export class TShell extends TAbstractShell
 
     OTARequest(Firmware: ArrayBuffer): Promise<TShellRequest>
     {
-        //return null;
         return this.RequestStart(TOTARequest, REQUEST_TIMEOUT, Firmware);
     }
 
@@ -386,7 +400,7 @@ export class TShell extends TAbstractShell
             })
     }
 
-    VersionRequest(): Promise<number>
+    private VersionRequest(): Promise<number>
     {
         return this.Execute('>ver', REQUEST_TIMEOUT, Line => Line.indexOf('v.', 0) !== -1 || Line.indexOf('ver', 0) !== -1)
             .then(Line =>
@@ -841,254 +855,184 @@ export class TOTARequest extends TProxyShellRequest
 {
     Start(Proxy: TShell, Firmware: ArrayBuffer): void
     {
-        this.SendedPercent = 0;
-        this.replyPackets = 0;
-        let view = this.getViewDataWithMultipleOf16(Firmware);
-        let crc = THashCrc16.Get(view).Value();
+        if (! Proxy.IsAttached)
+        {
+            this.error(new EDisconnected());
+            return;
+        }
+        this.NoConnectionTimeout();
 
-        this.PackPacketWithCRC(view);
-
-        this.cmdHeader = '>ota -s=' + view.length + ' -c=' + crc;
-        this.StartSendOtaHeader(this.cmdHeader);   
+        this.FirmwareSize = Firmware.byteLength;
+        let CRC = this.SplitPacket(Firmware);  
+                
+        this.Shell.PromiseSend('>ota -s=' + this.FirmwareSize + ' -c=' + CRC)
+            .catch(err => this.error(err));
     }
 
     Notification(Line: string)
     {
-        if (Line === '0: ok [ota]')
+        let Strs = Line.split(':');
+        let Status = 0;
+        if (Strs.length > 1)
         {
-            if (this.SendedPercent === 0)
-                this.StartSendingPacket();
-            else
-                this.complete();
-        }
+            Status = parseInt(Strs[0]);
 
-        if (Line.includes('jump'))
+            if ((Status & 0x8000) !== 0)
+            {
+                this.error(new Error('ota failure'));
+            }
+            else if (Status === 0)
+            {
+                if (this.Sent === 0)
+                    this.StartSendingPacket();
+                else
+                    this.complete();
+            }
+        }
+        else if (Line === 'crc error')
+            this.error(new Error('crc error'));
+        else if (Strs.indexOf('jump') !== -1)
         {
             console.log('notify: ' + Line);
             this.error(new Error('jump ota'));
         }
-
-        else if (Line === '32768: err [ota]')
-            this.error(new Error('ota failure'));
-        else if (Line === 'crc error')
-            this.error(new Error('crc error'));
-        else if (Line === '32770: invalid parameter')
-            this.error(new Error('invalid parameter'));
         else
-            this.handleReplyPacket(Line);
+            this.HandleReponse(Line);
     }
 
-    private StartSendOtaHeader(cmd: string)
+    SplitPacket(Firmware: ArrayBuffer): number
     {
-        console.log('Ensure the connection before send ota header');
-        this.Shell.Connect()
-            .then(() =>
-            {
-                setTimeout(() => this.Shell.PromiseSend(cmd)
-                    .catch(err => this.error(new Error('send failed'))), 800);
-            })
-            .catch(() => this.error(new Error('connect failed')))
-    }
+        let Count = Math.trunc((Firmware.byteLength + OTA_SPLIT_PACKET_SIZE - 1) / OTA_SPLIT_PACKET_SIZE);
+        this.Confirmed = new Array<boolean>(Count);
+        for (let i = 0; i < Count; i ++)
+            this.Confirmed[i] = false;
+        this.PacketBuffer = new ArrayBuffer(Count * OTA_PACKET_SIZE);
 
-    private getViewDataWithMultipleOf16(firmware: ArrayBuffer): Uint8Array
-    {
-        let viewData: Uint8Array;
-        let multipleLeft = firmware.byteLength % 16;
-        if (multipleLeft !== 0)
+        let CRC = new THashCrc16();
+        for (let i = 0; i < Firmware.byteLength; i += OTA_SPLIT_PACKET_SIZE)
         {
-            viewData = new Uint8Array(firmware.byteLength + 16 - multipleLeft);
-            viewData.set(new Uint8Array(firmware), 0);
+            let ViewSRC: Uint8Array;
+            if (Firmware.byteLength - i > OTA_SPLIT_PACKET_SIZE)
+                ViewSRC = new Uint8Array(Firmware, i, OTA_SPLIT_PACKET_SIZE);
+            else
+                ViewSRC = new Uint8Array(Firmware, i, Firmware.byteLength - i);
+            CRC.Update(ViewSRC);
+
+            let Offset = i / OTA_SPLIT_PACKET_SIZE * OTA_PACKET_SIZE;
+            let DataView = new Uint8Array(this.PacketBuffer, Offset + 4, OTA_SPLIT_PACKET_SIZE);
+            DataView.set(ViewSRC);
+
+            let HeadView = new Uint16Array(this.PacketBuffer, Offset, 2);
+            HeadView[0] = i;
+            HeadView[1] = THashCrc16.Get(DataView).Value();
         }
-        else
-            viewData = new Uint8Array(firmware);
 
-        return viewData;
-    }
-
-    private PackPacketWithCRC(data: Uint8Array)
-    {
-        this.SendSplitPacketCount = data.length / 16;
-        this.SendPacket = new Uint8Array(this.SendSplitPacketCount * 20);
-        console.log('packet size: ' + this.SendPacket.length);
-        for (let i = 0; i < this.SendSplitPacketCount; i++)
-        {
-            let packet = new Uint8Array(20);
-            let view = data.subarray(i * 16, i * 16 + 16);
-            packet.set(view, 4);
-
-            let view16 = new Uint16Array(packet.buffer, 0, 2);
-            view16[0] = i * 16;
-            view16[1] = THashCrc16.Get(view).Value();
-
-            this.SendPacket.set(packet, i * 20);
-        }
+        CRC.Final();
+        return CRC.Value();
     }
 
     private StartSendingPacket()
+    {               
+        setTimeout(() =>
+        {
+            this.SendPacket(0, OTA_WINDOW_SIZE);
+            this.MonitorOutgoing(0);
+        }, 1000);
+    }
+
+    private SendPacket(Offset: number, Count: number)
     {
-        if (! TypeInfo.Assigned(this.SendPacket))
+        if (this.isStopped)
+            return;
+        if (this.LastSentOffset === this.PacketBuffer.byteLength)
             return;
 
-        let sendOffset = 0;
-        let resendCount = 0;
-        let loopSendCount = Math.ceil(this.SendSplitPacketCount / 64);
-
-        var that = this;
-
-        function loopSendBlock()
+        if (Count !== 1)
         {
-            that.StartSendingSplitBlock(sendOffset)
-                .then(() =>
-                {
-                    console.log('send ' + sendOffset + ' block success');
-                    resendCount = 0;
-                    sendOffset ++;
-                    if (sendOffset < loopSendCount)
-                    {
-                        that.StartWaitReplyBeforeSend(sendOffset).then(() => loopSendBlock())
-                            .catch(() => that.error(new Error('send failed')));
-                    }
-                    else
-                    {
-                        console.log('send all packet!!');
-                        that.StartWaitReplyAllPackets()
-                            .then(() => {if (! that.isStopped) that.complete()})
-                            .catch(() => {});
-                    }
-                })
-                .catch(() =>
-                {
-                    console.log('send err, resend: ' + sendOffset);
-                    if (resendCount < 3)
-                        setTimeout(() => loopSendBlock(), 500);
-                    else
-                        that.error(new Error('send failed'));
+            this.LastSentOffset = Offset + Count * OTA_SPLIT_PACKET_SIZE;
+            console.log('last sent: ' + this.LastSentOffset);
+        }
+        
+        Offset = Offset / OTA_SPLIT_PACKET_SIZE * OTA_PACKET_SIZE;
+        let Size = Count * OTA_PACKET_SIZE;
 
-                    resendCount ++;
-                    that.RefreshTimeout();
-                });
+        if (Offset + Size > this.PacketBuffer.byteLength)
+        {
+            Size = this.PacketBuffer.byteLength - Offset;
+            Count = Size / OTA_PACKET_SIZE;
+            this.LastSentOffset = this.PacketBuffer.byteLength;
         }
 
-        setTimeout(() => loopSendBlock(), 10);
+        let View = new Uint8Array(this.PacketBuffer, Offset, Size);
+        
+        this.OutgoingCount += Count;
+        this.Shell.PromiseSend(View)
+            .catch(err => this.error(err));
     }
 
-    private StartWaitReplyBeforeSend(sendOffset: number): Promise<void>
+    private HandleReponse(Line: string)
     {
-        return new Promise<void>((resolve, reject) =>
+        this.RefreshTimeout();
+        this.OutgoingCount --;
+        
+        let Offset = parseInt(Line);
+        if (! isNaN(Offset))
         {
-            let waitTime = 0;
-            let sendedPackets = sendOffset * 64;
-            let sendRplyInterval = sendedPackets - this.replyPackets;
-
-            console.log('send: ' + sendedPackets + ' reply: ' + this.replyPackets);
-            if (sendRplyInterval > 40)
-                waitTime = 2000;
-            else if (sendRplyInterval > 10)
-                waitTime = 1500;
-            else if (sendRplyInterval > 5)
-                waitTime = 1000;
-            else
-                waitTime = 500;
-
-            let waitTimer = Timer.startNew(100, Infinity, waitTime);
-            waitTimer.subscribe((counter) =>
+            
+            let Idx = Offset / OTA_SPLIT_PACKET_SIZE;
+            if (! this.Confirmed[Idx])
             {
-                if (waitTime >= 5000 || (sendedPackets - this.replyPackets <= 5))
-                {
-                    console.log('wait ' + waitTime + 'ms' + ' reply: ' + this.replyPackets);
-                    waitTimer.stop();
+                this.Sent += OTA_SPLIT_PACKET_SIZE;
+                this.Confirmed[Idx] = true;
 
-                    if (sendedPackets - this.replyPackets >= 4 * 64)
-                        reject();
-                    else
-                        resolve();
-                }
+                this.next(this.Sent / this.FirmwareSize);
+            }
+        }
+        else
+            console.log('NaN Offset? ' + Line);            
 
-                waitTime += 100;
-                this.RefreshTimeout();
-            });
-        });
+        if (this.OutgoingCount < Math.trunc(OTA_WINDOW_SIZE / 4))
+            this.SendPacket(this.LastSentOffset, OTA_WINDOW_SIZE - this.OutgoingCount);
     }
 
-    private StartWaitReplyAllPackets(): Promise<void>
+    private MonitorOutgoing(LastCount: number)
     {
-        return new Promise<void>((resolve, reject) =>
+        if (! this.isStopped)
         {
-            let waitTime = 2000;
-            let waitTimer = Timer.startNew(1000, Infinity, waitTime);
-            waitTimer.subscribe((counter) =>
+            // for a long time OutgoingCount has not been changed, meaning packet loss is happening
+            if (LastCount <= OTA_WINDOW_SIZE / 4 && LastCount === this.OutgoingCount)
             {
-                waitTime += 1000;
-                if (this.SendSplitPacketCount === this.replyPackets)
+                // reset outgoing window
+                this.OutgoingCount = 0;
+                this.SendPacket(this.LastSentOffset, OTA_WINDOW_SIZE);
+/*
+                for (let i = 0; i < this.LastSentOffset / OTA_SPLIT_PACKET_SIZE; i ++)
                 {
-                    console.log('all packet replied, send ota success');
-                    waitTimer.stop();
-                    resolve();
-                }
-                else
-                    console.log('wait ' + waitTime + 'ms');
-
-                if (waitTime > 60 * 1000)
-                {
-                    console.log('wait timeout after send all packet');
-                    waitTimer.stop();
-                    reject();
+                    if (! this.Confirmed[i])
+                        this.SendPacket(i * OTA_SPLIT_PACKET_SIZE, 1);
                 }
 
-                this.RefreshTimeout();
-            });
-        });
+                console.log('resend packet count: ' + this.OutgoingCount);
+*/
+            }
+
+            setTimeout(() => this.MonitorOutgoing(this.OutgoingCount), 1500);
+        }        
     }
 
-    private StartSendingSplitBlock(offset: number): Promise<number>
+    private NoConnectionTimeout()
     {
-        let start = offset * 20 * 64;
-        let end = (offset + 1) * 20 * 64;
-
-        if (end > this.SendPacket.length)
-            end = this.SendPacket.length;
-
-        console.log('send block ' + offset +  ' start: ' + start + ' end: ' + end);
-
-        return new Promise<number>((resolve, reject) =>
+        if (! this.isStopped)
         {
-            this.Shell.ObserveSend(this.SendPacket.subarray(start, end))
-                .then((observer) =>
-                {
-                    observer.subscribe(count =>
-                    {
-                        //console.log('send: ' + count / 20);
-                        if (count === (end - start))
-                            return resolve();
-
-                        this.RefreshTimeout();
-                    });
-                })
-                .catch((err) =>
-                {
-                    reject();
-                });
-        });
-    }
-
-    private handleReplyPacket(Line: string)
-    {
-        let replyPacket = Number(Line) / 16;
-        if (this.replyPackets < replyPacket + 1)
-            this.replyPackets = replyPacket + 1;
-
-        let newSendedPercent = Math.floor(this.replyPackets / this.SendSplitPacketCount * 100);
-        if (this.SendedPercent < newSendedPercent)
-        {
-            this.SendedPercent = newSendedPercent;
-            this.next(this.SendedPercent);
+            this.Shell.RefreshConnectionTimeout();
+            setTimeout(() => this.NoConnectionTimeout(), 1000);
         }
     }
 
-    private SendPacket: Uint8Array;
-    private SendSplitPacketCount: number = 0;
-    private SendedPercent: number = 0;
-
-    private replyPackets: number = 0;
-    private cmdHeader: string = '';
+    private PacketBuffer: ArrayBuffer;
+    private Sent: number = 0;
+    private LastSentOffset: number;
+    private FirmwareSize: number;
+    private Confirmed: Array<boolean>;
+    private OutgoingCount: number = 0;
 }

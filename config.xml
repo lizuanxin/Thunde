@@ -96,5 +96,5 @@
     </feature>
     <icon src="resources/android/icon/drawable-xhdpi-icon.png" />
     <plugin name="ultracreation-usb-android" spec="https://github.com/disword/ultracreation-usb-android.git" />
-    <plugin name="at.gofg.sportscomputer.powermanagement" spec="~1.1.2" />
+    <plugin name="cordova-plugin-powermanagement" spec="~1.0.5" />
 </widget>

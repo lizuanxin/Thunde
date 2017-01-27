@@ -46,7 +46,7 @@ export class TApplication extends TAppController
 
     ShowLoading(Msg?: string): Promise<any>
     {
-        return super.ShowLoading({ spinner: 'crescent', content: Msg, cssClass: 'loading-s1' });
+        return super.ShowLoading({spinner: 'crescent', content: Msg, cssClass: 'loading-s1'});
     }
 
     ShowHintId(Id: string, Animate: boolean = true): Promise<Toast>

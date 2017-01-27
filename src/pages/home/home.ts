@@ -2,6 +2,7 @@ import {Component, OnInit, OnDestroy, EventEmitter} from '@angular/core';
 import {NavController} from 'ionic-angular';
 
 import {TypeInfo} from '../../UltraCreation/Core'
+import {THashCrc16} from '../../UltraCreation/Hash'
 import * as UI from '../../UltraCreation/Graphic'
 
 import {TApplication, TLocalizeService, TAssetService, TCategory, TScriptFile, TDistributeService} from '../services';
@@ -71,9 +72,46 @@ export class HomePage implements OnInit, OnDestroy
     }
 
     ShowAgreement()
-    {
+    {        
         // this.nav.push(AgreementPage);
-        this.Distrubute.ReadFirmware(1);
+
+        const OTA_SPLIT_PACKET_SIZE = 16;
+        const OTA_PACKET_SIZE = OTA_SPLIT_PACKET_SIZE + 4;
+
+        this.Distrubute.ReadFirmware(20000000)
+            .then(Firmware =>
+            {
+                let Count = Math.trunc((Firmware.byteLength + OTA_SPLIT_PACKET_SIZE - 1) / OTA_SPLIT_PACKET_SIZE);
+                let PacketBuffer = new ArrayBuffer(2 * OTA_PACKET_SIZE);
+
+                let CRC = new THashCrc16();
+                for (let i = 0; i < 32; i += OTA_SPLIT_PACKET_SIZE)
+                {
+                    let Size: number;
+                    if (Firmware.byteLength - i > OTA_SPLIT_PACKET_SIZE)
+                        Size = OTA_SPLIT_PACKET_SIZE;
+                    else
+                        Size = Firmware.byteLength - i;
+
+                    let ViewSRC = new Uint8Array(Firmware, i, Size);
+                    CRC.Update(ViewSRC);
+
+                    let DataView = new Uint8Array(PacketBuffer, i + 4, OTA_SPLIT_PACKET_SIZE);
+                    DataView.set(ViewSRC);
+
+                    let HeadView = new Uint16Array(PacketBuffer, i, 2);
+                    HeadView[0] = i;
+                    HeadView[1] = THashCrc16.Get(DataView).Value();
+                    console.log(HeadView);
+                    
+                }
+
+                console.log(new Uint8Array(PacketBuffer));
+                
+
+                CRC.Final();
+                return CRC.Value();
+            });
     }
 
     StateCategory(Category: TCategory)
