@@ -66,6 +66,7 @@ let translate_en =
         e_connect_timeout: "Connect Timeout.",
         e_request_timeout: "Request Timeout.",
         e_disconnected: "Device Disconnected Unexpectly.",
+        e_ota_failure: 'Firmware upgrade failure.',
 
         min: 'Minutes',
 
@@ -259,6 +260,7 @@ let translate_zh =
         e_connect_timeout: "未能成功连接上设备。",
         e_request_timeout: "请求超时。",
         e_disconnected: "设备意外断开。",
+        e_ota_failure: '升级固件失败。',
 
         min: '分钟',
 

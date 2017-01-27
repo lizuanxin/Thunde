@@ -1,9 +1,8 @@
-import {Component, AfterViewInit} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
-import 'rxjs/add/operator/toPromise';
+import {Component, AfterViewInit, OnDestroy} from '@angular/core';
+import {NavController, NavParams, ViewController} from 'ionic-angular';
 import {PowerManagement} from 'ionic-native';
 
-import {TApplication, Loki, TDistributeService} from '../services';
+import {TApplication, Loki, BLE} from '../services';
 
 @Component({
     selector: 'ota-update',
@@ -33,10 +32,9 @@ import {TApplication, Loki, TDistributeService} from '../services';
         `
     ]
 })
-export class OtaUpdatePage implements AfterViewInit
+export class OtaUpdatePage implements AfterViewInit, OnDestroy
 {
-    constructor(private app: TApplication, private nav: NavController, private navParams: NavParams, 
-        private DisSvc: TDistributeService)
+    constructor(private app: TApplication, private nav: NavController, private navParams: NavParams, private view: ViewController)
     {
         this.Shell = navParams.get('Shell')
         this.Firmware = navParams.get('Firmware');
@@ -44,24 +42,35 @@ export class OtaUpdatePage implements AfterViewInit
 
     ngAfterViewInit()
     {
+        this.nav.remove(1, this.view.index - 1, {animate: false})
+            .then(() => this.Start());
+    }
+
+    ngOnDestroy()
+    {
+        this.Shell.Detach();
+        this.app.HideLoading();
+    }
+
+    private Start()
+    {
         /*PowerManagement.acquire()
             .then(() => */this.Shell.OTARequest(this.Firmware)
             .then(Progress =>
             {
-                Progress.subscribe(next => this.Percent = Math.trunc(next * 100));
+                Progress.subscribe(next => this.Percent = Math.trunc(next * 100), err => {}, () => {});
                 return Progress.toPromise();
             })
             //.then(() => PowerManagement.release())
-            .then(() =>
-            {
-                this.Shell.Detach();
-                return this.nav.pop();
-            })
+            .then(() => this.nav.pop())
             .catch(err =>
             {
                 //PowerManagement.release().catch(err => {});
-                this.app.HideLoading()
-                    .then(() => this.app.ShowHintId(err.message))
+
+                if (this.Percent === 100 && err instanceof Loki.ERequestTimeout)    // last packet may never received
+                    this.nav.pop();
+                else
+                    this.app.ShowHintId(err.message).then(() => this.nav.pop());
             });
     }
 

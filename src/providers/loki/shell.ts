@@ -4,7 +4,8 @@ import 'rxjs/add/operator/toPromise';
 import {TypeInfo, EAbort} from '../../UltraCreation/Core';
 import {TUtf8Encoding} from '../../UltraCreation/Encoding/Utf8';
 
-import {TAbstractShell, TShellRequest, EDisconnected} from '../../UltraCreation/Native/Abstract.Shell'
+import {TAbstractShell, TShellRequest, ERequestTimeout, EDisconnected} from '../../UltraCreation/Native/Abstract.Shell'
+export {ERequestTimeout};
 import * as BLE from '../../UltraCreation/Native/BluetoothLE';
 import * as BLE_Shell from '../../UltraCreation/Native/BluetoothLE.Shell';
 
@@ -877,25 +878,28 @@ export class TOTARequest extends TProxyShellRequest
         {
             Status = parseInt(Strs[0]);
 
-            if ((Status & 0x8000) !== 0)
-            {
-                this.error(new Error('ota failure'));
-            }
-            else if (Status === 0)
+            if (Status === 0)
             {
                 if (this.Sent === 0)
                     this.StartSendingPacket();
                 else
                     this.complete();
             }
+            else if ((Status & 0x8000) !== 0)
+                this.error(new Error('e_ota_failure'));
         }
         else if (Line === 'crc error')
-            this.error(new Error('crc error'));
+        {
+            console.log('OTA crc error');            
+            this.error(new Error('e_ota_failure'));
+        }
+        /*
         else if (Strs.indexOf('jump') !== -1)
         {
             console.log('notify: ' + Line);
             this.error(new Error('jump ota'));
         }
+        */
         else
             this.HandleReponse(Line);
     }
@@ -969,15 +973,24 @@ export class TOTARequest extends TProxyShellRequest
 
     private HandleReponse(Line: string)
     {
-        this.RefreshTimeout();
-        this.OutgoingCount --;
-        
-        let Offset = parseInt(Line);
-        if (isNaN(Offset))
-            console.log('NaN Offset? ' + Line);            
+        if (! this.isStopped)
+        {
+            this.RefreshTimeout();
+            this.OutgoingCount --;        
 
-        if (this.OutgoingCount < Math.trunc(OTA_WINDOW_SIZE / 4))
-            this.SendPacket(this.LastSentOffset, OTA_WINDOW_SIZE - this.OutgoingCount);
+            // somehow android received error BLE notify packet, but it ok to continue
+            /*
+            let Offset = parseInt(Line);
+            if (isNaN(Offset))
+            {
+                this.error(new Error('NaN offset'));
+                return;
+            }
+            */
+
+            if (this.OutgoingCount < Math.trunc(OTA_WINDOW_SIZE / 4))
+                this.SendPacket(this.LastSentOffset, OTA_WINDOW_SIZE - this.OutgoingCount);
+        }
     }
 
     private MonitorOutgoing(LastCount: number)
