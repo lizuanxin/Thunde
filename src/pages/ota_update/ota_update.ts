@@ -1,6 +1,5 @@
 import {Component, AfterViewInit, OnDestroy} from '@angular/core';
 import {NavController, NavParams, ViewController} from 'ionic-angular';
-import {PowerManagement} from 'ionic-native';
 
 import {TApplication, Loki, BLE} from '../services';
 

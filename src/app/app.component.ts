@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 import {Platform} from 'ionic-angular';
-import {StatusBar, Splashscreen} from 'ionic-native';
+import {Splashscreen} from 'ionic-native/dist/es5/plugins/splashscreen';
+import {StatusBar} from 'ionic-native/dist/es5/plugins/statusbar';
+//import {Splashscreen, StatusBar} from 'ionic-native';
 
 import {HomePage} from '../pages/home/home';
 import {Initialization} from '../pages/services'
