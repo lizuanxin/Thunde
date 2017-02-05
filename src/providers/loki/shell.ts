@@ -26,7 +26,7 @@ const FILE_CLEAR_MAX_COUNT = 64;
 const USB_VENDOR = 0x10C4;
 const USB_PRODUCT = 0x0003;
 
-const OTA_WINDOW_SIZE = 32;
+const OTA_WINDOW_SIZE = 64;
 const OTA_SPLIT_PACKET_SIZE = 16;
 const OTA_PACKET_SIZE = OTA_SPLIT_PACKET_SIZE + 4;
 
@@ -888,7 +888,10 @@ export class TOTARequest extends TProxyShellRequest
                     this.complete();
             }
             else if ((Status & 0x8000) !== 0)
+            {
+                console.log('OTA error ' + Line);
                 this.error(new Error('e_ota_failure'));
+            }
         }
         else if (Line === 'crc error')
         {
@@ -1002,12 +1005,14 @@ export class TOTARequest extends TProxyShellRequest
             // for a long time OutgoingCount has not been changed=
             if (LastCount <= OTA_WINDOW_SIZE / 4 && LastCount === this.OutgoingCount)
             {
+                console.log('OTA reset outgoing counter');
                 // reset outgoing window
                 this.OutgoingCount = 0;
                 this.SendPacket(this.LastSentOffset, OTA_WINDOW_SIZE);
             }
 
-            setTimeout(() => this.MonitorOutgoing(this.OutgoingCount), 1500);
+            if (this.OutgoingCount > 0)
+                setTimeout(() => this.MonitorOutgoing(this.OutgoingCount), 1500);
         }
     }
 
