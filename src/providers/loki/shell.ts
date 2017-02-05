@@ -44,7 +44,7 @@ export class TShell extends TAbstractShell
             return new this(this.UsbProxy);
         }
         else
-        {               
+        {
             let Proxy = TProxyBLEShell.Get(DeviceId, BLE_CONNECTION_TIMEOUT) as TProxyBLEShell;
             return new this(Proxy);
         }
@@ -54,7 +54,7 @@ export class TShell extends TAbstractShell
     {
         super(0);
         Proxy.Owner = this;
-    }    
+    }
 
 /* TAbstractShell */
     Attach(): void
@@ -864,14 +864,16 @@ export class TOTARequest extends TProxyShellRequest
         this.NoConnectionTimeout();
 
         this.FirmwareSize = Firmware.byteLength;
-        let CRC = this.SplitPacket(Firmware);  
-                
+        let CRC = this.SplitPacket(Firmware);
+
         this.Shell.PromiseSend('>ota -s=' + this.FirmwareSize + ' -c=' + CRC)
             .catch(err => this.error(err));
     }
 
     Notification(Line: string)
     {
+        this.RefreshTimeout();
+
         let Strs = Line.split(':');
         let Status = 0;
         if (Strs.length > 1)
@@ -890,7 +892,7 @@ export class TOTARequest extends TProxyShellRequest
         }
         else if (Line === 'crc error')
         {
-            console.log('OTA crc error');            
+            console.log('OTA crc error');
             this.error(new Error('e_ota_failure'));
         }
         /*
@@ -933,7 +935,7 @@ export class TOTARequest extends TProxyShellRequest
     }
 
     private StartSendingPacket()
-    {               
+    {
         setTimeout(() =>
         {
             this.SendPacket(0, OTA_WINDOW_SIZE);
@@ -953,7 +955,7 @@ export class TOTARequest extends TProxyShellRequest
             this.LastSentOffset = Offset + Count * OTA_SPLIT_PACKET_SIZE;
             this.next(this.LastSentOffset / this.FirmwareSize)
         }
-        
+
         Offset = Offset / OTA_SPLIT_PACKET_SIZE * OTA_PACKET_SIZE;
         let Size = Count * OTA_PACKET_SIZE;
 
@@ -965,7 +967,7 @@ export class TOTARequest extends TProxyShellRequest
         }
 
         let View = new Uint8Array(this.PacketBuffer, Offset, Size);
-        
+
         this.OutgoingCount += Count;
         this.Shell.PromiseSend(View)
             .catch(err => this.error(err));
@@ -975,8 +977,8 @@ export class TOTARequest extends TProxyShellRequest
     {
         if (! this.isStopped)
         {
-            this.RefreshTimeout();
-            this.OutgoingCount --;        
+            if (this.OutgoingCount > 0)
+                this.OutgoingCount --;
 
             // somehow android received error BLE notify packet, but it ok to continue
             /*
@@ -1006,7 +1008,7 @@ export class TOTARequest extends TProxyShellRequest
             }
 
             setTimeout(() => this.MonitorOutgoing(this.OutgoingCount), 1500);
-        }        
+        }
     }
 
     private NoConnectionTimeout()

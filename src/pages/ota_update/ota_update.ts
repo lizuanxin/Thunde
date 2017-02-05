@@ -1,7 +1,7 @@
 import {Component, AfterViewInit, OnDestroy} from '@angular/core';
 import {NavController, NavParams, ViewController} from 'ionic-angular';
 
-import {TApplication, Loki, BLE} from '../services';
+import {TApplication, Loki} from '../services';
 
 @Component({
     selector: 'ota-update',
