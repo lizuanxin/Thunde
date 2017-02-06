@@ -26,7 +26,7 @@ const FILE_CLEAR_MAX_COUNT = 64;
 const USB_VENDOR = 0x10C4;
 const USB_PRODUCT = 0x0003;
 
-const OTA_WINDOW_SIZE = 64;
+const OTA_WINDOW_SIZE = 48;
 const OTA_SPLIT_PACKET_SIZE = 16;
 const OTA_PACKET_SIZE = OTA_SPLIT_PACKET_SIZE + 4;
 
@@ -118,7 +118,7 @@ export class TShell extends TAbstractShell
 
     static StartScan(): Subject<Array<BLE.IScanDiscovery>>
     {
-        BLE.TGatt.BrowserFakeDevice = true;
+        // BLE.TGatt.BrowserFakeDevice = true;
         return BLE.TGattScaner.Start([], this.ScanFilter, BLE_SCAN_TIMEOUT);
     }
 
