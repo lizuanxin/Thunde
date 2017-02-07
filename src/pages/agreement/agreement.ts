@@ -13,7 +13,6 @@ export class AgreementPage
     ionViewDidLoad()
     {
         this.Touch.Outer = document.getElementById('OuterHtml');
-        this.Touch.Inner = document.getElementById('InnerHtml');
         this.Touch.Outer.addEventListener("touchstart", this.TouchHandler.bind(this));
         this.Touch.Outer.addEventListener("touchmove", this.TouchHandler.bind(this));
         this.Touch.Outer.addEventListener("touchend", this.TouchHandler.bind(this));
