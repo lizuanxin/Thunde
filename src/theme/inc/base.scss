@@ -64,25 +64,7 @@ ion-content{
 
     &[transparent]{
         background-color:transparent;
-    } 
-
-    &.top-area{
-        .fixed-content{
-            background-image:url(../assets/img/top_area.png);
-            background-repeat:no-repeat;
-            background-size:contain;
-            -webkit-transition:all .2s ease-in-out;
-            -moz-transition:all .2s ease-in-out; 
-            background-position-y: -15vw;
-            &.fadeOut{
-                animation: fadeOut infinite linear;
-                animation-duration:3s;
-                animation-fill-mode: forwards;
-                animation-iteration-count: 1;
-                animation-delay: 0s;
-            }
-        }
-    }   
+    }  
     
 }
 
