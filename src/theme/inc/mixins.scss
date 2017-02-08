@@ -1,0 +1,88 @@
+@mixin background-list($list) {
+  @each $bg in $list {
+
+        &.#{$bg}-home {
+            background-image:url('../assets/img/class/#{$bg}.jpg');
+            background-size:cover;
+            canvas{
+                background-repeat:no-repeat;
+                background-position-x: 36%;
+                background-size: cover;
+            }
+        }
+
+        &.#{$bg}-go {            
+            background-position:center center;
+            background-size:cover;            
+        }
+
+        &.#{$bg}-running {            
+            background-position:right center;
+            background-size:cover;
+        }
+
+        @if($bg == 'spots' or $bg == 'nature' or $bg == 'strengths')
+        {
+            &.#{$bg}-home {
+                canvas{
+                    background-image:url(../assets/img/bg_canvas_dark.png);
+                }
+                
+            }
+
+            &.#{$bg}-go,&.#{$bg}-running{
+                background-image:url(../assets/img/transparency-dark.png),url('../assets/img/class/#{$bg}.jpg');
+                p{
+                    &[explain]{                        
+                        border:dotted 2px rgba(0,0,0,.1);
+                    }
+                }
+            }
+
+        } @else {
+            &.#{$bg}-home {
+                canvas{
+                    background-image:url(../assets/img/bg_canvas_light.png);
+                }
+
+            }
+
+            &.#{$bg}-go,&.#{$bg}-running{
+                background-image:url(../assets/img/transparency.png),url('../assets/img/class/#{$bg}.jpg');
+                p{
+                    &[explain]{
+                        border:dotted 2px rgba(255,255,255,.05);
+                    }
+                }
+            }
+        }        
+    }
+}
+
+@mixin toolbar-footer($list){
+    @each $bg in $list {
+        @if ($bg == 'spots' or $bg == 'nature' or $bg == 'strengths'){
+            &.#{$bg}-footer{
+                .toolbar-background {
+                    background:rgba(0,0,0,.05);
+                }
+                .state{
+                    background-color:rgba(0,0,0,.5);
+                    button,span{
+                        color:white;
+                    }
+                }
+            } 
+             
+        }@else {
+            &.#{$bg}-footer{
+                .toolbar-background {
+                    background:rgba(0,0,0,.8);
+                }
+                .state{
+                    background-color:rgba(255,255,255,.2);                    
+                } 
+            } 
+        }
+    }
+}
