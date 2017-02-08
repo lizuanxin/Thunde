@@ -101,7 +101,7 @@ export class TDistributeService
                         observer.next(req.response);
                         observer.complete();
                     }
- 
+
                 };
             req.onerror =
                 (ev) => observer.error('XMLHttpRequest Failure.');

@@ -71,7 +71,7 @@ export class HomePage implements OnInit, OnDestroy
     }
 
     ShowAgreement()
-    {        
+    {
         this.nav.push(AgreementPage);
     }
 

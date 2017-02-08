@@ -1,3 +1,4 @@
+import {TypeInfo} from '../UltraCreation/Core'
 import {TSqliteStorage, TSqlQuery} from '../UltraCreation/Storage'
 
 import {const_data} from './thunderbolt.const'
@@ -49,7 +50,13 @@ export namespace Initialization
         {
             // Id, ObjectName, Name, Desc, ExtraProp
             queries.push(new TSqlQuery(InsertAsset, [iter.Id, 'Mode', iter.Name, null, null]));
-            queries.push(new TSqlQuery(InsertMode, [iter.Id, iter.Icon]));
+
+            let Icon: any;
+            if (TypeInfo.Assigned(iter.Icon))
+                Icon = iter.Icon
+            else
+                Icon = null;
+            queries.push(new TSqlQuery(InsertMode, [iter.Id, Icon]));
         }
 
         return Storage.ExecQuery(queries).then(() => {});
@@ -62,7 +69,13 @@ export namespace Initialization
         {
             // Id, ObjectName, Name, Desc, ExtraProp
             queries.push(new TSqlQuery(InsertAsset, [iter.Id, 'Body', iter.Name, null, null]));
-            queries.push(new TSqlQuery(InsertBody, [iter.Id, iter.Icon]));
+
+            let Icon: any;
+            if (TypeInfo.Assigned(iter.Icon))
+                Icon = iter.Icon
+            else
+                Icon = null;
+            queries.push(new TSqlQuery(InsertBody, [iter.Id, Icon]));
         }
 
         return Storage.ExecQuery(queries).then(() => {});
@@ -75,7 +88,13 @@ export namespace Initialization
         {
             // Id, ObjectName, Name, Desc, ExtraProp
             queries.push(new TSqlQuery(InsertAsset, [iter.Id, 'Category', iter.Name, iter.Name + '_desc', null]));
-            queries.push(new TSqlQuery(InsertCategory, [iter.Id, iter.Icon]));
+
+            let Icon: any;
+            if (TypeInfo.Assigned(iter.Icon))
+                Icon = iter.Icon
+            else
+                Icon = null;
+            queries.push(new TSqlQuery(InsertCategory, [iter.Id, Icon]));
         }
 
         return Storage.ExecQuery(queries).then(() => {});
@@ -124,17 +143,17 @@ export namespace Initialization
 
         'CREATE TABLE IF NOT EXISTS Mode(' +
             'Id VARCHAR(38) NOT NULL PRIMARY KEY,' +
-            'Icon INT NOT NULL,' +
+            'Icon INT,' +
             'FOREIGN KEY(Id) REFERENCES Asset(Id) ON UPDATE CASCADE ON DELETE CASCADE);',
 
         'CREATE TABLE IF NOT EXISTS Body(' +
             'Id VARCHAR(38) NOT NULL PRIMARY KEY,' +
-            'Icon INT NOT NULL,' +
+            'Icon INT,' +
             'FOREIGN KEY(Id) REFERENCES Asset(Id) ON UPDATE CASCADE ON DELETE CASCADE);',
 
         'CREATE TABLE IF NOT EXISTS Category(' +
             'Id VARCHAR(38) NOT NULL PRIMARY KEY,' +
-            'Icon INT NULL,' +
+            'Icon INT,' +
             'FOREIGN KEY(Id) REFERENCES Asset(Id) ON UPDATE CASCADE ON DELETE CASCADE);',
 
         'CREATE TABLE IF NOT EXISTS ScriptFile(' +

@@ -10,7 +10,7 @@ export class EInvalidFile extends Exception
 };
 
 const CURRENT_VERSION = 1;
-export const MAX_FREQ = 1200;
+// export const MAX_FREQ = 1200;
 
 export class TFile extends TPersistable
 {
@@ -60,11 +60,11 @@ export class TFile extends TPersistable
             case TTokenType.SectionStart:
                 Section = new TSection();
                 continue;
-            case TTokenType.SectionEnd:     
+            case TTokenType.SectionEnd:
 
                 Section.Blocks.push(Block);
                 this.Sections.push(Section);
-            
+
                 Section = null;
                 LastBlock = Block = null;
                 continue;
@@ -74,9 +74,9 @@ export class TFile extends TPersistable
                 {
                     LastBlock = Block;
                     Section.Blocks.push(Block);
-                    // console.log(Block);                    
+                    // console.log(Block);
                 }
-                Block = new TBlock(LastBlock);                
+                Block = new TBlock(LastBlock);
                 continue;
 
             case TTokenType.BlockStart:
@@ -86,7 +86,7 @@ export class TFile extends TPersistable
                 LastBlock = Block;
                 Section.Blocks.push(Block);
                 Block = null;
-                continue;                                    
+                continue;
 
 
             case TTokenType.LoopStart:

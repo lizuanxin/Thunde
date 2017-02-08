@@ -7,7 +7,14 @@ export namespace const_data
     export const Anonymous =
         {Id: '{00000000-0000-4000-0000-000000000000}', Name: 'anonymous', Email: ''};
 
-    export const Modes =
+    interface IMode
+    {
+        Id: string;
+        Name: string;
+        Icon?: number;
+    }
+
+    export const Modes: Array<IMode> =
     [
         // {Id: '{00000000-0000-4000-1000-000000000001}', Name: 'relax',       Icon: 0xE917},
         // {Id: '{00000000-0000-4000-1000-000000000002}', Name: 'heal',        Icon: 0xE90B},
@@ -17,8 +24,8 @@ export namespace const_data
     interface IBodyPart
     {
         Id: string;
-        Icon: number;
         Name: string;
+        Icon?: number;
     }
 
     // back     　背部: 肩膀, 肩胛骨上, 肩胛骨下, 腰
@@ -30,12 +37,12 @@ export namespace const_data
 
     export const BodyParts: Array<IBodyPart> =
     [
-        {Id: '{00000000-0000-4000-2000-000000000001}', Name: 'back',        Icon: 0xE91F},
-        {Id: '{00000000-0000-4000-2000-000000000005}', Name: 'forelimb',    Icon: 0xE905},
-        {Id: '{00000000-0000-4000-2000-000000000005}', Name: 'lowerlimb',   Icon: 0xE905},
-        {Id: '{00000000-0000-4000-2000-000000000004}', Name: 'abdomen',     Icon: 0xE900},
-        {Id: '{00000000-0000-4000-2000-00000000000A}', Name: 'foot',        Icon: 0xE90F},
-        {Id: '{00000000-0000-4000-2000-000000000004}', Name: 'joint',       Icon: 0xE900},
+        {Id: '{00000000-0000-4000-2000-000000000001}', Name: 'back'},
+        {Id: '{00000000-0000-4000-2000-000000000005}', Name: 'forelimb'},
+        {Id: '{00000000-0000-4000-2000-000000000005}', Name: 'lowerlimb'},
+        {Id: '{00000000-0000-4000-2000-000000000004}', Name: 'abdomen'},
+        {Id: '{00000000-0000-4000-2000-00000000000A}', Name: 'foot'},
+        {Id: '{00000000-0000-4000-2000-000000000004}', Name: 'joint'},
     ];
 
     export const Body =
@@ -51,8 +58,8 @@ export namespace const_data
     interface ICategory
     {
         Id: string;
-        Icon: number;
         Name: string;
+        Icon?: number;
     }
 
     export const Categories: Array<ICategory> =
