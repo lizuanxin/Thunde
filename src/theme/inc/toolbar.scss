@@ -1,10 +1,10 @@
-ion-toolbar{
+ion-toolbar {
     @include toolbar-footer($background-list);
-    &.toolbar{
-        &.o-light{
-            .toolbar-background{
-                background:rgba(255,255,255,.1)
+    &.toolbar {
+        &.o-light {
+            .toolbar-background {
+                background: rgba(255, 255, 255, .1)
             }
-        } 
+        }
     }
 }

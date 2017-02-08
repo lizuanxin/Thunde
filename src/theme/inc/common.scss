@@ -1,104 +1,119 @@
-
-[orientate],.orientate{
-    [area],.area{
-        position:relative;
-        [aims],.aims{
-            position:absolute;
-            &[round],.round{
-                width:9vw;
-                height:9vw;
-                border-radius: 9vw;                
-                background-image: -webkit-radial-gradient(circle,hsla(0,50%,50%,1),hsla(0,50%,50%,0)); 
-                background-image: radial-gradient(circle,hsla(0,50%,50%,1),hsla(0,50%,50%,0));
+[orientate],
+.orientate {
+    [area],
+    .area {
+        position: relative;
+        [aims],
+        .aims {
+            position: absolute;
+            &[round],
+            .round {
+                width: 9vw;
+                height: 9vw;
+                border-radius: 9vw;
+                background-image: -webkit-radial-gradient(circle, hsla(0, 50%, 50%, 1), hsla(0, 50%, 50%, 0));
+                background-image: radial-gradient(circle, hsla(0, 50%, 50%, 1), hsla(0, 50%, 50%, 0));
             }
-            &[oval],.oval{
-                width:9vw;
-                height:16vw;
-                border-radius: 9vw;                
-                background-image: -webkit-radial-gradient(circle,hsla(0,50%,50%,1),hsla(0,50%,50%,0)); 
-                background-image: radial-gradient(circle,hsla(0,50%,50%,1),hsla(0,50%,50%,0));
+            &[oval],
+            .oval {
+                width: 9vw;
+                height: 16vw;
+                border-radius: 9vw;
+                background-image: -webkit-radial-gradient(circle, hsla(0, 50%, 50%, 1), hsla(0, 50%, 50%, 0));
+                background-image: radial-gradient(circle, hsla(0, 50%, 50%, 1), hsla(0, 50%, 50%, 0));
             }
         }
     }
 }
 
-
-[content-footer]{                    
-    width:100%;    
-    min-height:$conFooterHeight;
-    &.light{
-        background:rgba(255,255,255,.05);
+[content-footer] {
+    width: 100%;
+    min-height: $conFooterHeight;
+    &.light {
+        background: rgba(255, 255, 255, .05);
     }
-    &.dark{
-        background:rgba(0,0,0,.05);
+    &.dark {
+        background: rgba(0, 0, 0, .05);
     }
-
-    [wrap]{
-        position:relative;
-        height:$conFooterHeight;
-        [aims],.aims{
-            position:absolute;
-            &[left]{
-                left:0;
+    [wrap] {
+        position: relative;
+        height: $conFooterHeight;
+        [aims],
+        .aims {
+            position: absolute;
+            &[left] {
+                left: 0;
             }
-            &[right]{
-                right:0;             
+            &[right] {
+                right: 0;
             }
-            &[center-up]{
-                top:-12vw;
-               left: 40vw;
+            &[center-up] {
+                top: -12vw;
+                left: 40vw;
             }
-            button{
-                margin:0;
-                &[mini]{
-                    height:$conFooterHeight;
+            button {
+                margin: 0;
+                &[mini] {
+                    height: $conFooterHeight;
                 }
-                &[large]{
-                    width:24vw;
-                    height:24vw;                    
-                    &[outline]{
-                        border-width:1.5vw;
+                &[large] {
+                    width: 24vw;
+                    height: 24vw;
+                    &[outline] {
+                        border-width: 1.5vw;
                     }
-                    ion-icon{
-                        font-size:12vw;
+                    ion-icon {
+                        font-size: 12vw;
                     }
                 }
-                &[outline]{
-                    border-color:#fff;
+                &[outline] {
+                    border-color: #fff;
                     border-style: solid;
                 }
-                &[round]{
-                    border-radius:50%;
+                &[round] {
+                    border-radius: 50%;
                 }
-                &[thin-outline]{
-                    border:solid 1px;
+                &[thin-outline] {
+                    border: solid 1px;
                 }
-                &[medium-outline]{
-                    border:solid 2vw;
+                &[medium-outline] {
+                    border: solid 2vw;
                 }
-
-                &[gradient-purple]{
-                    background-color:color($colors,purple,base);
-                    box-shadow: inset rgba(0,0,0,.4) 0 -0.4em 0.6em, 
-                                inset rgba(0,0,0,.5) 0 0.2em .8em,
+                &[gradient-purple] {
+                    background-color: color($colors, purple, base);
+                    box-shadow: inset rgba(0, 0, 0, .4) 0 -0.4em 0.6em, inset rgba(0, 0, 0, .5) 0 0.2em .8em,
                 }
-                &[gradient-secondary]{
-                    background-color:color($colors,secondary,base);
-                    box-shadow: inset rgba(0,0,0,.4) 0 -0.4em 0.6em, 
-                                inset rgba(0,0,0,.5) 0 0.2em .8em,
+                &[gradient-secondary] {
+                    background-color: color($colors, secondary, base);
+                    box-shadow: inset rgba(0, 0, 0, .4) 0 -0.4em 0.6em, inset rgba(0, 0, 0, .5) 0 0.2em .8em,
                 }
-                
             }
         }
-                             
     }
 }
 
-// canvas{
-//     &.lighting{
-//         background-image:url(../assets/img/bg_canvas_light.png);
-//         background-repeat:no-repeat;
-//         background-position-x: 36%;
-//         background-size: cover;
-//     }
-// }
+[class^="skin-"],
+[class*=" skin-"] {
+    .checkbox-icon {
+        border-radius: 0;
+        border-color: transparent;
+    }
+}
+
+.radian {
+    position: absolute;
+    top: 0;
+    left: -10vw;
+    right: -10vw;
+    background: rgba(255, 255, 255, .05);
+    -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    border-radius: 0 0 100% 100%;
+    &.fadeOut {
+        animation: fadeOut infinite linear;
+        animation-duration: 3s;
+        animation-fill-mode: forwards;
+        animation-iteration-count: 1;
+        animation-delay: 0s;
+    }
+}
