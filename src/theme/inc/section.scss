@@ -1,52 +1,53 @@
-.trapezoid { 
-    position:fixed;
+.trapezoid {
+    position: fixed;
     left: -35%;
     top: 10%;
     right: 0;
     bottom: 25%;
     margin-top: -25%;
-    overflow:hidden;
+    overflow: hidden;
     border-radius: 30%;
     transform: translate(30%, 18%) rotate(14deg);
     //  background-color:rgba(0,0,0,.3);
-} 
-.perspective{
-    margin-top:33%;
+}
+
+.perspective {
+    margin-top: 33%;
     perspective: 500;
     -webkit-perspective: 500;
-    transform:  rotate(-14deg);
+    transform: rotate(-14deg);
 }
-section{
-    &[fixed-bottom]{
-        position:fixed;
-        width:100%;
-        height:20%;
-        bottom:0;
-        background-color:rgba(0,0,0,.1);
-    }
-    &[mask]{
-        position:fixed;
-        left:0;
-        top:0;
-        right:0;
-        bottom:0;
-        // background-image:url(../assets/img/mask_overlay.png);
-        background-repeat:no-repeat;
-        background-size:cover;
-    }
 
-    &[annular]{
+section {
+    &[fixed-bottom] {
+        position: fixed;
+        width: 100%;
+        height: 20%;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, .1);
+    }
+    &[mask] {
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        // background-image:url(../assets/img/mask_overlay.png);
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    &[annular] {
         // transform: rotateX(45deg);
         // -webkit-transform: rotateX(45deg) ;
         position: absolute;
         left: -20%;
-        color:white;
-        div{
-            position:absolute;
-            left:0;
-            top:0;
-            right:0;
-            bottom:0;
+        color: white;
+        div {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
         }
         ul {
             position: absolute;
@@ -67,10 +68,10 @@ section{
             margin: 0 50%;
             -webkit-transform: rotate(-360deg);
             transition: all 0.8s ease-in-out;
-            @while $j <= 330 {
-                &:nth-child(#{$i}){
-                    transform:rotate($j+deg);
-                    -webkit-transform:rotate($j+deg);
+            @while $j <=330 {
+                &:nth-child(#{$i}) {
+                    transform: rotate($j+deg);
+                    -webkit-transform: rotate($j+deg);
                     // label{
                     //     transform:rotate(-$i*30+deg);
                     //     -webkit-transform:rotate(-$i*30+deg);
@@ -92,46 +93,42 @@ section{
                 cursor: pointer;
                 box-shadow: none;
                 transition: all 0.5s ease-in-out, color 0.1s, background 0.1s;
-                span{
-                    position:relative;
-                    display:inline-block;
-                    width:34px;
-                    height:34px;
-                    b{
-                        font-weight:normal;
-                        position:absolute;
-                        margin-left:15px;
+                span {
+                    position: relative;
+                    display: inline-block;
+                    width: 34px;
+                    height: 34px;
+                    b {
+                        font-weight: normal;
+                        position: absolute;
+                        margin-left: 15px;
                     }
                 }
             }
         }
-
-        button[title]{
+        button[title] {
             position: relative;
-            background-color:transparent;
+            background-color: transparent;
             width: 100%;
             height: 100%;
             padding: 10px;
-            margin-left:10%;
+            margin-left: 10%;
             border-radius: 50%;
             border: 0;
-            color:white;
+            color: white;
             font-size: 20px;
-            transition: all .1s; 
-            cursor:default; 
+            transition: all .1s;
+            cursor: default;
         }
     }
-
-        &[open]{
-            li{
-               label{
-                    width: 120px;
-                    height:120px;
-                    line-height:120px;
-                    font-size: 14px;
-               } 
+    &[open] {
+        li {
+            label {
+                width: 120px;
+                height: 120px;
+                line-height: 120px;
+                font-size: 14px;
             }
         }
-    
+    }
 }
-

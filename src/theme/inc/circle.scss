@@ -1,82 +1,76 @@
 $i:1;
 $j:274;
 $box:360px;
-
-.position-circle{
-    overflow:hidden;
-    position:absolute;
+.position-circle {
+    overflow: hidden;
+    position: absolute;
 }
-.circle{
-    margin:auto;
-    border-radius:50%;
-    position:relative;
+
+.circle {
+    margin: auto;
+    border-radius: 50%;
+    position: relative;
     @each $bg in $background-list {
-        @if($bg == 'spots' or $bg == 'nature' or $bg == 'strengths')
-        {
-            &.circle-#{$bg}{
-                li{
-                    background: rgba(0,0,0,.3);
-                } 
-            } 
-        } @else {
-            &.circle-#{$bg}{
-                li{
-                    background: rgba(255,255,255,.3);
-                } 
+        @if($bg=='spots' or $bg=='nature' or $bg=='strengths') {
+            &.circle-#{$bg} {
+                li {
+                    background: rgba(0, 0, 0, .3);
+                }
             }
-            
+        }
+        @else {
+            &.circle-#{$bg} {
+                li {
+                    background: rgba(255, 255, 255, .3);
+                }
+            }
         }
     }
-    .point{
-        position:absolute;
-        top:0;
-        width:8px;
-        height:8px;
-        background:white;
-        border-radius:4px;
-        -webkit-transform:rotate(266deg);
-        box-shadow:0 0 5px(rgba(255,255,255,1)) 
-        }
-    li{
+    .point {
+        position: absolute;
+        top: 0;
+        width: 8px;
+        height: 8px;
+        background: white;
+        border-radius: 4px;
+        -webkit-transform: rotate(266deg);
+        box-shadow: 0 0 5px(rgba(255, 255, 255, 1))
+    }
+    li {
         list-style: none;
         width: 1px;
-        height: 10px;    
-        position:absolute;   
-        top:0;  
+        height: 10px;
+        position: absolute;
+        top: 0;
         @while $i < 60 {
-            @if ($i%5 == 0) {
-                &:nth-child(#{$i}){
-                    height:16px;
-                    transform:rotate($j+deg);
-                    -webkit-transform:rotate($j+deg);
+            @if ($i%5==0) {
+                &:nth-child(#{$i}) {
+                    height: 16px;
+                    transform: rotate($j+deg);
+                    -webkit-transform: rotate($j+deg);
                 }
             }
             @else {
-                &:nth-child(#{$i}){
-                    transform:rotate($j+deg);
-                    -webkit-transform:rotate($j+deg);
+                &:nth-child(#{$i}) {
+                    transform: rotate($j+deg);
+                    -webkit-transform: rotate($j+deg);
                 }
             }
             $i:$i+1;
             $j:$j+3;
         }
     }
-
 }
 
-
-
-
-
-.box{
-    position:relative;
-    border-radius:50%;
-    margin:auto;
-    .rount{
-        overflow:hidden;
-        position:absolute;
-        width:100%;
-        top:2px;
+.box {
+    position: relative;
+    border-radius: 50%;
+    margin: auto;
+    .rount {
+        overflow: hidden;
+        position: absolute;
+        width: 100%;
+        top: 2px;
         // left:2px;
         // right:2px;
         // bottom:2px;
@@ -88,71 +82,66 @@ $box:360px;
         // border-color:transparent;
         // clip:rect(0,300px,300px,0);
         // clip-path: circle(100px at 100px 100px);
-        .linear{
-            -webkit-transition:all .2s ease-in-out;
-            -moz-transition:all .2s ease-in-out;  
-            background:url(../assets/img/liner.png);       
+        .linear {
+            -webkit-transition: all .2s ease-in-out;
+            -moz-transition: all .2s ease-in-out;
+            background: url(../assets/img/liner.png);
             width: 100%;
             height: 100%;
             background-size: cover;
         }
-
     }
-    .maxVal{
-        position:absolute;
-        right:4px;
-        color:rgba(255,255,255,.5);
-        font-size:1.6rem;
+    .maxVal {
+        position: absolute;
+        right: 4px;
+        color: rgba(255, 255, 255, .5);
+        font-size: 1.6rem;
     }
-
-    .text{
-            position:relative;
-            margin:auto;
-            text-align:center;
-            height:0;
-            line-height:0;
-            // border-radius:50%;
-            // background:rgba(255,255,255,.2);
-            // box-shadow:0 0 50px rgba(0,0,0,1) inset;
-            // box-shadow:0 0 50px rgba(0,0,0,1);
-            .bg-value{
-                background:url(../assets/img/runningval.png);
-                position:absolute;
-                left:0;
-                top:0;
-                right:0;
-                bottom:0;
-                background-size:cover;
-                animation: scale-animation infinite linear alternate;
-                animation-duration:1s;
-                animation-fill-mode: forwards;
-                // transition: transform 3s;
-                // -webkit-transition: transform 3s;
-            }
+    .text {
+        position: relative;
+        margin: auto;
+        text-align: center;
+        height: 0;
+        line-height: 0;
+        // border-radius:50%;
+        // background:rgba(255,255,255,.2);
+        // box-shadow:0 0 50px rgba(0,0,0,1) inset;
+        // box-shadow:0 0 50px rgba(0,0,0,1);
+        .bg-value {
+            background: url(../assets/img/runningval.png);
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            background-size: cover;
+            animation: scale-animation infinite linear alternate;
+            animation-duration: 1s;
+            animation-fill-mode: forwards;
+            // transition: transform 3s;
+            // -webkit-transition: transform 3s;
         }
-    .controlBtn{
-        z-index:10;
-        width:100%;
-        position:absolute;
-        margin:auto;
-        button{
-            width:100%;
-            height:0;
-            line-height:0;
-            padding-top:50%;
-            padding-bottom:50%;
-            border-radius:50%;
-            background-color:rgba(0,0,0,.1);
-            border-color:rgba(0,0,0,.2);
-            color:#242424;
-            &.border-light{
-                color:color($colors, light, base);
-                background-color:rgba(255,255,255,.1);
-                border-color:rgba(255,255,255,.2);
+    }
+    .controlBtn {
+        z-index: 10;
+        width: 100%;
+        position: absolute;
+        margin: auto;
+        button {
+            width: 100%;
+            height: 0;
+            line-height: 0;
+            padding-top: 50%;
+            padding-bottom: 50%;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, .1);
+            border-color: rgba(0, 0, 0, .2);
+            color: #242424;
+            &.border-light {
+                color: color($colors, light, base);
+                background-color: rgba(255, 255, 255, .1);
+                border-color: rgba(255, 255, 255, .2);
             }
         }
     }
 }
-
-
-

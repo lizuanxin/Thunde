@@ -41,6 +41,11 @@ ion-content {
     &[transparent] {
         background-color: transparent;
     }
+    &[default] {
+        color: color($colors, light, base);
+        background-color: #333;
+    }
+    @include background-list($background-list);
 }
 
 ion-menu {
