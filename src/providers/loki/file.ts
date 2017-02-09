@@ -10,7 +10,15 @@ export class EInvalidFile extends Exception
 };
 
 const CURRENT_VERSION = 1;
-// export const MAX_FREQ = 1200;
+export const MAX_FREQ = 1200;
+export const MAX_IMPULSE = 400;
+export const MAX_POWER = MAX_IMPULSE / (1000000 / MAX_FREQ);
+
+const DEF_FREQ = 54;
+const DEF_IMPULSE = 100;
+const DEF_REPEAT = 1;
+const DEF_INTERVAL = 0;
+const DEF_CLUSTER = 1;
 
 export class TFile extends TPersistable
 {
@@ -22,11 +30,33 @@ export class TFile extends TPersistable
     TimeEst(): number
     {
         let RetVal = 0;
+        let Precalc = new Array<number>();
 
         for (let Section of this.Sections)
-            RetVal += Section.TimeEst();
+        {
+            let Est = Section.TimeEst();
+            RetVal += Est;
+            Precalc.push(Est);
+        };
         for (let Loopback of this.SectionLoopback)
-            RetVal += Loopback.TimeEst();
+            RetVal += Precalc[Loopback.Idx];
+
+        return RetVal;
+    }
+
+    TimeEstOutput(): number
+    {
+        let RetVal = 0;
+        let Precalc = new Array<number>();
+
+        for (let Section of this.Sections)
+        {
+            let Est = Section.TimeEstOutput();
+            RetVal += Est;
+            Precalc.push(Est);
+        };
+        for (let Loopback of this.SectionLoopback)
+            RetVal += Precalc[Loopback.Idx];
 
         return RetVal;
     }
@@ -94,7 +124,7 @@ export class TFile extends TPersistable
                 continue;
             case TTokenType.LoopSection:
                 let Loop = this.Sections[token.Value - 1];
-                this.SectionLoopback.push(Loop);
+                this.SectionLoopback.push({Idx: token.Value - 1, Section: Loop});
                 continue;
             }
 
@@ -111,15 +141,23 @@ export class TFile extends TPersistable
 
     DigitBase: number = 16;
     Sections: Array<TSection> = [];
-    SectionLoopback: Array<TSection> = [];
+    SectionLoopback: Array<ISectionLoopback> = [];
 
     private _Version: number = CURRENT_VERSION;
 }
 
+/* TSection */
+
+interface ISectionLoopback
+{
+    Idx: number;
+    Section: TSection;
+};
+
 export class TSection extends TPersistable
 {
-    Interval: number = 0;
-    Repeat: number = 1;
+    Interval: number = DEF_INTERVAL;
+    Repeat: number = DEF_REPEAT;
 
     TimeEst()
     {
@@ -127,6 +165,16 @@ export class TSection extends TPersistable
 
         for (let Block of this.Blocks)
             RetVal += Block.TimeEst();
+
+        return (RetVal + this.Interval) * this.Repeat;
+    }
+
+    TimeEstOutput()
+    {
+        let RetVal: number = 0;
+
+        for (let Block of this.Blocks)
+            RetVal += Block.TimeEstOutput();
 
         return (RetVal + this.Interval) * this.Repeat;
     }
@@ -156,16 +204,36 @@ export class TSection extends TPersistable
         if (this.Interval !== 0)
             RetVal += String.fromCharCode(TTokenType.Interval) + this.Interval.toString(DigitBase).toLowerCase();
 
-        return RetVal + this.SerializationBlocks() + String.fromCharCode(TTokenType.SectionEnd);
+        return RetVal + this.SerializationBlocks(DigitBase) + String.fromCharCode(TTokenType.SectionEnd);
     }
 
-    private SerializationBlocks(): string
+    Snap(): string
     {
-        return '';
+        return ''; // TODO
+    }
+
+    private SerializationBlocks(DigitBase: number): string
+    {
+        let RetVal = '{';
+        if (this.Repeat !== 1)
+            RetVal += 'R' + this.Repeat.toString(DigitBase).toLowerCase();
+        if (this.Interval !== 0)
+            RetVal += 'I' + this.Interval.toString(DigitBase).toLowerCase();
+
+        let Prev: TBlock = null;
+        for (let i = 0; i < this.Blocks.length; i ++)
+        {
+            RetVal += this.Blocks[i].Serialization(DigitBase, Prev);
+            Prev = this.Blocks[i];
+        }
+
+        return RetVal + '}';
     }
 
     Blocks: Array<TBlock> = [];
 }
+
+/* TBlock */
 
 export class TBlock extends TPersistable
 {
@@ -183,16 +251,21 @@ export class TBlock extends TPersistable
         }
     }
 
-    Freq: number = 54;
-    Impulse: number = 100;
-    Cluster: number = 1
+    Freq: number = DEF_FREQ;
+    Impulse: number = DEF_IMPULSE;
+    Cluster: number = DEF_CLUSTER;
 
-    Interval: number = 0;
-    Repeat: number = 1;
+    Interval: number = DEF_INTERVAL;
+    Repeat: number = DEF_REPEAT;
 
     TimeEst()
     {
         return (1000 / this.Freq * this.Cluster + this.Interval) * this.Repeat;
+    }
+
+    TimeEstOutput()
+    {
+        return this.Impulse * this.Repeat;
     }
 
     PushToken(token: TToken): void
@@ -227,13 +300,42 @@ export class TBlock extends TPersistable
         }
     }
 
-    Serialization(): string
+    Serialization(DigitBase: number, Prev: TBlock | null): string
     {
         let RetVal = String.fromCharCode(ASCII.VerticalBar);
+
+        if (TypeInfo.Assigned(Prev))
+        {
+            if (this.Repeat !== DEF_REPEAT)
+                RetVal += 'R' + this.Repeat.toString(DigitBase).toLowerCase();
+            if (this.Interval !== DEF_INTERVAL)
+                RetVal += 'I' + this.Interval.toString(DigitBase).toLowerCase();
+            if (this.Freq !== DEF_FREQ)
+                RetVal += 'F' + this.Freq.toString(DigitBase).toLowerCase();
+            if (this.Impulse !== DEF_IMPULSE)
+                RetVal += 'P' + this.Impulse.toString(DigitBase).toLowerCase();
+            if (this.Cluster !== DEF_CLUSTER)
+                RetVal += 'C' + this.Cluster.toString(DigitBase).toLowerCase();
+        }
+        else
+        {
+            if (this.Repeat !== Prev.Repeat)
+                RetVal += 'R' + this.Repeat.toString(DigitBase).toLowerCase();
+            if (this.Interval !== Prev.Interval)
+                RetVal += 'I' + this.Interval.toString(DigitBase).toLowerCase();
+            if (this.Freq !== Prev.Freq)
+                RetVal += 'F' + this.Freq.toString(DigitBase).toLowerCase();
+            if (this.Impulse !== Prev.Impulse)
+                RetVal += 'P' + this.Impulse.toString(DigitBase).toLowerCase();
+            if (this.Cluster !== Prev.Cluster)
+                RetVal += 'C' + this.Cluster.toString(DigitBase).toLowerCase();
+        }
 
         return RetVal;
     }
 }
+
+/* TToken */
 
 enum TTokenType
 {

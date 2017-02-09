@@ -98,7 +98,7 @@ export class TAssetService
                         LokiFile.LoadFrom(F.Content);
 
                         F.Edit();
-                        F.Duration = Math.trunc(LokiFile.TimeEst() / 1000);
+                        F.Duration = Math.trunc(((LokiFile.TimeEst() / 1000) + 30) / 60 * 60);
                         this.Save(F);
                     }
 

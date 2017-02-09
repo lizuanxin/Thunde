@@ -16,6 +16,9 @@ export class GoPage implements OnInit, OnDestroy
     {
         this.Category = navParams.get('Category');
         this.ScriptFile = navParams.get('ScriptFile');
+
+        if (platform.is('ios'))
+            Loki.TShell.LinearTable = '3.3v';
     }
 
     ngOnInit(): void
@@ -50,6 +53,12 @@ export class GoPage implements OnInit, OnDestroy
             this.Start('USB');
     }
 
+    GoManufactoryMode()
+    {
+        Loki.TShell.LinearTable = '3.3v';
+        this.Go();
+    }
+
     SelectionDevice(Device: BLE.IScanDiscovery)
     {
         this.Start(Device.id);
@@ -72,7 +81,7 @@ export class GoPage implements OnInit, OnDestroy
                     setTimeout(() => this.StartScan(), 0);
             });
     }
-    
+
     private Start(DeviceId: string)
     {
         if (TypeInfo.Assigned(this.ScanSubscription))
@@ -84,18 +93,18 @@ export class GoPage implements OnInit, OnDestroy
         let params = this.navParams.data;
         params.DeviceId = DeviceId;
 
-        this.app.ShowLoading().then(loading => 
+        this.app.ShowLoading().then(loading =>
         {
             let Shell = Loki.TShell.Get(DeviceId);
             Shell.Connect()
                 .then(() => this.Distribute.ReadFirmware(Shell.Version))
-                .then(Buf => 
+                .then(Buf =>
                 {
                     params.Shell = Shell;
                     params.Firmware = Buf;
                     return this.nav.push(OtaUpdatePage, params);
                 })
-               .catch(err => 
+               .catch(err =>
                {
                    if (err instanceof EAbort)
                         this.nav.push(RunningPage, params);

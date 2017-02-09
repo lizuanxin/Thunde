@@ -8,9 +8,7 @@ import {TAbstractShell, TShellRequest, ERequestTimeout, EDisconnected} from '../
 export {ERequestTimeout};
 import * as BLE from '../../UltraCreation/Native/BluetoothLE';
 import * as BLE_Shell from '../../UltraCreation/Native/BluetoothLE.Shell';
-
 import {USBSerial} from '../../UltraCreation/Native';
-
 import {THashCrc16} from '../../UltraCreation/Hash';
 
 const REQUEST_TIMEOUT = 3000;
@@ -49,6 +47,8 @@ export class TShell extends TAbstractShell
             return new this(Proxy);
         }
     }
+
+    static LinearTable = '5v';
 
     constructor (private Proxy: IProxyShell)
     {
@@ -260,7 +260,7 @@ export class TShell extends TAbstractShell
 
     SetIntensity(Value: number): Promise<number>
     {
-        if (this._Intensity === 0 || Value < 1 || Value > 60)
+        if (this._Intensity === 0 || Value < 1)
             return Promise.resolve(this._Intensity);
 
         let strs: string[];
@@ -277,6 +277,18 @@ export class TShell extends TAbstractShell
                 setTimeout(() => this.OnNotify.next(TShellNotify.Intensity), 0);
                 return this._Intensity;
             });
+    }
+
+    SetLinearTable(n : '3.3v' | '5v'): Promise<void>
+    {
+        let Idx = n === '5v' ? 1 : 2;
+        return this.Execute('>sstab ' + Idx, REQUEST_TIMEOUT,
+            Line =>
+            {
+                console.log(Line);
+                return this.IsStatusRetVal(Line);
+            })
+            .then(value => {});
     }
 
     OTARequest(Firmware: ArrayBuffer): Promise<TShellRequest>
@@ -464,7 +476,14 @@ export class TShell extends TAbstractShell
         return this.StatusRequest()
             .then(() => this.BatteryRequest())
             .then(() => this.VersionRequest())
-            .then(() => {});
+            .then(() =>
+            {
+                let Cls = this.constructor as typeof TShell;
+                if (Cls.LinearTable !== '5v')
+                    return this.SetLinearTable('3.3v');
+                else
+                    return;
+            });
     }
 
     _DeviceDisconnected(Proxy: IProxyShell)
@@ -952,12 +971,7 @@ export class TOTARequest extends TProxyShellRequest
             return;
         if (this.LastSentOffset === this.FirmwareSize)
             return;
-
-        if (Count !== 1)
-        {
-            this.LastSentOffset = Offset + Count * OTA_SPLIT_PACKET_SIZE;
-            this.next(this.LastSentOffset / this.FirmwareSize)
-        }
+        this.LastSentOffset = Offset + Count * OTA_SPLIT_PACKET_SIZE;
 
         Offset = Offset / OTA_SPLIT_PACKET_SIZE * OTA_PACKET_SIZE;
         let Size = Count * OTA_PACKET_SIZE;
@@ -973,6 +987,7 @@ export class TOTARequest extends TProxyShellRequest
 
         this.OutgoingCount += Count;
         this.Shell.PromiseSend(View)
+            .then(value => this.next(this.LastSentOffset / this.FirmwareSize))
             .catch(err => this.error(err));
     }
 

@@ -54,73 +54,73 @@
                 <ion-icon app-icon v-w-42>&#xe911;</ion-icon>
             </ion-col>
 
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xe914;</ion-icon>
             </ion-col>
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xe932;</ion-icon>
             </ion-col>
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xe933;</ion-icon>
             </ion-col>
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xe934;</ion-icon>
             </ion-col>
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xe943;</ion-icon>
             </ion-col>
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xe959;</ion-icon>
             </ion-col>
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xe95a;</ion-icon>
             </ion-col>
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xe95b;</ion-icon>
             </ion-col>
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xe970;</ion-icon>
             </ion-col>
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xe989;</ion-icon>
             </ion-col>
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xe9a3;</ion-icon>
             </ion-col>
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xe9a4;</ion-icon>
             </ion-col>
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xe9a5;</ion-icon>
             </ion-col>
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xe9b9;</ion-icon>
             </ion-col>
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xe9cb;</ion-icon>
             </ion-col>
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xe9de;</ion-icon>
             </ion-col>
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xe9fd;</ion-icon>
             </ion-col>
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xea13;</ion-icon>
             </ion-col>
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xea14;</ion-icon>
             </ion-col>
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xea25;</ion-icon>
             </ion-col>
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xea3e;</ion-icon>
             </ion-col>
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xea58;</ion-icon>
             </ion-col>
-            
+
         </ion-row>
         <br><br><br>
     </template>
@@ -129,11 +129,11 @@
         <template [ngIf]="DeviceList.length > 0">
             <ion-item *ngFor="let device of DeviceList" (click)="SelectionDevice(device)" tappable>
                 <p>{{device.name}}</p>
-                <ion-icon app-icon *ngIf="device.rssi>=-50" item-right><span f-12>{{device.rssi}}</span>&#xe926;</ion-icon>
-                <ion-icon app-icon *ngIf="device.rssi<-50 && device.rssi>=-60" item-right><span f-12>{{device.rssi}}</span>&#xe92c;</ion-icon>
-                <ion-icon app-icon *ngIf="device.rssi<-60 && device.rssi>=-70" item-right><span f-12>{{device.rssi}}</span>&#xe92d;</ion-icon>
-                <ion-icon app-icon *ngIf="device.rssi<-70 && device.rssi>=-80" item-right><span f-12>{{device.rssi}}</span>&#xe92e;</ion-icon>
                 <ion-icon app-icon *ngIf="device.rssi<-80" item-right><span f-12>{{device.rssi}}</span>&#xe92f;</ion-icon>
+                <ion-icon app-icon *ngIf="device.rssi<-70 && device.rssi>=-80" item-right><span f-12>{{device.rssi}}</span>&#xe92e;</ion-icon>
+                <ion-icon app-icon *ngIf="device.rssi<-60 && device.rssi>=-70" item-right><span f-12>{{device.rssi}}</span>&#xe92d;</ion-icon>
+                <ion-icon app-icon *ngIf="device.rssi<-50 && device.rssi>=-60" item-right><span f-12>{{device.rssi}}</span>&#xe92c;</ion-icon>
+                <ion-icon app-icon *ngIf="device.rssi>=-50" item-right><span f-12>{{device.rssi}}</span>&#xe926;</ion-icon>
             </ion-item>
         </template>
         <ion-item *ngIf="DeviceList.length === 0">
@@ -149,12 +149,14 @@
                     <ion-icon app-icon [ngClass] = "app.SkinColor">&#xe92b;</ion-icon>
                 </button>
             </div>
-            <div aims center-up *ngIf="! IsShowingDeviceList">
-                <button large round outline text-uppercase text-center text-light gradient-purple (click)="Go()" tappable>
-                    <ion-icon>&#xf488;</ion-icon>
-                </button>
-            </div>
+
+            <template [ngIf]="!IsShowingDeviceList">
+                <div aims center-up>
+                    <button large round outline text-uppercase text-center text-light gradient-purple (click)="Go()" tappable>
+                        <ion-icon>&#xf488;</ion-icon>
+                    </button>
+                </div>
+            </template>
         </div>
     </div>
-
 </ion-footer>

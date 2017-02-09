@@ -1,4 +1,4 @@
-import {TypeInfo} from '../UltraCreation/Core'
+import {TypeInfo, EAbort} from '../UltraCreation/Core'
 import {TSqliteStorage, TSqlQuery} from '../UltraCreation/Storage'
 
 import {const_data} from './thunderbolt.const'
@@ -10,6 +10,7 @@ export namespace Initialization
 {
     export function Execute(): Promise<void>
     {
+        const db_version = '4';
         let Storage = new TSqliteStorage(const_data.DatabaseName);
 
         return Storage.ExecSQL('SELECT name FROM sqlite_master WHERE type="table" AND name="Asset"')
@@ -21,10 +22,14 @@ export namespace Initialization
                     Init = Storage.Get('db_version')
                         .then(Value =>
                         {
-                            if (Value !== '3')
-                                return Storage.ExecSQL(DestroyTableSQL);
+                            if (Value === db_version)
+                            {
+                                console.log('skipping init data');
+                                return Promise.reject(new EAbort())
+                            }
+                            else
+                                return Storage.ExecSQL(DestroyTableSQL).catch(() => {});
                         })
-                        .catch(err => Storage.ExecSQL(DestroyTableSQL))
                 }
                 else
                     Init = Promise.resolve();
@@ -36,6 +41,7 @@ export namespace Initialization
             .then(()=> InitBody(Storage))
             .then(()=> InitCategory(Storage))
             .then(()=> InitScriptFile(Storage))
+            .then(() => Storage.Set('db_version', db_version))
             .catch((err) => console.log(err.message))       // data initialization ends here
             .then(() => TApplication.Initialize(Storage))
             .then(()=> TAssetService.Initialize(Storage))
