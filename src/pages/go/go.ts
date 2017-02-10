@@ -31,10 +31,12 @@ export class GoPage implements OnInit, OnDestroy
                 this.StartScan();
         }
 
+        /*
         let F = new Loki.TFile();
         F.LoadFrom(this.ScriptFile.Content);
         for (let iter of F.Snap())
             console.log(iter.Print());
+        */
     }
 
     ngOnDestroy(): void
