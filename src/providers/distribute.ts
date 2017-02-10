@@ -10,6 +10,56 @@ import {THashMd5} from '../UltraCreation/Hash'
 import {TAssetService, TScriptFile} from './asset'
 import * as Loki from './loki/file';
 
+export function HttpRequest(Url: string,
+    method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
+    ResponseType: 'arraybuffer' | 'blob' | 'document' | 'json' | 'text' = 'json'): Promise<any>
+{
+    return Observable.create(observer =>
+    {
+        let req = new XMLHttpRequest();
+
+        req.open(method, Url);
+        req.responseType = ResponseType;
+
+        req.onreadystatechange =
+            () =>
+            {
+                // http server error
+                if (req.readyState >= 500 && req.readyState < 600)
+                    observer.error(new Error('HTTP Server Error ' + req.readyState))
+                // http client error
+                else if (req.readyState >= 400)
+                    observer.error(new Error('HTTP Client Error ' + req.readyState))
+                // http redirection
+                else if (req.readyState >= 300)
+                    observer.error(new Error('HTTP Redirection ' + req.readyState))
+                // http successful
+                else if (req.readyState >= 200)
+                {
+                    if (req.status === 200)
+                    {
+                        //console.log(req);
+                        observer.next(req.response);
+                        observer.complete();
+                    }
+                    else
+                        observer.error(new Error('HTTP Successful ' + req.readyState));
+                }
+                // http informational
+                else if (req.readyState >= 100)
+                    console.log('HTTP Informational ' + req.readyState);
+                else
+                // unknown
+                    observer.error(new Error('HTTP Error ' + req.readyState))
+            };
+        req.onerror =
+            (ev) => observer.error('XMLHttpRequest Failure.');
+
+        req.send();
+    })
+    .toPromise();
+}
+
 @Injectable()
 export class TDistributeService
 {
@@ -45,8 +95,10 @@ export class TDistributeService
 
     ReadFirmware(Version: number): Promise<ArrayBuffer>
     {
+        // TODO: ios XMLHttpRequest NOT WORK
         return Promise.reject(new EAbort());
         /*
+
         // 1XXXBBBB
         let Major = Math.trunc(Version / 10000000);
         let Rev = Version % 10000000;
@@ -68,7 +120,7 @@ export class TDistributeService
             return Promise.reject(new EAbort())
         }
 
-        return this.HttpRequest('./assets/Firmware.json', 'GET', 'json')
+        return HttpRequest('./assets/Firmware.json', 'GET', 'json')
             .then(Info =>
             {
                 let NewVersion = Info[FileName].split('.');
@@ -79,38 +131,10 @@ export class TDistributeService
                 if (NewRev <= Rev)
                     return Promise.reject(new EAbort());
 
-                return this.HttpRequest('./assets/' + FileName + '.bin', 'GET', 'arraybuffer') as Promise<ArrayBuffer>;
+                return HttpRequest('./assets/' + FileName + '.bin', 'GET', 'arraybuffer') as Promise<ArrayBuffer>;
             })
         */
     }
-
-    private HttpRequest(Url: string,
-        method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
-        ResponseType: 'arraybuffer' | 'blob' | 'document' | 'json' | 'text' = 'json'): Promise<any>
-    {
-        return Observable.create(observer =>
-        {
-            let req = new XMLHttpRequest();
-
-            req.open(method, Url);
-            req.responseType = ResponseType;
-
-            req.onreadystatechange =
-                () =>
-                {
-                    if (req.readyState === 4 && req.status === 200)
-                    {
-                        //console.log(req);
-                        observer.next(req.response);
-                        observer.complete();
-                    }
-
-                };
-            req.onerror =
-                (ev) => observer.error('XMLHttpRequest Failure.');
-
-            req.send();
-        })
-        .toPromise();
-    }
 }
+
+

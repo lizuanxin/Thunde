@@ -260,11 +260,10 @@ export class TShell extends TAbstractShell
 
     SetIntensity(Value: number): Promise<number>
     {
-        if (this._Intensity === 0 || Value < 1)
+        if (this._Intensity === 0 || Value < 1 || Value > 60)
             return Promise.resolve(this._Intensity);
 
         let strs: string[];
-
         return this.Execute('>str ' + Value, REQUEST_TIMEOUT,
             Line =>
             {
