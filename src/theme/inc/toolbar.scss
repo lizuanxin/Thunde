@@ -1,3 +1,13 @@
+.ios ion-nav>.ion-page>ion-header>.toolbar.statusbar-padding:first-child {
+    padding: 4px;
+    min-height: 44px;
+    ion-title {
+        padding-top: initial;
+        height: initial;
+        min-height: 44px;
+    }
+}
+
 ion-toolbar {
     @include toolbar-footer($background-list);
     &.toolbar {
