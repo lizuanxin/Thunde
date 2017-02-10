@@ -45,6 +45,8 @@ export class TDistributeService
 
     ReadFirmware(Version: number): Promise<ArrayBuffer>
     {
+        return Promise.reject(new EAbort());
+        /*
         // 1XXXBBBB
         let Major = Math.trunc(Version / 10000000);
         let Rev = Version % 10000000;
@@ -79,6 +81,7 @@ export class TDistributeService
 
                 return this.HttpRequest('./assets/' + FileName + '.bin', 'GET', 'arraybuffer') as Promise<ArrayBuffer>;
             })
+        */
     }
 
     private HttpRequest(Url: string,

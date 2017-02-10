@@ -12,13 +12,68 @@ export class EInvalidFile extends Exception
 const CURRENT_VERSION = 1;
 export const MAX_FREQ = 1200;
 export const MAX_IMPULSE = 400;
-export const MAX_POWER = MAX_IMPULSE / (1000000 / MAX_FREQ);
 
 const DEF_FREQ = 54;
 const DEF_IMPULSE = 100;
 const DEF_REPEAT = 1;
 const DEF_INTERVAL = 0;
 const DEF_CLUSTER = 1;
+
+/* TRange */
+
+export interface IRange
+{
+    Low: number;
+    High: number;
+
+    Update(Value: number): void;
+    IsEqual(to: IRange): boolean;
+
+    Print(Unit?: string): string;
+}
+
+export class TRange implements IRange
+{
+    constructor ()
+    {
+        this.Low = Number.MAX_SAFE_INTEGER;
+        this.High = Number.MIN_SAFE_INTEGER;
+    }
+
+    Low: number;
+    High: number;
+
+    Update(Value: number): void
+    {
+        if (Value < this.Low)
+            this.Low = Value;
+        if (Value > this.High)
+            this.High = Value;
+    }
+
+    IsEqual(to: IRange | null): boolean
+    {
+        return TypeInfo.Assigned(to) && this.High === to.High && this.Low === to.Low;
+    }
+
+    Print(Unit?: string): string
+    {
+        if (! TypeInfo.Assigned(Unit))
+            Unit = '';
+
+        if (this.Low === this.High)
+            return this.Low.toString() + Unit;
+        else
+            return this.Low.toString() + Unit + '~' + this.High.toString() + Unit;
+    }
+
+    toString(): string
+    {
+        return this.Print();
+    }
+}
+
+/* TFile */
 
 export class TFile extends TPersistable
 {
@@ -58,6 +113,22 @@ export class TFile extends TPersistable
         for (let Loopback of this.SectionLoopback)
             RetVal += Precalc[Loopback.Idx];
 
+        return RetVal;
+    }
+
+    Snap(): Array<ISnap>
+    {
+        let RetVal = new Array<ISnap>();
+
+        let Prev: ISnap = null;
+        for (let i = 0; i < this.Sections.length; i++)
+        {
+            let Snap = this.Sections[i].Snap();
+
+            if (! Snap.IsEqual(Prev))
+                RetVal.push(Snap);
+            Prev = Snap;
+        }
         return RetVal;
     }
 
@@ -146,6 +217,42 @@ export class TFile extends TPersistable
     private _Version: number = CURRENT_VERSION;
 }
 
+/* TSnap */
+
+export interface ISnap
+{
+    FreqRange: IRange;
+    ImpulseRange: IRange;
+
+    Print(): string;
+    IsEqual(to: ISnap | null): boolean;
+}
+
+class TSnap implements ISnap
+{
+    constructor ()
+    {
+        this.FreqRange = new TRange();
+        this.ImpulseRange = new TRange();
+    }
+
+    FreqRange: IRange;
+    ImpulseRange: IRange;
+
+    IsEqual(to: ISnap | null): boolean
+    {
+        return TypeInfo.Assigned(to) &&
+            this.FreqRange.IsEqual(to.FreqRange) &&
+            this.ImpulseRange.IsEqual(to.ImpulseRange);
+    }
+
+    Print(): string
+    {
+        return 'Frequency: ' + this.FreqRange.Print('hz') + ' ' +
+            'Impluse: ' + this.ImpulseRange.Print('us')
+    }
+}
+
 /* TSection */
 
 interface ISectionLoopback
@@ -179,6 +286,21 @@ export class TSection extends TPersistable
         return (RetVal + this.Interval) * this.Repeat;
     }
 
+    Snap(): ISnap
+    {
+        let RetVal: ISnap = new TSnap();
+
+        let TimeEst: number = 0;
+
+        for (let Block of this.Blocks)
+        {
+            TimeEst += Block.TimeEst();
+            RetVal.FreqRange.Update(Block.Freq)
+            RetVal.ImpulseRange.Update(Block.Impulse);
+        }
+        return RetVal;
+    }
+
     PushToken(token: TToken): void
     {
         switch (token.Type)
@@ -205,11 +327,6 @@ export class TSection extends TPersistable
             RetVal += String.fromCharCode(TTokenType.Interval) + this.Interval.toString(DigitBase).toLowerCase();
 
         return RetVal + this.SerializationBlocks(DigitBase) + String.fromCharCode(TTokenType.SectionEnd);
-    }
-
-    Snap(): string
-    {
-        return ''; // TODO
     }
 
     private SerializationBlocks(DigitBase: number): string
@@ -258,14 +375,19 @@ export class TBlock extends TPersistable
     Interval: number = DEF_INTERVAL;
     Repeat: number = DEF_REPEAT;
 
-    TimeEst()
+    TimeEst(): number
     {
         return (1000 / this.Freq * this.Cluster + this.Interval) * this.Repeat;
     }
 
-    TimeEstOutput()
+    TimeEstOutput(): number
     {
         return this.Impulse * this.Repeat;
+    }
+
+    TimeEstInterval(): number
+    {
+        return this.Interval * this.Repeat;
     }
 
     PushToken(token: TToken): void

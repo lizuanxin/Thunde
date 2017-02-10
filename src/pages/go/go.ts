@@ -30,6 +30,11 @@ export class GoPage implements OnInit, OnDestroy
             else
                 this.StartScan();
         }
+
+        let F = new Loki.TFile();
+        F.LoadFrom(this.ScriptFile.Content);
+        for (let iter of F.Snap())
+            console.log(iter.Print());
     }
 
     ngOnDestroy(): void
@@ -96,7 +101,12 @@ export class GoPage implements OnInit, OnDestroy
         this.app.ShowLoading().then(loading =>
         {
             let Shell = Loki.TShell.Get(DeviceId);
-            Shell.Connect()
+
+            let StopScan: Promise<void> = Promise.resolve();
+            if (! Loki.TShell.IsUsbPlugin)
+                StopScan = BLE.TGatt.StopScan();
+
+            StopScan.then(() => Shell.Connect())
                 .then(() => this.Distribute.ReadFirmware(Shell.Version))
                 .then(Buf =>
                 {
