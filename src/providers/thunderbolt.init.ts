@@ -20,6 +20,7 @@ export namespace Initialization
                 if (result.rows.length !== 0)
                 {
                     Init = Storage.Get('db_version')
+                        .catch(err => 'destroying')
                         .then(Value =>
                         {
                             if (Value === db_version)

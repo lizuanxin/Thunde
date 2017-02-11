@@ -11,10 +11,10 @@ export class EInvalidFile extends Exception
 
 const CURRENT_VERSION = 1;
 export const MAX_FREQ = 1200;
-export const MAX_IMPULSE = 400;
+export const MAX_Pulse = 400;
 
 const DEF_FREQ = 54;
-const DEF_IMPULSE = 100;
+const DEF_Pulse = 100;
 const DEF_REPEAT = 1;
 const DEF_INTERVAL = 0;
 const DEF_CLUSTER = 1;
@@ -26,8 +26,9 @@ export interface IRange
     Low: number;
     High: number;
 
-    Update(Value: number): void;
     IsEqual(to: IRange): boolean;
+    Update(Value: number): void;
+    Join(From: IRange): void;
 
     Print(Unit?: string): string;
 }
@@ -43,6 +44,11 @@ export class TRange implements IRange
     Low: number;
     High: number;
 
+    IsEqual(to: IRange | null): boolean
+    {
+        return TypeInfo.Assigned(to) && this.High === to.High && this.Low === to.Low;
+    }
+
     Update(Value: number): void
     {
         if (Value < this.Low)
@@ -51,9 +57,12 @@ export class TRange implements IRange
             this.High = Value;
     }
 
-    IsEqual(to: IRange | null): boolean
+    Join(From: IRange): void
     {
-        return TypeInfo.Assigned(to) && this.High === to.High && this.Low === to.Low;
+        if (From.Low < this.Low)
+            this.Low = From .Low;
+        if (From.High > this.High)
+            this.High = From.High;
     }
 
     Print(Unit?: string): string
@@ -70,6 +79,60 @@ export class TRange implements IRange
     toString(): string
     {
         return this.Print();
+    }
+}
+
+
+/* TSnap */
+
+export interface ISnap
+{
+    StimulationFreqRange: IRange;
+    EffectiveFreqRange: IRange;
+    PulseRange: IRange;
+
+    Update(Block: TBlock): void;
+    Join(From: ISnap): void;
+
+    Print(): string;
+}
+
+class TSnap implements ISnap
+{
+    constructor ()
+    {
+        this.StimulationFreqRange = new TRange();
+        this.EffectiveFreqRange = new TRange();
+        this.PulseRange = new TRange();
+    }
+
+    StimulationFreqRange: IRange;
+    EffectiveFreqRange: IRange;
+    PulseRange: IRange;
+
+    Update(Block: TBlock): void
+    {
+        this.StimulationFreqRange.Update(Block.Freq);
+        this.EffectiveFreqRange.Update(Block.EffectiveFreq);
+        this.PulseRange.Update(Block.Pulse);
+    }
+
+    Join(From: ISnap)
+    {
+        this.StimulationFreqRange.Join(From.StimulationFreqRange);
+        this.EffectiveFreqRange.Join(From.EffectiveFreqRange);
+        this.PulseRange.Join(From.PulseRange);
+    }
+
+    Print(): string
+    {
+        let RetVal =  'Effective Frequency: ' + this.EffectiveFreqRange.Print('Hertz') + '<br>';
+
+        if (! this.EffectiveFreqRange.IsEqual(this.StimulationFreqRange))
+            RetVal +=  'Stimulation Frequency: ' + this.StimulationFreqRange.Print('Hertz') + '<br>';
+
+        RetVal += 'Pulse Width: ' + this.PulseRange.Print('us');
+        return RetVal;
     }
 }
 
@@ -99,23 +162,6 @@ export class TFile extends TPersistable
         return RetVal;
     }
 
-    TimeEstOutput(): number
-    {
-        let RetVal = 0;
-        let Precalc = new Array<number>();
-
-        for (let Section of this.Sections)
-        {
-            let Est = Section.TimeEstOutput();
-            RetVal += Est;
-            Precalc.push(Est);
-        };
-        for (let Loopback of this.SectionLoopback)
-            RetVal += Precalc[Loopback.Idx];
-
-        return RetVal;
-    }
-
     Snap(): Array<ISnap>
     {
         let RetVal = new Array<ISnap>();
@@ -125,7 +171,12 @@ export class TFile extends TPersistable
         {
             let Snap = this.Sections[i].Snap();
 
-            if (! Snap.IsEqual(Prev))
+            if (TypeInfo.Assigned(Prev) &&
+                (Prev.StimulationFreqRange.IsEqual(Snap.StimulationFreqRange) && Prev.PulseRange.IsEqual(Snap.PulseRange)))
+            {
+                Prev.Join(Snap)
+            }
+            else
                 RetVal.push(Snap);
             Prev = Snap;
         }
@@ -217,42 +268,6 @@ export class TFile extends TPersistable
     private _Version: number = CURRENT_VERSION;
 }
 
-/* TSnap */
-
-export interface ISnap
-{
-    FreqRange: IRange;
-    ImpulseRange: IRange;
-
-    Print(): string;
-    IsEqual(to: ISnap | null): boolean;
-}
-
-class TSnap implements ISnap
-{
-    constructor ()
-    {
-        this.FreqRange = new TRange();
-        this.ImpulseRange = new TRange();
-    }
-
-    FreqRange: IRange;
-    ImpulseRange: IRange;
-
-    IsEqual(to: ISnap | null): boolean
-    {
-        return TypeInfo.Assigned(to) &&
-            this.FreqRange.IsEqual(to.FreqRange) &&
-            this.ImpulseRange.IsEqual(to.ImpulseRange);
-    }
-
-    Print(): string
-    {
-        return 'Frequency: ' + this.FreqRange.Print('hz') + ' ' +
-            'Impluse: ' + this.ImpulseRange.Print('us')
-    }
-}
-
 /* TSection */
 
 interface ISectionLoopback
@@ -276,16 +291,6 @@ export class TSection extends TPersistable
         return (RetVal + this.Interval) * this.Repeat;
     }
 
-    TimeEstOutput()
-    {
-        let RetVal: number = 0;
-
-        for (let Block of this.Blocks)
-            RetVal += Block.TimeEstOutput();
-
-        return (RetVal + this.Interval) * this.Repeat;
-    }
-
     Snap(): ISnap
     {
         let RetVal: ISnap = new TSnap();
@@ -295,8 +300,7 @@ export class TSection extends TPersistable
         for (let Block of this.Blocks)
         {
             TimeEst += Block.TimeEst();
-            RetVal.FreqRange.Update(Block.Freq)
-            RetVal.ImpulseRange.Update(Block.Impulse);
+            RetVal.Update(Block);
         }
         return RetVal;
     }
@@ -361,7 +365,7 @@ export class TBlock extends TPersistable
         if (TypeInfo.Assigned(Ref))
         {
             this.Freq = Ref.Freq;
-            this.Impulse = Ref.Impulse;
+            this.Pulse = Ref.Pulse;
             this.Cluster = Ref.Cluster;
             this.Interval = Ref.Interval;
             this.Repeat = Ref.Repeat;
@@ -369,26 +373,22 @@ export class TBlock extends TPersistable
     }
 
     Freq: number = DEF_FREQ;
-    Impulse: number = DEF_IMPULSE;
+    Pulse: number = DEF_Pulse;
     Cluster: number = DEF_CLUSTER;
 
     Interval: number = DEF_INTERVAL;
     Repeat: number = DEF_REPEAT;
+
+    get EffectiveFreq(): number
+    {
+        return Math.round(1 / (1 / this.Freq * this.Cluster + this.Interval / 1000) * 10) / 10;
+    }
 
     TimeEst(): number
     {
         return (1000 / this.Freq * this.Cluster + this.Interval) * this.Repeat;
     }
 
-    TimeEstOutput(): number
-    {
-        return this.Impulse * this.Repeat;
-    }
-
-    TimeEstInterval(): number
-    {
-        return this.Interval * this.Repeat;
-    }
 
     PushToken(token: TToken): void
     {
@@ -409,8 +409,8 @@ export class TBlock extends TPersistable
             this.Freq = token.Value;
             break;
 
-        case TTokenType.Impulse:
-            this.Impulse = token.Value;
+        case TTokenType.Pulse:
+            this.Pulse = token.Value;
             break;
 
         case TTokenType.Cluster:
@@ -434,8 +434,8 @@ export class TBlock extends TPersistable
                 RetVal += 'I' + this.Interval.toString(DigitBase).toLowerCase();
             if (this.Freq !== DEF_FREQ)
                 RetVal += 'F' + this.Freq.toString(DigitBase).toLowerCase();
-            if (this.Impulse !== DEF_IMPULSE)
-                RetVal += 'P' + this.Impulse.toString(DigitBase).toLowerCase();
+            if (this.Pulse !== DEF_Pulse)
+                RetVal += 'P' + this.Pulse.toString(DigitBase).toLowerCase();
             if (this.Cluster !== DEF_CLUSTER)
                 RetVal += 'C' + this.Cluster.toString(DigitBase).toLowerCase();
         }
@@ -447,8 +447,8 @@ export class TBlock extends TPersistable
                 RetVal += 'I' + this.Interval.toString(DigitBase).toLowerCase();
             if (this.Freq !== Prev.Freq)
                 RetVal += 'F' + this.Freq.toString(DigitBase).toLowerCase();
-            if (this.Impulse !== Prev.Impulse)
-                RetVal += 'P' + this.Impulse.toString(DigitBase).toLowerCase();
+            if (this.Pulse !== Prev.Pulse)
+                RetVal += 'P' + this.Pulse.toString(DigitBase).toLowerCase();
             if (this.Cluster !== Prev.Cluster)
                 RetVal += 'C' + this.Cluster.toString(DigitBase).toLowerCase();
         }
@@ -479,7 +479,7 @@ enum TTokenType
     Interval        = ASCII.UPPER_I,
     Freq            = ASCII.UPPER_F,
     FreqT           = ASCII.UPPER_T,
-    Impulse         = ASCII.UPPER_P,
+    Pulse         = ASCII.UPPER_P,
     Cluster         = ASCII.UPPER_C
 }
 
