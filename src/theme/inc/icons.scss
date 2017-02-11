@@ -24,7 +24,7 @@ ion-icon {
     &[app-icon] {
         font-family: 'Thundericons';
     }
-    @while $i < 50 {
+    @while $i <=60 {
         &[#{v}-#{w}-#{$i}] {
             font-size: $i+vw;
         }

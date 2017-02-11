@@ -6,8 +6,8 @@
         [point],
         .point {
             position: absolute;
-            width: 3vw;
-            height: 3vw;
+            width: 5vw;
+            height: 5vw;
             border-radius: 5vw;
             @include gradient-radial(hsla(0, 100%, 50%, 1), hsla(0, 50%, 50%, 1));
         }

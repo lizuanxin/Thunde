@@ -5,10 +5,83 @@
 </ion-header>
 <ion-content [ngClass]="app.Skin('go')">
     <template [ngIf]="!IsShowingDeviceList">
+        <div explain padding [ngStyle]="{'border-left-width':0,'border-right-width':0}" [ngClass]="app.SkinColor" [innerHTML]="ScriptFile.Desc_LangId|translate">
+        </div>
+        <ion-slides pager  paginationType="fraction" effect="flip" autoplay=1500 loop  [ngClass]="app.SkinColor" [ngStyle]="{'height':'60vh'}">
+            <ion-slide>
+                <ion-icon app-icon v-w-60>&#xe914;</ion-icon>
+            </ion-slide>
+            <ion-slide>
+                <ion-icon app-icon v-w-60>&#xe932;</ion-icon>
+            </ion-slide>
+            <ion-slide>
+                <ion-icon app-icon v-w-60>&#xe933;</ion-icon>
+            </ion-slide>
+            <ion-slide>
+                <ion-icon app-icon v-w-60>&#xe934;</ion-icon>
+            </ion-slide>
+            <ion-slide>
+                <ion-icon app-icon v-w-60>&#xe943;</ion-icon>
+            </ion-slide>
+            <ion-slide>
+                <ion-icon app-icon v-w-60>&#xe959;</ion-icon>
+            </ion-slide>
+            <ion-slide>
+                <ion-icon app-icon v-w-60>&#xe95a;</ion-icon>
+            </ion-slide>
+            <ion-slide>
+                <ion-icon app-icon v-w-60>&#xe95b;</ion-icon>
+            </ion-slide>
+            <ion-slide>
+                <ion-icon app-icon v-w-60>&#xe970;</ion-icon>
+            </ion-slide>
+            <ion-slide>
+                <ion-icon app-icon v-w-60>&#xe989;</ion-icon>
+            </ion-slide>
+            <ion-slide>
+                <ion-icon app-icon v-w-60>&#xe9a3;</ion-icon>
+            </ion-slide>
+            <ion-slide>
+                <ion-icon app-icon v-w-60>&#xe9a4;</ion-icon>
+            </ion-slide>
+            <ion-slide>
+                <ion-icon app-icon v-w-60>&#xe9a5;</ion-icon>
+            </ion-slide>
+            <ion-slide>
+                <ion-icon app-icon v-w-60>&#xe9b9;</ion-icon>
+            </ion-slide>
+            <ion-slide>
+                <ion-icon app-icon v-w-60>&#xe9cb;</ion-icon>
+            </ion-slide>
+            <ion-slide>
+                <ion-icon app-icon v-w-60>&#xe9de;</ion-icon>
+            </ion-slide>
+            <ion-slide>
+                <ion-icon app-icon v-w-60>&#xe9fd;</ion-icon>
+            </ion-slide>
+            <ion-slide>
+                <ion-icon app-icon v-w-60>&#xea13;</ion-icon>
+            </ion-slide>
+            <ion-slide>
+                <ion-icon app-icon v-w-60>&#xea14;</ion-icon>
+            </ion-slide>
+            <ion-slide>
+                <ion-icon app-icon v-w-60>&#xea25;</ion-icon>
+            </ion-slide>
+            <ion-slide>
+                <ion-icon app-icon v-w-60>&#xea3e;</ion-icon>
+            </ion-slide>
+            <ion-slide>
+                <ion-icon app-icon v-w-60>&#xea58;</ion-icon>
+            </ion-slide>
+
+        </ion-slides>
+    </template>
+    <!--<template [ngIf]="!IsShowingDeviceList">
         <ion-row padding-vertical orientate [ngClass]="app.SkinColor">
             <ion-col no-padding width-100 text-center area>
                  <ion-icon app-icon [ngStyle]="{'font-size':'120vw'}">&#xe91b;</ion-icon>
-                 <span point [ngStyle]="{'left':'46vw','top':'15vw'}"></span>
+                 <span point [ngStyle]="{'left':'48vw','top':'14vw'}"></span>
                  <span point [ngStyle]="{'right':'46vw','top':'15vw'}"></span>
                  <span point [ngStyle]="{'left':'40vw','top':'20vw'}"></span>
                  <span point [ngStyle]="{'right':'40vw','top':'20vw'}"></span>
@@ -34,10 +107,9 @@
                  <span point [ngStyle]="{'right':'45vw','top':'116vw'}"></span>
             </ion-col>
         </ion-row>
-    </template>
-    <template [ngIf]="!IsShowingDeviceList">
-        <div explain padding [ngStyle]="{'border-left-width':0,'border-right-width':0}" [ngClass]="app.SkinColor" [innerHTML]="ScriptFile.Desc_LangId|translate">
-        </div>
+    </template>-->
+    <!--<template [ngIf]="!IsShowingDeviceList">
+        
 
         <ion-row margin-top orientate wrap [ngClass]="app.SkinColor">
             
@@ -170,7 +242,7 @@
             </ion-col>
         </ion-row>
         <br><br><br>
-    </template>
+    </template>-->
 
     <ion-list *ngIf="IsShowingDeviceList">
         <template [ngIf]="DeviceList.length > 0">
