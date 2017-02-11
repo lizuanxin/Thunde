@@ -5,10 +5,40 @@
 </ion-header>
 <ion-content [ngClass]="app.Skin('go')">
     <template [ngIf]="!IsShowingDeviceList">
+        <ion-row padding-vertical orientate [ngClass]="app.SkinColor">
+            <ion-col no-padding width-100 text-center area>
+                 <ion-icon app-icon [ngStyle]="{'font-size':'120vw'}">&#xe91b;</ion-icon>
+                 <span point [ngStyle]="{'left':'42vw','top':'20vw'}"></span>
+                 <span point [ngStyle]="{'right':'40vw','top':'20vw'}"></span>
+                 <span point [ngStyle]="{'left':'35vw','top':'32vw'}"></span>
+                 <span point [ngStyle]="{'right':'34vw','top':'32vw'}"></span>
+                 <span point [ngStyle]="{'left':'42vw','top':'36vw'}"></span>
+                 <span point [ngStyle]="{'right':'42vw','top':'36vw'}"></span>
+                 <span point [ngStyle]="{'left':'42vw','top':'44vw'}"></span>
+                 <span point [ngStyle]="{'right':'42vw','top':'44vw'}"></span>
+                 <span point [ngStyle]="{'left':'44vw','top':'56vw'}"></span>
+                 <span point [ngStyle]="{'right':'44vw','top':'56vw'}"></span>
+                 <span point [ngStyle]="{'left':'33vw','top':'50vw'}"></span>
+                 <span point [ngStyle]="{'right':'33vw','top':'50vw'}"></span>
+                 <span point [ngStyle]="{'left':'44vw','top':'68vw'}"></span>
+                 <span point [ngStyle]="{'right':'44vw','top':'68vw'}"></span>
+                 <span point [ngStyle]="{'left':'45vw','top':'82vw'}"></span>
+                 <span point [ngStyle]="{'right':'44vw','top':'82vw'}"></span>
+                 <span point [ngStyle]="{'left':'45vw','top':'95vw'}"></span>
+                 <span point [ngStyle]="{'right':'44vw','top':'95vw'}"></span>
+                 <span point [ngStyle]="{'left':'46vw','top':'110vw'}"></span>
+                 <span point [ngStyle]="{'right':'45vw','top':'110vw'}"></span>
+                 <span point [ngStyle]="{'left':'46vw','top':'116vw'}"></span>
+                 <span point [ngStyle]="{'right':'45vw','top':'116vw'}"></span>
+            </ion-col>
+        </ion-row>
+    </template>
+    <template [ngIf]="!IsShowingDeviceList">
         <div explain padding [ngStyle]="{'border-left-width':0,'border-right-width':0}" [ngClass]="app.SkinColor" [innerHTML]="ScriptFile.Desc_LangId|translate">
         </div>
 
         <ion-row margin-top orientate wrap [ngClass]="app.SkinColor">
+            
             <ion-col width-50 text-center area>
                 <span aims round [ngStyle]="{'left':'21vw','top':'18vw'}"></span>
                 <ion-icon app-icon v-w-42>&#xe90a;</ion-icon>

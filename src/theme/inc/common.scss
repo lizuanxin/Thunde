@@ -3,6 +3,14 @@
     [area],
     .area {
         position: relative;
+        [point],
+        .point {
+            position: absolute;
+            width: 3vw;
+            height: 3vw;
+            border-radius: 5vw;
+            @include gradient-radial(hsla(0, 100%, 50%, 1), hsla(0, 50%, 50%, 1));
+        }
         [aims],
         .aims {
             position: absolute;
@@ -11,14 +19,14 @@
                 width: 9vw;
                 height: 9vw;
                 border-radius: 9vw;
-                @include gradient-radial(hsla(0, 50%, 50%, 1),hsla(0, 50%, 50%, 0));
+                @include gradient-radial(hsla(0, 50%, 50%, 1), hsla(0, 50%, 50%, 0));
             }
             &[oval],
             .oval {
                 width: 9vw;
                 height: 16vw;
                 border-radius: 9vw;
-                @include gradient-radial(hsla(0, 50%, 50%, 1),hsla(0, 50%, 50%, 0));
+                @include gradient-radial(hsla(0, 50%, 50%, 1), hsla(0, 50%, 50%, 0));
             }
         }
     }
