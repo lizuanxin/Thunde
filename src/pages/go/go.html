@@ -7,7 +7,7 @@
     <template [ngIf]="!IsShowingDeviceList">
         <div explain padding [ngStyle]="{'border-left-width':0,'border-right-width':0}" [ngClass]="app.SkinColor" [innerHTML]="ScriptFile.Desc_LangId|translate">
         </div>
-        <ion-slides pager  paginationType="fraction" effect="flip" autoplay=1500 loop  [ngClass]="app.SkinColor" [ngStyle]="{'height':'60vh'}">
+        <ion-slides pager  paginationType="fraction" effect="flip" autoplay=3000 loop  [ngClass]="app.SkinColor" [ngStyle]="{'height':'60vh'}">
             <ion-slide>
                 <ion-icon app-icon v-w-60>&#xe914;</ion-icon>
             </ion-slide>
@@ -74,7 +74,6 @@
             <ion-slide>
                 <ion-icon app-icon v-w-60>&#xea58;</ion-icon>
             </ion-slide>
-
         </ion-slides>
     </template>
     <!--<template [ngIf]="!IsShowingDeviceList">
