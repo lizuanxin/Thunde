@@ -87,7 +87,7 @@ export class TRange implements IRange
 
 export interface ISnap
 {
-    StimulationFreqRange: IRange;
+    ClusterFreqRange: IRange;
     EffectiveFreqRange: IRange;
     PulseRange: IRange;
 
@@ -101,38 +101,42 @@ class TSnap implements ISnap
 {
     constructor ()
     {
-        this.StimulationFreqRange = new TRange();
         this.EffectiveFreqRange = new TRange();
+        this.ClusterFreqRange = new TRange();
         this.PulseRange = new TRange();
     }
 
-    StimulationFreqRange: IRange;
     EffectiveFreqRange: IRange;
+    ClusterFreqRange: IRange;
     PulseRange: IRange;
 
     Update(Block: TBlock): void
     {
-        this.StimulationFreqRange.Update(Block.Freq);
         this.EffectiveFreqRange.Update(Block.EffectiveFreq);
+        this.ClusterFreqRange.Update(Block.Freq);
         this.PulseRange.Update(Block.Pulse);
     }
 
     Join(From: ISnap)
     {
-        this.StimulationFreqRange.Join(From.StimulationFreqRange);
         this.EffectiveFreqRange.Join(From.EffectiveFreqRange);
+        this.ClusterFreqRange.Join(From.ClusterFreqRange);
         this.PulseRange.Join(From.PulseRange);
     }
 
     Print(): string
     {
-        let RetVal =  'Effective Frequency: ' + this.EffectiveFreqRange.Print('Hertz') + '<br>';
-
-        if (! this.EffectiveFreqRange.IsEqual(this.StimulationFreqRange))
-            RetVal +=  'Stimulation Frequency: ' + this.StimulationFreqRange.Print('Hertz') + '<br>';
-
-        RetVal += 'Pulse Width: ' + this.PulseRange.Print('us');
-        return RetVal;
+        if (this.EffectiveFreqRange.IsEqual(this.ClusterFreqRange))
+        {
+            return 'Effective Frequency: ' + this.EffectiveFreqRange.Print('Hertz') + '<br>' +
+                'Pulse Width: ' + this.PulseRange.Print('us');
+        }
+        else
+        {
+            return 'Effective Frequency: ' + this.EffectiveFreqRange.Print('Hertz') + '<br>' +
+                'Cluster Frequency: ' + this.ClusterFreqRange.Print('Hertz') + ', ' +
+                'Pulse Width: ' + this.PulseRange.Print('us');
+        }
     }
 }
 
@@ -172,7 +176,7 @@ export class TFile extends TPersistable
             let Snap = this.Sections[i].Snap();
 
             if (TypeInfo.Assigned(Prev) &&
-                (Prev.StimulationFreqRange.IsEqual(Snap.StimulationFreqRange) && Prev.PulseRange.IsEqual(Snap.PulseRange)))
+                (Prev.ClusterFreqRange.IsEqual(Snap.ClusterFreqRange) && Prev.PulseRange.IsEqual(Snap.PulseRange)))
             {
                 Prev.Join(Snap)
             }

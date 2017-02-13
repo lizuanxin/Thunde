@@ -12,6 +12,7 @@ module Queries
     export const GetCategories = 'SELECT Category.*, ObjectName, Name, Desc FROM Asset INNER JOIN Category ON Category.Id = Asset.Id'
     export const GetFileList = `SELECT ScriptFile.*, ObjectName, Asset.Name, Asset.Desc FROM ScriptFile INNER JOIN Asset ON Asset.Id = ScriptFile.Id
         WHERE Category_Id = "?" ORDER BY Asset.Id`;
+    export const GetFileDesc = 'SELECT * FROM ScriptFileDesc WHERE ScriptFile_Id= "?" ORDER BY Idx'
 }
 
 @Injectable()
@@ -39,9 +40,17 @@ export class TAssetService
             });
     }
 
-    Save(Obj: TScriptFile | TScriptFileDesc): Promise<void>
+    Save(Obj: TScriptFile | Array<TScriptFileDesc>): Promise<void>
     {
-        return this.Storage.SaveObject(Obj);
+        if (Obj instanceof TScriptFile)
+            return this.Storage.SaveObject(Obj);
+        else
+        {
+            let Promises = new Array<Promise<void>>();
+            for (let i = 0; i < Obj.length; i ++)
+                Promises.push(this.Storage.SaveObject(Obj[i]));
+            return Promise.all(Promises).then(() => {});
+        }
     }
 
     get Categories(): Array<TCategory>
@@ -107,6 +116,47 @@ export class TAssetService
 
                 return RetVal;
             });
+    }
+
+    FileDesc(ScriptFile: TScriptFile): Promise<Array<TScriptFileDesc>>
+    {
+        return this.Storage.ExecQuery(new TSqlQuery(Queries.GetFileDesc, [ScriptFile.Id]))
+            .then(DataSet =>
+            {
+                let RetVal = new Array<TScriptFileDesc>();
+                if (DataSet.RecordCount > 0)
+                {
+                    while (! DataSet.Eof)
+                    {
+                        let Desc = new TScriptFileDesc();
+                        Desc.Assign(DataSet.Curr)
+                        RetVal.push(Desc)
+
+                        DataSet.Next();
+                    }
+
+                    return RetVal;
+                }
+                else
+                {
+                    let f = new Loki.TFile();
+                    f.LoadFrom(ScriptFile.Content)
+                    for (let i = 0; i < f.Sections.length; i ++)
+                    {
+                        let snap = f.Sections[i].Snap();
+                        let Desc = new TScriptFileDesc();
+
+                        Desc.ScriptFile_Id = ScriptFile.Id;
+                        Desc.Idx = i + 1;
+                        Desc.Name = 'SEQ ' + Desc.Idx;
+                        Desc.Desc = snap.Print();
+
+                        RetVal.push(Desc);
+                    }
+
+                    return this.Save(RetVal).then(() => RetVal);
+                }
+            })
     }
 
     private IdGenerator(KeyProps: Array<string>, Obj: IPersistable): Promise<void>
@@ -231,6 +281,13 @@ export class TScriptFile extends TAsset
 
 export class TScriptFileDesc extends TAsset
 {
+    /* IPersistable */
+    DefinePropRules(PropRules: Array<TPersistPropRule>): void
+    {
+        super.DefinePropRules(PropRules);
+        PropRules.push(new TPersistPropRule('ScriptFileDesc', ['ScriptFile_Id', 'Idx', 'Professional']))
+    }
+
     ScriptFile_Id: string = null;
     Idx: number = null;
     Professional: boolean = null;

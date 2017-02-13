@@ -16,7 +16,7 @@ export namespace Initialization
         return Storage.ExecSQL('SELECT name FROM sqlite_master WHERE type="table" AND name="Asset"')
             .then(result =>
             {
-                let Init: Promise<void>;
+                let Init: Promise<any>;
                 if (result.rows.length !== 0)
                 {
                     Init = Storage.Get('db_version')
@@ -33,7 +33,7 @@ export namespace Initialization
                         })
                 }
                 else
-                    Init = Promise.resolve();
+                    Init = Storage.ExecSQL(DestroyTableSQL).catch(() => {});
 
                 return Init.then(() => Storage.ExecSQL(InitTableSQL));
             })
@@ -120,6 +120,7 @@ export namespace Initialization
 
         return Storage.ExecQuery(queries).then(() => {});
     }
+
     const InitTableSQL: string[] =
     [
     // User Profile

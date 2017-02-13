@@ -5,6 +5,11 @@
 </ion-header>
 <ion-content [ngClass]="app.Skin('go')">
     <template [ngIf]="!IsShowingDeviceList">
+        <ion-list>
+            <ion-item *ngFor="let iter of FileDetails">
+                {{iter.Desc}}
+            </ion-item>
+        </ion-list>
         <div explain padding [ngStyle]="{'border-left-width':0,'border-right-width':0}" [ngClass]="app.SkinColor" [innerHTML]="ScriptFile.Desc_LangId|translate">
         </div>
         <ion-slides pager paginationType="fraction"  effect="flip" autoplay=3000 loop  [ngClass]="app.SkinColor" [ngStyle]="{'height':'60vh'}">
@@ -130,7 +135,7 @@
             <ion-slide>
                 <div margin padding>
                     <div out-line b-g-c>
-                        <ion-icon app-icon v-w-60>&#xea13;</ion-icon>                
+                        <ion-icon app-icon v-w-60>&#xea13;</ion-icon>
                     </div>
                 </div>
             </ion-slide>
@@ -196,10 +201,10 @@
         </ion-row>
     </template>-->
     <!--<template [ngIf]="!IsShowingDeviceList">
-        
+
 
         <ion-row margin-top orientate wrap [ngClass]="app.SkinColor">
-            
+
             <ion-col width-50 text-center area>
                 <span aims round [ngStyle]="{'left':'21vw','top':'18vw'}"></span>
                 <ion-icon app-icon v-w-42>&#xe90a;</ion-icon>
@@ -315,16 +320,16 @@
         </ion-row>
         <div explain padding [ngStyle]="{'border-left-width':0,'border-right-width':0}" [ngClass]="app.SkinColor"></div>
         <ion-row margin-top orientate wrap [ngClass]="app.SkinColor">
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xe915;</ion-icon>
             </ion-col>
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xe916;</ion-icon>
             </ion-col>
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xe919;</ion-icon>
             </ion-col>
-            <ion-col width-50 text-center area>                
+            <ion-col width-50 text-center area>
                 <ion-icon app-icon v-w-42>&#xe91a;</ion-icon>
             </ion-col>
         </ion-row>

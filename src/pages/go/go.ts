@@ -4,7 +4,8 @@ import {Platform, NavController, ViewController, NavParams} from 'ionic-angular'
 
 import {TypeInfo, EAbort} from '../../UltraCreation/Core';
 
-import {BLE, Loki, TApplication, TLocalizeService, TCategory, TScriptFile, TDistributeService} from '../services';
+import {BLE, Loki, TApplication, TLocalizeService, TDistributeService,
+    TCategory, TScriptFile, TScriptFileDesc} from '../services';
 import {RunningPage} from '../running/running';
 import {OtaUpdatePage} from '../ota_update/ota_update';
 
@@ -16,6 +17,7 @@ export class GoPage implements OnInit, OnDestroy
     {
         this.Category = navParams.get('Category');
         this.ScriptFile = navParams.get('ScriptFile');
+        this.FileDetails = navParams.get('FileDetails');
 
         if (platform.is('ios'))
             Loki.TShell.LinearTable = '3.3v';
@@ -31,10 +33,12 @@ export class GoPage implements OnInit, OnDestroy
                 this.StartScan();
         }
 
+        /*
         let F = new Loki.TFile();
         F.LoadFrom(this.ScriptFile.Content);
         for (let iter of F.Snap())
             console.log(iter.Print());
+        */
     }
 
     ngOnDestroy(): void
@@ -126,6 +130,7 @@ export class GoPage implements OnInit, OnDestroy
 
     Category: TCategory;
     ScriptFile: TScriptFile;
+    FileDetails: Array<TScriptFileDesc>;
 
     DeviceList: Array<BLE.IScanDiscovery> = [];
     IsShowingDeviceList: boolean = false;
