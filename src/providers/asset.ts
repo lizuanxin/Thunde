@@ -294,4 +294,6 @@ export class TScriptFileDesc extends TAsset
     ScriptFile_Id: string = null;
     Idx: number = null;
     Professional: boolean = null;
+
+    BodyParts: Array<const_data.IBodyPart> = [];
 }
