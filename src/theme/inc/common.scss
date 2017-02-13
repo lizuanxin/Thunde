@@ -106,6 +106,13 @@
     }
 }
 
+div {
+    &[out-line],
+    .out-line {
+        @include square(none, 0, fillet);
+    }
+}
+
 .radian {
     position: absolute;
     top: 0;

@@ -16,6 +16,9 @@ $i:12;
         }
         $i:$i+1;
     }
+    [b-g-c] {
+        background-color: rgba(255, 255, 255, .3);
+    }
     &.high-light {
         text-shadow: 1px 1px 0px rgba(255, 255, 255, .7);
     }
@@ -25,6 +28,9 @@ $i:12;
     &[text-light],
     &.text-light {
         color: color($colors, light, base);
+        [b-g-c] {
+            background-color: rgba(255, 255, 255, .05);
+        }
     }
     &[text-danger],
     &.text-danger {
