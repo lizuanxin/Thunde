@@ -10,7 +10,7 @@ export namespace Initialization
 {
     export function Execute(): Promise<void>
     {
-        const db_version = '6';
+        const db_version = '7';
         let Storage = new TSqliteStorage(const_data.DatabaseName);
 
         return Storage.ExecSQL('SELECT name FROM sqlite_master WHERE type="table" AND name="Asset"')
@@ -115,11 +115,49 @@ export namespace Initialization
             // Id, ObjectName, Name, Desc, ExtraProp
             queries.push(new TSqlQuery(InsertAsset, [iter.Id, 'ScriptFile', iter.Name, iter.Name + '_desc', null]));
             // Id, Category_Id, Mode_Id, Body_Id, Author, Content
-            queries.push(new TSqlQuery(InsertScriptFile, [iter.Id, iter.Category_Id, iter.Mode_Id, iter.Body_Id, iter.Author, iter.Content]));
+            queries.push(new TSqlQuery(InsertScriptFile, [iter.Id, iter.Category_Id, iter.Mode_Id, iter.Author, iter.Content]));
+
+            if (iter.BodyParts.length === 0)
+            {
+                for (let body of const_data.BodyParts)
+                    queries.push(new TSqlQuery(InsertScriptFile_Body, [iter.Id, body.Id]));
+            }
+            else
+            {
+                for (let body of iter.BodyParts)
+                    queries.push(new TSqlQuery(InsertScriptFile_Body, [iter.Id, body.Id]));
+            }
         }
 
         return Storage.ExecQuery(queries).then(() => {});
     }
+
+/*
+Profile ER Diagram
+    User(Id)
+
+    Profile(Id)
+        Id <--> User.Id
+
+    Mode(Id)
+        Id  <--> Asset.Id
+    Body(Id)
+        Id  <--> Asset.Id
+    Category(Id)
+        Id  <--> Asset.Id
+
+    ScriptFile(Id)
+        Id  <--> Asset.Id
+        Category_Id ---> Category.Id
+        Mode_Id ---> Mode.Id
+    ScriptFile_Body
+        ScriptFile_Id ---> ScriptFile.Id
+        Body_Id ---> Body.Id
+
+    ScriptFileDesc(Id)
+        Id  <--> Asset.Id
+        ScriptFile_Id ---> ScriptFile.Id
+*/
 
     const InitTableSQL: string[] =
     [
@@ -168,7 +206,6 @@ export namespace Initialization
             'Id VARCHAR(38) NOT NULL PRIMARY KEY,' +
             'Category_Id VARCHAR(38) NOT NULL,' +
             'Mode_Id VARCHAR(38),' +
-            'Body_Id VARCHAR(38),' +
             'Author VARCHAR(100),' +
             'Duration INT,' +
             'Md5 CHAR(32),' +
@@ -176,7 +213,6 @@ export namespace Initialization
             'Timestamp DATETIME DEFAULT(0),' +
             'FOREIGN KEY(Id) REFERENCES Asset(Id) ON UPDATE CASCADE ON DELETE CASCADE,' +
             'FOREIGN KEY(Category_Id) REFERENCES Category(Id) ON UPDATE CASCADE ON DELETE CASCADE,' +
-            'FOREIGN KEY(Body_Id) REFERENCES Body(Id) ON UPDATE CASCADE ON DELETE CASCADE,' +
             'FOREIGN KEY(Mode_Id) REFERENCES Mode(Id) ON UPDATE CASCADE ON DELETE CASCADE);',
 
         'CREATE TABLE IF NOT EXISTS ScriptFile_Body(' +
@@ -196,6 +232,7 @@ export namespace Initialization
 
     const DestroyTableSQL: string [] =
     [
+        'DROP TABLE IF EXISTS ScriptFile_Body',
         'DROP TABLE IF EXISTS ScriptFileDesc',
         'DROP TABLE IF EXISTS ScriptFile',
         'DROP TABLE IF EXISTS Favorite',
@@ -220,7 +257,8 @@ export namespace Initialization
     const InsertBody = 'INSERT OR REPLACE INTO Body(Id, Icon) VALUES(?,?)';
     const InsertMode = 'INSERT OR REPLACE INTO Mode(Id, Icon) VALUES(?,?)';
     const InsertCategory = 'INSERT OR REPLACE INTO Category(Id, Icon) VALUES(?, ?)';
-    const InsertScriptFile = 'INSERT OR REPLACE INTO ScriptFile(Id, Category_Id, Mode_Id, Body_Id, Author, Content) VALUES(?,?,?,?,?,?)';
+    const InsertScriptFile = 'INSERT OR REPLACE INTO ScriptFile(Id, Category_Id, Mode_Id, Author, Content) VALUES(?,?,?,?,?)';
+    const InsertScriptFile_Body = 'INSERT OR REPLACE INTO ScriptFile_Body(ScriptFile_Id, Body_Id) VALUES(?, ?)'
 }
 
 /* drop tables

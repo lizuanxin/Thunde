@@ -112,7 +112,7 @@ export class TApplication extends TAppController
 
     public Skins: Array<string>;
 
-    private static SkinName: string = 'purple';
+    private static SkinName: string = 'abstract';
     private deep = ['abstract', 'BlackRed','spots'];
     private warm = ['strengths'];
 }

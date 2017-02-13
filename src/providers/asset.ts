@@ -255,11 +255,12 @@ export class TScriptFile extends TAsset
     DefinePropRules(PropRules: Array<TPersistPropRule>): void
     {
         super.DefinePropRules(PropRules);
-        PropRules.push(new TPersistPropRule('ScriptFile', ['Category_Id', 'Mode_Id', 'Body_Id', 'Content', 'Md5', 'Duration', 'Author']))
+        PropRules.push(new TPersistPropRule('ScriptFile', ['Category_Id', 'Mode_Id', 'Content', 'Md5', 'Duration', 'Author']))
     }
 
     Category_Id: string = null;
     Mode_Id: string = null;
+    // @do not use this: dummy for bluetens
     Body_Id: string = null;
 
     Content: string = null;
