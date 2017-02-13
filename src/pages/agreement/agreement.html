@@ -1,26 +1,26 @@
 <ion-header no-shadow no-border [ngStyle]="{'min-height':TopArea}">
-  <ion-toolbar transparent>
-    <ion-grid>
-      <ion-row>
-        <ion-col center width-33 offset-33 text-center>
-          <img src="assets/img/logo.png" />
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-toolbar>
+    <ion-toolbar transparent>
+        <ion-grid>
+            <ion-row>
+                <ion-col center width-33 offset-33 text-center>
+                    <img src="assets/img/logo.png" />
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-toolbar>
 </ion-header>
-<ion-content padding default id="OuterHtml" [ngStyle]="{'position':'relative'}"> 
+<ion-content padding default id="OuterHtml" [ngStyle]="{'background-color':'red','position':'relative'}">
     <div [ngClass]="'radian'" [class.fadeOut]="FadeOut" [ngStyle]="{'margin-top':'-16px','min-height':OffsetY}"></div>
     <div list-warning [innerHTML]="'agreement_page.terms_conditions'|translate"></div>
     <ion-list no-margin no-lines transparent *ngIf="IsFirstTime">
-      <ion-item margin-top text-light>
-        <ion-label f-14 [innerHTML]="'agreement_page.agree'|translate"></ion-label>
-        <ion-checkbox class="skin-default" [(ngModel)]="app.AcceptedTerms"></ion-checkbox>
-      </ion-item>
+        <ion-item margin-top text-light>
+            <ion-label f-14 [innerHTML]="'agreement_page.agree'|translate"></ion-label>
+            <ion-checkbox class="skin-default" [(ngModel)]="app.AcceptedTerms"></ion-checkbox>
+        </ion-item>
     </ion-list>
 </ion-content>
 <ion-footer padding no-shadow no-border>
-  <ion-row>
-    <ion-col><button ion-button block [disabled]="! app.AcceptedTerms" (click)="nav.pop()">{{'button.ok'|translate}}</button></ion-col>
-  </ion-row>
+    <ion-row>
+        <ion-col><button ion-button block [disabled]="! app.AcceptedTerms" (click)="nav.pop()">{{'button.ok'|translate}}</button></ion-col>
+    </ion-row>
 </ion-footer>
