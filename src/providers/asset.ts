@@ -142,15 +142,16 @@ export class TAssetService
                 {
                     let f = new Loki.TFile();
                     f.LoadFrom(ScriptFile.Content)
-                    for (let i = 0; i < f.Sections.length; i ++)
+
+                    let Idx = 1;
+                    for (let Snap of f.Snap())
                     {
-                        let snap = f.Sections[i].Snap();
                         let Desc = new TScriptFileDesc();
 
                         Desc.ScriptFile_Id = ScriptFile.Id;
-                        Desc.Idx = i + 1;
-                        Desc.Name = 'SEQ ' + Desc.Idx;
-                        Desc.Desc = snap.Print();
+                        Desc.Idx = Idx ++;
+                        Desc.Name = Desc.Idx.toString();
+                        Desc.Desc = Snap.Print();
 
                         RetVal.push(Desc);
                     }

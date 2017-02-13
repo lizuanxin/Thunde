@@ -26,7 +26,7 @@ export interface IRange
     Low: number;
     High: number;
 
-    IsEqual(to: IRange): boolean;
+    IsEqual(to: IRange | null, Truncate?: boolean): boolean;
     Update(Value: number): void;
     Join(From: IRange): void;
 
@@ -44,9 +44,12 @@ export class TRange implements IRange
     Low: number;
     High: number;
 
-    IsEqual(to: IRange | null): boolean
+    IsEqual(to: IRange | null, Truncate?: boolean): boolean
     {
-        return TypeInfo.Assigned(to) && this.High === to.High && this.Low === to.Low;
+        if (! TypeInfo.Assigned(Truncate) || Truncate)
+            return Math.round(this.High) === Math.round(to.High) && Math.round(this.Low) === Math.round(to.Low)
+        else
+            return TypeInfo.Assigned(to) && this.High === to.High && this.Low === to.Low;
     }
 
     Update(Value: number): void
@@ -126,17 +129,16 @@ class TSnap implements ISnap
 
     Print(): string
     {
-        if (this.EffectiveFreqRange.IsEqual(this.ClusterFreqRange))
-        {
-            return 'Effective Frequency: ' + this.EffectiveFreqRange.Print('Hertz') + '<br>' +
-                'Pulse Width: ' + this.PulseRange.Print('us');
-        }
-        else
-        {
-            return 'Effective Frequency: ' + this.EffectiveFreqRange.Print('Hertz') + '<br>' +
-                'Cluster Frequency: ' + this.ClusterFreqRange.Print('Hertz') + '<br>' +
-                'Pulse Width: ' + this.PulseRange.Print('us');
-        }
+        let retval = {
+            effect_freq: this.EffectiveFreqRange.Print('Hertz'),
+            cluster_freq: null,
+            pulse_width: this.PulseRange.Print('us'),
+        };
+
+        if (! this.EffectiveFreqRange.IsEqual(this.ClusterFreqRange))
+            retval.cluster_freq = this.ClusterFreqRange.Print('Hertz');
+
+        return JSON.stringify(retval);
     }
 }
 
