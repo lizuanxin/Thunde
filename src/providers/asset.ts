@@ -12,7 +12,8 @@ module Queries
     export const GetCategories = 'SELECT Category.*, ObjectName, Name, Desc FROM Asset INNER JOIN Category ON Category.Id = Asset.Id'
     export const GetFileList = `SELECT ScriptFile.*, ObjectName, Asset.Name, Asset.Desc FROM ScriptFile INNER JOIN Asset ON Asset.Id = ScriptFile.Id
         WHERE Category_Id = "?" ORDER BY Asset.Id`;
-    export const GetFileDesc = 'SELECT * FROM ScriptFileDesc WHERE ScriptFile_Id= "?" ORDER BY Idx'
+    export const GetFileDesc = `SELECT ScriptFileDesc.*, ObjectName, Asset.Name, Asset.Desc FROM ScriptFileDesc INNER JOIN Asset ON Asset.Id = ScriptFileDesc.Id
+        WHERE ScriptFile_Id= "?" ORDER BY Idx`
 }
 
 @Injectable()

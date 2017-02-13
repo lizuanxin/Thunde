@@ -5,9 +5,8 @@
 </ion-header>
 <ion-content [ngClass]="app.Skin('go')">
     <template [ngIf]="!IsShowingDeviceList">
-        <ion-list>
-            <ion-item *ngFor="let iter of FileDetails">
-                {{iter.Desc}}
+        <ion-list transparent>
+            <ion-item [ngClass]="app.SkinColor" *ngFor="let iter of FileDetails" [innerHTML]="iter.Desc">
             </ion-item>
         </ion-list>
         <div explain padding [ngStyle]="{'border-left-width':0,'border-right-width':0}" [ngClass]="app.SkinColor" [innerHTML]="ScriptFile.Desc_LangId|translate">

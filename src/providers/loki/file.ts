@@ -128,14 +128,18 @@ class TSnap implements ISnap
     {
         if (this.EffectiveFreqRange.IsEqual(this.ClusterFreqRange))
         {
-            return 'Effective Frequency: ' + this.EffectiveFreqRange.Print('Hertz') + '<br>' +
-                'Pulse Width: ' + this.PulseRange.Print('us');
+            return '<li>' +
+                'Effective Frequency: ' + this.EffectiveFreqRange.Print('Hertz') + '<br>' +
+                'Pulse Width: ' + this.PulseRange.Print('us') +
+                '</li>';
         }
         else
         {
-            return 'Effective Frequency: ' + this.EffectiveFreqRange.Print('Hertz') + '<br>' +
-                'Cluster Frequency: ' + this.ClusterFreqRange.Print('Hertz') + ', ' +
-                'Pulse Width: ' + this.PulseRange.Print('us');
+            return '<li>' +
+                'Effective Frequency: ' + this.EffectiveFreqRange.Print('Hertz') + '<br>' +
+                'Cluster Frequency: ' + this.ClusterFreqRange.Print('Hertz') + '<br>' +
+                'Pulse Width: ' + this.PulseRange.Print('us') +
+                '</li>';
         }
     }
 }
