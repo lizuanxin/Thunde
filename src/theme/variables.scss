@@ -14,13 +14,9 @@
 // to match your app's branding. Ionic uses a Sass map of
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
-$colors: ( primary : #242424, secondary : #61b58a, danger : #f53d3d, light : #ebebeb, dark : #222, purple : #382b5f, scarlet : #03a451, skyblue : #51e2f0, lightblue : #347eff, gray : #8c9093, skin-purple: #221c40, skin-Black : #555555, skin-weal : #4b445a, skin-sunset: #292b41, );
-$menu-width : 190px;
-$background-list: 'purple',
-'weal',
-'nature',
-'sunset',
-'abstract',
+$colors: ( primary: #242424, secondary: #61b58a, danger: #f53d3d, light: #ebebeb, dark: #222, purple: #382b5f, scarlet: #03a451, skyblue: #51e2f0, lightblue: #347eff, gray: #8c9093, skin-purple: #221c40, skin-Black: #555555, skin-weal: #4b445a, skin-sunset: #292b41, );
+$menu-width: 190px;
+$background-list : 'abstract',
 'BlackRed',
 'strengths',
 'spots';

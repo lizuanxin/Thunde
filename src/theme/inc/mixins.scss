@@ -17,7 +17,7 @@
             background-position: right center;
             background-size: cover;
         }
-        @if($bg=='nature' or $bg=='strengths') {
+        @if($bg=='strengths') {
             &.#{$bg}-home {
                 canvas {
                     background-image: url(../assets/img/bg_canvas_dark.png);
@@ -56,7 +56,7 @@
 
 @mixin toolbar-footer($list) {
     @each $bg in $list {
-        @if ($bg=='nature' or $bg=='strengths') {
+        @if ($bg=='strengths') {
             &.#{$bg}-footer {
                 .toolbar-background {
                     background: rgba(0, 0, 0, .05);
