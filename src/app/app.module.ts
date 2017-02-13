@@ -14,6 +14,7 @@ import {SkinPage} from '../pages/skin/skin';
 import {GoPage} from '../pages/go/go';
 import {RunningPage} from '../pages/running/running';
 import {OtaUpdatePage} from '../pages/ota_update/ota_update';
+import {FiledetailsPage} from '../pages/filedetails/filedetails';
 
 let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
     prodMode: true,
@@ -33,12 +34,12 @@ let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
 
     declarations: [
         MyApp,
-        HomePage, AgreementPage, SkinPage, GoPage, RunningPage, OtaUpdatePage
+        HomePage, AgreementPage, SkinPage, GoPage, RunningPage, FiledetailsPage,OtaUpdatePage
     ],
 
     entryComponents: [
         MyApp,
-        HomePage, AgreementPage, SkinPage, GoPage, RunningPage, OtaUpdatePage
+        HomePage, AgreementPage, SkinPage, GoPage, RunningPage, FiledetailsPage,OtaUpdatePage
     ],
 
     providers: [

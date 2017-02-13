@@ -1,6 +1,6 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs/Rx'
-import {Platform, NavController, ViewController, NavParams} from 'ionic-angular';
+import {Platform, NavController, ViewController, NavParams,ModalController} from 'ionic-angular';
 
 import {TypeInfo, EAbort} from '../../UltraCreation/Core';
 
@@ -8,11 +8,12 @@ import {BLE, Loki, TApplication, TLocalizeService, TDistributeService,
     TCategory, TScriptFile, TScriptFileDesc} from '../services';
 import {RunningPage} from '../running/running';
 import {OtaUpdatePage} from '../ota_update/ota_update';
+import {FiledetailsPage} from '../filedetails/filedetails';
 
 @Component({selector: 'page-go', templateUrl: 'go.html'})
 export class GoPage implements OnInit, OnDestroy
 {
-    constructor(public nav: NavController, private view: ViewController, private navParams: NavParams, private platform: Platform,
+    constructor(public nav: NavController,public modalCtrl: ModalController, private view: ViewController, private navParams: NavParams, private platform: Platform,
         private app: TApplication, private Localize: TLocalizeService, private Distribute: TDistributeService)
     {
         this.Category = navParams.get('Category');
@@ -66,6 +67,12 @@ export class GoPage implements OnInit, OnDestroy
     {
         Loki.TShell.LinearTable = '3.3v';
         this.Go();
+    }
+
+    OpenFileDetail()
+    {
+        let modal = this.modalCtrl.create(FiledetailsPage,{FileDetails:this.FileDetails});
+        modal.present();
     }
 
     SelectionDevice(Device: BLE.IScanDiscovery)

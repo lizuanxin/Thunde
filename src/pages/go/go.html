@@ -5,17 +5,34 @@
 </ion-header>
 <ion-content [ngClass]="app.Skin('go')">
     <template [ngIf]="!IsShowingDeviceList">
-        <ion-list transparent>
-            <ion-item [ngClass]="app.SkinColor" *ngFor="let iter of FileDetails" [innerHTML]="iter.Desc">
-            </ion-item>
-        </ion-list>
         <div explain padding [ngStyle]="{'border-left-width':0,'border-right-width':0}" [ngClass]="app.SkinColor" [innerHTML]="ScriptFile.Desc_LangId|translate">
         </div>
         <ion-slides pager paginationType="fraction"  effect="flip" autoplay=3000 loop  [ngClass]="app.SkinColor" [ngStyle]="{'height':'60vh'}">
             <ion-slide>
                 <div margin padding>
-                    <div out-line b-g-c>
-                        <ion-icon app-icon v-w-60>&#xe914;</ion-icon>
+                    <div b-g-c>                        
+                        <ion-row wrap>
+                            <ion-col width-50>
+                                <div out-line>
+                                    <ion-icon app-icon v-w-30>&#xe914;</ion-icon>
+                                </div>
+                            </ion-col>
+                            <ion-col width-50>
+                                <div out-line>
+                                    <ion-icon app-icon v-w-30>&#xe932;</ion-icon>
+                                </div>
+                            </ion-col>
+                            <ion-col width-50>
+                                <div out-line>
+                                    <ion-icon app-icon v-w-30>&#xe934;</ion-icon>
+                                </div>
+                            </ion-col>
+                            <ion-col width-50>
+                                <div out-line>
+                                    <ion-icon app-icon v-w-30>&#xe943;</ion-icon>
+                                </div>
+                            </ion-col>
+                        </ion-row>
                     </div>
                 </div>
             </ion-slide>
@@ -367,6 +384,11 @@
                     </button>
                 </div>
             </template>
+            <div aims right>
+                <button ion-button icon-only mini clear (click)="OpenFileDetail()" tappable>
+                    <ion-icon [ngClass]="app.SkinColor">&#xf19f;</ion-icon>
+                </button>
+            </div>
         </div>
     </div>
 </ion-footer>
