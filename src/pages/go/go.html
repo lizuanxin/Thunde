@@ -7,10 +7,123 @@
     <template [ngIf]="!IsShowingDeviceList">
         <div explain padding [ngStyle]="{'border-left-width':0,'border-right-width':0}" [ngClass]="app.SkinColor" [innerHTML]="ScriptFile.Desc_LangId|translate">
         </div>
-        <ion-slides pager paginationType="fraction" slidesPerView=2  effect="flip" autoplay=3000 loop  [ngClass]="app.SkinColor" [ngStyle]="{'height':'60vh'}">
+        <ion-row wrap padding-horizontal margin-bottom [ngClass]="app.SkinColor">
+            <ion-col width-50>
+                <div out-line b-g-c>
+                    <ion-icon app-icon v-w-36>&#xe914;</ion-icon>
+                </div>
+            </ion-col>
+            <ion-col width-50>
+                <div out-line b-g-c>
+                    <ion-icon app-icon v-w-36>&#xe932;</ion-icon>
+                </div>
+            </ion-col>
+            <ion-col width-50>
+                <div out-line b-g-c>
+                    <ion-icon app-icon v-w-36>&#xe933;</ion-icon>
+                </div>
+            </ion-col>
+            <ion-col width-50>
+                <div out-line b-g-c>
+                    <ion-icon app-icon v-w-36>&#xe934;</ion-icon>
+                </div>
+            </ion-col>
+            <ion-col width-50>
+                <div out-line b-g-c>
+                    <ion-icon app-icon v-w-36>&#xe943;</ion-icon>
+                </div>
+            </ion-col>
+            <ion-col width-50>
+                <div out-line b-g-c>
+                    <ion-icon app-icon v-w-36>&#xe959;</ion-icon>
+                </div>
+            </ion-col>
+            <ion-col width-50>
+                <div out-line b-g-c>
+                    <ion-icon app-icon v-w-36>&#xe95a;</ion-icon>
+                </div>
+            </ion-col>
+            <ion-col width-50>
+                <div out-line b-g-c>
+                    <ion-icon app-icon v-w-36>&#xe95b;</ion-icon>
+                </div>
+            </ion-col>
+            <ion-col width-50>
+                <div out-line b-g-c>
+                    <ion-icon app-icon v-w-36>&#xe970;</ion-icon>
+                </div>
+            </ion-col>
+            <ion-col width-50>
+                <div out-line b-g-c>
+                    <ion-icon app-icon v-w-36>&#xe989;</ion-icon>
+                </div>
+            </ion-col>
+            <ion-col width-50>
+                <div out-line b-g-c>
+                    <ion-icon app-icon v-w-36>&#xe9a3;</ion-icon>
+                </div>
+            </ion-col>
+            <ion-col width-50>
+                <div out-line b-g-c>
+                    <ion-icon app-icon v-w-36>&#xe9a4;</ion-icon>
+                </div>
+            </ion-col>
+            <ion-col width-50>
+                <div out-line b-g-c>
+                    <ion-icon app-icon v-w-36>&#xe9a5;</ion-icon>
+                </div>
+            </ion-col>
+            <ion-col width-50>
+                <div out-line b-g-c>
+                    <ion-icon app-icon v-w-36>&#xe9b9;</ion-icon>
+                </div>
+            </ion-col>
+            <ion-col width-50>
+                <div out-line b-g-c>
+                    <ion-icon app-icon v-w-36>&#xe9cb;</ion-icon>
+                </div>
+            </ion-col>
+            <ion-col width-50>
+                <div out-line b-g-c>
+                    <ion-icon app-icon v-w-36>&#xe9de;</ion-icon>
+                </div>
+            </ion-col>
+            <ion-col width-50>
+                <div out-line b-g-c>
+                    <ion-icon app-icon v-w-36>&#xe9fd;</ion-icon>
+                </div>
+            </ion-col>
+            <ion-col width-50>
+                <div out-line b-g-c>
+                    <ion-icon app-icon v-w-36>&#xea13;</ion-icon>
+                </div>
+            </ion-col>
+            <ion-col width-50>
+                <div out-line b-g-c>
+                    <ion-icon app-icon v-w-36>&#xea14;</ion-icon>
+                </div>
+            </ion-col>
+            <ion-col width-50>
+                <div out-line b-g-c>
+                    <ion-icon app-icon v-w-36>&#xea25;</ion-icon>
+                </div>
+            </ion-col>
+            <ion-col width-50>
+                <div out-line b-g-c>
+                    <ion-icon app-icon v-w-36>&#xea3e;</ion-icon>
+                </div>
+            </ion-col>
+            <ion-col width-50>
+                <div out-line b-g-c>
+                    <ion-icon app-icon v-w-36>&#xea58;</ion-icon>
+                </div>
+            </ion-col>
+        </ion-row>
+        <!--<ion-slides pager paginationType="fraction" slidesPerView=2 effect="flip" autoplay=3000 loop [ngClass]="app.SkinColor" [ngStyle]="{'height':'63vh'}">
+
             <ion-slide>
                 <div margin padding>
-                    <div out-line b-g-c>                        
+                    <div out-line b-g-c>
                         <ion-icon app-icon v-w-60>&#xe914;</ion-icon>
                     </div>
                 </div>
@@ -39,8 +152,8 @@
             <ion-slide>
                 <div margin padding>
                     <div out-line b-g-c>
-                <ion-icon app-icon v-w-60>&#xe943;</ion-icon>
-                </div>
+                        <ion-icon app-icon v-w-60>&#xe943;</ion-icon>
+                    </div>
                 </div>
             </ion-slide>
             <ion-slide>
@@ -53,8 +166,8 @@
             <ion-slide>
                 <div margin padding>
                     <div out-line b-g-c>
-                <ion-icon app-icon v-w-60>&#xe95a;</ion-icon>
-                </div>
+                        <ion-icon app-icon v-w-60>&#xe95a;</ion-icon>
+                    </div>
                 </div>
             </ion-slide>
             <ion-slide>
@@ -88,8 +201,8 @@
             <ion-slide>
                 <div margin padding>
                     <div out-line b-g-c>
-                <ion-icon app-icon v-w-60>&#xe9a4;</ion-icon>
-                </div>
+                        <ion-icon app-icon v-w-60>&#xe9a4;</ion-icon>
+                    </div>
                 </div>
             </ion-slide>
             <ion-slide>
@@ -109,8 +222,8 @@
             <ion-slide>
                 <div margin padding>
                     <div out-line b-g-c>
-                <ion-icon app-icon v-w-60>&#xe9cb;</ion-icon>
-                </div>
+                        <ion-icon app-icon v-w-60>&#xe9cb;</ion-icon>
+                    </div>
                 </div>
             </ion-slide>
             <ion-slide>
@@ -162,7 +275,7 @@
                     </div>
                 </div>
             </ion-slide>
-        </ion-slides>
+        </ion-slides>-->
     </template>
     <!--<template [ngIf]="!IsShowingDeviceList">
         <ion-row padding-vertical orientate [ngClass]="app.SkinColor">
