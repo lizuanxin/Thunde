@@ -8,9 +8,6 @@ export class FiledetailsPage
     constructor(public navCtrl: NavController, public navParams: NavParams,private view: ViewController,private app: TApplication)
     {
         this.FileDetails = navParams.get('FileDetails');
-        /*
-        console.log(JSON.stringify(this.FileDetails));
-        */
     }
 
     dismiss() {
