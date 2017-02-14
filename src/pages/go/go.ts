@@ -22,6 +22,8 @@ export class GoPage implements OnInit, OnDestroy
 
         if (platform.is('ios'))
             Loki.TShell.LinearTable = '3.3v';
+        else if (platform.is('android'))
+            Loki.TShell.LinearTable = '5v';
     }
 
     ngOnInit(): void
@@ -34,10 +36,12 @@ export class GoPage implements OnInit, OnDestroy
                 this.StartScan();
         }
 
+        /*
         let F = new Loki.TFile();
         F.LoadFrom(this.ScriptFile.Content);
         for (let iter of F.Snap())
             console.log(iter.Print());
+        */
     }
 
     ngOnDestroy(): void

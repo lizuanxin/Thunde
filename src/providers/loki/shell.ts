@@ -48,7 +48,7 @@ export class TShell extends TAbstractShell
         }
     }
 
-    static LinearTable = '5v';
+    static LinearTable = '4v';
 
     constructor (private Proxy: IProxyShell)
     {

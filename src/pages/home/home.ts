@@ -60,7 +60,6 @@ export class HomePage implements OnInit, OnDestroy
             {
                 this.FileList = List;
                 this.Content.NewFileList(List);
-
             })
             .catch(err => console.log(err));
     }

@@ -125,6 +125,7 @@ export class TAssetService
             .then(DataSet =>
             {
                 let RetVal = new Array<TScriptFileDesc>();
+
                 if (DataSet.RecordCount > 0)
                 {
                     while (! DataSet.Eof)
@@ -132,7 +133,6 @@ export class TAssetService
                         let Desc = new TScriptFileDesc();
                         Desc.Assign(DataSet.Curr)
                         RetVal.push(Desc)
-
                         DataSet.Next();
                     }
 
@@ -156,7 +156,8 @@ export class TAssetService
                         RetVal.push(Desc);
                     }
 
-                    return this.Save(RetVal).then(() => RetVal);
+                    return this.Save(RetVal).then(() => RetVal)
+                        .catch(err => console.log(err.message));
                 }
             })
     }
