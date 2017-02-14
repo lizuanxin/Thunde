@@ -65,15 +65,9 @@ export class GoPage implements OnInit, OnDestroy
             this.Start('USB');
     }
 
-    GoManufactoryMode()
-    {
-        Loki.TShell.LinearTable = '3.3v';
-        this.Go();
-    }
-
     OpenFileDetail()
     {
-        let modal = this.modalCtrl.create(FiledetailsPage,{FileDetails:this.FileDetails});
+        let modal = this.modalCtrl.create(FiledetailsPage, {FileDetails: this.FileDetails});
         modal.present();
     }
 

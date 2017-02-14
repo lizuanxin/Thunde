@@ -10,7 +10,9 @@ export namespace Initialization
 {
     export function Execute(): Promise<void>
     {
-        const db_version = '7';
+        console.log(const_data.ScriptFile[0].BodyParts);
+
+        const db_version = '8';
         let Storage = new TSqliteStorage(const_data.DatabaseName);
 
         return Storage.ExecSQL('SELECT name FROM sqlite_master WHERE type="table" AND name="Asset"')
