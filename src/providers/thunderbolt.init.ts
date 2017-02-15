@@ -16,6 +16,8 @@ export namespace Initialization
         return Storage.ExecSQL('SELECT name FROM sqlite_master WHERE type="table" AND name="Asset"')
             .then(result =>
             {
+                let Init = Storage.ExecSQL(DestroyTableSQL).catch(() => {});
+                /*
                 let Init: Promise<any>;
                 if (result.rows.length !== 0)
                 {
@@ -34,6 +36,7 @@ export namespace Initialization
                 }
                 else
                     Init = Storage.ExecSQL(DestroyTableSQL).catch(() => {});
+                */
 
                 return Init.then(() => Storage.ExecSQL(InitTableSQL));
             })

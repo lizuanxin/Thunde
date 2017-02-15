@@ -38,7 +38,7 @@ export namespace const_data
         {Id: '{00000000-0000-4000-2000-000000000004}', Name: 'lower_back',
             Icon: 0xE915, Desc: JSON.stringify([0xE9FD])},
         {Id: '{00000000-0000-4000-2000-000000000005}', Name: 'upper_arm',
-            Icon: 0xE903, Desc: JSON.stringify([0xE933, 0xE95A, 0xE9A3, 0xE9A4])},
+            Icon: 0xE903, Desc: JSON.stringify([0xE933, 0xE9A4])},
         {Id: '{00000000-0000-4000-2000-000000000006}', Name: 'elbow',
             Icon: 0xE90E, Desc: JSON.stringify([0xE970, 0xE989])},
         {Id: '{00000000-0000-4000-2000-000000000007}', Name: 'forearm',
