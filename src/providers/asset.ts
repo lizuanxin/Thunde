@@ -165,7 +165,9 @@ export class TAssetService
                     return this.Save(Details)
                         .catch(err => console.log(err.message));
                 }
-
+            })
+            .then(() =>
+            {
                 if (ScriptFile.BodyParts.length === 0)
                 {
                     return this.Storage.ExecQuery(new TSqlQuery(Queries.GetBodyUsage, [ScriptFile.Id]))
@@ -183,7 +185,6 @@ export class TAssetService
 
                             ScriptFile.BodyParts = BodyParts;
                         })
-                        .then(() => {})
                 }
             })
     }
