@@ -129,21 +129,7 @@ export class TAssetService
 
     FileDesc(ScriptFile: TScriptFile): Promise<void>
     {
-        return this.Storage.ExecQuery(new TSqlQuery(Queries.GetBodyUsage, [ScriptFile.Id]))
-            .then(DataSet =>
-            {
-                let BodyParts = ScriptFile.BodyParts;
-                while (! DataSet.Eof)
-                {
-                    let body = new TBody();
-                    body.Assign(DataSet.Curr);
-                    BodyParts.push(body);
-
-                    DataSet.Next();
-                }
-
-                return this.Storage.ExecQuery(new TSqlQuery(Queries.GetFileDesc, [ScriptFile.Id]))
-            })
+        return this.Storage.ExecQuery(new TSqlQuery(Queries.GetFileDesc, [ScriptFile.Id]))
             .then(DataSet =>
             {
                 let Details = ScriptFile.Details;
@@ -178,6 +164,23 @@ export class TAssetService
 
                     return this.Save(Details)
                         .catch(err => console.log(err.message));
+                }
+
+                if (ScriptFile.BodyParts.length === 0)
+                {
+                    return this.Storage.ExecQuery(new TSqlQuery(Queries.GetBodyUsage, [ScriptFile.Id]))
+                        .then(DataSet =>
+                        {
+                            let BodyParts = ScriptFile.BodyParts;
+                            while (! DataSet.Eof)
+                            {
+                                let body = new TBody();
+                                body.Assign(DataSet.Curr);
+                                BodyParts.push(body);
+
+                                DataSet.Next();
+                            }
+                        })
                 }
             })
     }
