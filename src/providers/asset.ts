@@ -12,6 +12,9 @@ module Queries
     export const GetCategories = 'SELECT Category.*, ObjectName, Name, Desc FROM Asset INNER JOIN Category ON Category.Id = Asset.Id'
     export const GetFileList = `SELECT ScriptFile.*, ObjectName, Asset.Name, Asset.Desc FROM ScriptFile INNER JOIN Asset ON Asset.Id = ScriptFile.Id
         WHERE Category_Id = "?" ORDER BY Asset.Id`;
+    export const GetBodyUsage = `SELECT ObjectName, Name, Desc FROM ScriptFile_Body
+        INNER JOIN Body ON Body.Id = ScriptFile_Body.Body_Id INNER JOIN Asset BodyAsset ON BodyAsset.Id = Body.Id
+        WHERE ScriptFile_Id = "?" ORDER BY Body.Id`;
     export const GetFileDesc = `SELECT ScriptFileDesc.*, ObjectName, Asset.Name, Asset.Desc FROM ScriptFileDesc INNER JOIN Asset ON Asset.Id = ScriptFileDesc.Id
         WHERE ScriptFile_Id= "?" ORDER BY Idx`
 }
@@ -57,6 +60,11 @@ export class TAssetService
     get Categories(): Array<TCategory>
     {
         return (this.constructor as typeof TAssetService)._Categories;
+    }
+
+    get BodyParts(): Array<const_data.IBodyPart>    // for the debug
+    {
+        return const_data.BodyParts;
     }
 
     Category_ById(Id: string): TCategory
@@ -108,7 +116,7 @@ export class TAssetService
                         LokiFile.LoadFrom(F.Content);
 
                         F.Edit();
-                        F.Duration = Math.trunc(((LokiFile.TimeEst() / 1000) + 30) / 60 * 60);
+                        F.Duration = Math.trunc(((LokiFile.TimeEst() / 1000) + 30) / 60) * 60;
                         this.Save(F);
                     }
 
@@ -119,12 +127,26 @@ export class TAssetService
             });
     }
 
-    FileDesc(ScriptFile: TScriptFile): Promise<Array<TScriptFileDesc>>
+    FileDesc(ScriptFile: TScriptFile): Promise<void>
     {
-        return this.Storage.ExecQuery(new TSqlQuery(Queries.GetFileDesc, [ScriptFile.Id]))
+        return this.Storage.ExecQuery(new TSqlQuery(Queries.GetBodyUsage, [ScriptFile.Id]))
             .then(DataSet =>
             {
-                let RetVal = new Array<TScriptFileDesc>();
+                let BodyParts = ScriptFile.BodyParts;
+                while (! DataSet.Eof)
+                {
+                    let body = new TBody();
+                    body.Assign(DataSet.Curr);
+                    BodyParts.push(body);
+
+                    DataSet.Next();
+                }
+
+                return this.Storage.ExecQuery(new TSqlQuery(Queries.GetFileDesc, [ScriptFile.Id]))
+            })
+            .then(DataSet =>
+            {
+                let Details = ScriptFile.Details;
 
                 if (DataSet.RecordCount > 0)
                 {
@@ -132,11 +154,9 @@ export class TAssetService
                     {
                         let Desc = new TScriptFileDesc();
                         Desc.Assign(DataSet.Curr)
-                        RetVal.push(Desc)
+                        Details.push(Desc)
                         DataSet.Next();
                     }
-
-                    return RetVal;
                 }
                 else
                 {
@@ -153,10 +173,10 @@ export class TAssetService
                         Desc.Name = Desc.Idx.toString();
                         Desc.Desc = Snap.Print();
 
-                        RetVal.push(Desc);
+                        Details.push(Desc);
                     }
 
-                    return this.Save(RetVal).then(() => RetVal)
+                    return this.Save(Details)
                         .catch(err => console.log(err.message));
                 }
             })
@@ -217,8 +237,15 @@ export class TAsset extends TPersistable implements IAsset
 
     Id: string = null;
 
-    get Name_LangId(): string { return (this.ObjectName + '.' + this.Name).toLowerCase(); }
-    get Desc_LangId(): string { return (this.ObjectName + '.' + this.Desc).toLowerCase(); }
+    get Name_LangId(): string
+    {
+        return (this.ObjectName + '.' + this.Name).toLowerCase();
+    }
+
+    get Desc_LangId(): string
+    {
+        return (this.ObjectName + '.' + this.Desc).toLowerCase();
+    }
 
     ObjectName: string = null;
     Name: string = null;
@@ -226,10 +253,58 @@ export class TAsset extends TPersistable implements IAsset
     ExtraProp: string = null;
 }
 
+/*　TBody */
+
+export class TBody extends TAsset
+{
+    constructor()
+    {
+        super();
+        this.ObjectName = 'Body';
+    }
+
+    get IconChar(): string
+    {
+        if (TypeInfo.Assigned(this.Icon))
+            return String.fromCharCode(this.Icon);
+        else
+            return '';
+    }
+
+    get DescIconString(): string
+    {
+        let Icons = JSON.parse(this.Desc) as Array<number>;
+        let RetVal: string = '';
+
+        for (let i = 0; i < Icons.length; i ++)
+            RetVal += '&#x' + Icons[i].toString(16) + '; ';
+
+        return RetVal;
+    }
+
+    get DescIconChars(): Array<string>
+    {
+        let RetVal = new Array<string>();
+        let Icons = JSON.parse(this.Desc) as Array<number>;
+
+        for (let i = 0; i < Icons.length; i ++)
+            RetVal.push(String.fromCharCode(Icons[i]));
+        return RetVal;
+    }
+
+    Icon: number = null;
+}
+
 /* TCategory */
 
 export class TCategory extends TAsset
 {
+    constructor()
+    {
+        super();
+        this.ObjectName = 'Category';
+    }
+
     /* IPersistable */
     DefinePropRules(PropRules: Array<TPersistPropRule>): void
     {
@@ -253,6 +328,12 @@ export class TCategory extends TAsset
 
 export class TScriptFile extends TAsset
 {
+    constructor()
+    {
+        super();
+        this.ObjectName = 'ScriptFile';
+    }
+
     /* IPersistable */
     DefinePropRules(PropRules: Array<TPersistPropRule>): void
     {
@@ -270,7 +351,8 @@ export class TScriptFile extends TAsset
     Duration: number = null;
     Author: string = null;
 
-    Description: Array<TScriptFileDesc> = [];
+    Details: Array<TScriptFileDesc> = [];
+    BodyParts: Array<TBody> = [];
 
     get Md5Name(): string
     {
@@ -285,6 +367,12 @@ export class TScriptFile extends TAsset
 
 export class TScriptFileDesc extends TAsset
 {
+    constructor()
+    {
+        super();
+        this.ObjectName = 'ScriptFileDesc';
+    }
+
     /* IPersistable */
     DefinePropRules(PropRules: Array<TPersistPropRule>): void
     {

@@ -4,8 +4,7 @@ import {Platform, NavController, ViewController, NavParams,ModalController} from
 
 import {TypeInfo, EAbort} from '../../UltraCreation/Core';
 
-import {BLE, Loki, TApplication, TLocalizeService, TDistributeService,
-    TCategory, TScriptFile, TScriptFileDesc} from '../services';
+import {BLE, Loki, TApplication, TLocalizeService, TDistributeService, TCategory, TScriptFile} from '../services';
 import {RunningPage} from '../running/running';
 import {OtaUpdatePage} from '../ota_update/ota_update';
 import {FiledetailsPage} from '../filedetails/filedetails';
@@ -18,7 +17,6 @@ export class GoPage implements OnInit, OnDestroy
     {
         this.Category = navParams.get('Category');
         this.ScriptFile = navParams.get('ScriptFile');
-        this.FileDetails = navParams.get('FileDetails');
 
         if (platform.is('ios'))
             Loki.TShell.LinearTable = '3.3v';
@@ -67,7 +65,7 @@ export class GoPage implements OnInit, OnDestroy
 
     OpenFileDetail()
     {
-        let modal = this.modalCtrl.create(FiledetailsPage, {FileDetails: this.FileDetails});
+        let modal = this.modalCtrl.create(FiledetailsPage, {FileDetails: this.ScriptFile.Details});
         modal.present();
     }
 
@@ -133,7 +131,6 @@ export class GoPage implements OnInit, OnDestroy
 
     Category: TCategory;
     ScriptFile: TScriptFile;
-    FileDetails: Array<TScriptFileDesc>;
 
     DeviceList: Array<BLE.IScanDiscovery> = [];
     IsShowingDeviceList: boolean = false;

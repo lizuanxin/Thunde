@@ -11,6 +11,7 @@ export namespace const_data
     {
         Id: string;
         Name: string;
+        Desc?: string;
         Icon?: number;
     }
     // do not use this: dummy for bluetens
@@ -29,35 +30,35 @@ export namespace const_data
     export const BodyParts: Array<IBodyPart> =
     [
         {Id: '{00000000-0000-4000-2000-000000000001}', Name: 'upper_back',
-            Icon: 0xE91F, Desc: JSON.stringify([0xE914, 0xE932])},
-        {Id: '{00000000-0000-4000-2000-000000000002}', Name: 'back',
+            Icon: 0xE91F, Desc: JSON.stringify([0xE914])},
+        {Id: '{00000000-0000-4000-2000-000000000002}', Name: 'shoulder',
+            Icon: 0xE91A, Desc: JSON.stringify([0xE932])},
+        {Id: '{00000000-0000-4000-2000-000000000003}', Name: 'back',
             Icon: 0xE904, Desc: JSON.stringify([0xE943])},
-        {Id: '{00000000-0000-4000-2000-000000000003}', Name: 'lower_back',
+        {Id: '{00000000-0000-4000-2000-000000000004}', Name: 'lower_back',
             Icon: 0xE915, Desc: JSON.stringify([0xE9FD])},
-        {Id: '{00000000-0000-4000-2000-000000000004}', Name: 'abdomen',
-            Icon: 0xE900, Desc: JSON.stringify([0xE959])},
-        {Id: '{00000000-0000-4000-2000-000000000005}', Name: 'buttock',
-            Icon: 0xE905, Desc: JSON.stringify([])},
-        {Id: '{00000000-0000-4000-2000-000000000006}', Name: 'thigh',
-            Icon: 0xE91D, Desc: JSON.stringify([])},
-        {Id: '{00000000-0000-4000-2000-000000000007}', Name: 'knee',
-            Icon: 0xE913, Desc: JSON.stringify([0xEA25])},
-        {Id: '{00000000-0000-4000-2000-000000000008}', Name: 'calf',
-            Icon: 0xE906, Desc: JSON.stringify([0xEA3E, 0xEA58])},
-        {Id: '{00000000-0000-4000-2000-000000000009}', Name: 'ankle',
-            Icon: 0xE902, Desc: JSON.stringify([0xE9A5, 0xE9B9])},
-        {Id: '{00000000-0000-4000-2000-00000000000A}', Name: 'foot',
-            Icon: 0xE90F, Desc: JSON.stringify([0xE9CB, 0xE9DE])},
-        {Id: '{00000000-0000-4000-2000-00000000000B}', Name: 'upper_arm',
+        {Id: '{00000000-0000-4000-2000-000000000005}', Name: 'upper_arm',
             Icon: 0xE903, Desc: JSON.stringify([0xE933, 0xE95A, 0xE9A3, 0xE9A4])},
-        {Id: '{00000000-0000-4000-2000-00000000000C}', Name: 'elbow',
+        {Id: '{00000000-0000-4000-2000-000000000006}', Name: 'elbow',
             Icon: 0xE90E, Desc: JSON.stringify([0xE970, 0xE989])},
-        {Id: '{00000000-0000-4000-2000-00000000000D}', Name: 'forearm',
+        {Id: '{00000000-0000-4000-2000-000000000007}', Name: 'forearm',
             Icon: 0xE910, Desc: JSON.stringify([0xEA13, 0xEA14])},
-        {Id: '{00000000-0000-4000-2000-00000000000E}', Name: 'wrist',
+        {Id: '{00000000-0000-4000-2000-000000000008}', Name: 'wrist',
             Icon: 0xE920, Desc: JSON.stringify([0xE934, 0xE95b])},
-        {Id: '{00000000-0000-4000-2000-00000000000F}', Name: 'shoulder',
-            Icon: 0xE91A, Desc: JSON.stringify([])},
+        {Id: '{00000000-0000-4000-2000-000000000009}', Name: 'abdomen',
+            Icon: 0xE900, Desc: JSON.stringify([0xE959])},
+        {Id: '{00000000-0000-4000-2000-00000000000A}', Name: 'buttock',
+            Icon: 0xE905, Desc: JSON.stringify([])},
+        {Id: '{00000000-0000-4000-2000-00000000000B}', Name: 'thigh',
+            Icon: 0xE91D, Desc: JSON.stringify([])},
+        {Id: '{00000000-0000-4000-2000-00000000000C}', Name: 'knee',
+            Icon: 0xE913, Desc: JSON.stringify([0xEA25])},
+        {Id: '{00000000-0000-4000-2000-00000000000D}', Name: 'calf',
+            Icon: 0xE906, Desc: JSON.stringify([0xEA3E, 0xEA58])},
+        {Id: '{00000000-0000-4000-2000-00000000000E}', Name: 'ankle',
+            Icon: 0xE902, Desc: JSON.stringify([0xE9A5, 0xE9B9])},
+        {Id: '{00000000-0000-4000-2000-00000000000F}', Name: 'foot',
+            Icon: 0xE90F, Desc: JSON.stringify([0xE9CB, 0xE9DE])},
     ]
 
     export const Body =
@@ -127,7 +128,8 @@ export namespace const_data
     [
         {Id: '{00000000-0000-4000-4000-000000000001}', Author: 'UltraCreation Team',
             Category_Id: '{00000000-0000-4000-3000-000000000001}', Mode_Id: null,Name: 'sore',
-            BodyParts: new Array<IBodyPart>().concat(BodyCategory.back, BodyCategory.forelimb, BodyCategory.lowerlimb),
+            //BodyParts: new Array<IBodyPart>().concat(BodyCategory.back, BodyCategory.forelimb, BodyCategory.lowerlimb),
+            BodyParts: [],
             Content: inplace_files.file3_sore_therpy},
         {Id: '{00000000-0000-4000-4000-000000000002}', Author: 'UltraCreation Team',
             Category_Id: '{00000000-0000-4000-3000-000000000001}', Mode_Id: null,Name: 'pain',

@@ -10,9 +10,7 @@ export namespace Initialization
 {
     export function Execute(): Promise<void>
     {
-        console.log(const_data.ScriptFile[0].BodyParts);
-
-        const db_version = '8';
+        const db_version = '10';
         let Storage = new TSqliteStorage(const_data.DatabaseName);
 
         return Storage.ExecSQL('SELECT name FROM sqlite_master WHERE type="table" AND name="Asset"')
@@ -77,7 +75,7 @@ export namespace Initialization
         for (let iter of const_data.BodyParts)
         {
             // Id, ObjectName, Name, Desc, ExtraProp
-            queries.push(new TSqlQuery(InsertAsset, [iter.Id, 'Body', iter.Name, null, null]));
+            queries.push(new TSqlQuery(InsertAsset, [iter.Id, 'Body', iter.Name, iter.Desc, null]));
 
             let Icon: any;
             if (TypeInfo.Assigned(iter.Icon))

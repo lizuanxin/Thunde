@@ -83,7 +83,7 @@ export class HomePage implements OnInit, OnDestroy
     SelectFile(ScriptFile: TScriptFile)
     {
         this.Asset.FileDesc(ScriptFile)
-            .then((Details) => this.nav.push(GoPage, {Category: this.SelectedCategory, ScriptFile: ScriptFile, FileDetails: Details}));
+            .then(() => this.nav.push(GoPage, {Category: this.SelectedCategory, ScriptFile: ScriptFile}));
     }
 
     Categories: Array<TCategory>;

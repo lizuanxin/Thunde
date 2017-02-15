@@ -44,7 +44,7 @@ export class TLocalizeService
     {
         this.AddLanguage('en', translate_en);
         this.AddLanguage('zh', translate_zh);
-        this.TransSvc.setDefaultLang('en');
+        this.TransSvc.setDefaultLang('zh');
 
         console.log(navigator.language);
 
@@ -125,12 +125,21 @@ let translate_en =
 
     body:
     {
+        upper_back: 'Upper back',
+        shoulder: 'Shoulder',
         back: 'Back',
-        forelimb: 'Forelimb',
-        lowerlimb: 'Lowerlimb',
+        lower_back: 'Lower back',
+        upper_arm: 'Upper arm',
+        elbow: 'Elbow',
+        forearm: 'Forearm',
+        wrist: 'Wrist',
         abdomen: 'Abdomen',
+        buttock: 'Buttock',
+        thigh: 'Thigh',
+        knee: 'Knee',
+        calf: 'Calf',
+        ankle: 'Ankle',
         foot: 'Foot',
-        joint: 'Joint'
     },
 
     category:
@@ -138,31 +147,17 @@ let translate_en =
         'null': 'No Description',
 
         therapy: 'Therapy',
-        therapy_desc: 'Therapy',
-
         fat_burning: 'Fat-Burning',
-        fat_burning_desc: 'Fat-Burning',
-
         muscle_training: 'Muscle Training',
-        muscle_training_desc: 'Muscle Training',
-
         relax: 'Relax',
-        relax_desc: 'Relax'
     },
 
     scriptfile:
     {
-        'null': 'No Description',
-
     /* therpy */
         sore: 'Sore Therpy',
-        sore_desc: ``,
-
         pain: 'Pain Treatment',
-        pain_desc: ``,
-
         han: 'Hans Treatment',
-        han_desc: ``,
 
     /* fat-burning */
         fb_a: 'Burning A',
@@ -175,44 +170,19 @@ let translate_en =
 
     /* muscle training */
         dumbbell: 'Dumbbell Assist',
-        dumbbell_desc: '',
-
         push_ups: 'Push-ups Simulation',
-        push_ups_desc: '',
-
         sit_ups: 'Sit-ups Simulation',
-        sit_ups_desc: '',
-
     /* relax */
         knock: 'Knock',
-        knock_desc: '',
-
         press: 'Press',
-        press_desc: '',
-
         twist: 'Twist',
-        twist_desc: '',
-
         soft: 'Soft',
-        soft_desc: '',
-
         joint: 'Joint',
-        joint_desc: '',
-
         shoudler: 'Shoudler',
-        shoudler_desc: '',
-
         upper_arm: 'Upper Arm',
-        upper_arm_desc: '',
-
         waist: 'Waist',
-        waist_desc: '',
-
         soles: 'Soles',
-        soles_desc: '',
-
         leg: 'Leg',
-        leg_desc: '',
     },
 
     agreement_page:
@@ -235,7 +205,7 @@ let translate_en =
             <h6 color="danger"><ion-icon text-danger>&#xf267;</ion-icon> <span>警告，注意及不良反应</span></h6>
             <ul>
                 <li>注意不要过度刺激甲状腺或颈动脉，或胸部和上背部，这可能导致上呼吸道的严重肌肉痉挛，呼吸困难，或影响心律或血压</li>
-                <li>不要在短波或微波治疗设备附近使用此产品，可能會影响产品输出功率</li>
+                <li>不要在短波或微波冶疗设备附近使用此产品，可能會影响产品输出功率</li>
                 <li>切勿在湿度高环境下使用本产品，如淋浴时不宜使用</li>
                 <li>请使用在清洁，已擦干，和没有损伤的皮肤区域</li>
                 <li>在使用过程中，要保持电极贴分隔开，贴片互相接触，可能会导致过度的刺激或灼伤皮肤</li>
@@ -313,19 +283,28 @@ let translate_zh =
 
     body:
     {
+        upper_back: '颈部',
+        shoulder: '肩部',
         back: '背部',
-        forelimb: '手部',
-        lowerlimb: '腿部',
+        lower_back: '腰部',
+        upper_arm: '胳膊',
+        elbow: '手肘',
+        forearm: '手臂',
+        wrist: '手腕',
         abdomen: '腹部',
-        foot: '脚底',
-        joint: '关节'
+        buttock: '臀部',
+        thigh: '大腿',
+        knee: '膝盖',
+        calf: '小腿',
+        ankle: '脚踝',
+        foot: '足底',
     },
 
     category:
     {
         'null': '无描述',
 
-        therapy: '治疗',
+        therapy: '冶疗',
         fat_burning: '瘦身',
         muscle_training: '健美',
         relax: '放松'
@@ -333,17 +312,10 @@ let translate_zh =
 
     scriptfile:
     {
-        'null': '无描述',
-
     /* THRIPY */
         sore: '酸痛冶疗',
-        sore_desc: '用于肌肉酸痛症状的缓解。',
-
         pain: '疼痛冶疗',
-        pain_desc: '较重的手法，对肌肉疼痛症状有缓解作用。',
-
         han: '疼痛缓解',
-        han_desc: '模防按模师搓揉和敲打效果的混合, 以3秒的间隔的两次搓揉和敲打起到了自然的镇痛作用。',
 
     /* fat-burning */
         fb_a: '燃烧脂肪 A',
@@ -361,34 +333,15 @@ let translate_zh =
 
     /* relax */
         knock: '敲打',
-        knock_desc: '模仿敲击捶打的手法，有节奏的循环对放松肌肉有不错的效果。',
-
         press: '按压',
-        press_desc: '模仿按压的手法，对如肩、腰、背各部位的肌肉紧张有缓解效果。',
-
         twist: '搓揉',
-        twist_desc: '针对腰部肌肉群的特定手法，对久坐和运动造成的腰肌劳损有舒缓作用。',
-
         soft: '肌肉放松',
-        soft_desc: '较轻柔的按摩手法，适合承受力较低的用户。有助于日常缓解肌肉紧张。',
-
         joint: '关节舒展',
-        joint_desc: '针对关节部位的特定手法，对爬山、跑步、举重等关节部位高强度活动后的恢复有辅助作用。',
-
         shoudler: '肩部舒展',
-        shoudler_desc: '针对肩部肌肉群的特定手法，有助于缓解颈肩部位的劳损症状。',
-
         upper_arm: '上臂按摩',
-        upper_arm_desc: '针对手臂部位的肌肉群的特定的放松手法，适合于如羽毛球、俯卧撑、抓举攀爬类运动后的恢复。',
-
         waist: '腰部按摩',
-        waist_desc: '针对腰部肌肉群的特定手法，对久坐和运动造成的腰肌劳损有舒缓作用。',
-
         soles: '脚部按摩',
-        soles_desc: '模仿脚底按摩的手法，对穴位进行刺激。',
-
         leg: '腿部按摩',
-        leg_desc: '用于腿部肌肉的放松, 适合于跑步, 爬山, 自行车运动后的恢复',
     },
 
     agreement_page:
@@ -411,7 +364,7 @@ let translate_zh =
             <h6 class="text-danger"><i class="ion-icon">&#xf267;</i> <span>警告，注意及不良反应</span></h6>
             <ul>
                 <li>注意不要过度刺激甲状腺或颈动脉，或胸部和上背部，这可能导致上呼吸道的严重肌肉痉挛，呼吸困难，或影响心律或血压</li>
-                <li>不要在短波或微波治疗设备附近使用此产品，可能會影响产品输出功率</li>
+                <li>不要在短波或微波冶疗设备附近使用此产品，可能會影响产品输出功率</li>
                 <li>切勿在湿度高环境下使用本产品，如淋浴时不宜使用</li>
                 <li>请使用在清洁，已擦干，和没有损伤的皮肤区域</li>
                 <li>在使用过程中，要保持电极贴分隔开，贴片互相接触，可能会导致过度的刺激或灼伤皮肤</li>
