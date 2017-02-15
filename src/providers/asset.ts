@@ -171,7 +171,7 @@ export class TAssetService
                     return this.Storage.ExecQuery(new TSqlQuery(Queries.GetBodyUsage, [ScriptFile.Id]))
                         .then(DataSet =>
                         {
-                            let BodyParts = ScriptFile.BodyParts;
+                            let BodyParts = new Array<TBody>();
                             while (! DataSet.Eof)
                             {
                                 let body = new TBody();
@@ -180,7 +180,10 @@ export class TAssetService
 
                                 DataSet.Next();
                             }
+
+                            ScriptFile.BodyParts = BodyParts;
                         })
+                        .then(() => {})
                 }
             })
     }
