@@ -144,8 +144,6 @@ let translate_en =
 
     category:
     {
-        'null': 'No Description',
-
         therapy: 'Therapy',
         fat_burning: 'Fat-Burning',
         muscle_training: 'Muscle Training',
@@ -287,12 +285,12 @@ let translate_zh =
         shoulder: '肩部',
         back: '背部',
         lower_back: '腰部',
-        upper_arm: '胳膊',
+        upper_arm: '上臂',
         elbow: '手肘',
         forearm: '手臂',
         wrist: '手腕',
         abdomen: '腹部',
-        buttock: '臀部',
+        buttock: '腚部',
         thigh: '大腿',
         knee: '膝盖',
         calf: '小腿',
@@ -302,8 +300,6 @@ let translate_zh =
 
     category:
     {
-        'null': '无描述',
-
         therapy: '冶疗',
         fat_burning: '瘦身',
         muscle_training: '健美',
@@ -327,7 +323,7 @@ let translate_zh =
         fb_g: '燃烧脂肪 G',
 
     /* muscle training */
-        dumbbell: '辅助哑呤',
+        dumbbell: '哑呤',
         push_ups: '俯卧撑',
         sit_ups: '仰卧起坐',
 
@@ -337,10 +333,10 @@ let translate_zh =
         twist: '搓揉',
         soft: '肌肉放松',
         joint: '关节舒展',
-        shoudler: '肩部舒展',
+        shoudler: '肩部按摩',
         upper_arm: '上臂按摩',
         waist: '腰部按摩',
-        soles: '脚部按摩',
+        soles: '足底按摩',
         leg: '腿部按摩',
     },
 
