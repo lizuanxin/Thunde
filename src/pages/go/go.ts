@@ -70,7 +70,8 @@ export class GoPage implements OnInit, OnDestroy
         modal.present();
     }
 
-    ShowDesc(){
+    ShowDesc(val){
+        this.CurrentDescIcon = val;
         this.IsShowDescIcon = true;
     }
 
@@ -162,5 +163,6 @@ export class GoPage implements OnInit, OnDestroy
     DeviceList: Array<BLE.IScanDiscovery> = [];
     IsShowingDeviceList: boolean = false;
     IsShowDescIcon:boolean = false;
+    CurrentDescIcon:string;
     private ScanSubscription: Subscription;
 }

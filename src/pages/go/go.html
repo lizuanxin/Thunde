@@ -14,7 +14,7 @@
             <ion-row [ngClass]="app.SkinColor">
                 <ion-col>
                     <div out-line b-g-c>
-                        <ion-icon app-icon v-w-72>&#xe9a4;</ion-icon>
+                        <ion-icon app-icon v-w-72>{{CurrentDescIcon}}</ion-icon>
                     </div>
                 </ion-col>
             </ion-row>
@@ -24,7 +24,7 @@
                 <h5 [ngClass]="app.SkinColor" padding-left>{{body.Name_LangId|translate}} <br> {{body.Name_LangId}} {{body.DescIconString}}</h5>
                 <ion-row wrap padding-horizontal margin-bottom [ngClass]="app.SkinColor">
                     <ion-col width-50 *ngFor="let icon of body.DescIconChars">
-                        <div out-line radius b-g-c (click)="ShowDesc()" tappable>
+                        <div out-line radius b-g-c (click)="ShowDesc(icon)" tappable>
                             <ion-icon app-icon v-w-36>{{icon}}</ion-icon>
                         </div>
                     </ion-col>
