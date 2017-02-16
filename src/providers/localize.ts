@@ -51,6 +51,7 @@ export class TLocalizeService
         let codes = navigator.language.split('-');
         if (codes[0] === 'zh')
             this.Language = 'zh';
+        this.Language = 'zh';
     }
 
     private Storage: TSqliteStorage;
@@ -76,10 +77,6 @@ let translate_en =
         disconnected: '',
         no_load: 'Apply all the electrodes.',
         hardware_error: 'Hardware error, Please contact Customer Service.',
-
-        effect_freq: 'Effective Frequency: ',
-        cluster_freq: 'Frequency: ',
-        pulse_width: 'Impulse: ',
 
         network_unavailable: 'Network Unavailable.'
     },
@@ -116,6 +113,12 @@ let translate_en =
     go_page:
     {
         plug_device: 'Plugin your device...',
+
+        effect_freq: 'Effective Frequency: ',
+        cluster_freq: 'Stimulation Frequency: ',
+        pulse_width: 'Impulse Width: ',
+
+        professional: 'Professional Parameters'
     },
 
     running_page:
@@ -272,6 +275,12 @@ let translate_zh =
     go_page:
     {
         plug_device: '请插入您的设备...',
+
+        effect_freq: '工作有效频率: ',
+        cluster_freq: '簇刺激频率: ',
+        pulse_width: '输出脉冲宽度: ',
+
+        professional: 'Professional Parameters'
     },
 
     running_page:
