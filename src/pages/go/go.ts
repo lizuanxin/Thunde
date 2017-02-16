@@ -70,10 +70,15 @@ export class GoPage implements OnInit, OnDestroy {
         let RetVal = new Array<string>();
         for (let d of this.ScriptFile.Details) {
             let obj: { effect_freq: string, cluster_freq?: string, pulse_width: string } = JSON.parse(d.Desc);
-            let line = this.Localize.Translate('go_page.effect_freq') + obj.effect_freq + '<br>';
+            let line: string = '';
+
+            if (this.ScriptFile.Details.length > 1)
+                line += this.Localize.Translate('go_page.seq') + d.Name + '<br>';
+
+            line += this.Localize.Translate('go_page.effect_freq') + obj.effect_freq + '<br>';
 
             if (TypeInfo.Assigned(obj.cluster_freq))
-                line += this.Localize.Translate('go_page.cluster_freq') + obj.cluster_freq + '<br> ';
+                line += this.Localize.Translate('go_page.cluster_freq') + obj.cluster_freq + '<br>';
             line += this.Localize.Translate('go_page.pulse_width') + obj.pulse_width;
 
             RetVal.push(line);

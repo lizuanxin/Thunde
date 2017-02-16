@@ -51,7 +51,7 @@ export class TLocalizeService
         let codes = navigator.language.split('-');
         if (codes[0] === 'zh')
             this.Language = 'zh';
-        this.Language = 'zh';
+        // this.Language = 'zh';
     }
 
     private Storage: TSqliteStorage;
@@ -114,11 +114,12 @@ let translate_en =
     {
         plug_device: 'Plugin your device...',
 
-        effect_freq: 'Effective Frequency: ',
-        cluster_freq: 'Stimulation Frequency: ',
-        pulse_width: 'Impulse Width: ',
-
-        professional: 'Professional Parameters'
+        advise: 'apply to ',
+        professional: 'Professional Information',
+        seq: '<b>SEQ<b> ',
+        effect_freq:  '<b>Effective</b> Frequency: ',
+        cluster_freq: '<b>Stimulation</b> Frequency: ',
+        pulse_width:  '<b>Impulse</b>: ',
     },
 
     running_page:
@@ -276,11 +277,12 @@ let translate_zh =
     {
         plug_device: '请插入您的设备...',
 
-        effect_freq: '工作有效频率: ',
-        cluster_freq: '簇刺激频率: ',
-        pulse_width: '输出脉冲宽度: ',
-
-        professional: 'Professional Parameters'
+        advise: '',
+        professional: '专业描述',
+        seq: '<b>序列</b> ',
+        effect_freq: '有效<b>作用</b>频率: ',
+        cluster_freq: '<b>刺激簇</b>频率: ',
+        pulse_width: '输出<b>脉冲</b>宽度: ',
     },
 
     running_page:
@@ -324,7 +326,7 @@ let translate_zh =
     /* THRIPY */
         sore: '酸痛冶疗',
         pain: '疼痛冶疗',
-        han: '疼痛缓解',
+        han: '快速止痛',
 
     /* fat-burning */
         fb_a: '燃烧脂肪 A',

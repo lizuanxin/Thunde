@@ -128,8 +128,7 @@ export namespace const_data
     [
         {Id: '{00000000-0000-4000-4000-000000000001}', Author: 'UltraCreation Team',
             Category_Id: '{00000000-0000-4000-3000-000000000001}', Mode_Id: null,Name: 'sore',
-            //BodyParts: new Array<IBodyPart>().concat(BodyCategory.back, BodyCategory.forelimb, BodyCategory.lowerlimb),
-            BodyParts: [],
+            BodyParts: new Array<IBodyPart>().concat(BodyCategory.back, BodyCategory.forelimb, BodyCategory.lowerlimb),
             Content: inplace_files.file3_sore_therpy},
         {Id: '{00000000-0000-4000-4000-000000000002}', Author: 'UltraCreation Team',
             Category_Id: '{00000000-0000-4000-3000-000000000001}', Mode_Id: null,Name: 'pain',

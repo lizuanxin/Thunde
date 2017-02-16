@@ -19,6 +19,8 @@ const DEF_REPEAT = 1;
 const DEF_INTERVAL = 0;
 const DEF_CLUSTER = 1;
 
+const SNAP_JOIN_COUNT = 5;
+
 /* TRange */
 
 export interface IRange
@@ -170,20 +172,26 @@ export class TFile extends TPersistable
 
     Snap(): Array<ISnap>
     {
+        let Snaps = new Array<ISnap>();
+        for (let i = 0; i < this.Sections.length; i++)
+            Snaps.push(this.Sections[i].Snap())
+
+        if (Snaps.length <= SNAP_JOIN_COUNT)
+            return Snaps;
+
+        // snaps is too many starting to join
         let RetVal = new Array<ISnap>();
 
-        let Prev: ISnap = null;
-        for (let i = 0; i < this.Sections.length; i++)
+        let Prev: ISnap = Snaps[0];
+        for (let i = 1; i < Snaps.length; i++)
         {
-            let Snap = this.Sections[i].Snap();
+            let Snap = Snaps[i];
 
-            if (TypeInfo.Assigned(Prev) &&
-                (Prev.ClusterFreqRange.IsEqual(Snap.ClusterFreqRange) && Prev.PulseRange.IsEqual(Snap.PulseRange)))
-            {
+            if (Prev.ClusterFreqRange.IsEqual(Snap.ClusterFreqRange) && Prev.PulseRange.IsEqual(Snap.PulseRange))
                 Prev.Join(Snap)
-            }
             else
                 RetVal.push(Snap);
+
             Prev = Snap;
         }
         return RetVal;

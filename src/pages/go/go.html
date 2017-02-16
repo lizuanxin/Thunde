@@ -16,7 +16,7 @@
         </div>
         <div [ngClass]="{'fadeout':IsShowDescIcon}">
             <div *ngFor="let body of ScriptFile.BodyParts">
-                <h5 [ngClass]="app.SkinColor" padding-left>{{body.Name_LangId|translate}}</h5>
+                <h5 [ngClass]="app.SkinColor" padding-left>{{'go_page.advise'|translate}}<b>{{body.Name_LangId|translate}}</b></h5>
                 <ion-row wrap padding-horizontal margin-bottom [ngClass]="app.SkinColor">
                     <ion-col width-50 *ngFor="let icon of body.DescIconChars">
                         <div out-line radius b-g-c (click)="ShowDesc(icon)" tappable>
@@ -26,19 +26,18 @@
                 </ion-row>
             </div>
             <div class="grid" [ngClass]="app.SkinColor" margin>
-                <h1>
-                    <button ion-button (click)="ShowFileDetail()" tappable>
-                        <template [ngIf]="!IsShowFileDetail"><ion-icon>&#xf3d1;</ion-icon></template>
-                        <template [ngIf]="IsShowFileDetail"><ion-icon>&#xf3d0;</ion-icon></template>
-                        &nbsp;&nbsp;展开
-                    </button>
-                </h1>
+                <h5 (click)="ShowFileDetail()" tappable>
+                    <template [ngIf]="!IsShowFileDetail"><ion-icon>&#xf3d1;</ion-icon></template>
+                    <template [ngIf]="IsShowFileDetail"><ion-icon>&#xf3d0;</ion-icon></template>
+                    &nbsp;{{'go_page.professional'|translate}}
+                </h5>
                 <template [ngIf]="IsShowFileDetail">
                     <div class="row" *ngFor="let d of FileDetails()">
                         <div class="cell cell-max" [innerHTML]="d"></div>
                     </div>
                 </template>
             </div>
+            <br><br><br>
         </div>
     </template>
     <ion-list *ngIf="IsShowingDeviceList">
