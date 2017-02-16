@@ -28,6 +28,9 @@ const OTA_WINDOW_SIZE = 48;
 const OTA_SPLIT_PACKET_SIZE = 16;
 const OTA_PACKET_SIZE = OTA_SPLIT_PACKET_SIZE + 4;
 
+type TLinearTable = '5v' | '3.3v' | '4v';
+const DEF_LINEAR_TABLE = '4v';
+
 export enum TShellNotify
     {Shutdown, Disconnected, NoLoad, Stopped, Intensity, HardwareError, LowBattery, Battery, Ticking};
 export type TShellNotifyEvent = Subject<TShellNotify>;
@@ -48,7 +51,7 @@ export class TShell extends TAbstractShell
         }
     }
 
-    static LinearTable = '4v';
+    static LinearTable: TLinearTable = '4v';
 
     constructor (private Proxy: IProxyShell)
     {
@@ -278,9 +281,22 @@ export class TShell extends TAbstractShell
             });
     }
 
-    SetLinearTable(n : '3.3v' | '5v'): Promise<void>
+    SetLinearTable(n : TLinearTable): Promise<void>
     {
-        let Idx = n === '5v' ? 1 : 2;
+        let Idx = 3;
+        switch(n)
+        {
+        case '5v':
+            Idx = 1;
+            break;
+        case '3.3v':
+            Idx = 2;
+            break;
+        default:
+            Idx = 3;
+            break;
+        }
+
         return this.Execute('>sstab ' + Idx, REQUEST_TIMEOUT,
             Line =>
             {
@@ -478,10 +494,8 @@ export class TShell extends TAbstractShell
             .then(() =>
             {
                 let Cls = this.constructor as typeof TShell;
-                if (Cls.LinearTable !== '5v')
-                    return this.SetLinearTable('3.3v');
-                else
-                    return;
+                if (Cls.LinearTable !== DEF_LINEAR_TABLE)
+                    return this.SetLinearTable(Cls.LinearTable);
             });
     }
 

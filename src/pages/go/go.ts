@@ -7,7 +7,7 @@ import {TypeInfo, EAbort} from '../../UltraCreation/Core';
 import {BLE, Loki, TApplication, TLocalizeService, TDistributeService, TCategory, TScriptFile} from '../services';
 import {RunningPage} from '../running/running';
 import {OtaUpdatePage} from '../ota_update/ota_update';
-import {FiledetailsPage} from '../filedetails/filedetails';
+//import {FiledetailsPage} from '../filedetails/filedetails';
 
 @Component({selector: 'page-go', templateUrl: 'go.html'})
 export class GoPage implements OnInit, OnDestroy
@@ -34,13 +34,6 @@ export class GoPage implements OnInit, OnDestroy
             else
                 this.StartScan();
         }
-
-        /*
-        let F = new Loki.TFile();
-        F.LoadFrom(this.ScriptFile.Content);
-        for (let iter of F.Snap())
-            console.log(iter.Print());
-        */
     }
 
     ngOnDestroy(): void
@@ -64,13 +57,8 @@ export class GoPage implements OnInit, OnDestroy
             this.Start('USB');
     }
 
-    OpenFileDetail()
+    ShowDesc(val: string)
     {
-        let modal = this.modalCtrl.create(FiledetailsPage, {FileDetails: this.ScriptFile.Details});
-        modal.present();
-    }
-
-    ShowDesc(val){
         this.CurrentDescIcon = val;
         this.IsShowDescIcon = true;
     }
