@@ -44,7 +44,7 @@ export class TLocalizeService
     {
         this.AddLanguage('en', translate_en);
         this.AddLanguage('zh', translate_zh);
-        this.TransSvc.setDefaultLang('zh');
+        this.TransSvc.setDefaultLang('en');
 
         console.log(navigator.language);
 
@@ -76,6 +76,10 @@ let translate_en =
         disconnected: '',
         no_load: 'Apply all the electrodes.',
         hardware_error: 'Hardware error, Please contact Customer Service.',
+
+        effect_freq: 'Effective Frequency: ',
+        cluster_freq: 'Frequency: ',
+        pulse_width: 'Impulse: ',
 
         network_unavailable: 'Network Unavailable.'
     },

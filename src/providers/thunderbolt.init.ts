@@ -213,6 +213,7 @@ Profile ER Diagram
             'Duration INT,' +
             'Md5 CHAR(32),' +
             'Content TEXT,' +
+            'Professional BOOLEAN DEFAULT(0),' +
             'Timestamp DATETIME DEFAULT(0),' +
             'FOREIGN KEY(Id) REFERENCES Asset(Id) ON UPDATE CASCADE ON DELETE CASCADE,' +
             'FOREIGN KEY(Category_Id) REFERENCES Category(Id) ON UPDATE CASCADE ON DELETE CASCADE,' +

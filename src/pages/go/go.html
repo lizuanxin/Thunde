@@ -21,27 +21,7 @@
                     <ion-icon>&#xf102;</ion-icon>
                 </button>
             </div>
-            <div class="row border">
-                <ul>
-                    <li class="cell cell-33">11</li>
-                    <li class="cell cell-33">11</li>
-                    <li class="cell cell-33">11</li>
-                </ul> 
-                <ul>
-                    <li class="cell cell-33">11</li>
-                    <li class="cell cell-33">11</li>
-                    <li class="cell cell-33">11</li>
-                </ul>
-                <ul>
-                    <li class="cell cell-33">11</li>
-                    <li class="cell cell-33">11</li>
-                    <li class="cell cell-33">11</li>
-                </ul>
-                <ul>
-                    <li class="cell cell-33">11</li>
-                    <li class="cell cell-33">11</li>
-                    <li class="cell cell-33">11</li>
-                </ul>              
+            <div class="row border" *ngFor = "let d of FileDetails()" [innerHTML]="d">
             </div>
         </div>
 

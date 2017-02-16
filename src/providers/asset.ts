@@ -357,6 +357,7 @@ export class TScriptFile extends TAsset
     Md5: string = null;
     Duration: number = null;
     Author: string = null;
+    Professional: boolean = null;
 
     Details: Array<TScriptFileDesc> = [];
     BodyParts: Array<TBody> = [];
