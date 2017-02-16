@@ -1,7 +1,7 @@
 <ion-header no-shadow no-border>
     <ion-toolbar transparent>
         <ion-title text-center><span [ngClass]="app.SkinColor">{{ScriptFile.Name_LangId|translate}}</span></ion-title>
-        <ion-buttons right *ngIf="IsShowDescIcon">
+        <ion-buttons end *ngIf="IsShowDescIcon">
             <button ion-button icon-only (click)="CloseDesc()" tappable>
                         <ion-icon [ngClass]="app.SkinColor">&#xf2c0;</ion-icon>
                     </button>
@@ -10,10 +10,10 @@
 </ion-header>
 <ion-content [ngClass]="app.Skin('go')">
     <template [ngIf]="!IsShowingDeviceList">
-        <div class="show-card" *ngIf="IsShowDescIcon" [ngClass]="{'fadein':IsShowDescIcon}">
+        <div class="show-card" *ngIf="IsShowDescIcon" [ngClass]="{'fadein':IsShowDescIcon}" padding>
             <ion-row [ngClass]="app.SkinColor">
                 <ion-col>
-                    <div out-line b-g-c>
+                    <div out-line radius b-g-c>
                         <ion-icon app-icon v-w-72>{{CurrentDescIcon}}</ion-icon>
                     </div>
                 </ion-col>
