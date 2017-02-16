@@ -1,33 +1,37 @@
 div.grid {
     .row {
-        ul{
-            margin:0;
-            padding:0;
-            box-sizing: border-box;
-            display: table;
-            table-layout: fixed;
-            width: 100%;
+        border-collapse: seperate;
+        box-sizing: border-box;
+        display: table;
+        table-layout: fixed;
+        width: 100%;
+        &:first-child {
+            margin-top: 0;
         }
-        &:first-child{
-            margin-top:0;
+        &:nth-child(even){
+            background-color:rgba(255,255,255,.1)
         }
-        &.border{
-            border-style:solid;
-            border-width:0;
-            border-bottom-width:1px;
-            .cell{
-                border-style:solid;
-                border-width:1px; 
-                border-bottom-width:0;
-            }            
+        &.border {
+            border-style: solid;
+            border-width: 0;
+            border-bottom-width: 1px;
+            .cell {
+                border-style: solid;
+                border-width: 1px;
+                border-bottom-width: 0;
+            }
         }
     }
-    li.cell {               
+    .cell {
         display: table-cell;
         flex: 1;
         flex-direction: column;
         position: relative;
-        padding:3px;
+        padding: 15px 10px;
+        &.cell-max {
+            width: 100%;
+            flex: 1 100%;
+        }
         &.cell-33 {
             flex: none;
             width: 33%;

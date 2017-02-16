@@ -66,3 +66,10 @@
     -moz-transition: all .2s ease .1s;
     transition: all .2s ease .1s;
 }
+
+.fadeout{
+    animation:fadeOut .2s infinite linear;
+    -webkit-animation:fadeOut .2s infinite;
+    animation-fill-mode: forwards;
+    animation-iteration-count:1;
+}

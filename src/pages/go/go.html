@@ -1,8 +1,8 @@
 <ion-header no-shadow no-border>
     <ion-toolbar transparent>
         <ion-title text-center><span [ngClass]="app.SkinColor">{{ScriptFile.Name_LangId|translate}}</span></ion-title>
-        <ion-buttons right>
-            <button ion-button icon-only >
+        <ion-buttons right *ngIf="IsShowDescIcon">
+            <button ion-button icon-only (click)="CloseDesc()" tappable>
                         <ion-icon [ngClass]="app.SkinColor">&#xf2c0;</ion-icon>
                     </button>
         </ion-buttons>
@@ -10,7 +10,7 @@
 </ion-header>
 <ion-content [ngClass]="app.Skin('go')">
     <template [ngIf]="!IsShowingDeviceList">
-        <div class="show-card" *ngIf="IsShowDescIcon">
+        <div class="show-card" *ngIf="IsShowDescIcon" [ngClass]="{'fadein':IsShowDescIcon}">
             <ion-row [ngClass]="app.SkinColor">
                 <ion-col>
                     <div out-line b-g-c>
@@ -19,29 +19,29 @@
                 </ion-col>
             </ion-row>
         </div>
-        <template [ngIf]="!IsShowDescIcon">
-        <div *ngFor="let body of ScriptFile.BodyParts" >
-            <h5 [ngClass]="app.SkinColor" padding-left>{{body.Name_LangId|translate}} <br> {{body.Name_LangId}} {{body.DescIconString}}</h5>
-            <ion-row wrap padding-horizontal margin-bottom [ngClass]="app.SkinColor">
-                <ion-col width-50 *ngFor="let icon of body.DescIconChars">
-                    <div out-line radius b-g-c (click)="ShowDescIcon($event)" tappable>
-                        <ion-icon app-icon v-w-36>{{icon}}</ion-icon>
-                    </div>
-                </ion-col>
-            </ion-row>
-        </div>
-        <div class="grid" [ngClass]="app.SkinColor" margin>
-            <div class="row">
-                <button ion-button >
-                展开&nbsp;&nbsp;
-                <ion-icon>&#xf3d0;</ion-icon>
-                </button>
-
+        <div [ngClass]="{'fadeout':IsShowDescIcon}">
+            <div *ngFor="let body of ScriptFile.BodyParts">
+                <h5 [ngClass]="app.SkinColor" padding-left>{{body.Name_LangId|translate}} <br> {{body.Name_LangId}} {{body.DescIconString}}</h5>
+                <ion-row wrap padding-horizontal margin-bottom [ngClass]="app.SkinColor">
+                    <ion-col width-50 *ngFor="let icon of body.DescIconChars">
+                        <div out-line radius b-g-c (click)="ShowDesc()" tappable>
+                            <ion-icon app-icon v-w-36>{{icon}}</ion-icon>
+                        </div>
+                    </ion-col>
+                </ion-row>
             </div>
-            <div class="row border" *ngFor = "let d of FileDetails()" [innerHTML]="d">
+            <div class="grid" [ngClass]="app.SkinColor" margin>
+                <h1>
+                    <button ion-button>
+                        展开&nbsp;&nbsp;
+                        <ion-icon>&#xf3d0;</ion-icon>
+                    </button>
+                </h1>
+                <div class="row" *ngFor="let d of FileDetails()">
+                    <div class="cell cell-max" [innerHTML]="d"></div>
+                </div>
             </div>
         </div>
-        </template>
     </template>
     <ion-list *ngIf="IsShowingDeviceList">
         <template [ngIf]="DeviceList.length > 0">

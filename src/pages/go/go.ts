@@ -22,6 +22,7 @@ export class GoPage implements OnInit, OnDestroy
             Loki.TShell.LinearTable = '3.3v';
         else if (platform.is('android'))
             Loki.TShell.LinearTable = '5v';
+
     }
 
     ngOnInit(): void
@@ -69,8 +70,12 @@ export class GoPage implements OnInit, OnDestroy
         modal.present();
     }
 
-    ShowDescIcon(e){
-        console.log(e)
+    ShowDesc(){
+        this.IsShowDescIcon = true;
+    }
+
+    CloseDesc(){
+        this.IsShowDescIcon = false;
     }
 
     FileDetails(): Array<string>
