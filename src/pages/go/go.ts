@@ -1,20 +1,18 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Subscription} from 'rxjs/Rx'
-import {Platform, NavController, ViewController, NavParams,ModalController} from 'ionic-angular';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs/Rx'
+import { Platform, NavController, ViewController, NavParams, ModalController } from 'ionic-angular';
 
-import {TypeInfo, EAbort} from '../../UltraCreation/Core';
+import { TypeInfo, EAbort } from '../../UltraCreation/Core';
 
-import {BLE, Loki, TApplication, TLocalizeService, TDistributeService, TCategory, TScriptFile} from '../services';
-import {RunningPage} from '../running/running';
-import {OtaUpdatePage} from '../ota_update/ota_update';
+import { BLE, Loki, TApplication, TLocalizeService, TDistributeService, TCategory, TScriptFile } from '../services';
+import { RunningPage } from '../running/running';
+import { OtaUpdatePage } from '../ota_update/ota_update';
 //import {FiledetailsPage} from '../filedetails/filedetails';
 
-@Component({selector: 'page-go', templateUrl: 'go.html'})
-export class GoPage implements OnInit, OnDestroy
-{
-    constructor(public nav: NavController,public modalCtrl: ModalController, private view: ViewController, private navParams: NavParams, private platform: Platform,
-        private app: TApplication, private Localize: TLocalizeService, private Distribute: TDistributeService)
-    {
+@Component({ selector: 'page-go', templateUrl: 'go.html' })
+export class GoPage implements OnInit, OnDestroy {
+    constructor(public nav: NavController, public modalCtrl: ModalController, private view: ViewController, private navParams: NavParams, private platform: Platform,
+        private app: TApplication, private Localize: TLocalizeService, private Distribute: TDistributeService) {
         this.Category = navParams.get('Category');
         this.ScriptFile = navParams.get('ScriptFile');
 
@@ -25,10 +23,8 @@ export class GoPage implements OnInit, OnDestroy
 
     }
 
-    ngOnInit(): void
-    {
-        if (! Loki.TShell.IsUsbPlugin)
-        {
+    ngOnInit(): void {
+        if (!Loki.TShell.IsUsbPlugin) {
             if (this.platform.is('android'))
                 BLE.Enable().then(() => this.StartScan())
             else
@@ -36,18 +32,15 @@ export class GoPage implements OnInit, OnDestroy
         }
     }
 
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         if (TypeInfo.Assigned(this.ScanSubscription))
             this.ScanSubscription.unsubscribe();
 
-        Loki.TShell.StopScan().catch(err =>{});
+        Loki.TShell.StopScan().catch(err => { });
     }
 
-    Go()
-    {
-        if (! Loki.TShell.IsUsbPlugin)
-        {
+    Go() {
+        if (!Loki.TShell.IsUsbPlugin) {
             if (this.DeviceList.length === 1)
                 this.Start(this.DeviceList[0].id);
             else
@@ -57,22 +50,26 @@ export class GoPage implements OnInit, OnDestroy
             this.Start('USB');
     }
 
-    ShowDesc(val: string)
-    {
+    ShowDesc(val: string) {
         this.CurrentDescIcon = val;
         this.IsShowDescIcon = true;
     }
 
-    CloseDesc(){
+    CloseDesc() {
         this.IsShowDescIcon = false;
     }
 
-    FileDetails(): Array<string>
-    {
+    ShowFileDetail() {
+        if (this.IsShowFileDetail)
+            this.IsShowFileDetail = false;
+        else
+            this.IsShowFileDetail = true;
+    }
+
+    FileDetails(): Array<string> {
         let RetVal = new Array<string>();
-        for (let d of this.ScriptFile.Details)
-        {
-            let obj: {effect_freq: string, cluster_freq?: string, pulse_width: string} = JSON.parse(d.Desc);
+        for (let d of this.ScriptFile.Details) {
+            let obj: { effect_freq: string, cluster_freq?: string, pulse_width: string } = JSON.parse(d.Desc);
             let line = this.Localize.Translate('go_page.effect_freq') + obj.effect_freq + '<br>';
 
             if (TypeInfo.Assigned(obj.cluster_freq))
@@ -85,33 +82,26 @@ export class GoPage implements OnInit, OnDestroy
         return RetVal;
     }
 
-    SelectionDevice(Device: BLE.IScanDiscovery)
-    {
+    SelectionDevice(Device: BLE.IScanDiscovery) {
         this.Start(Device.id);
     }
 
-    private StartScan()
-    {
+    private StartScan() {
         this.ScanSubscription = Loki.TShell.StartScan()
-            .subscribe((next) =>
-            {
+            .subscribe((next) => {
                 this.DeviceList = next;
             },
-            (err) =>
-            {
+            (err) => {
                 console.error(err);
             },
-            () =>
-            {
+            () => {
                 if (TypeInfo.Assigned(this.ScanSubscription))
                     setTimeout(() => this.StartScan(), 0);
             });
     }
 
-    private Start(DeviceId: string)
-    {
-        if (TypeInfo.Assigned(this.ScanSubscription))
-        {
+    private Start(DeviceId: string) {
+        if (TypeInfo.Assigned(this.ScanSubscription)) {
             this.ScanSubscription.unsubscribe();
             this.ScanSubscription = null;
         }
@@ -119,29 +109,26 @@ export class GoPage implements OnInit, OnDestroy
         let params = this.navParams.data;
         params.DeviceId = DeviceId;
 
-        this.app.ShowLoading().then(loading =>
-        {
+        this.app.ShowLoading().then(loading => {
             let Shell = Loki.TShell.Get(DeviceId);
 
             let StopScan: Promise<void> = Promise.resolve();
-            if (! Loki.TShell.IsUsbPlugin)
+            if (!Loki.TShell.IsUsbPlugin)
                 StopScan = BLE.TGatt.StopScan();
 
             StopScan.then(() => Shell.Connect())
                 .then(() => this.Distribute.ReadFirmware(Shell.Version))
-                .then(Buf =>
-                {
+                .then(Buf => {
                     params.Shell = Shell;
                     params.Firmware = Buf;
                     return this.nav.push(OtaUpdatePage, params);
                 })
-               .catch(err =>
-               {
-                   if (err instanceof EAbort)
+                .catch(err => {
+                    if (err instanceof EAbort)
                         this.nav.push(RunningPage, params);
                     else
-                       loading.dismiss().then(() => this.app.ShowHintId(err.message));
-               })
+                        loading.dismiss().then(() => this.app.ShowHintId(err.message));
+                })
         });
     }
 
@@ -150,7 +137,8 @@ export class GoPage implements OnInit, OnDestroy
 
     DeviceList: Array<BLE.IScanDiscovery> = [];
     IsShowingDeviceList: boolean = false;
-    IsShowDescIcon:boolean = false;
-    CurrentDescIcon:string;
+    IsShowDescIcon: boolean = false;
+    IsShowFileDetail: boolean = false;
+    CurrentDescIcon: string;
     private ScanSubscription: Subscription;
 }

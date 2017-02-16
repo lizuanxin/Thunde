@@ -27,13 +27,17 @@
             </div>
             <div class="grid" [ngClass]="app.SkinColor" margin>
                 <h1>
-                    <button ion-button>
-                        <ion-icon>&#xf3d0;</ion-icon>&nbsp;&nbsp;展开
+                    <button ion-button (click)="ShowFileDetail()" tappable>
+                        <template [ngIf]="!IsShowFileDetail"><ion-icon>&#xf3d1;</ion-icon></template>
+                        <template [ngIf]="IsShowFileDetail"><ion-icon>&#xf3d0;</ion-icon></template>
+                        &nbsp;&nbsp;展开
                     </button>
                 </h1>
-                <div class="row" *ngFor="let d of FileDetails()">
-                    <div class="cell cell-max" [innerHTML]="d"></div>
-                </div>
+                <template [ngIf]="IsShowFileDetail">
+                    <div class="row" *ngFor="let d of FileDetails()">
+                        <div class="cell cell-max" [innerHTML]="d"></div>
+                    </div>
+                </template>
             </div>
         </div>
     </template>
