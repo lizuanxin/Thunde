@@ -91,8 +91,7 @@ $outer-color: #333) {
 }
 
 @mixin square($outlineStyle,
-$outlinewidth,
-$shape) {
+$outlinewidth) {
     position: relative;
     width: 100%;
     height: 0;
@@ -106,7 +105,4 @@ $shape) {
     text-align: center;
     border-style: $outlineStyle;
     border-width: $outlinewidth;
-    @if($shape=='fillet') {
-        border-radius: 5%;
-    }
 }

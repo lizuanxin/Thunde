@@ -106,10 +106,17 @@
     }
 }
 
+[relative],.relative{
+    position:relative;
+}
+
 div {
     &[out-line],
     .out-line {
-        @include square(none, 0, fillet);
+        @include square(none, 0);
+        &[radius],&.radius{
+            border-radius: 5%;
+        }
     }
 }
 
