@@ -1,0 +1,54 @@
+div.grid {
+    .row {
+        ul{
+            margin:0;
+            padding:0;
+            box-sizing: border-box;
+            display: table;
+            table-layout: fixed;
+            width: 100%;
+        }
+        &:first-child{
+            margin-top:0;
+        }
+        &.border{
+            border-style:solid;
+            border-width:0;
+            border-bottom-width:1px;
+            .cell{
+                border-style:solid;
+                border-width:1px; 
+                border-bottom-width:0;
+            }            
+        }
+    }
+    li.cell {               
+        display: table-cell;
+        flex: 1;
+        flex-direction: column;
+        position: relative;
+        padding:3px;
+        &.cell-33 {
+            flex: none;
+            width: 33%;
+        }
+        &.cell-nowrap {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        &.cell-valign-middle {
+            vertical-align: middle;
+            justify-content: center;
+        }
+        &.cell-valign-bottom {
+            vertical-align: bottom;
+            justify-content: flex-end;
+        }
+        &.cell-align-center {
+            text-align: center;
+        }
+        &.cell-align-right {
+            text-align: right;
+        }
+    }
+}

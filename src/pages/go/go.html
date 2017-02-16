@@ -15,6 +15,36 @@
                 </ion-col>
             </ion-row>
         </div>
+        <div class="grid" [ngClass]="app.SkinColor" margin>
+            <div class="row">
+                <button ion-button small [ngStyle]="{'padding':'0 0.5em','height':'1.6em','border-radius':'0','margin-left':'0'}">
+                    <ion-icon>&#xf102;</ion-icon>
+                </button>
+            </div>
+            <div class="row border">
+                <ul>
+                    <li class="cell cell-33">11</li>
+                    <li class="cell cell-33">11</li>
+                    <li class="cell cell-33">11</li>
+                </ul> 
+                <ul>
+                    <li class="cell cell-33">11</li>
+                    <li class="cell cell-33">11</li>
+                    <li class="cell cell-33">11</li>
+                </ul>
+                <ul>
+                    <li class="cell cell-33">11</li>
+                    <li class="cell cell-33">11</li>
+                    <li class="cell cell-33">11</li>
+                </ul>
+                <ul>
+                    <li class="cell cell-33">11</li>
+                    <li class="cell cell-33">11</li>
+                    <li class="cell cell-33">11</li>
+                </ul>              
+            </div>
+        </div>
+
     </template>
     <ion-list *ngIf="IsShowingDeviceList">
         <template [ngIf]="DeviceList.length > 0">
