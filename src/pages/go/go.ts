@@ -69,6 +69,10 @@ export class GoPage implements OnInit, OnDestroy
         modal.present();
     }
 
+    ShowDescIcon(e){
+        console.log(e)
+    }
+
     FileDetails(): Array<string>
     {
         let RetVal = new Array<string>();
@@ -152,5 +156,6 @@ export class GoPage implements OnInit, OnDestroy
 
     DeviceList: Array<BLE.IScanDiscovery> = [];
     IsShowingDeviceList: boolean = false;
+    IsShowDescIcon:boolean = false;
     private ScanSubscription: Subscription;
 }
