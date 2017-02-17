@@ -32,10 +32,10 @@ export class HomePage implements OnInit, OnDestroy
 
         setTimeout(() =>
         {
-            HttpRequest(GetWebRoot() + '/assets/Firmware.json', 'GET', 'json')
-            .then(Info =>
+            HttpRequest(GetWebRoot() + '/assets/ThunderboltQ.bin', 'GET', 'arraybuffer')
+            .then((Info: ArrayBuffer) =>
             {
-                console.log(JSON.stringify(Info));
+                console.log('ThunderboltQ.bin size is', Info.byteLength);
             })
             .catch(err => console.log(err.message));
         }, 100)

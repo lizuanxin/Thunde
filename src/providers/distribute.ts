@@ -58,6 +58,12 @@ export function HttpRequest(Url: string,
             // http informational
             else if (req.status >= 100)
                 console.log('HTTP Informational ' + req.status);
+            else if (req.status === 0)
+            {
+                // for IOS always returns 0
+                observer.next(req.response);
+                observer.complete();
+            }
             else
                 observer.error(new Error('HTTP Unknown Status ' + req.status));
 
@@ -67,7 +73,7 @@ export function HttpRequest(Url: string,
 
         req.onerror = function(this: XMLHttpRequestEventTarget, ev: ErrorEvent)
         {
-            observer.error(new Error('XMLHttpRequest error: ' + ev.message));
+            observer.error(new Error('XMLHttpRequest error'));
         };
         req.ontimeout = function(this: XMLHttpRequestEventTarget, ev: ProgressEvent)
         {
