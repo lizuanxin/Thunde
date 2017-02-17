@@ -170,9 +170,9 @@ let translate_en =
         fb_g: 'Burning G',
 
     /* muscle training */
-        dumbbell: 'Dumbbell Assist',
-        push_ups: 'Push-ups Simulation',
-        sit_ups: 'Sit-ups Simulation',
+        dumbbell: 'Dumbbell',
+        push_ups: 'Push-ups',
+        sit_ups: 'Sit-ups',
     /* relax */
         knock: 'Knock',
         press: 'Press',
@@ -332,7 +332,7 @@ let translate_zh =
         fb_g: '燃烧脂肪 G',
 
     /* muscle training */
-        dumbbell: '哑呤',
+        dumbbell: '哑铃',
         push_ups: '俯卧撑',
         sit_ups: '仰卧起坐',
 
