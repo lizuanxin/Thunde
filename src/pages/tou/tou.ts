@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import {TApplication, TLocalizeService} from '../services';
 
-@Component({ selector: 'page-agreement', templateUrl: 'agreement.html' })
-export class AgreementPage
+@Component({selector: 'page-tou', templateUrl: 'tou.html'})
+export class TouPage
 {
     constructor(public nav: NavController, public app: TApplication, private Localize: TLocalizeService)
     {

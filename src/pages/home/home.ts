@@ -5,7 +5,7 @@ import {TypeInfo} from '../../UltraCreation/Core'
 import * as UI from '../../UltraCreation/Graphic'
 
 import {TApplication, TLocalizeService, TAssetService, TCategory, TScriptFile, TDistributeService} from '../services';
-import {AgreementPage} from '../agreement/agreement';
+import {TouPage} from '../tou/tou';
 import {GoPage} from '../go/go';
 import {SkinPage} from '../skin/skin';
 
@@ -28,7 +28,7 @@ export class HomePage implements OnInit, OnDestroy
         this.Categories = this.Asset.Categories;
 
         if (! this.app.AcceptedTerms)
-            this.ShowAgreement();
+            this.ShowTOU();
     }
 
     ngOnDestroy(): void
@@ -69,9 +69,9 @@ export class HomePage implements OnInit, OnDestroy
         this.nav.push(SkinPage);
     }
 
-    ShowAgreement()
+    ShowTOU()
     {
-        this.nav.push(AgreementPage);
+        this.nav.push(TouPage);
     }
 
     StateCategory(Category: TCategory)

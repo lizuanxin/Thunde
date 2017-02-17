@@ -102,7 +102,7 @@ let translate_en =
     {
         title: 'Thunder Bolt',
         menu_appearance: 'Skin',
-        menu_agreement: 'TOU',
+        menu_tou: 'Terms of Use',
     },
 
     register_page:
@@ -194,36 +194,35 @@ let translate_en =
     agreement_page:
     {
         agree: 'Accept <b>Terms & Conditions</b>',
-        terms_conditions: `<h6 color="danger"><ion-icon app-icon text-danger>&#xe900;</ion-icon> <span>禁止</span></h6>
-            <ul>
-                <li>不应用于未经确诊的疼痛</li>
-                <li>切勿于癌症伤口上使用本产品</li>
-                <li>不宜应用在肿胀，感染，发炎区或皮疹(例如静脉炎，血栓性静脉炎等)</li>
-                <li>使用心脏起搏器或任何植入式心震颤去除器的患者请勿使用.心脏病患者使用前需咨询医生指引。</li>
-                <li>勿靠近心脏使用。电极贴不应被放置在胸部(肋骨和胸骨附近)，尤其不可放置在兩胸大肌处。</li>
-                <li>不建议贫血，癲癇及糖尿病人使用</li>
-                <li>不要在怀孕期間使用本产品</li>
-                <li>如果用户正连接到高频手术设备，不宜使用，可能导致皮肤灼伤</li>
-                <li>禁止在头部，面部，口腔，颈项前部，靠近生殖器或內部使用</li>
-                <li>严禁在睡眠期间使用本产品</li>
-                <li>有除以上情形以外的身体不适人士</li>
-            </ul>
-            <h6 color="danger"><ion-icon text-danger>&#xf267;</ion-icon> <span>警告，注意及不良反应</span></h6>
-            <ul>
-                <li>注意不要过度刺激甲状腺或颈动脉，或胸部和上背部，这可能导致上呼吸道的严重肌肉痉挛，呼吸困难，或影响心律或血压</li>
-                <li>不要在短波或微波冶疗设备附近使用此产品，可能會影响产品输出功率</li>
-                <li>切勿在湿度高环境下使用本产品，如淋浴时不宜使用</li>
-                <li>请使用在清洁，已擦干，和没有损伤的皮肤区域</li>
-                <li>在使用过程中，要保持电极贴分隔开，贴片互相接触，可能会导致过度的刺激或灼伤皮肤</li>
-                <li>请将仪器放在儿童不能接触的位置</li>
-                <li>此仪器不宜由没有自制能力，情绪不安，老年痴呆症，或低智商的病人操作</li>
-                <li>驾驶中，靠近水，或在任何肌肉收缩的运动过程中均不可使用本产品，否则可能受伤</li>
-                <li>使用本产品時，不可靠近任何高度易燃物质，气体或爆炸物</li>
-                <li>使用过程中需将电极贴尽量远离金属物体如皮带扣、项链等等</li>
-                <li>移除电极贴前先关产品电源</li>
-                <li>只可選用由供应商提供电极贴</li>
-                <li>如果出现皮肤敏感，请停用本产品</li>
-            </ul>`,
+        terms_conditions: `<div><h5 class="text-danger"><span><span>PROHIBITED!</span></h5><ul>
+            <li> Those with an acute illness</li>
+            <li> Those with malignant tumors</li>
+            <li> Those who pregnant, menstruating, or who have recently given birth</li>
+            <li> Those with heart problems</li>
+            <li> Those with an abnormal skin condition(infectious disease or injury)</li>
+            <li> Those who are Anemia, epilepsy and diabetes</li>
+            <li> Those with a pacemaker or epilepsy-prone</li>
+            <li> The electrode should not be placed near the chest (ribs and sternum), especially near the heart</li>
+            <li> Do not place the pads on the area close to the heart, on the head, front of the neck, face or genitals, or where there is a skin disease.</li>
+            <li> Do not use the device while you are asleep</li>
+            <li> Besides the above, those feeling physical discomfort</li>
+        </ul></div><br>
+        <h5 class="text-orange"><span>WARNING!</span></h5><ul>
+            <li> Do not to over stimulate the thyroid, neck, chest, and upper back, which may cause severe muscle cramps in the upper respiratory tract, difficulty breathing, or affect the rhythm of the heart or blood pressure</li>
+            <li> During operation, keep the pads away from metallic objects, such as belt buckles or necklaces</li>
+            <li> Do not use the device in water or in humid environment, such bathroom, sauna.</li>
+            <li> Do not use this product near shortwave or microwave therapy equipment, which may affect output power</li>
+            <li> Do not allow children or persons who are unable to express themselves to use the product</li>
+            <li> Be sure to turn off the power when removing the pads</li>
+            <li> Please store the instrument in the position where the children can't get it</li>
+            <li> Can only use the supplier to provide the electrode paste</li>
+            <li> Do not use the device immediately before or while driving an automobile.</li>
+            <li> Do not close to any highly flammable material, gas or explosive when using this product</li>
+            <li> Immediately discontinue use and consult a physician if you experience bodily discomfort</li>
+            <li> Be sure the pads are note in contact with each other during session, or it may result in a strong electric shock or burn</li>
+            <li> Be sure the skin clean and dry, and no damage before use</li>
+            <li> When using this product or massage program for the first time, be sure to start with low intensity and adapt gradually</li>
+        </ul></div>`,
     }
 }
 
@@ -270,7 +269,7 @@ let translate_zh =
     {
         title: 'Thunder Bolt',
         menu_appearance: '选择外观',
-        menu_agreement: '使用条款',
+        menu_tou: '使用条款',
     },
 
     go_page:
@@ -358,35 +357,33 @@ let translate_zh =
     agreement_page:
     {
         agree: '我已阅读并接受使用条款',
-        terms_conditions: `<h6 class="text-danger"><i class="app-icon">&#xe900;</i><span>禁止</span></h6>
-            <ul>
-                <li>不应用于未经确诊的疼痛</li>
-                <li>切勿于癌症伤口上使用本产品</li>
-                <li>不宜应用在肿胀，感染，发炎区或皮疹(例如静脉炎，血栓性静脉炎等)</li>
-                <li>使用心脏起搏器或任何植入式心震颤去除器的患者请勿使用.心脏病患者使用前需咨询医生指引。</li>
-                <li>勿靠近心脏使用。电极贴不应被放置在胸部(肋骨和胸骨附近)，尤其不可放置在兩胸大肌处。</li>
-                <li>不建议贫血，癲癇及糖尿病人使用</li>
-                <li>不要在怀孕期間使用本产品</li>
-                <li>如果用户正连接到高频手术设备，不宜使用，可能导致皮肤灼伤</li>
-                <li>禁止在头部，面部，口腔，颈项前部，靠近生殖器或內部使用</li>
-                <li>严禁在睡眠期间使用本产品</li>
-                <li>有除以上情形以外的身体不适人士</li>
-            </ul>
-            <h6 class="text-danger"><i class="ion-icon">&#xf267;</i> <span>警告，注意及不良反应</span></h6>
-            <ul>
-                <li>注意不要过度刺激甲状腺或颈动脉，或胸部和上背部，这可能导致上呼吸道的严重肌肉痉挛，呼吸困难，或影响心律或血压</li>
-                <li>不要在短波或微波冶疗设备附近使用此产品，可能會影响产品输出功率</li>
-                <li>切勿在湿度高环境下使用本产品，如淋浴时不宜使用</li>
-                <li>请使用在清洁，已擦干，和没有损伤的皮肤区域</li>
-                <li>在使用过程中，要保持电极贴分隔开，贴片互相接触，可能会导致过度的刺激或灼伤皮肤</li>
-                <li>请将仪器放在儿童不能接触的位置</li>
-                <li>此仪器不宜由没有自制能力，情绪不安，老年痴呆症，或低智商的病人操作</li>
-                <li>驾驶中，靠近水，或在任何肌肉收缩的运动过程中均不可使用本产品，否则可能受伤</li>
-                <li>使用本产品時，不可靠近任何高度易燃物质，气体或爆炸物</li>
-                <li>使用过程中需将电极贴尽量远离金属物体如皮带扣、项链等等</li>
-                <li>移除电极贴前先关产品电源</li>
-                <li>只可選用由供应商提供电极贴</li>
-                <li>如果出现皮肤敏感，请停用本产品</li>
-            </ul>`,
+        terms_conditions: `<div><h5 class="text-danger"><span>禁止!</span></h5><ul>
+            <li>不应用于未经确诊的疼痛</li>
+            <li>切勿于癌症伤口上使用本产品</li>
+            <li>不宜应用在肿胀，感染，发炎区或皮疹(例如静脉炎，血栓性静脉炎等)</li>
+            <li>使用心脏起搏器或任何植入式心震颤去除器的患者请勿使用.心脏病患者使用前需咨询医生指引。</li>
+            <li>勿靠近心脏使用。电极贴不应被放置在胸部(肋骨和胸骨附近)，尤其不可放置在兩胸大肌处。</li>
+            <li>不建议贫血，癲癇及糖尿病人使用</li>
+            <li>不要在怀孕期間使用本产品</li>
+            <li>如果用户正连接到高频手术设备，不宜使用，可能导致皮肤灼伤</li>
+            <li>禁止在头部，面部，口腔，颈项前部，靠近生殖器或內部使用</li>
+            <li>严禁在睡眠期间使用本产品</li>
+            <li>有除以上情形以外的身体不适人士</li>
+        </ul></div><br>
+        <h5 class="text-orange"><span>警告!</span></h5><ul>
+            <li>注意不要过度刺激甲状腺或颈动脉，或胸部和上背部，这可能导致上呼吸道的严重肌肉痉挛，呼吸困难，或影响心律或血压</li>
+            <li>不要在短波或微波冶疗设备附近使用此产品，可能會影响产品输出功率</li>
+            <li>切勿在湿度高环境下使用本产品，如淋浴时不宜使用</li>
+            <li>请使用在清洁，已擦干，和没有损伤的皮肤区域</li>
+            <li>在使用过程中，要保持电极贴分隔开，贴片互相接触，可能会导致过度的刺激或灼伤皮肤</li>
+            <li>请将仪器放在儿童不能接触的位置</li>
+            <li>此仪器不宜由没有自制能力，情绪不安，老年痴呆症，或低智商的病人操作</li>
+            <li>驾驶中，靠近水，或在任何肌肉收缩的运动过程中均不可使用本产品，否则可能受伤</li>
+            <li>使用本产品时，不可靠近任何高度易燃物质，气体或爆炸物</li>
+            <li>使用过程中需将电极贴尽量远离金属物体如皮带扣、项链等等</li>
+            <li>移除电极贴前先关产品电源</li>
+            <li>只可选用由供应商提供电极贴</li>
+            <li>如果出现皮肤敏感，请停用本产品</li>
+        </ul>`,
     }
 }
