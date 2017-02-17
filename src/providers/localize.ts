@@ -326,7 +326,7 @@ let translate_zh =
     /* THRIPY */
         sore: '酸痛冶疗',
         pain: '疼痛冶疗',
-        han: '快速止痛',
+        han: '快速镇痛',
 
     /* fat-burning */
         fb_a: '燃烧脂肪 A',
