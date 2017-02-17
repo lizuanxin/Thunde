@@ -10,6 +10,13 @@ import {THashMd5} from '../UltraCreation/Hash'
 import {TAssetService, TScriptFile} from './asset'
 import * as Loki from './loki/file';
 
+export function GetWebRoot(): string
+{
+    let path = window.location.href;
+    path = path.substring(0, path.lastIndexOf('/'));
+    return path;
+}
+
 export function HttpRequest(Url: string,
     method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
     ResponseType: 'arraybuffer' | 'blob' | 'document' | 'json' | 'text' = 'json'): Promise<any>
@@ -18,44 +25,59 @@ export function HttpRequest(Url: string,
     {
         let req = new XMLHttpRequest();
 
-        req.open(method, Url);
-        req.responseType = ResponseType;
+        req.onprogress = function(this: XMLHttpRequestEventTarget, ev: ProgressEvent)
+        {
+            console.log('XMLHttpRequest loading', ev.loaded, 'of', ev.total);
+        };
 
-        req.onreadystatechange =
-            () =>
+        req.onload = function(this: XMLHttpRequestEventTarget, ev: Event)
+        {
+            console.log('XMLHttpRequest done');
+
+            // http server error
+            if (req.status >= 500 && req.status < 600)
+                observer.error(new Error('HTTP Server Error ' + req.status))
+            // http client error
+            else if (req.status >= 400)
+                observer.error(new Error('HTTP Client Error ' + req.status))
+            // http redirection
+            else if (req.status >= 300)
+                observer.error(new Error('HTTP Redirection ' + req.status))
+            // http successful
+            else if (req.status >= 200)
             {
-                // http server error
-                if (req.readyState >= 500 && req.readyState < 600)
-                    observer.error(new Error('HTTP Server Error ' + req.readyState))
-                // http client error
-                else if (req.readyState >= 400)
-                    observer.error(new Error('HTTP Client Error ' + req.readyState))
-                // http redirection
-                else if (req.readyState >= 300)
-                    observer.error(new Error('HTTP Redirection ' + req.readyState))
-                // http successful
-                else if (req.readyState >= 200)
+                if (req.status === 200)
                 {
-                    if (req.status === 200)
-                    {
-                        //console.log(req);
-                        observer.next(req.response);
-                        observer.complete();
-                    }
-                    else
-                        observer.error(new Error('HTTP Successful ' + req.readyState));
+                    //console.log(req);
+                    observer.next(req.response);
+                    observer.complete();
                 }
-                // http informational
-                else if (req.readyState >= 100)
-                    console.log('HTTP Informational ' + req.readyState);
                 else
-                // unknown
-                    observer.error(new Error('HTTP Error ' + req.readyState))
-            };
-        req.onerror =
-            (ev) => observer.error('XMLHttpRequest Failure.');
+                    observer.error(new Error('HTTP Successful ' + req.status));
+            }
+            // http informational
+            else if (req.status >= 100)
+                console.log('HTTP Informational ' + req.status);
+            else
+                observer.error(new Error('HTTP Unknown Status ' + req.status));
 
-        req.send();
+            observer.next(req.response);
+            observer.complete();
+        };
+
+        req.onerror = function(this: XMLHttpRequestEventTarget, ev: ErrorEvent)
+        {
+            observer.error(new Error('XMLHttpRequest error: ' + ev.message));
+        };
+        req.ontimeout = function(this: XMLHttpRequestEventTarget, ev: ProgressEvent)
+        {
+            observer.error(new Error('XMLHttpRequest timeout'));
+        }
+
+        req.open(method, Url);
+        console.log('XMLHttpRequest opened, readyState:', req.readyState);
+        req.responseType = ResponseType;
+        req.send(null);
     })
     .toPromise();
 }
@@ -96,8 +118,7 @@ export class TDistributeService
     ReadFirmware(Version: number): Promise<ArrayBuffer>
     {
         // TODO: ios XMLHttpRequest NOT WORK
-        return Promise.reject(new EAbort());
-        /*
+        // return Promise.reject(new EAbort());
 
         // 1XXXBBBB
         let Major = Math.trunc(Version / 10000000);
@@ -120,7 +141,7 @@ export class TDistributeService
             return Promise.reject(new EAbort())
         }
 
-        return HttpRequest('./assets/Firmware.json', 'GET', 'json')
+        return HttpRequest(GetWebRoot() + '/assets/Firmware.json', 'GET', 'json')
             .then(Info =>
             {
                 let NewVersion = Info[FileName].split('.');
@@ -133,7 +154,6 @@ export class TDistributeService
 
                 return HttpRequest('./assets/' + FileName + '.bin', 'GET', 'arraybuffer') as Promise<ArrayBuffer>;
             })
-        */
     }
 }
 

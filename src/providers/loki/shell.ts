@@ -534,37 +534,37 @@ export class TShell extends TAbstractShell
         {
         case 'shutdown':
             this.StopTicking();
-            setTimeout(() => this.OnNotify.next(TShellNotify.Shutdown), 0);
+            this.OnNotify.next(TShellNotify.Shutdown);
             break;
 
         case 'disconnect':
             this.StopTicking();
-            setTimeout(() => this.OnNotify.next(TShellNotify.Disconnected), 0);
+            this.OnNotify.next(TShellNotify.Disconnected);
             break;
 
         case 'noload':
             this.StopTicking();
-            setTimeout(() => this.OnNotify.next(TShellNotify.NoLoad), 0);
+            this.OnNotify.next(TShellNotify.NoLoad);
             break;
 
         case 'low': // battery':
             this.StopTicking();
-            setTimeout(() => this.OnNotify.next(TShellNotify.LowBattery), 0);
+            this.OnNotify.next(TShellNotify.LowBattery);
             break;
 
         case 'error': // stop':
             this.StopTicking();
-            setTimeout(() => this.OnNotify.next(TShellNotify.HardwareError), 0);
+            this.OnNotify.next(TShellNotify.HardwareError);
             break;
 
         case 'stop':
             this.StopTicking();
-            setTimeout(() => this.OnNotify.next(TShellNotify.Stopped), 0);
+            this.OnNotify.next(TShellNotify.Stopped);
             break;
 
         case 'strength':
             this._Intensity = parseInt(Params[2]);
-            setTimeout(() => this.OnNotify.next(TShellNotify.Intensity), 0);
+            this.OnNotify.next(TShellNotify.Intensity);
             break;
         }
     }
