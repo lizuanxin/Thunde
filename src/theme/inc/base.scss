@@ -36,6 +36,10 @@ $i:12;
     &.text-danger {
         color: color($colors, danger, base);
     }
+    &[text-orange],
+    &.text-orange {
+        color: color($colors, orange, base);
+    }
 }
 
 ion-content {
