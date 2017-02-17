@@ -11,10 +11,10 @@
 </ion-header>
 <ion-content padding default id="OuterHtml" [ngStyle]="{'position':'relative'}">
     <div showWhen="android" [ngClass]="'radian'" [class.fadeOut]="FadeOut" [ngStyle]="{'margin-top':'-16px','min-height':OffsetY}"></div>
-    <div list-warning [innerHTML]="'agreement_page.terms_conditions'|translate"></div>
+    <div list-warning [innerHTML]="'tou_page.terms_conditions'|translate"></div>
     <ion-list no-margin no-lines transparent *ngIf="IsFirstTime">
         <ion-item margin-top text-light>
-            <ion-label f-14 [innerHTML]="'agreement_page.agree'|translate"></ion-label>
+            <ion-label f-14 [innerHTML]="'tou_page.agree'|translate"></ion-label>
             <ion-checkbox class="skin-default" [(ngModel)]="app.AcceptedTerms"></ion-checkbox>
         </ion-item>
     </ion-list>

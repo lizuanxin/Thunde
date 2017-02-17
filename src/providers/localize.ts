@@ -105,11 +105,6 @@ let translate_en =
         menu_tou: 'Terms of Use',
     },
 
-    register_page:
-    {
-        agreement_html: '',
-    },
-
     go_page:
     {
         plug_device: 'Plugin your device...',
@@ -191,7 +186,7 @@ let translate_en =
         leg: 'Leg',
     },
 
-    agreement_page:
+    tou_page:
     {
         agree: 'Accept <b>Terms & Conditions</b>',
         terms_conditions: `<div><h5 class="text-danger"><span><span>PROHIBITED!</span></h5><ul>
@@ -354,7 +349,7 @@ let translate_zh =
         leg: '腿部按摩',
     },
 
-    agreement_page:
+    tou_page:
     {
         agree: '我已阅读并接受使用条款',
         terms_conditions: `<div><h5 class="text-danger"><span>禁止!</span></h5><ul>
