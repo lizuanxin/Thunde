@@ -10,7 +10,9 @@ import {THashMd5} from '../UltraCreation/Hash'
 import {TAssetService, TScriptFile} from './asset'
 import * as Loki from './loki/file';
 
-export function GetWebRoot(): string
+export const WebRoot = GetWebRoot();
+
+function GetWebRoot(): string
 {
     let path = window.location.href;
     path = path.substring(0, path.lastIndexOf('/'));
@@ -147,7 +149,7 @@ export class TDistributeService
             return Promise.reject(new EAbort())
         }
 
-        return HttpRequest(GetWebRoot() + '/assets/Firmware.json', 'GET', 'json')
+        return HttpRequest(WebRoot + '/assets/Firmware.json', 'GET', 'json')
             .then(Info =>
             {
                 let NewVersion = Info[FileName].split('.');
@@ -158,7 +160,7 @@ export class TDistributeService
                 if (NewRev <= Rev)
                     return Promise.reject(new EAbort());
 
-                return HttpRequest('./assets/' + FileName + '.bin', 'GET', 'arraybuffer') as Promise<ArrayBuffer>;
+                return HttpRequest(WebRoot + '/assets/' + FileName + '.bin', 'GET', 'arraybuffer') as Promise<ArrayBuffer>;
             })
     }
 }

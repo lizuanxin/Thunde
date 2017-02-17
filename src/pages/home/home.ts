@@ -4,7 +4,7 @@ import {NavController} from 'ionic-angular';
 import {TypeInfo} from '../../UltraCreation/Core'
 import * as UI from '../../UltraCreation/Graphic'
 
-import {GetWebRoot, HttpRequest, TApplication, TLocalizeService, TAssetService, TCategory, TScriptFile, TDistributeService} from '../services';
+import {TApplication, TLocalizeService, TAssetService, TCategory, TScriptFile, TDistributeService} from '../services';
 import {TouPage} from '../tou/tou';
 import {GoPage} from '../go/go';
 import {SkinPage} from '../skin/skin';
@@ -29,16 +29,6 @@ export class HomePage implements OnInit, OnDestroy
 
         if (! this.app.AcceptedTerms)
             this.ShowTOU();
-
-        setTimeout(() =>
-        {
-            HttpRequest(GetWebRoot() + '/assets/ThunderboltQ.bin', 'GET', 'arraybuffer')
-            .then((Info: ArrayBuffer) =>
-            {
-                console.log('ThunderboltQ.bin size is', Info.byteLength);
-            })
-            .catch(err => console.log(err.message));
-        }, 100)
     }
 
     ngOnDestroy(): void
