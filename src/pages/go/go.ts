@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs/Rx'
-import { Platform, NavController, ViewController, NavParams, ModalController } from 'ionic-angular';
+import { Platform, NavController, ViewController, NavParams, ModalController, Content } from 'ionic-angular';
 
 import { TypeInfo, EAbort } from '../../UltraCreation/Core';
 
@@ -10,7 +10,9 @@ import { OtaUpdatePage } from '../ota_update/ota_update';
 //import {FiledetailsPage} from '../filedetails/filedetails';
 
 @Component({ selector: 'page-go', templateUrl: 'go.html' })
+
 export class GoPage implements OnInit, OnDestroy {
+    @ViewChild(Content) content: Content;
     constructor(public nav: NavController, public modalCtrl: ModalController, private view: ViewController, private navParams: NavParams, private platform: Platform,
         private app: TApplication, private Localize: TLocalizeService, private Distribute: TDistributeService) {
         this.Category = navParams.get('Category');
@@ -64,6 +66,7 @@ export class GoPage implements OnInit, OnDestroy {
             this.IsShowFileDetail = false;
         else
             this.IsShowFileDetail = true;
+        this.content.scrollTo(0, this.content.scrollHeight - this.content.contentTop * 2, 1000);
     }
 
     FileDetails(): Array<string> {
@@ -146,4 +149,5 @@ export class GoPage implements OnInit, OnDestroy {
     IsShowFileDetail: boolean = false;
     CurrentDescIcon: string;
     private ScanSubscription: Subscription;
+
 }

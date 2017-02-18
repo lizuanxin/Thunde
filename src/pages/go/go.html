@@ -27,8 +27,8 @@
             </div>
             <div class="grid" [ngClass]="app.SkinColor" margin>
                 <h5 (click)="ShowFileDetail()" tappable>
-                    <template [ngIf]="!IsShowFileDetail"><ion-icon>&#xf3d1;</ion-icon></template>
-                    <template [ngIf]="IsShowFileDetail"><ion-icon>&#xf3d0;</ion-icon></template>
+                    <template [ngIf]="!IsShowFileDetail"><ion-icon [ngStyle]="{'vertical-align': 'text-top'}">&#xf3d1;</ion-icon></template>
+                    <template [ngIf]="IsShowFileDetail"><ion-icon [ngStyle]="{'vertical-align': 'text-top'}">&#xf3d0;</ion-icon></template>
                     &nbsp;{{'go_page.professional'|translate}}
                 </h5>
                 <template [ngIf]="IsShowFileDetail">
