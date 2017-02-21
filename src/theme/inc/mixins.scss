@@ -74,7 +74,7 @@
             &.#{$bg}-footer {
                 .toolbar-background {
                     @if($bg=='spots') {
-                        background: rgba(255, 255, 255, .1);
+                        background: rgba(255, 255, 255, .05);
                     }
                     @else {
                         background: rgba(0, 0, 0, .8);
