@@ -52,9 +52,16 @@ export class GoPage implements OnInit, OnDestroy {
             this.Start('USB');
     }
 
-    ShowDesc(val: string) {
+    ShowDesc(event,val: string) {
+        
         this.CurrentDescIcon = val;
         this.IsShowDescIcon = true;
+        let target = event.target || event.srcElement || event.currentTarget;
+        
+        // let idAttr = target.attributes.id;
+        // let value = idAttr.nodeValue;
+        console.log(event);
+        // console.log(target.parentElement.offsetLeft+","+target.parentElement.offsetTop)
     }
 
     CloseDesc() {
@@ -66,7 +73,7 @@ export class GoPage implements OnInit, OnDestroy {
             this.IsShowFileDetail = false;
         else
             this.IsShowFileDetail = true;
-        this.content.scrollTo(0, this.content.scrollHeight - this.content.contentTop * 2, 1000);
+        this.content.scrollTo(0, this.content.scrollHeight - this.content.contentTop * 2, 1500);
     }
 
     FileDetails(): Array<string> {

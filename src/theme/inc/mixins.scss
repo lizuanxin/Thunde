@@ -73,7 +73,12 @@
         @else {
             &.#{$bg}-footer {
                 .toolbar-background {
-                    background: rgba(0, 0, 0, .8);
+                    @if($bg=='spots') {
+                        background: rgba(255, 255, 255, .1);
+                    }
+                    @else {
+                        background: rgba(0, 0, 0, .8);
+                    }
                 }
                 .state {
                     background-color: rgba(255, 255, 255, .2);
