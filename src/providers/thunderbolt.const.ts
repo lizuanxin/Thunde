@@ -92,7 +92,7 @@ export namespace const_data
 
         foot: [Body.foot],
 
-        fat: [Body.abdomen, Body.buttock, Body.calf, Body.thigh, Body.upper_arm]
+        fat: [Body.abdomen, Body.buttock, Body.thigh, Body.upper_arm]
     }
 
     interface ICategory
@@ -136,15 +136,15 @@ export namespace const_data
     [
         {Id: '{00000000-0000-4000-4000-000000000001}', Author: 'UltraCreation Team',
             Category_Id: Category.therapy.Id, Mode_Id: null, Name: 'sore',
-            BodyParts: new Array<IBodyPart>().concat(BodyCategory.back, BodyCategory.forelimb, BodyCategory.lowerlimb),
+            BodyParts: new Array<IBodyPart>().concat(BodyCategory.back, Body.upper_arm),
             Content: inplace_files.file3_sore_therpy},
         {Id: '{00000000-0000-4000-4000-000000000002}', Author: 'UltraCreation Team',
             Category_Id: Category.therapy.Id, Mode_Id: null, Name: 'pain',
-            BodyParts: new Array<IBodyPart>().concat(BodyCategory.back, BodyCategory.forelimb, BodyCategory.lowerlimb),
+            BodyParts: new Array<IBodyPart>().concat(BodyCategory.back, Body.upper_arm),
             Content: inplace_files.file11_pain_treatment},
         {Id: '{00000000-0000-4000-4000-000000000010}', Author: 'UltraCreation Team',
             Category_Id: Category.therapy.Id, Mode_Id: null, Name: 'han',
-            BodyParts: new Array<IBodyPart>().concat(BodyCategory.back, BodyCategory.forelimb, BodyCategory.lowerlimb),
+            BodyParts: new Array<IBodyPart>().concat(BodyCategory.back, BodyCategory.joint),
             Content: 'V1D16{R12c|F64P32C12c|R6Pc8F2C1}'},
 
         {Id: '{00000000-0000-4000-4100-000000000001}', Author: 'UltraCreation Team',
