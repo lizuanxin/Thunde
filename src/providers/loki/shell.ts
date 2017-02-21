@@ -334,7 +334,8 @@ export class TShell extends TAbstractShell
 
     set Intensity(Value: number)
     {
-        this.SetIntensity(Value).catch(err => console.log('set Intensity() ' + err.message));
+        this.SetIntensity(Value)
+            .catch(err =>console.log('set Intensity() ', err.message));
     }
 
     get BatteryLevel(): number
@@ -356,9 +357,9 @@ export class TShell extends TAbstractShell
                         switch(keyvalue[0])
                         {
                         case "tick":
-                            this._Ticking = parseInt(keyvalue[1]);
-                            if (this._Ticking !== 0)
-                                this.StartTicking();
+                            let ticking = parseInt(keyvalue[1]);
+                            if (ticking !== 0)
+                                this.StartTicking(ticking);
                             break;
 
                         case "dmd5":
@@ -447,10 +448,10 @@ export class TShell extends TAbstractShell
             })
     }
 
-    private StartTicking(): void
+    private StartTicking(Shift: number = 0): void
     {
         let dt = new Date();
-        this._Ticking = dt.getTime();
+        this._Ticking = dt.getTime() - Shift * 1000;
 
         this.TickIntervalId = setInterval(() =>
         {

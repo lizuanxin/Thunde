@@ -109,13 +109,17 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     AdjustIntensity(Value: number)
     {
-        this.Shell.SetIntensity(this.Intensity + Value)
+        if (! this.Shell.IsAttached || this.Adjusting)
+            return;
+
+        this.Adjusting = this.Shell.SetIntensity(this.Intensity + Value)
             .then(() =>
             {
                 this.Intensity = this.Shell.Intensity;
                 this.UpdateHeartbeatRate();
             })
-            .catch(err => console.log('Adjuest Intensity: + ' + err.message));
+            .catch(err => console.log('Adjuest Intensity: + ' + err.message))
+            .then(() => this.Adjusting = null);
     }
 
     PointRotate(): string
@@ -297,5 +301,6 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     private Shell: Loki.TShell;
     private ShellNotifySubscription: Subscription;
+    private Adjusting: Promise<any> = null;
     private Downloading: boolean = false;
 }
