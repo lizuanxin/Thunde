@@ -52,12 +52,12 @@ export class GoPage implements OnInit, OnDestroy {
             this.Start('USB');
     }
 
-    ShowDesc(event,val: string) {
-        
+    ShowDesc(event, val: string) {
+
         this.CurrentDescIcon = val;
         this.IsShowDescIcon = true;
         let target = event.target || event.srcElement || event.currentTarget;
-        
+
         // let idAttr = target.attributes.id;
         // let value = idAttr.nodeValue;
         console.log(event);
@@ -69,11 +69,18 @@ export class GoPage implements OnInit, OnDestroy {
     }
 
     ShowFileDetail() {
-        if (this.IsShowFileDetail)
+        
+        let gridBody = document.getElementById('gridBody');
+        
+        if (this.IsShowFileDetail) {
             this.IsShowFileDetail = false;
-        else
+        }
+        else {
             this.IsShowFileDetail = true;
-        this.content.scrollTo(0, this.content.scrollHeight - this.content.contentTop * 2, 1500);
+            if (gridBody.clientHeight > (window).innerHeight)
+                this.content.scrollTo(0, this.content.scrollHeight - this.content.contentTop * 2, 1500);
+        }         
+
     }
 
     FileDetails(): Array<string> {

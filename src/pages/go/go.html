@@ -14,7 +14,7 @@
                 </ion-col>
             </ion-row>
         </div>
-        <div [ngClass]="{'fadeout':IsShowDescIcon}">
+        <div [ngClass]="{'fadeout':IsShowDescIcon}" id="gridBody">
             <div *ngFor="let body of ScriptFile.BodyParts;let i = index">
                 <h5 [ngClass]="app.SkinColor" padding-left>{{'go_page.advise'|translate}}<b>{{body.Name_LangId|translate}}</b></h5>
                 <ion-row wrap padding-horizontal margin-bottom [ngClass]="app.SkinColor">
