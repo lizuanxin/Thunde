@@ -1,8 +1,8 @@
 <ion-menu [content]="content" type="overlay" side="right" overlay>
   <ion-content transparent padding-left>
     <ion-list no-lines transparent list-side>
-        <ion-item-divider text-light menuToggle>
-            <ion-icon app-icon item-left [ngStyle]="{'font-size':'2.8rem'}">&#xe906;</ion-icon>          
+        <ion-item-divider no-lines text-light menuToggle  [ngStyle]="{'min-height':app.IsAndroid ? '56px' : null}">
+            <ion-icon app-icon item-left [ngStyle]="{'font-size':app.IsAndroid ? '2.4rem' : null}">&#xe906;</ion-icon>       
             {{'home_page.title'|translate}}
         </ion-item-divider>
         <button menuToggle ion-item  text-light detail-none (click)="ShowTOU()" tappable>
