@@ -101,7 +101,6 @@ let translate_en =
     home_page:
     {
         title: 'Thunder Bolt',
-        menu_appearance: 'Skin',
         menu_tou: 'Terms of Use',
     },
 
@@ -263,7 +262,6 @@ let translate_zh =
     home_page:
     {
         title: 'Thunder Bolt',
-        menu_appearance: '选择外观',
         menu_tou: '使用条款',
     },
 

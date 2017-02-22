@@ -61,7 +61,7 @@ export namespace const_data
             Icon: 0xE90F, Desc: JSON.stringify([0xE9CB, 0xE9DE])},
     ]
 
-    const Body =
+    export const Body =
     {
         upper_back: BodyParts[0],
         shoulder: BodyParts[1],
@@ -80,7 +80,7 @@ export namespace const_data
         foot: BodyParts[14],
     }
 
-    const BodyCategory =
+    export const BodyCategory =
     {
         back: [Body.upper_back, Body.back, Body.lower_back, Body.shoulder],
         forelimb: [Body.forearm, Body.upper_arm],
@@ -111,7 +111,7 @@ export namespace const_data
         {Id: '{00000000-0000-4000-3000-000000000004}', Icon: 0xe917, Name: 'relax'},
     ]
 
-    const Category =
+    export const Category =
     {
         therapy: Categories[0],
         fat_burning: Categories[1],
