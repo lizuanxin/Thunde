@@ -1,12 +1,22 @@
 <ion-menu [content]="content" type="overlay" side="right" overlay>
-  <ion-content transparent>
-    <p text-center>
+  <ion-content transparent padding-left>
+    <!--<p text-center>
       <button menuToggle ion-button icon-only large clear>
         <ion-icon text-light>&#xf114;</ion-icon>
       </button>
-    </p>
+    </p>-->
+    <!--<ion-row text-light margin-bottom [ngStyle]="{'margin-top':'3px'}" menuToggle>
+        <ion-col width-33 text-center>
+            <ion-icon app-icon [ngStyle]="{'font-size':'2.8rem'}">&#xe906;</ion-icon>
+        </ion-col>
+        <ion-col center>{{'home_page.title'|translate}}</ion-col>        
+    </ion-row>-->
     <ion-list no-lines transparent list-side>
-        <button menuToggle ion-item  text-light detail-none  (click)="ShowTOU()" tappable>
+        <ion-item-divider text-light>
+            <ion-icon app-icon item-left [ngStyle]="{'font-size':'2.8rem'}">&#xe906;</ion-icon>          
+            {{'home_page.title'|translate}}
+        </ion-item-divider>
+        <button menuToggle ion-item  text-light detail-none (click)="ShowTOU()" tappable>
             <ion-icon inline-left>
                 &#xf496;
             </ion-icon>

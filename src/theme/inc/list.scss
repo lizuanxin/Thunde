@@ -4,9 +4,10 @@ ion-list {
             font-size: 1.5rem;
             ion-icon {
                 font-size: 2rem;
-                margin-top: -.5rem;
+                // margin-top: -.5rem;
                 &[inline-left] {
-                    margin-right: .5rem;
+                    margin-left:  .5rem;
+                    margin-right: .8rem;
                 }
             }
             .item-inner {
