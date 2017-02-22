@@ -22,7 +22,7 @@ export class HomePage implements OnInit, OnDestroy
     ngOnInit(): void
     {
         let Canvas = document.getElementById('content_canvas') as HTMLCanvasElement;
-        this.Content = new TContentCanvas(Canvas, this.Localize);
+        this.Content = new TContentCanvas(Canvas, this.Localize,this.app);
         this.Content.OnSelectionFile.subscribe(file => this.SelectFile(file));
 
         this.Categories = this.Asset.Categories;
@@ -115,7 +115,7 @@ export class HomePage implements OnInit, OnDestroy
 
 class TContentCanvas
 {
-    constructor(private Canvas: HTMLCanvasElement, private Localize: TLocalizeService)
+    constructor(private Canvas: HTMLCanvasElement, private Localize: TLocalizeService,private app: TApplication)
     {
         Canvas.addEventListener("touchstart", this.TouchHandler.bind(this));
         Canvas.addEventListener("touchmove", this.TouchHandler.bind(this));
@@ -199,8 +199,13 @@ class TContentCanvas
             Ctx.beginPath();
             Ctx.moveTo(0, Offset);
             Ctx.lineTo(Canvas.width, Offset);
+            if (this.app.SkinColor !== undefined)
+                Ctx.strokeStyle = '#000000';
+            else
+                Ctx.strokeStyle = '#FFFFFF';            
             Ctx.closePath();
             Ctx.lineWidth = 3;
+            
             Ctx.stroke();
 
             Offset += this.ItemHeight / 2;
@@ -227,7 +232,7 @@ class TContentCanvas
             let Str: string = String.fromCharCode(0xE904);
 
             Ctx.lineWidth = 1;
-            Ctx.strokeText(Str, x, Offset);
+            // Ctx.strokeText(Str, x, Offset);
             Ctx.fillText(Str, x, Offset);
             let TextWidth = Ctx.measureText(Str).width * 2;
 
@@ -238,7 +243,7 @@ class TContentCanvas
 
             Str = this.Localize.Translate(ScriptFile.Name_LangId) as string;
             x += TextWidth * 1.2;
-            Ctx.strokeText(Str, x, Offset);
+            // Ctx.strokeText(Str, x, Offset);
             Ctx.fillText(Str, x, Offset);
 
             // minute

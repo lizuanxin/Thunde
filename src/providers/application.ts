@@ -111,10 +111,7 @@ export class TApplication extends TAppController
 
     get IsAndroid(): boolean
     {        
-        if (this.platform.is('android'))
-            return true;
-        else
-            return false;
+        return this.platform.is('android');
     }
 
     public Skins: Array<string>;    
