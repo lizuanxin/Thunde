@@ -1,50 +1,46 @@
-import {Component, OnInit, OnDestroy, EventEmitter} from '@angular/core';
-import {NavController} from 'ionic-angular';
+import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
+import { NavController } from 'ionic-angular';
 
-import {TypeInfo} from '../../UltraCreation/Core'
+import { TypeInfo } from '../../UltraCreation/Core'
 import * as UI from '../../UltraCreation/Graphic'
 
-import {TApplication, TLocalizeService, TAssetService, TCategory, TScriptFile, TDistributeService} from '../services';
-import {TouPage} from '../tou/tou';
-import {GoPage} from '../go/go';
-import {SkinPage} from '../skin/skin';
+import { TApplication, TLocalizeService, TAssetService, TCategory, TScriptFile, TDistributeService } from '../services';
+import { TouPage } from '../tou/tou';
+import { GoPage } from '../go/go';
+import { SkinPage } from '../skin/skin';
 
 const SHOWING_ITEM_COUNT = 6;
 
-@Component({selector: 'page-home', templateUrl: 'home.html'})
-export class HomePage implements OnInit, OnDestroy
-{
+@Component({ selector: 'page-home', templateUrl: 'home.html' })
+export class HomePage implements OnInit, OnDestroy {
     constructor(public nav: NavController, private Asset: TAssetService,
-        private app: TApplication, private Localize: TLocalizeService, private Distrubute: TDistributeService)
-    {
+        private app: TApplication, private Localize: TLocalizeService, private Distrubute: TDistributeService) {
     }
 
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         let Canvas = document.getElementById('content_canvas') as HTMLCanvasElement;
         this.Content = new TContentCanvas(Canvas, this.Localize);
         this.Content.OnSelectionFile.subscribe(file => this.SelectFile(file));
 
         this.Categories = this.Asset.Categories;
 
-        if (! this.app.AcceptedTerms)
+        if (!this.app.AcceptedTerms)
             this.ShowTOU();
     }
 
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         this.Content.Disponse();
         this.Content = null;
     }
 
-    ionViewDidEnter()
-    {
-        let title = document.getElementById('title');
-        let style = window.getComputedStyle(title);
-        this.Content.Color = style.color;
+    ionViewDidEnter() {
 
-        if (! TypeInfo.Assigned(this.SelectedCategory))
-        {
+        if (this.app.SkinColor !== undefined)
+            this.Content.Color = '#F2F2F2';
+        else
+            this.Content.Color = '#222222';
+
+        if (!TypeInfo.Assigned(this.SelectedCategory)) {
             this.SelectCategory(this.Categories[0]);
             this.Content.Paint();
         }
@@ -52,38 +48,48 @@ export class HomePage implements OnInit, OnDestroy
             this.Content.Paint();
     }
 
-    SelectCategory(Category: TCategory)
-    {
+    SelectCategory(Category: TCategory) {
         this.SelectedCategory = Category;
         this.Asset.FileList(Category.Id)
-            .then(List =>
-            {
+            .then(List => { 
+                           
                 this.FileList = List;
                 this.Content.NewFileList(List);
+                switch (Category.Id) {
+                    case '{00000000-0000-4000-3000-000000000001}':
+                        this.app.SetSkin(this.app.Skins[2]);                        
+                        break;
+                    case '{00000000-0000-4000-3000-000000000002}':
+                        this.app.SetSkin(this.app.Skins[1]);                        
+                        break;
+                    case '{00000000-0000-4000-3000-000000000003}':
+                        this.app.SetSkin(this.app.Skins[0]);
+                        break;
+                    case '{00000000-0000-4000-3000-000000000004}':
+                        this.app.SetSkin(this.app.Skins[3]);
+                        break;
+                }
+                this.ionViewDidEnter();
             })
             .catch(err => console.log(err));
     }
 
-    SelectSkin()
-    {
+    SelectSkin() {
         this.nav.push(SkinPage);
     }
 
-    ShowTOU()
-    {
+    ShowTOU() {
         this.nav.push(TouPage);
     }
 
-    StateCategory(Category: TCategory)
-    {
+    StateCategory(Category: TCategory) {
         if (Category === this.SelectedCategory)
             return "state";
     }
 
-    SelectFile(ScriptFile: TScriptFile)
-    {
+    SelectFile(ScriptFile: TScriptFile) {
         this.Asset.FileDesc(ScriptFile)
-            .then(() => this.nav.push(GoPage, {Category: this.SelectedCategory, ScriptFile: ScriptFile}));
+            .then(() => this.nav.push(GoPage, { Category: this.SelectedCategory, ScriptFile: ScriptFile }));
     }
 
     Categories: Array<TCategory>;
@@ -95,10 +101,8 @@ export class HomePage implements OnInit, OnDestroy
 
 /* TContentCanvas */
 
-class TContentCanvas
-{
-    constructor (private Canvas: HTMLCanvasElement, private Localize: TLocalizeService)
-    {
+class TContentCanvas {
+    constructor(private Canvas: HTMLCanvasElement, private Localize: TLocalizeService) {
         Canvas.addEventListener("touchstart", this.TouchHandler.bind(this));
         Canvas.addEventListener("touchmove", this.TouchHandler.bind(this));
         Canvas.addEventListener("touchcancel", this.TouchHandler.bind(this));
@@ -124,30 +128,25 @@ class TContentCanvas
         this.Ox = 0;
         this.Oy = Math.trunc(this.DisplayHeight / 2 + this.Padding);
         this.Radius = Math.trunc(this.Canvas.width * 2 / 5);
-        if (this.Radius < this.Oy)
-        {
+        if (this.Radius < this.Oy) {
             this.Ox = this.Radius - this.Oy;
             this.Radius = Math.trunc(this.Oy * 9 / 10);
         }
     }
 
-    Disponse()
-    {
+    Disponse() {
         this.OnSelectionFile.unsubscribe();
     }
 
-    get Color(): string
-    {
+    get Color(): string {
         return this.Ctx.fillStyle as string;
     }
 
-    set Color(Value: string)
-    {
+    set Color(Value: string) {
         this.Ctx.fillStyle = Value;
     }
 
-    NewFileList(FileList: Array<TScriptFile>)
-    {
+    NewFileList(FileList: Array<TScriptFile>) {
         this.ScrollingY = 0;
         this.ScrollMaxY = (FileList.length - SHOWING_ITEM_COUNT) * this.ItemHeight + this.ItemHeight / 5;
 
@@ -155,24 +154,20 @@ class TContentCanvas
         this.Paint();
     }
 
-    Paint()
-    {
+    Paint() {
         this.Ctx.clearRect(0, 0, this.Canvas.width, this.Canvas.height);
         this.Ctx.globalAlpha = 1.0;
 
         this.PaintTo(this.Canvas, this.Ctx);
     }
 
-    PaintTo(Canvas: HTMLCanvasElement, Ctx: CanvasRenderingContext2D)
-    {
+    PaintTo(Canvas: HTMLCanvasElement, Ctx: CanvasRenderingContext2D) {
         let Offset = this.ScrollingY % this.ItemHeight + this.Padding;
         let Idx = Math.trunc(-this.ScrollingY / this.ItemHeight);
         Ctx.globalAlpha = 1;
 
-        for (let i = Idx; i < this.FileList.length; i ++)
-        {
-            if (i < 0)
-            {
+        for (let i = Idx; i < this.FileList.length; i++) {
+            if (i < 0) {
                 Offset += this.ItemHeight;
                 continue;
             }
@@ -192,13 +187,11 @@ class TContentCanvas
             let b = (this.Oy - Offset);
             let x = Math.sqrt(this.Radius * this.Radius - b * b) + this.Ox;
 
-            if (Offset < this.Padding)
-            {
+            if (Offset < this.Padding) {
                 Ctx.globalAlpha = Offset / this.Padding;
                 Ctx.globalAlpha *= Ctx.globalAlpha * Ctx.globalAlpha;
             }
-            else if (Offset > this.DisplayHeight)
-            {
+            else if (Offset > this.DisplayHeight) {
                 Ctx.globalAlpha = (Canvas.height - Offset) / (Canvas.height - this.DisplayHeight);
                 Ctx.globalAlpha *= Ctx.globalAlpha * Ctx.globalAlpha;
             }
@@ -241,36 +234,34 @@ class TContentCanvas
         }
     }
 
-    private TouchHandler(ev: TouchEvent)
-    {
+    private TouchHandler(ev: TouchEvent) {
         if (ev.targetTouches.length !== 1)  // 1 finger touch
             return;
         let t = ev.targetTouches[0];
 
-        switch (ev.type)
-        {
-        case 'touchstart':
-            this.Darging = true;
-            break;
+        switch (ev.type) {
+            case 'touchstart':
+                this.Darging = true;
+                break;
 
-        case 'touchmove':
-            if (! this.Darging)
-                return;
+            case 'touchmove':
+                if (!this.Darging)
+                    return;
 
-            this.ScrollingY += (t.clientY - this.RelativeO.clientY) * 1.5 * window.devicePixelRatio;
+                this.ScrollingY += (t.clientY - this.RelativeO.clientY) * 1.5 * window.devicePixelRatio;
 
-            if (this.ScrollingY < -this.ScrollMaxY)
-                this.ScrollingY = -this.ScrollMaxY;
-            if (this.ScrollingY > 0)
-                this.ScrollingY = 0;
+                if (this.ScrollingY < -this.ScrollMaxY)
+                    this.ScrollingY = -this.ScrollMaxY;
+                if (this.ScrollingY > 0)
+                    this.ScrollingY = 0;
 
-            this.Paint();
-            break;
+                this.Paint();
+                break;
 
-        case 'touchcancel':
-        case 'touchend':
-            this.Darging = false;
-            break;
+            case 'touchcancel':
+            case 'touchend':
+                this.Darging = false;
+                break;
         }
 
         if (ev.type === 'touchend')
@@ -279,8 +270,7 @@ class TContentCanvas
             this.RelativeO = ev.touches[0];
     }
 
-    private Click(ev: MouseEvent)
-    {
+    private Click(ev: MouseEvent) {
         let Offset = ev.offsetY * window.devicePixelRatio;
 
         let Idx = Math.trunc((Offset - this.ScrollingY - this.Padding) / this.ItemHeight);
@@ -299,8 +289,7 @@ class TContentCanvas
      *      360°        = 1 turn            = 2π
      **/
     private DrawMinute(Canvas: HTMLCanvasElement, Ctx: CanvasRenderingContext2D,
-        Turns: number[], Radius: number, Ox: number, Oy: number)
-    {
+        Turns: number[], Radius: number, Ox: number, Oy: number) {
         let RestoreFillStyle = Ctx.fillStyle;
 
         let ColorFills: string[] = [null, Ctx.fillStyle as string];
@@ -318,8 +307,7 @@ class TContentCanvas
 
         Ctx.globalAlpha = Alpha;
 
-        for (let i = 0, StartArc = 0, EndArc = 0; i < Turns.length; i ++, StartArc = EndArc)
-        {
+        for (let i = 0, StartArc = 0, EndArc = 0; i < Turns.length; i++ , StartArc = EndArc) {
             EndArc = EndArc + Turns[i] * Math.PI * 2;
 
             Ctx.beginPath();
@@ -327,8 +315,7 @@ class TContentCanvas
             Ctx.arc(Ox, Oy, Radius, StartArc, EndArc);
             Ctx.closePath();
 
-            if (TypeInfo.Assigned(ColorFills[i]))
-            {
+            if (TypeInfo.Assigned(ColorFills[i])) {
                 Ctx.fillStyle = ColorFills[i];
                 Ctx.fill();
             }

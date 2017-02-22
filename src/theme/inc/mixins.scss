@@ -1,4 +1,7 @@
 @mixin background-list($list) {
+    -webkit-transition: all .2s ease .1s;
+    -moz-transition: all .2s ease .1s;
+    transition: all .2s ease .1s;
     @each $bg in $list {
         &.#{$bg}-home {
             background-image:url('../assets/img/class/#{$bg}.jpg');
