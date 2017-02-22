@@ -71,7 +71,7 @@ export class GoPage implements OnInit, OnDestroy {
     ShowFileDetail() {
         
         let gridBody = document.getElementById('gridBody');
-        
+
         if (this.IsShowFileDetail) {
             this.IsShowFileDetail = false;
         }
@@ -79,6 +79,8 @@ export class GoPage implements OnInit, OnDestroy {
             this.IsShowFileDetail = true;
             if (gridBody.clientHeight > (window).innerHeight)
                 this.content.scrollTo(0, this.content.scrollHeight - this.content.contentTop * 2, 1500);
+            else
+                this.content.scrollTo(0, gridBody.clientHeight - 50 * 2, 1500);
         }         
 
     }
