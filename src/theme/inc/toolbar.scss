@@ -8,6 +8,10 @@
     }
 }
 
+.ios ion-menu>.menu-inner>ion-content.statusbar-padding:first-child .scroll-content {
+    padding: 0;
+}
+
 ion-toolbar {
     @include toolbar-footer($background-list);
     &.toolbar {
