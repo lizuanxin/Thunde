@@ -18,7 +18,7 @@ const BLE_SCAN_TIMEOUT = 60000;
 const BLE_CONNECTION_TIMEOUT = 5000;
 
 const FILE_CLEAR_EXCLUDES = ['DefaultFile', 'BLE_Name'];
-const FILE_CLEAR_SIZE_LESS_THAN = 6400;
+const FILE_CLEAR_SIZE_LESS_THAN = 4096;
 const FILE_CLEAR_MAX_COUNT = 64;
 
 const USB_VENDOR = 0x10C4;
@@ -266,16 +266,29 @@ export class TShell extends TAbstractShell
         if (this._Intensity === 0 || Value < 1 || Value > 60)
             return Promise.resolve(this._Intensity);
 
-        let strs: string[];
         return this.Execute('>str ' + Value, REQUEST_TIMEOUT,
             Line =>
             {
-                strs = Line.split('=');
-                return strs.length === 2 && strs[0] === 'str';
+                let strs = Line.split('=');
+                if (strs.length === 2 && strs[0] === 'str')
+                {
+                    this._Intensity = parseInt(strs[1]);
+                    return true;
+                }
+                else if (strs.length === 1)
+                {
+                    let v =  +Line;
+                    if (! isNaN(v))
+                    {
+                        this._Intensity = v;
+                        return true;
+                    }
+                }
+                else
+                    return false;
             })
             .then(Line =>
             {
-                this._Intensity = parseInt(strs[1]);
                 setTimeout(() => this.OnNotify.next(TShellNotify.Intensity), 0);
                 return this._Intensity;
             });
@@ -931,13 +944,11 @@ export class TOTARequest extends TProxyShellRequest
             console.log('OTA crc error');
             this.error(new Error('e_ota_failure'));
         }
-        /*
         else if (Strs.indexOf('jump') !== -1)
         {
             console.log('notify: ' + Line);
             this.error(new Error('jump ota'));
         }
-        */
         else
             this.HandleReponse(Line);
     }
