@@ -918,6 +918,7 @@ export class TOTARequest extends TProxyShellRequest
 
     Notification(Line: string)
     {
+        console.log('xxxxxx: ' + Line)
         this.RefreshTimeout();
 
         let Strs = Line.split(':');

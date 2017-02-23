@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="hk.com.ultracreation.thunderbolt" version="1.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="hk.com.ultracreation.thunderbolt" version="1.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Thunderbolt</name>
     <description>
         Thunderbolt.
@@ -89,6 +89,7 @@
     <icon src="resources/android/icon/drawable-xhdpi-icon.png" />
     <plugin name="ultracreation-usb-android" spec="https://github.com/disword/ultracreation-usb-android.git" />
     <plugin name="cordova-sqlite-storage" spec="~2.0.2" />
+    <plugin name="cordova-plugin-powermanagement" spec="~1.0.5" />
     <plugin name="cordova-plugin-crosswalk-webview" spec="~2.3.0">
         <variable name="XWALK_VERSION" value="23+" />
         <variable name="XWALK_LITEVERSION" value="xwalk_core_library_canary:17+" />
@@ -96,5 +97,4 @@
         <variable name="XWALK_MODE" value="embedded" />
         <variable name="XWALK_MULTIPLEAPK" value="true" />
     </plugin>
-    <plugin name="cordova-plugin-powermanagement" spec="~1.0.5" />
 </widget>
