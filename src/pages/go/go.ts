@@ -68,14 +68,14 @@ export class GoPage implements OnInit, OnDestroy {
                 this.ShowBox = ELE.cloneNode(true);
                 let position = 'position:fixed;z-index:99;';
                 let Client = 'width:' + Math.trunc(this.Point.width) + 'px;height:' + Math.trunc(this.Point.height) + 'px;'
-                this.InitialPosition = position + Client + this.StyleDirection + 'top:' + Math.trunc(this.Point.top) + 'px;transform:scale(1)';
-                let Fade = position + Client + 'top:42vh;' + this.StyleTransform + '';
+                this.InitialPosition = position + Client + this.StyleDirection + 'top:' + Math.trunc(this.Point.top) + 'px;transform:scale(1)';                
                 this.OutBox.setAttribute('class', this.app.SkinColor + ' animation');
                 this.OutBox.setAttribute('style', this.InitialPosition);
                 this.OutBox.appendChild(this.ShowBox);
                 this.OutBox.addEventListener("click", this.CloseDesc.bind(this));
                 Body.appendChild(this.OutBox);
                 setTimeout(() => {
+                    let Fade = position + Client + 'top:42vh;' + this.StyleTransform;
                     this.OutBox.setAttribute('style', Fade);
                 }, 100)
             }
