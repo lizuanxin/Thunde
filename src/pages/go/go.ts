@@ -82,7 +82,7 @@ export class GoPage implements OnInit, OnDestroy {
         }
     }
 
-    get StyleTransform ():string
+    get StyleTransform(): string
     {
         if (this.Point.left < this.Point.width)
             return 'left:25px;transform:scale(2);transform-origin:left 100%;'
@@ -90,7 +90,7 @@ export class GoPage implements OnInit, OnDestroy {
             return 'right:25px;transform:scale(2);transform-origin:100% 100%;'
     }
 
-    get StyleDirection ():string
+    get StyleDirection(): string
     {
         if (this.Point.left < this.Point.width)
             return 'left:21px;';
