@@ -85,7 +85,7 @@ export class GoPage implements OnInit, OnDestroy {
     {
         if (this.Point.left < this.Point.width)
             return 'left:25px;transform:scale(2);transform-origin:left 100%;'
-        else 
+        else
             return 'right:25px;transform:scale(2);transform-origin:100% 100%;'
     }
 
@@ -101,8 +101,8 @@ export class GoPage implements OnInit, OnDestroy {
         this.OutBox.setAttribute('style', this.InitialPosition);        
         setTimeout(() => {
             this.IsShowDescIcon = false;
-            if (this.OutBox.childNodes.length === 0)  return; 
-            this.OutBox.removeAttribute('style');         
+            if (this.OutBox.childNodes.length === 0) return;
+            this.OutBox.removeAttribute('style');
             this.OutBox.removeChild(this.ShowBox);
         }, 800)
     }
