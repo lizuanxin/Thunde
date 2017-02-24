@@ -4,7 +4,7 @@ import {Observable} from 'rxjs/Rx'
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 
-import {TypeInfo, EAbort} from '../UltraCreation/Core'
+import {TypeInfo, Exception, EAbort} from '../UltraCreation/Core'
 import {TUtf8Encoding} from '../UltraCreation/Encoding'
 import {THashMd5} from '../UltraCreation/Hash'
 import {TAssetService, TScriptFile} from './asset'
@@ -12,11 +12,36 @@ import * as Loki from './loki/file';
 
 export const WebRoot = GetWebRoot();
 
+export class EHttp extends Exception
+{
+    constructor(public Status: number)
+    {
+        super();
+
+        // http server error
+        if (Status >= 500 && Status < 600)
+            this.message = 'HTTP Server Error: ' + Status;
+        // http client error
+        else if (Status >= 400)
+            this.message = 'HTTP Client Error: ' + Status;
+        // http redirection
+        else if (Status >= 300)
+            this.message = 'HTTP Redirection: ' + Status;
+        // http successful
+        else if (Status >= 200)
+            this.message = 'HTTP Successful: ' + Status;
+        // http informational
+        else if (Status >= 100)
+            this.message = 'HTTP Informational: ' + Status;
+        else
+            this.message = 'HTTP Unknown Status: ' + Status;
+    }
+}
+
 function GetWebRoot(): string
 {
     let path = window.location.href;
-    path = path.substring(0, path.lastIndexOf('/'));
-    return path;
+    return path.substring(0, path.lastIndexOf('/'));
 }
 
 export function HttpRequest(Url: string,
@@ -29,48 +54,21 @@ export function HttpRequest(Url: string,
 
         req.onprogress = function(this: XMLHttpRequestEventTarget, ev: ProgressEvent)
         {
-            console.log('XMLHttpRequest loading', ev.loaded, 'of', ev.total);
+            console.log('XMLHttpRequest loading ' + ev.loaded + ' of ' + ev.total);
         };
 
         req.onload = function(this: XMLHttpRequestEventTarget, ev: Event)
         {
             console.log('XMLHttpRequest done');
 
-            // http server error
-            if (req.status >= 500 && req.status < 600)
-                observer.error(new Error('HTTP Server Error ' + req.status))
-            // http client error
-            else if (req.status >= 400)
-                observer.error(new Error('HTTP Client Error ' + req.status))
-            // http redirection
-            else if (req.status >= 300)
-                observer.error(new Error('HTTP Redirection ' + req.status))
-            // http successful
-            else if (req.status >= 200)
+            if (req.status === 200 || req.status === 0)
             {
-                if (req.status === 200)
-                {
-                    //console.log(req);
-                    observer.next(req.response);
-                    observer.complete();
-                }
-                else
-                    observer.error(new Error('HTTP Successful ' + req.status));
-            }
-            // http informational
-            else if (req.status >= 100)
-                console.log('HTTP Informational ' + req.status);
-            else if (req.status === 0)
-            {
-                // for IOS always returns 0
+                //console.log(req);
                 observer.next(req.response);
                 observer.complete();
             }
             else
-                observer.error(new Error('HTTP Unknown Status ' + req.status));
-
-            observer.next(req.response);
-            observer.complete();
+                observer.error(new EHttp(req.status))
         };
 
         req.onerror = function(this: XMLHttpRequestEventTarget, ev: ErrorEvent)
@@ -125,9 +123,6 @@ export class TDistributeService
 
     ReadFirmware(Version: number): Promise<ArrayBuffer>
     {
-        // TODO: ios XMLHttpRequest NOT WORK
-        // return Promise.reject(new EAbort());
-
         // 1XXXBBBB
         let Major = Math.trunc(Version / 10000000);
         let Rev = Version % 10000000;

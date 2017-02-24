@@ -23,8 +23,9 @@ const FILE_CLEAR_MAX_COUNT = 64;
 
 const USB_VENDOR = 0x10C4;
 const USB_PRODUCT = 0x0003;
+const USB_MTU = 20;
 
-const OTA_WINDOW_SIZE = 48;
+const OTA_WINDOW_SIZE = 32;
 const OTA_SPLIT_PACKET_SIZE = 16;
 const OTA_PACKET_SIZE = OTA_SPLIT_PACKET_SIZE + 4;
 
@@ -106,6 +107,7 @@ export class TShell extends TAbstractShell
         USBSerial.OTG.Start(USB_VENDOR, USB_PRODUCT).subscribe(
             next => {},
             err => console.log(err.message));
+        USBSerial.MTU = USB_MTU;
     }
 
     static get IsUsbPlugin(): boolean
@@ -910,15 +912,16 @@ export class TOTARequest extends TProxyShellRequest
         this.NoConnectionTimeout();
 
         this.FirmwareSize = Firmware.byteLength;
-        let CRC = this.SplitPacket(Firmware);
+        this.CRC = this.SplitPacket(Firmware);
 
-        this.Shell.PromiseSend('>ota -s=' + this.FirmwareSize + ' -c=' + CRC)
+        this.Shell.PromiseSend('>ota -s=' + this.FirmwareSize + ' -c=' + this.CRC)
             .catch(err => this.error(err));
     }
 
     Notification(Line: string)
     {
-        console.log('xxxxxx: ' + Line)
+        console.log('xxx: ' + Line);
+
         this.RefreshTimeout();
 
         let Strs = Line.split(':');
@@ -945,10 +948,14 @@ export class TOTARequest extends TProxyShellRequest
             console.log('OTA crc error');
             this.error(new Error('e_ota_failure'));
         }
-        else if (Strs.indexOf('jump') !== -1)
+        else if (Line.indexOf('jump') !== -1)
         {
-            console.log('notify: ' + Line);
-            this.error(new Error('jump ota'));
+            console.log('usb resetting...');
+            setTimeout(() =>
+            {
+                this.Shell.PromiseSend('>ota -s=' + this.FirmwareSize + ' -c=' + this.CRC)
+                    .catch(err => this.error(err));
+            }, 3000);
         }
         else
             this.HandleReponse(Line);
@@ -1067,6 +1074,7 @@ export class TOTARequest extends TProxyShellRequest
     }
 
     private PacketBuffer: ArrayBuffer;
+    private CRC: number;
     private Sent: number = 0;
     private LastSentOffset: number;
     private FirmwareSize: number;

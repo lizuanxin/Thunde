@@ -1,8 +1,10 @@
 import {Injectable}  from '@angular/core';
-import {TSqliteStorage} from '../UltraCreation/Storage';
-import {const_data} from './thunderbolt.const'
-
 import {TranslateService} from "ng2-translate";
+
+import {TypeInfo} from '../UltraCreation/Core'
+import {TSqliteStorage} from '../UltraCreation/Storage';
+
+import {const_data} from './thunderbolt.const'
 
 @Injectable()
 export class TLocalizeService
@@ -27,7 +29,12 @@ export class TLocalizeService
 
     get Language(): string
     {
-        return this.TransSvc.currentLang;
+        let RetVal = this.TransSvc.currentLang;
+
+        if (TypeInfo.Assigned(RetVal))
+            return RetVal;
+        else
+            return 'en';
     }
 
     set Language(Value: string)
