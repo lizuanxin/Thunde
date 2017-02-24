@@ -22,6 +22,21 @@
     }
 }
 
+@keyframes zoom {
+    0% {
+        -moz-transform: scale(1);
+        -webkit-transform: scale(1);
+        -o-transform: scale(1);
+        -ms-transform: scale(1);
+    }
+    100% {
+        -moz-transform: scaleY(2);
+        -webkit-transform: scaleY(2);
+        -o-transform: scaleY(2);
+        -ms-transform: scaleY(2);
+    }
+}
+
 @keyframes skew-animation {
     0% {
         -moz-transform: skewY(0deg);
@@ -67,9 +82,16 @@
     transition: all .2s ease .1s;
 }
 
+.animation {
+    -webkit-transition: all .6s ease .2s;
+    -moz-transition: all .6s ease .2s;
+    transition: all .6s ease .2s;
+}
+
 .fadeout{
     animation:fadeOut .2s infinite linear;
     -webkit-animation:fadeOut .2s infinite;
     animation-fill-mode: forwards;
     animation-iteration-count:1;
 }
+

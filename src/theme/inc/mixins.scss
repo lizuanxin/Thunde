@@ -114,3 +114,11 @@ $outlinewidth) {
     border-style: $outlineStyle;
     border-width: $outlinewidth;
 }
+
+@mixin scale($s1:1.2){
+    transform:scale($s1);
+    -webkit-transform:scale($s1);
+    -moz-transform:scale($s1);
+    -o-transform:scale($s1);
+    -ms-transform:scale($s1);
+}

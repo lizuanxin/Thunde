@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
 import { Subscription } from 'rxjs/Rx'
 import { Platform, NavController, ViewController, NavParams, ModalController, Content } from 'ionic-angular';
 
@@ -9,10 +9,13 @@ import { RunningPage } from '../running/running';
 import { OtaUpdatePage } from '../ota_update/ota_update';
 //import {FiledetailsPage} from '../filedetails/filedetails';
 
-@Component({ selector: 'page-go', templateUrl: 'go.html' })
+@Component({
+    selector: 'page-go', templateUrl: 'go.html',
+})
 
 export class GoPage implements OnInit, OnDestroy {
     @ViewChild(Content) content: Content;
+
     constructor(public nav: NavController, public modalCtrl: ModalController, private view: ViewController, private navParams: NavParams, private platform: Platform,
         private app: TApplication, private Localize: TLocalizeService, private Distribute: TDistributeService) {
         this.Category = navParams.get('Category');
@@ -52,21 +55,55 @@ export class GoPage implements OnInit, OnDestroy {
             this.Start('USB');
     }
 
-    ShowDesc(event, val: string) {
+    ShowDesc(event) {
+        if (!this.IsShowDescIcon) {
+            let target = event.target || event.srcElement || event.currentTarget;
+            let targetId = target.parentElement.id;
+            if (targetId !== '') {
+                this.IsShowDescIcon = true;
+                this.OutBox = <HTMLElement>document.createElement('div');                
+                let Body = <HTMLElement>document.getElementById('content');
+                let ELE = <HTMLElement>document.getElementById(targetId);
+                this.Point = ELE.getBoundingClientRect();
+                this.ShowBox = ELE.cloneNode(true);
+                let position = 'position:fixed;z-index:99;';
+                let Client = 'width:' + Math.trunc(this.Point.width) + 'px;height:' + Math.trunc(this.Point.height) + 'px;'
+                let Param = position + Client + this.StyleDirection + 'top:' + Math.trunc(this.Point.top) + 'px;transform:scale(1)';
+                let Fade = position + Client + 'top:42vh;' + this.StyleTransform + '';
+                this.OutBox.setAttribute('class', this.app.SkinColor + ' animation');
+                this.OutBox.setAttribute('style', Param);
+                this.OutBox.appendChild(this.ShowBox);
+                this.OutBox.addEventListener("click", this.CloseDesc.bind(this));
+                Body.appendChild(this.OutBox);
+                setTimeout(() => {
+                    this.OutBox.setAttribute('style', Fade);
+                }, 100)
+            }
+        }
+    }
 
-        this.CurrentDescIcon = val;
-        this.IsShowDescIcon = true;
-        let target = event.target || event.srcElement || event.currentTarget;
+    get StyleTransform ():string
+    {
+        if (this.Point.left < this.Point.width)
+            return 'left:25px;transform:scale(2);transform-origin:left 100%;'
+        else 
+            return 'right:25px;transform:scale(2);transform-origin:100% 100%;'
+    }
 
-        // let idAttr = target.attributes.id;
-        // let value = idAttr.nodeValue;
-        console.log(event);
-        // console.log(target.parentElement.offsetLeft+","+target.parentElement.offsetTop)
+    get StyleDirection ():string
+    {
+        if (this.Point.left < this.Point.width)
+            return 'left:21px;';
+        else
+            return 'right:21px;';
     }
 
     CloseDesc() {
         this.IsShowDescIcon = false;
+        this.OutBox.remove();
     }
+
+
 
     ShowFileDetail() {
         
@@ -78,7 +115,7 @@ export class GoPage implements OnInit, OnDestroy {
         else {
             this.IsShowFileDetail = true;
             if (gridBody.clientHeight > (window).innerHeight)
-                this.content.scrollTo(0, this.content.scrollHeight - this.content.contentTop * 2, 1500);
+                this.content.scrollTo(0, this.content.scrollHeight - this.content.contentTop * 2 -16, 1500);
             else
                 this.content.scrollTo(0, gridBody.clientHeight - 50 * 2, 1500);
         }         
@@ -164,6 +201,10 @@ export class GoPage implements OnInit, OnDestroy {
     IsShowDescIcon: boolean = false;
     IsShowFileDetail: boolean = false;
     CurrentDescIcon: string;
+    OutBox:any;
+    ShowBox:any;
+    Point: any;
+
     private ScanSubscription: Subscription;
 
 }

@@ -25,7 +25,7 @@ ion-icon {
         font-family: 'Thundericons';
     }
     @while $i <=80 {
-        &[#{v}-#{w}-#{$i}] {
+        &[#{v}-#{w}-#{$i}],&.#{v}-#{w}-#{$i} {
             font-size: $i+vw;
         }
         $i:$i+1;

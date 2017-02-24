@@ -43,7 +43,7 @@ $i:12;
 }
 
 ion-content {
-    &[no-scroll] {
+    &[no-scroll], &.no-scroll{
         .scroll-content {
             overflow-y: hidden;
         }
