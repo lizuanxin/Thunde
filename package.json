@@ -30,6 +30,9 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "1.1.4",
+    "elementtree": "^0.1.7",
+    "lodash": "^4.17.4",
+    "plist": "^2.0.1",
     "typescript": "2.0.10"
   },
   "config": {}
