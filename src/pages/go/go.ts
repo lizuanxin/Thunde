@@ -61,26 +61,25 @@ export class GoPage implements OnInit, OnDestroy {
             let targetId = target.parentElement.id;
             if (targetId !== '') {
                 this.IsShowDescIcon = true;
-                this.OutBox = <HTMLElement>document.createElement('div');                
-                let Body = <HTMLElement>document.getElementById('content');
-                let ELE = <HTMLElement>document.getElementById(targetId);
+                this.OutBox = <HTMLElement>document.getElementById('ShowDescIcon');
+                let ELE = <HTMLElement>document.getElementById(targetId);                
                 this.Point = ELE.getBoundingClientRect();
                 this.ShowBox = ELE.cloneNode(true);
                 let position = 'position:fixed;z-index:99;';
                 let Client = 'width:' + Math.trunc(this.Point.width) + 'px;height:' + Math.trunc(this.Point.height) + 'px;'
-                this.InitialPosition = position + Client + this.StyleDirection + 'top:' + Math.trunc(this.Point.top) + 'px;transform:scale(1)';                
-                this.OutBox.setAttribute('class', this.app.SkinColor + ' animation');
+                this.InitialPosition = position + Client + this.StyleDirection + 'top:' + Math.trunc(this.Point.top) + 'px;transform:scale(1)'; 
                 this.OutBox.setAttribute('style', this.InitialPosition);
                 this.OutBox.appendChild(this.ShowBox);
                 this.OutBox.addEventListener("click", this.CloseDesc.bind(this));
-                Body.appendChild(this.OutBox);
-                setTimeout(() => {
-                    let Fade = position + Client + 'top:42vh;' + this.StyleTransform;
+                let Fade = position + Client + 'top:42vh;' + this.StyleTransform;
+                setTimeout(() => {                    
                     this.OutBox.setAttribute('style', Fade);
                 }, 100)
             }
         }
     }
+
+
 
     get StyleTransform(): string
     {
@@ -99,10 +98,12 @@ export class GoPage implements OnInit, OnDestroy {
     }
 
     CloseDesc() {
-        this.OutBox.setAttribute('style', this.InitialPosition);
+        this.OutBox.setAttribute('style', this.InitialPosition);        
         setTimeout(() => {
             this.IsShowDescIcon = false;
-            this.OutBox.remove();
+            if (this.OutBox.childNodes.length === 0)  return; 
+            this.OutBox.removeAttribute('style');         
+            this.OutBox.removeChild(this.ShowBox);
         }, 800)
     }
 

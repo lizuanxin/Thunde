@@ -3,7 +3,7 @@
         <ion-title text-center><span [ngClass]="app.SkinColor">{{ScriptFile.Name_LangId|translate}}</span></ion-title>
     </ion-toolbar>
 </ion-header>
-<ion-content [ngClass]="app.Skin('go')" id="content" [class.no-scroll]="IsShowDescIcon">    
+<ion-content [ngClass]="app.Skin('go')" [class.no-scroll]="IsShowDescIcon">    
     <template [ngIf]="!IsShowingDeviceList">
         <div [ngClass]="{'fadeout':IsShowDescIcon}" id="gridBody">
             <div *ngFor="let body of ScriptFile.BodyParts;let i = index">
@@ -46,6 +46,7 @@
             <span>{{'go_page.plug_device'|translate}}</span>
         </ion-item>
     </ion-list>
+    <div id="ShowDescIcon" [ngClass]="app.SkinColor" [class.animation]="'animation'" tappable></div>
 </ion-content>
 <ion-footer no-border>
     <div content-footer [ngClass]="app.SkinConFooter">
