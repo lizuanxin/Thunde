@@ -24,13 +24,17 @@ const FILE_CLEAR_MAX_COUNT = 64;
 const USB_VENDOR = 0x10C4;
 const USB_PRODUCT = 0x0003;
 const USB_MTU = 20;
+const USB_MIN_WRITE_INTERVAL = 10;
 
-const OTA_WINDOW_SIZE = 32;
+const OTA_WINDOW_SIZE = 24;
 const OTA_SPLIT_PACKET_SIZE = 16;
 const OTA_PACKET_SIZE = OTA_SPLIT_PACKET_SIZE + 4;
 
 type TLinearTable = '5v' | '3.3v' | '4v';
 const DEF_LINEAR_TABLE = '4v';
+
+export class EUSBRestarting extends EAbort
+    {}
 
 export enum TShellNotify
     {Shutdown, Disconnected, NoLoad, Stopped, Intensity, HardwareError, LowBattery, Battery, Ticking};
@@ -100,14 +104,10 @@ export class TShell extends TAbstractShell
     }
 
 /* USB only */
-    static StartOTG()
+    static StartOTG(): USBSerial.OTG
     {
         this.UsbProxy = new TProxyUsbShell();
-
-        USBSerial.OTG.Start(USB_VENDOR, USB_PRODUCT).subscribe(
-            next => {},
-            err => console.log(err.message));
-        USBSerial.MTU = USB_MTU;
+        return USBSerial.OTG.Start(USB_VENDOR, USB_PRODUCT, USB_MTU, USB_MIN_WRITE_INTERVAL);
     }
 
     static get IsUsbPlugin(): boolean
@@ -920,7 +920,7 @@ export class TOTARequest extends TProxyShellRequest
 
     Notification(Line: string)
     {
-        console.log('xxx: ' + Line);
+        console.log('OTA Notification: ' + Line);
 
         this.RefreshTimeout();
 
@@ -951,11 +951,7 @@ export class TOTARequest extends TProxyShellRequest
         else if (Line.indexOf('jump') !== -1)
         {
             console.log('usb resetting...');
-            setTimeout(() =>
-            {
-                this.Shell.PromiseSend('>ota -s=' + this.FirmwareSize + ' -c=' + this.CRC)
-                    .catch(err => this.error(err));
-            }, 3000);
+            this.error(new EUSBRestarting());
         }
         else
             this.HandleReponse(Line);

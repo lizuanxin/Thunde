@@ -66,10 +66,23 @@ export class OtaUpdatePage implements AfterViewInit, OnDestroy
             {
                 //PowerManagement.release().catch(err => {});
 
-                if (this.Percent === 100 && err instanceof Loki.ERequestTimeout)    // last packet may never received
-                    this.nav.pop();
+                if (err instanceof Loki.EUSBRestarting)
+                {
+                    setTimeout(() =>
+                    {
+                        Loki.TShell.StartOTG();
+                        this.Shell = Loki.TShell.Get('USB');
+                    }, 1500);
+
+                    setTimeout(() => this.Start(), 3000);
+                }
                 else
-                    this.app.ShowHintId(err.message).then(() => this.nav.pop());
+                {
+                    if (this.Percent >= 100)    // last packet may never received
+                        this.nav.pop();
+                    else
+                        this.app.ShowHintId(err.message).then(() => this.nav.pop());
+                }
             });
     }
 

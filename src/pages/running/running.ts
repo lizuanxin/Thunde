@@ -206,7 +206,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
             setTimeout(() =>
             {
                 if (this.view === this.nav.getActive())
-                    this.nav.popToRoot();
+                    this.nav.pop();
             }, 300);
     }
 

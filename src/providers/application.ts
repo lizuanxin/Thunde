@@ -21,8 +21,8 @@ export class TApplication extends TAppController
         return Storage.Get('accepted terms')
             .then(value => this.AcceptedTerms = value ==='yes')
             .catch(err => { })
-            .then(() =>Storage.Get('Skin'))
-            .then(Name => this.SkinName = Name)
+            // .then(() =>Storage.Get('Skin'))
+            // .then(Name => this.SkinName = Name)
             .catch(err => { })
     }
 
@@ -71,9 +71,8 @@ export class TApplication extends TAppController
     SetSkin(Name: string): void
     {
         (this.constructor as typeof TApplication).SkinName = Name;
-
-        let Storage = new TSqliteStorage(const_data.DatabaseName);
-        Storage.Set('Skin', Name);
+        // let Storage = new TSqliteStorage(const_data.DatabaseName);
+        // Storage.Set('Skin', Name);
     }
 
     get SkinBorderColor(): string {
@@ -110,11 +109,11 @@ export class TApplication extends TAppController
     }
 
     get IsAndroid(): boolean
-    {        
+    {
         return this.platform.is('android');
     }
 
-    public Skins: Array<string>;    
+    public Skins: Array<string>;
     private static SkinName: string = 'abstract';
     private deep = ['abstract', 'BlackRed','spots'];
     private warm = ['strengths'];

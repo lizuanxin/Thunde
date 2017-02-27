@@ -131,9 +131,14 @@ export class TDistributeService
         switch (Major)
         {
         case 1:
-            FileName = 'MiniQ';
+            if (Rev === 1)
+                FileName = 'Thunderbolt';
+            else
+                FileName = 'MiniQ';
             break;
         case 2:
+            if (Rev < 4)    // hardware 4.3k res
+                return Promise.reject(new EAbort());
             FileName = 'ThunderboltQ';
             break;
         case 3:
@@ -159,5 +164,3 @@ export class TDistributeService
             })
     }
 }
-
-
