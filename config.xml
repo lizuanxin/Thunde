@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="hk.com.ultracreation.thunderbolt" version="1.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+<widget id="hk.com.ultracreation.thunderbolt" version="1.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Thunderbolt</name>
     <description>
         Thunderbolt.
@@ -15,10 +15,12 @@
     <allow-intent href="geo:*" />
     <engine name="android" spec="~6.1.0" />
     <platform name="android">
-		<config-file target="AndroidManifest.xml" parent="application/activity">
-      		<intent-filter><action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" /></intent-filter>
-      		<meta-data android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" android:resource="@xml/usb_device_filter"/>
-    	</config-file>
+        <config-file parent="application/activity" target="AndroidManifest.xml">
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+            <meta-data android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" android:resource="@xml/usb_device_filter" />
+        </config-file>
         <allow-intent href="market:*" />
         <preference name="android-minSdkVersion" value="18" />
         <preference name="android-targetSdkVersion" value="22" />
@@ -36,7 +38,6 @@
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
     </platform>
     <platform name="ios">
-        
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />
@@ -95,10 +96,10 @@
     <plugin name="ultracreation-usb-android" spec="https://github.com/disword/ultracreation-usb-android.git" />
     <plugin name="cordova-sqlite-storage" spec="~2.0.2" />
     <plugin name="cordova-plugin-powermanagement" spec="~1.0.5" />
-    <plugin name="cordova-plugin-crosswalk-webview" spec="~2.3.0">
-        <variable name="XWALK_VERSION" value="23+" />
+    <plugin name="cordova-plugin-crosswalk-webview" spec="~2.1.0">
+        <variable name="XWALK_VERSION" value="21+" />
         <variable name="XWALK_LITEVERSION" value="xwalk_core_library_canary:17+" />
-        <variable name="XWALK_COMMANDLINE" value="--disable-pull-to-refresh-effect --ignore-gpu-blacklist" />
+        <variable name="XWALK_COMMANDLINE" value="--disable-pull-to-refresh-effect" />
         <variable name="XWALK_MODE" value="embedded" />
         <variable name="XWALK_MULTIPLEAPK" value="true" />
     </plugin>
