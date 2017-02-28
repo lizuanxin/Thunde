@@ -137,7 +137,7 @@ export class TDistributeService
                 FileName = 'MiniQ';
             break;
         case 2:
-            if (Rev < 4)    // hardware 4.3k res
+            if (Rev <= 4)    // hardware 4.3k res
                 return Promise.reject(new EAbort());
             FileName = 'ThunderboltQ';
             break;
