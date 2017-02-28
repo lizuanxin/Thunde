@@ -107,7 +107,7 @@ let translate_en =
 
     home_page:
     {
-        title: 'Thunder Bolt',
+        title: 'Cablemagic',
         menu_tou: 'Terms of Use',
     },
 
@@ -268,7 +268,7 @@ let translate_zh =
 
     home_page:
     {
-        title: 'Thunder Bolt',
+        title: '小摩线',
         menu_tou: '使用条款',
     },
 
