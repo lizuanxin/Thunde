@@ -107,7 +107,7 @@ let translate_en =
 
     home_page:
     {
-        title: 'Cablemagic',
+        title: 'Thunderbolt',
         menu_tou: 'Terms of Use',
     },
 
