@@ -1,15 +1,20 @@
 <ion-menu [content]="content" type="overlay" side="right" overlay>
   <ion-content transparent padding-left>
     <ion-list no-lines transparent list-side>
-        <ion-item-divider no-lines text-light menuToggle  [ngStyle]="{'min-height':app.IsAndroid ? '56px' : null}">
+        <ion-item-divider margin-bottom no-lines text-light menuToggle  [ngStyle]="{'min-height':app.IsAndroid ? '56px' : null}">
             <ion-icon app-icon item-left [ngStyle]="{'font-size':app.IsAndroid ? '2.4rem' : null}">&#xe906;</ion-icon>       
             {{'home_page.title'|translate}}
         </ion-item-divider>
         <button menuToggle ion-item  text-light detail-none (click)="ShowTOU()" tappable>
-            <ion-icon inline-left>
+            <!--<ion-icon inline-left>
                 &#xf496;
-            </ion-icon>
+            </ion-icon>-->
             {{'home_page.menu_tou'|translate}}
+            <ion-note item-right><ion-icon>&#xf3d1;</ion-icon></ion-note>
+        </button>
+        <button menuToggle ion-item  text-light detail-none tappable>
+            检查更新
+            <ion-note item-right [ngStyle]="{'font-size':'1.2rem'}">当前版本：V1.1</ion-note>
         </button>
       </ion-list>
   </ion-content>
@@ -17,7 +22,7 @@
 <ion-header no-shadow no-border>
   <ion-toolbar transparent>
     <ion-buttons left>
-      <button ion-button icon-only [ngStyle]="{'margin':'0 6px','padding':'0 2px','min-width':'44px'}">
+      <button ion-button icon-only [ngStyle]="{'margin':'0 6px','padding':'0 2px','min-width':'44px'}" (click)="ShowDemo()" tappable>
           <ion-icon [ngClass]="app.SkinColor" app-icon>&#xe908;</ion-icon>
       </button>
     </ion-buttons>

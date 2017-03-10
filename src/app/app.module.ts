@@ -8,6 +8,7 @@ import {TDistributeService} from '../providers/distribute'
 import {TLocalizeService} from '../providers/localize'
 
 import {MyApp} from './app.component';
+import {DemoPage} from '../pages/demo/demo';
 import {TouPage} from '../pages/tou/tou';
 import {HomePage} from '../pages/home/home';
 import {SkinPage} from '../pages/skin/skin';
@@ -34,12 +35,12 @@ let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
 
     declarations: [
         MyApp,
-        HomePage, TouPage, SkinPage, GoPage, RunningPage, FiledetailsPage,OtaUpdatePage
+        HomePage, DemoPage, TouPage, SkinPage, GoPage, RunningPage, FiledetailsPage, OtaUpdatePage
     ],
 
     entryComponents: [
         MyApp,
-        HomePage, TouPage, SkinPage, GoPage, RunningPage, FiledetailsPage,OtaUpdatePage
+        HomePage, DemoPage, TouPage, SkinPage, GoPage, RunningPage, FiledetailsPage, OtaUpdatePage
     ],
 
     providers: [

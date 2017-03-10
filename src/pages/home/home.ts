@@ -5,6 +5,7 @@ import {TypeInfo} from '../../UltraCreation/Core'
 import * as UI from '../../UltraCreation/Graphic'
 
 import {const_data, TApplication, TLocalizeService, TAssetService, TCategory, TScriptFile, TDistributeService} from '../services';
+import {DemoPage} from '../demo/demo';
 import {TouPage} from '../tou/tou';
 import {GoPage} from '../go/go';
 import {SkinPage} from '../skin/skin';
@@ -35,7 +36,7 @@ export class HomePage implements OnInit, OnDestroy
     {
         this.Content.Disponse();
         this.Content = null;
-    }
+    }    
 
     ionViewDidEnter()
     {
@@ -85,6 +86,11 @@ export class HomePage implements OnInit, OnDestroy
     SelectSkin()
     {
         this.nav.push(SkinPage);
+    }
+
+    ShowDemo()
+    {
+        this.nav.push(DemoPage);
     }
 
     ShowTOU()

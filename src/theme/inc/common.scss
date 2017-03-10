@@ -1,3 +1,19 @@
+[Demonstration],
+.Demonstration{
+    ion-icon{
+        position:absolute;
+        transform-origin: 100% 100%;
+        -webkit-transform-origin: 100% 100%;
+        &.scale-1{
+            transform: scale(1);
+            -webkit-transform: scale(1);
+        }
+        &.scale-zoom{
+            transform: scale(.5);
+            -webkit-transform: scale(.5);
+        }
+    }
+}
 [orientate],
 .orientate {
     [area],
