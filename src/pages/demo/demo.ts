@@ -129,11 +129,14 @@ export class DemoPage implements OnInit, OnDestroy {
                 {
                     this.DrawBody(this.Ctx, alpha);
                     alpha += 0.01;
+                    
+                    IntervalId = requestAnimationFrame(BodyAnimation);
+                    
                 }
                 else
                 {
-                      clearInterval(IntervalId);
-                      //return Promise.resolve();
+                      cancelAnimationFrame(IntervalId);
+                      return Promise.resolve();
                 }
             };
 
@@ -156,7 +159,7 @@ export class DemoPage implements OnInit, OnDestroy {
                         count++;
                     }
 
-                    IntervalId = setInterval(BodyAnimation, 25);
+                    requestAnimationFrame(StickAnimation);
                 }
                 else
                     return Promise.resolve();
@@ -166,16 +169,14 @@ export class DemoPage implements OnInit, OnDestroy {
           {
               switch (type) 
               {
-                  case animation[0]:
-                    IntervalId = setInterval(BodyAnimation, 25);
+                  case 'body':
+                    BodyAnimation();
                     break;
                 
-                  case animation[1]:
-                    IntervalId = setInterval(StickAnimation, 25);
+                  case 'stick':
+                    StickAnimation();
                     break;
 
-                  default:
-                    break;
               }
           });        
   }
