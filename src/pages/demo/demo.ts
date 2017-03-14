@@ -119,7 +119,7 @@ export class DemoPage implements OnInit, OnDestroy
         //得到斜边的总长度
         let beveling = this.getBeveling(x2 - x1, y2 - y1);
         //计算有多少个线段
-        let num = Math.floor(beveling / 8);        
+        let num = Math.floor(beveling / 6);        
         for (let i = 0; i < num; i++) {
             ctx[i % 2 === 0 ? 'moveTo' : 'lineTo'](x1 + (x2 - x1) / num * i, y1 + (y2 - y1) / num * i);
         }  
