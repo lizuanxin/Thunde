@@ -30,7 +30,7 @@ export class DemoPage implements OnInit, OnDestroy
     {
         ctx.save();
         ctx.globalAlpha = alpha/10;
-        ctx.font = this.SetFontSize(0.48);
+        ctx.font = this.SetIconFontSize(0.48);
         let Str: string = String.fromCharCode(0xe91c);
         let text = ctx.measureText(Str);
         let x:number = this.SetX(text, 6);
@@ -49,7 +49,7 @@ export class DemoPage implements OnInit, OnDestroy
     {
         ctx.save();
         ctx.globalAlpha = alpha/10;
-        ctx.font = this.SetFontSize(0.21);
+        ctx.font = this.SetIconFontSize(0.21);
         let Str: string = String.fromCharCode(0xe91d);
         let text = ctx.measureText(Str);
         let x:number = this.SetX(text, 2.3);
@@ -62,7 +62,7 @@ export class DemoPage implements OnInit, OnDestroy
     {
         ctx.save();
         ctx.globalAlpha = alpha/10;
-        ctx.font = this.SetFontSize(0.675);
+        ctx.font = this.SetIconFontSize(0.675);
         let Str: string = String.fromCharCode(0xe920);
         let text = ctx.measureText(Str);
         let x:number = this.SetX(text, 1.22);
@@ -76,7 +76,7 @@ export class DemoPage implements OnInit, OnDestroy
     {
         ctx.save();
         ctx.globalAlpha = alpha/10;
-        ctx.font = this.SetFontSize(0.3);
+        ctx.font = this.SetIconFontSize(0.3);
         let Str: string = String.fromCharCode(0xe922);
         let text = ctx.measureText(Str);
         let x: number = this.SetX(text, 0.98);
@@ -89,23 +89,30 @@ export class DemoPage implements OnInit, OnDestroy
     {
         ctx.save();
         ctx.globalAlpha = alpha/10;
-        ctx.font = this.SetFontSize(0.6);
+        ctx.font = this.SetIconFontSize(0.6);
         let Str: string = String.fromCharCode(0xe921);
         let text = ctx.measureText(Str);
-        let x: number = this.SetX(text, 1.3);
+        let x: number = this.SetX(text, 2);
         ctx.fillStyle = "#FFFFFF";
-        ctx.fillText(Str, x, this.Canvas.width * 1.6);
+        ctx.fillText(Str, x, this.Canvas.width * 1.4);
         ctx.restore();
     }
 
 
-    DrawText(ctx, Text: string, Size: number, x: number, y: number, Color: string,alpha)
+    DrawText(ctx, Text: string, FontStyle: string, x: number, y: number, Color: string, alpha, rotate?: number)
     {
         ctx.save();
         ctx.globalAlpha = alpha/10;
-        ctx.font = this.Canvas.width * Size + 'px yahei';
-        ctx.fillStyle = Color;
-        ctx.fillText(Text, x, y);
+        ctx.font = FontStyle;
+        ctx.fillStyle = Color; 
+        if (rotate){ 
+            ctx.translate(x, y);
+            ctx.rotate(rotate * Math.PI / 180);
+            ctx.fillText(Text, 0,0);
+        }else{
+            ctx.fillText(Text, x, y);
+        }
+        
         ctx.restore();
     }
 
@@ -119,7 +126,7 @@ export class DemoPage implements OnInit, OnDestroy
         //得到斜边的总长度
         let beveling = this.getBeveling(x2 - x1, y2 - y1);
         //计算有多少个线段
-        let num = Math.floor(beveling / 6);        
+        let num = Math.floor(beveling / 5);        
         for (let i = 0; i < num; i++) {
             ctx[i % 2 === 0 ? 'moveTo' : 'lineTo'](x1 + (x2 - x1) / num * i, y1 + (y2 - y1) / num * i);
         }  
@@ -130,16 +137,31 @@ export class DemoPage implements OnInit, OnDestroy
 
     DrawTextExplain(alpha)
     {
+        let ArrowPoint: string = String.fromCharCode(0xe928),
+            NUM_01: string = String.fromCharCode(0xe923), 
+            NUM_02: string = String.fromCharCode(0xe924), 
+            NUM_03: string = String.fromCharCode(0xe925), 
+            NUM_04: string = String.fromCharCode(0xe927);
         this.DrawExplain(this.Ctx, this.Canvas.width * 0.52, this.Canvas.width * 0.9, this.Canvas.height * 0.2, this.Canvas.height * 0.2, 'yellow', 1,alpha);
         this.DrawExplain(this.Ctx, this.Canvas.width * 0.9, this.Canvas.width * 0.92, this.Canvas.height * 0.2, this.Canvas.height * 0.22, 'yellow', 1,alpha);
-        this.DrawExplain(this.Ctx, this.Canvas.width * 0.78, this.Canvas.width * 0.5, this.Canvas.height * 0.52, this.Canvas.height * 0.72, 'white', 1,alpha);
-        this.DrawExplain(this.Ctx, this.Canvas.width * 0.74, this.Canvas.width * 0.62, this.Canvas.height * 0.84, this.Canvas.height * 0.92, 'yellow', 1,alpha);
-        this.DrawExplain(this.Ctx, this.Canvas.width * 0.62, this.Canvas.width * 0.12, this.Canvas.height * 0.92, this.Canvas.height * 0.92, 'yellow', 1,alpha);
-        this.DrawText(this.Ctx, '按摩贴贴法', 0.05, this.Canvas.width * 0.58, this.Canvas.height * 0.18, 'yellow',alpha);
-        this.DrawText(this.Ctx, '强度控制', 0.05, this.Canvas.width * 0.18, this.Canvas.height * 0.9, 'yellow',alpha);
+        // this.DrawExplain(this.Ctx, this.Canvas.width * 0.78, this.Canvas.width * 0.6, this.Canvas.height * 0.52, this.Canvas.height * 0.66, 'white', 1,alpha);
+
+        this.DrawExplain(this.Ctx, this.Canvas.width * 0.42, this.Canvas.width * 0.36, this.Canvas.height * 0.62, this.Canvas.height * 0.52, 'yellow', 1,alpha);
+        this.DrawExplain(this.Ctx, this.Canvas.width * 0.36, this.Canvas.width * 0.12, this.Canvas.height * 0.52, this.Canvas.height * 0.52, 'yellow', 1,alpha);
+
+        this.DrawExplain(this.Ctx, this.Canvas.width * 0.6, this.Canvas.width * 0.55, this.Canvas.height * 0.72, this.Canvas.height * 0.84, 'yellow', 1,alpha);
+        this.DrawExplain(this.Ctx, this.Canvas.width * 0.55, this.Canvas.width * 0.12, this.Canvas.height * 0.84, this.Canvas.height * 0.84, 'yellow', 1,alpha);
+        this.DrawText(this.Ctx, ArrowPoint,this.SetIconFontSize(0.2), this.Canvas.width * 0.84, this.Canvas.height * 0.59, '#6ca4e1',alpha,210);
+        this.DrawText(this.Ctx, NUM_01,this.SetIconFontSize(0.068), this.Canvas.width * 0.91, this.Canvas.height * 0.24, 'yellow',alpha);
+        this.DrawText(this.Ctx, NUM_02,this.SetIconFontSize(0.068), this.Canvas.width * 0.9, this.Canvas.height * 0.5, 'yellow',alpha);
+        this.DrawText(this.Ctx, NUM_03,this.SetIconFontSize(0.068), this.Canvas.width * 0.07, this.Canvas.height * 0.534, 'yellow',alpha);
+        this.DrawText(this.Ctx, NUM_04,this.SetIconFontSize(0.068), this.Canvas.width * 0.07, this.Canvas.height * 0.85, 'yellow',alpha);
+        this.DrawText(this.Ctx, '电极贴贴法', this.SetFontSize(0.044), this.Canvas.width * 0.58, this.Canvas.height * 0.18, 'yellow',alpha);
+        this.DrawText(this.Ctx, '开关控制', this.SetFontSize(0.044), this.Canvas.width * 0.16, this.Canvas.height * 0.5, 'yellow',alpha);
+        this.DrawText(this.Ctx, '强度控制', this.SetFontSize(0.044), this.Canvas.width * 0.16, this.Canvas.height * 0.82, 'yellow',alpha);
         let TakePower = '手机取电';
         for (let i = 0; i < TakePower.length; i++) {
-            this.DrawText(this.Ctx, TakePower[i], 0.04, this.Canvas.width * 0.85, this.Canvas.height * 0.338 + i * 16 * window.devicePixelRatio, 'yellow',alpha);
+            this.DrawText(this.Ctx, TakePower[i], this.SetFontSize(0.038), this.Canvas.width * 0.85, this.Canvas.height * 0.338 + i * 16 * window.devicePixelRatio, 'yellow',alpha);
         } 
     }
 
@@ -194,12 +216,17 @@ export class DemoPage implements OnInit, OnDestroy
 
     get SetTipsClass(): string
     {
-        if (this.TypeMode === animation[4] || this.TypeMode === animation[5]) return 'animateTips';
+        if (this.TypeMode === animation[5]) return 'animateTips';
+    }
+
+    SetIconFontSize(value: number): string
+    {
+        return this.Canvas.width * value + 'px Thundericons';
     }
 
     SetFontSize(value: number): string
     {
-        return this.Canvas.width * value + 'px Thundericons';
+        return this.Canvas.width * value + 'px yahei';
     }
 
 
