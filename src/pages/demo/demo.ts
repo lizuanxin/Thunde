@@ -44,7 +44,7 @@ export class DemoPage implements OnInit, OnDestroy {
   
   ngOnDestroy(): void 
   {
-    
+
   }
 
   // DrawBody()
@@ -67,7 +67,7 @@ export class DemoPage implements OnInit, OnDestroy {
 
   DrawBody(ctx, start)
   {
-    
+
     ctx.save();
     ctx.globalAlpha = start/10;
     ctx.font = this.SetFontSize(0.48);
@@ -102,7 +102,7 @@ export class DemoPage implements OnInit, OnDestroy {
     ctx.fillStyle = "#FFFFFF";
     ctx.fillText(Str, x, this.Canvas.width * 0.858);
     ctx.restore();
-  } 
+  }
 
   DrawPhone(ctx)
   {
