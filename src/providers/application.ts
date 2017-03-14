@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {App, Toast,Platform} from 'ionic-angular';
+import {App, Toast, Platform} from 'ionic-angular';
 
 import {TLocalizeService} from "./localize"
 import {TSqliteStorage} from '../UltraCreation/Storage';
@@ -9,9 +9,10 @@ import {const_data} from './thunderbolt.const'
 @Injectable()
 export class TApplication extends TAppController
 {
-    constructor(public Instance: App, public Localize: TLocalizeService,private platform: Platform)
+    constructor(public Instance: App, public Localize: TLocalizeService, private platform: Platform)
     {
         super(Instance);
+
         this.Skins = this.warm.concat(this.deep);
         console.log('TApplication construct');
     }
@@ -24,6 +25,11 @@ export class TApplication extends TAppController
             // .then(() =>Storage.Get('Skin'))
             // .then(Name => this.SkinName = Name)
             .catch(err => { })
+    }
+
+    get IsAndroid(): boolean
+    {
+        return this.platform.is('android');
     }
 
     get AcceptedTerms(): boolean
@@ -106,11 +112,6 @@ export class TApplication extends TAppController
             return 'light';
         else
             return 'dark';
-    }
-
-    get IsAndroid(): boolean
-    {
-        return this.platform.is('android');
     }
 
     public Skins: Array<string>;
