@@ -147,7 +147,7 @@ export class DemoPage implements OnInit, OnDestroy
         this.DrawExplain(Ctx, CW * 0.36, CW * 0.12, CH * 0.52, CH * 0.52, ColorYellow, 1, Alpha);
         this.DrawExplain(Ctx, CW * 0.6, CW * 0.55, CH * 0.72, CH * 0.84, ColorYellow, 1, Alpha);
         this.DrawExplain(Ctx, CW * 0.55, CW * 0.12, CH * 0.84, CH * 0.84, ColorYellow, 1, Alpha);
-        this.DrawText(Ctx, ArrowPoint, this.SetIconFontSize(0.2), CW * 0.84, CH * 0.59, '#6ca4e1', Alpha, 210);
+        this.DrawText(Ctx, ArrowPoint, this.SetIconFontSize(0.2), CW * 0.84, CH * 0.59, '#1fb0e5', Alpha, 210);
         this.DrawText(Ctx, NUM_01, this.SetIconFontSize(0.068), CW * 0.91, CH * 0.24, ColorYellow, Alpha);
         this.DrawText(Ctx, NUM_02, this.SetIconFontSize(0.068), CW * 0.9, CH * 0.5, ColorYellow, Alpha);
         this.DrawText(Ctx, NUM_03, this.SetIconFontSize(0.068), CW * 0.07, CH * 0.534, ColorYellow, Alpha);
@@ -222,7 +222,7 @@ export class DemoPage implements OnInit, OnDestroy
             case 0:
                 return {'width':'5rem','height':'5rem','left':'38vw','top':'15vh'}
             case 1:
-                return { 'width': '2rem', 'height': '2rem', 'left': '83.7vw', 'top': '42.2vh'}
+                return {'width': '2rem', 'height': '2rem', 'left': '83.7vw', 'top': '42.2vh'}
             case 2:
                 return {'width':'4rem','height':'4rem','left':'57.6vw','top':'66.6vh'}
         }
