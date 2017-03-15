@@ -142,8 +142,7 @@ export class DemoPage implements OnInit, OnDestroy
                 NUM_04: string = String.fromCharCode(0xe927);
         
         this.DrawExplain(Ctx, CW * 0.52, CW * 0.9, CH * 0.2, CH * 0.2, 'yellow', 1,Alpha);
-        this.DrawExplain(Ctx, CW * 0.9, CW * 0.92, CH * 0.2, CH * 0.22, 'yellow', 1,Alpha);
-        // this.DrawExplain(Ctx, CW * 0.78, CW * 0.6, CH * 0.52, CH * 0.66, 'white', 1,Alpha);
+        this.DrawExplain(Ctx, CW * 0.9, CW * 0.92, CH * 0.2, CH * 0.22, 'yellow', 1,Alpha);        
         this.DrawExplain(Ctx, CW * 0.42, CW * 0.36, CH * 0.62, CH * 0.52, 'yellow', 1,Alpha);
         this.DrawExplain(Ctx, CW * 0.36, CW * 0.12, CH * 0.52, CH * 0.52, 'yellow', 1,Alpha);
         this.DrawExplain(Ctx, CW * 0.6, CW * 0.55, CH * 0.72, CH * 0.84, 'yellow', 1,Alpha);
@@ -243,8 +242,6 @@ export class DemoPage implements OnInit, OnDestroy
 
     private Canvas: HTMLCanvasElement;
     Ctx: CanvasRenderingContext2D;
-    DisplayHeight:number;
-    TimeAmount:number;
     TypeMode:string = animation[0];
 
 }
