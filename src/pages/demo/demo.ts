@@ -135,12 +135,12 @@ export class DemoPage implements OnInit, OnDestroy
     DrawTextExplain(Ctx,Alpha)
     {
         let CW = this.Canvas.width, CH = this.Canvas.height, ColorYellow = "#fce000",
-            ArrowPoint: string = String.fromCharCode(0xe928),
-                    GO: string = String.fromCharCode(0xe929),
-                NUM_01: string = String.fromCharCode(0xe923), 
-                NUM_02: string = String.fromCharCode(0xe924), 
-                NUM_03: string = String.fromCharCode(0xe925), 
-                NUM_04: string = String.fromCharCode(0xe927);
+                                    ArrowPoint: string = String.fromCharCode(0xe928),
+                                            GO: string = String.fromCharCode(0xe929),
+                                        NUM_01: string = String.fromCharCode(0xe923), 
+                                        NUM_02: string = String.fromCharCode(0xe924), 
+                                        NUM_03: string = String.fromCharCode(0xe925), 
+                                        NUM_04: string = String.fromCharCode(0xe927);
         
         this.DrawExplain(Ctx, CW * 0.52, CW * 0.9, CH * 0.2, CH * 0.2, ColorYellow, 1, Alpha);
         this.DrawExplain(Ctx, CW * 0.9, CW * 0.92, CH * 0.2, CH * 0.22, ColorYellow, 1, Alpha);
