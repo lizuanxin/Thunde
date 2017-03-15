@@ -136,6 +136,7 @@ export class DemoPage implements OnInit, OnDestroy
     {
         let CW = this.Canvas.width, CH = this.Canvas.height, ColorYellow = "#fce000",
             ArrowPoint: string = String.fromCharCode(0xe928),
+                    GO: string = String.fromCharCode(0xe929),
                 NUM_01: string = String.fromCharCode(0xe923), 
                 NUM_02: string = String.fromCharCode(0xe924), 
                 NUM_03: string = String.fromCharCode(0xe925), 
@@ -147,11 +148,12 @@ export class DemoPage implements OnInit, OnDestroy
         this.DrawExplain(Ctx, CW * 0.36, CW * 0.12, CH * 0.52, CH * 0.52, ColorYellow, 1, Alpha);
         this.DrawExplain(Ctx, CW * 0.6, CW * 0.55, CH * 0.72, CH * 0.84, ColorYellow, 1, Alpha);
         this.DrawExplain(Ctx, CW * 0.55, CW * 0.12, CH * 0.84, CH * 0.84, ColorYellow, 1, Alpha);
-        this.DrawText(Ctx, ArrowPoint, this.SetIconFontSize(0.2), CW * 0.84, CH * 0.59, '#1fb0e5', Alpha, 210);
+        this.DrawText(Ctx, ArrowPoint, this.SetIconFontSize(0.2), CW * 0.84, CH * 0.59, '#71a4d0', Alpha, 210);
         this.DrawText(Ctx, NUM_01, this.SetIconFontSize(0.068), CW * 0.91, CH * 0.24, ColorYellow, Alpha);
         this.DrawText(Ctx, NUM_02, this.SetIconFontSize(0.068), CW * 0.9, CH * 0.5, ColorYellow, Alpha);
         this.DrawText(Ctx, NUM_03, this.SetIconFontSize(0.068), CW * 0.07, CH * 0.534, ColorYellow, Alpha);
         this.DrawText(Ctx, NUM_04, this.SetIconFontSize(0.068), CW * 0.07, CH * 0.85, ColorYellow, Alpha);
+        this.DrawText(Ctx, GO, this.SetIconFontSize(0.18), CW * 0.42, CH * 0.966, 'white', Alpha);
         this.DrawText(Ctx, '电极贴贴法', this.SetFontSize(0.044), CW * 0.58, CH * 0.18, ColorYellow, Alpha);
         this.DrawText(Ctx, '开关控制', this.SetFontSize(0.044), CW * 0.16, CH * 0.5, ColorYellow, Alpha);
         this.DrawText(Ctx, '强度控制', this.SetFontSize(0.044), CW * 0.16, CH * 0.82, ColorYellow, Alpha);
