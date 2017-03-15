@@ -15,10 +15,10 @@ export class DemoPage implements OnInit, OnDestroy
 
     ngOnInit(): void
     {
-        this.Canvas = document.getElementById("demo_canvas") as HTMLCanvasElement;
-        this.Ctx = this.Canvas.getContext('2d');
         let width = window.innerWidth * window.devicePixelRatio;
         let height = window.innerHeight * window.devicePixelRatio;
+        this.Canvas = document.getElementById("demo_canvas") as HTMLCanvasElement;        
+        this.Ctx = this.Canvas.getContext('2d');        
         this.Canvas.style.width = width.toString();
         this.Canvas.style.height = height.toString();
         this.Canvas.width = width;
@@ -134,31 +134,32 @@ export class DemoPage implements OnInit, OnDestroy
 
     DrawTextExplain(Ctx,Alpha)
     {
-        let CW = this.Canvas.width, CH = this.Canvas.height,
+        let CW = this.Canvas.width, CH = this.Canvas.height, ColorYellow = "#fce000",
             ArrowPoint: string = String.fromCharCode(0xe928),
                 NUM_01: string = String.fromCharCode(0xe923), 
                 NUM_02: string = String.fromCharCode(0xe924), 
                 NUM_03: string = String.fromCharCode(0xe925), 
                 NUM_04: string = String.fromCharCode(0xe927);
         
-        this.DrawExplain(Ctx, CW * 0.52, CW * 0.9, CH * 0.2, CH * 0.2, 'yellow', 1,Alpha);
-        this.DrawExplain(Ctx, CW * 0.9, CW * 0.92, CH * 0.2, CH * 0.22, 'yellow', 1,Alpha);        
-        this.DrawExplain(Ctx, CW * 0.42, CW * 0.36, CH * 0.62, CH * 0.52, 'yellow', 1,Alpha);
-        this.DrawExplain(Ctx, CW * 0.36, CW * 0.12, CH * 0.52, CH * 0.52, 'yellow', 1,Alpha);
-        this.DrawExplain(Ctx, CW * 0.6, CW * 0.55, CH * 0.72, CH * 0.84, 'yellow', 1,Alpha);
-        this.DrawExplain(Ctx, CW * 0.55, CW * 0.12, CH * 0.84, CH * 0.84, 'yellow', 1,Alpha);
-        this.DrawText(Ctx, ArrowPoint,this.SetIconFontSize(0.2), CW * 0.84, CH * 0.59, '#6ca4e1',Alpha,210);
-        this.DrawText(Ctx, NUM_01,this.SetIconFontSize(0.068), CW * 0.91, CH * 0.24, 'yellow',Alpha);
-        this.DrawText(Ctx, NUM_02,this.SetIconFontSize(0.068), CW * 0.9, CH * 0.5, 'yellow',Alpha);
-        this.DrawText(Ctx, NUM_03,this.SetIconFontSize(0.068), CW * 0.07, CH * 0.534, 'yellow',Alpha);
-        this.DrawText(Ctx, NUM_04,this.SetIconFontSize(0.068), CW * 0.07, CH * 0.85, 'yellow',Alpha);
-        this.DrawText(Ctx, '电极贴贴法', this.SetFontSize(0.044), CW * 0.58, CH * 0.18, 'yellow',Alpha);
-        this.DrawText(Ctx, '开关控制', this.SetFontSize(0.044), CW * 0.16, CH * 0.5, 'yellow',Alpha);
-        this.DrawText(Ctx, '强度控制', this.SetFontSize(0.044), CW * 0.16, CH * 0.82, 'yellow',Alpha);
+        this.DrawExplain(Ctx, CW * 0.52, CW * 0.9, CH * 0.2, CH * 0.2, ColorYellow, 1, Alpha);
+        this.DrawExplain(Ctx, CW * 0.9, CW * 0.92, CH * 0.2, CH * 0.22, ColorYellow, 1, Alpha);
+        this.DrawExplain(Ctx, CW * 0.42, CW * 0.36, CH * 0.62, CH * 0.52, ColorYellow, 1, Alpha);
+        this.DrawExplain(Ctx, CW * 0.36, CW * 0.12, CH * 0.52, CH * 0.52, ColorYellow, 1, Alpha);
+        this.DrawExplain(Ctx, CW * 0.6, CW * 0.55, CH * 0.72, CH * 0.84, ColorYellow, 1, Alpha);
+        this.DrawExplain(Ctx, CW * 0.55, CW * 0.12, CH * 0.84, CH * 0.84, ColorYellow, 1, Alpha);
+        this.DrawText(Ctx, ArrowPoint, this.SetIconFontSize(0.2), CW * 0.84, CH * 0.59, '#6ca4e1', Alpha, 210);
+        this.DrawText(Ctx, NUM_01, this.SetIconFontSize(0.068), CW * 0.91, CH * 0.24, ColorYellow, Alpha);
+        this.DrawText(Ctx, NUM_02, this.SetIconFontSize(0.068), CW * 0.9, CH * 0.5, ColorYellow, Alpha);
+        this.DrawText(Ctx, NUM_03, this.SetIconFontSize(0.068), CW * 0.07, CH * 0.534, ColorYellow, Alpha);
+        this.DrawText(Ctx, NUM_04, this.SetIconFontSize(0.068), CW * 0.07, CH * 0.85, ColorYellow, Alpha);
+        this.DrawText(Ctx, '电极贴贴法', this.SetFontSize(0.044), CW * 0.58, CH * 0.18, ColorYellow, Alpha);
+        this.DrawText(Ctx, '开关控制', this.SetFontSize(0.044), CW * 0.16, CH * 0.5, ColorYellow, Alpha);
+        this.DrawText(Ctx, '强度控制', this.SetFontSize(0.044), CW * 0.16, CH * 0.82, ColorYellow, Alpha);
         let TakePower = '手机取电';
         for (let i = 0; i < TakePower.length; i++) {
-            this.DrawText(Ctx, TakePower[i], this.SetFontSize(0.038), CW * 0.85, CH * 0.338 + i * 16 * window.devicePixelRatio, 'yellow',Alpha);
+            this.DrawText(Ctx, TakePower[i], this.SetFontSize(0.038), CW * 0.85, CH * 0.338 + i * 16 * window.devicePixelRatio, ColorYellow, Alpha);
         } 
+        
     }
 
     //求斜边长度
@@ -193,7 +194,7 @@ export class DemoPage implements OnInit, OnDestroy
                         this.DrawStrength(this.Ctx,alpha);
                         break;
                     case animation[5]:
-                        this.DrawTextExplain(this.Ctx,alpha);
+                        this.DrawTextExplain(this.Ctx,alpha);                        
                         break;
                 }      
             } else {
@@ -215,6 +216,18 @@ export class DemoPage implements OnInit, OnDestroy
         if (this.TypeMode === animation[5]) return 'animateTips';
     }
 
+    SetTipsStyle(n:number): Object
+    {  
+        switch(n){
+            case 0:
+                return {'width':'5rem','height':'5rem','left':'38vw','top':'15vh'}
+            case 1:
+                return { 'width': '2rem', 'height': '2rem', 'left': '83.7vw', 'top': '42.2vh'}
+            case 2:
+                return {'width':'4rem','height':'4rem','left':'57.6vw','top':'66.6vh'}
+        }
+    }
+
     SetIconFontSize(value: number): string
     {
         return this.Canvas.width * value + 'px Thundericons';
@@ -224,8 +237,6 @@ export class DemoPage implements OnInit, OnDestroy
     {
         return this.Canvas.width * value + 'px yahei';
     }
-
-
 
     SetX(text: TextMetrics, value: number): number
     {
