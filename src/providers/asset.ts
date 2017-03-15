@@ -194,20 +194,6 @@ export class TAssetService
         if ( ! (Obj instanceof TAsset))
             return Promise.reject(new Error('Object is not a Asset'));
 
-        let ClassName = TypeInfo.NameOf(Obj);
-        switch (ClassName)
-        {
-        case 'TScriptFile':
-           (Obj as any)['ObjectName'] = 'ScriptFile';
-            break;
-        case 'TScriptFileDesc':
-           (Obj as any)['ObjectName'] = 'ScriptFileDesc';
-            break;
-
-        default:
-            return Promise.reject(new Error('Object ' + ClassName + ' is not Supported by this Service.'));
-        }
-
        (Obj as any)['Id'] = TGuid.Generate();
         return Promise.resolve();
     }
@@ -230,6 +216,11 @@ export interface IAsset extends IPersistable
 
 export class TAsset extends TPersistable implements IAsset
 {
+    constructor (public ObjectName: string)
+    {
+        super();
+    }
+
     /* IPersistable */
     DefineKeyProps(KeyProps: Array<string>): void
     {
@@ -254,7 +245,6 @@ export class TAsset extends TPersistable implements IAsset
         return (this.ObjectName + '.' + this.Desc).toLowerCase();
     }
 
-    ObjectName: string = null;
     Name: string = null;
     Desc: string = null;
     ExtraProp: string = null;
@@ -266,8 +256,7 @@ export class TBody extends TAsset
 {
     constructor()
     {
-        super();
-        this.ObjectName = 'Body';
+        super('Body');
     }
 
     get IconChar(): string
@@ -308,8 +297,7 @@ export class TCategory extends TAsset
 {
     constructor()
     {
-        super();
-        this.ObjectName = 'Category';
+        super('Category');
     }
 
     /* IPersistable */
@@ -337,8 +325,7 @@ export class TScriptFile extends TAsset
 {
     constructor()
     {
-        super();
-        this.ObjectName = 'ScriptFile';
+        super('ScriptFile');
     }
 
     /* IPersistable */
@@ -377,8 +364,7 @@ export class TScriptFileDesc extends TAsset
 {
     constructor()
     {
-        super();
-        this.ObjectName = 'ScriptFileDesc';
+        super('ScriptFileDesc');
     }
 
     /* IPersistable */
