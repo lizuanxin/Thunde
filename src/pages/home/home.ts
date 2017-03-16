@@ -1,10 +1,10 @@
 import {Component, OnInit, OnDestroy, EventEmitter} from '@angular/core';
-import {Platform, NavController} from 'ionic-angular';
+import {NavController} from 'ionic-angular';
 
 import {TypeInfo} from '../../UltraCreation/Core'
 import * as UI from '../../UltraCreation/Graphic'
 
-import {const_data, TApplication, TLocalizeService, TAssetService, TCategory, TScriptFile, TDistributeService, Loki} from '../services';
+import {const_data, TApplication, TLocalizeService, TAssetService, TCategory, TScriptFile, TDistributeService} from '../services';
 import {DemoPage} from '../demo/demo';
 import {TouPage} from '../tou/tou';
 import {GoPage} from '../go/go';
@@ -15,7 +15,7 @@ const SHOWING_ITEM_COUNT = 6;
 @Component({selector: 'page-home', templateUrl: 'home.html'})
 export class HomePage implements OnInit, OnDestroy
 {
-    constructor(public nav: NavController, private Asset: TAssetService, private platform: Platform,
+    constructor(public nav: NavController, private Asset: TAssetService,
         private app: TApplication, private Localize: TLocalizeService, private Distrubute: TDistributeService)
     {
     }
@@ -30,18 +30,16 @@ export class HomePage implements OnInit, OnDestroy
 
         if (! this.app.AcceptedTerms)
         {
-            this.ShowTOU().then(() =>
-            {
-                // OTG
-                if (! this.platform.is('ios'))
+            this.ShowTOU()
+                .then(() => this.app.IsSupportedOTG())
+                .then(support_otg =>
                 {
-                    Loki.TShell.IsSupportedOTG().then(supported =>
+                    if (! support_otg)
                     {
-                        this.app.ShowAlert({title: 'OTG', message: supported.toString(),
+                        this.app.ShowAlert({title: 'OTG', message: 'not support OTG',
                             buttons: [{text: this.Localize.Translate('button.ok'), role: 'cancel'}]});
-                    })
-                }
-            });
+                    }
+                });
         }
     }
 

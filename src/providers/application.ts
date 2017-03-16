@@ -3,6 +3,7 @@ import {App, Toast, Platform} from 'ionic-angular';
 
 import {TLocalizeService} from "./localize"
 import {TSqliteStorage} from '../UltraCreation/Storage';
+import {USBSerial} from '../UltraCreation/Native';
 import {TAppController} from '../UltraCreation/ng2-ion/ion-appcontroller'
 import {const_data} from './thunderbolt.const'
 
@@ -24,9 +25,22 @@ export class TApplication extends TAppController
             .catch(err => { })
     }
 
+    IsSupportedOTG(): Promise<boolean>
+    {
+        if (this.IsIos)
+            return Promise.resolve(true);
+        else
+            return USBSerial.OTG.IsSupported();
+    }
+
     get IsAndroid(): boolean
     {
         return this.platform.is('android');
+    }
+
+    get IsIos(): boolean
+    {
+        return this.platform.is('ios');
     }
 
     get AcceptedTerms(): boolean

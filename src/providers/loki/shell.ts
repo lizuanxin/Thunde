@@ -104,11 +104,6 @@ export class TShell extends TAbstractShell
     }
 
 /* USB only */
-    static IsSupportedOTG(): Promise<boolean>
-    {
-        return USBSerial.OTG.IsSupported();
-    }
-
     static StartOTG(): USBSerial.OTG
     {
         this.UsbProxy = new TProxyUsbShell();
