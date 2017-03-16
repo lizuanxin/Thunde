@@ -1,10 +1,10 @@
 import {Component, OnInit, OnDestroy, EventEmitter} from '@angular/core';
-import {NavController} from 'ionic-angular';
+import {Platform, NavController} from 'ionic-angular';
 
 import {TypeInfo} from '../../UltraCreation/Core'
 import * as UI from '../../UltraCreation/Graphic'
 
-import {const_data, TApplication, TLocalizeService, TAssetService, TCategory, TScriptFile, TDistributeService} from '../services';
+import {const_data, TApplication, TLocalizeService, TAssetService, TCategory, TScriptFile, TDistributeService, Loki} from '../services';
 import {DemoPage} from '../demo/demo';
 import {TouPage} from '../tou/tou';
 import {GoPage} from '../go/go';
@@ -15,7 +15,7 @@ const SHOWING_ITEM_COUNT = 6;
 @Component({selector: 'page-home', templateUrl: 'home.html'})
 export class HomePage implements OnInit, OnDestroy
 {
-    constructor(public nav: NavController, private Asset: TAssetService,
+    constructor(public nav: NavController, private Asset: TAssetService, private platform: Platform,
         private app: TApplication, private Localize: TLocalizeService, private Distrubute: TDistributeService)
     {
     }
@@ -28,15 +28,28 @@ export class HomePage implements OnInit, OnDestroy
 
         this.Categories = this.Asset.Categories;
 
-        if (!this.app.AcceptedTerms)
-            this.ShowTOU();
+        if (! this.app.AcceptedTerms)
+        {
+            this.ShowTOU().then(() =>
+            {
+                // OTG
+                if (! this.platform.is('ios'))
+                {
+                    Loki.TShell.IsSupportedOTG().then(supported =>
+                    {
+                        this.app.ShowAlert({title: 'OTG', message: supported.toString(),
+                            buttons: [{text: this.Localize.Translate('button.ok'), role: 'cancel'}]});
+                    })
+                }
+            });
+        }
     }
 
     ngOnDestroy(): void
     {
         this.Content.Disponse();
         this.Content = null;
-    }    
+    }
 
     ionViewDidEnter()
     {
@@ -95,7 +108,7 @@ export class HomePage implements OnInit, OnDestroy
 
     ShowTOU()
     {
-        this.nav.push(TouPage);
+        return this.nav.push(TouPage);
     }
 
     StateCategory(Category: TCategory)
@@ -208,10 +221,10 @@ class TContentCanvas
             if (this.app.SkinColor !== undefined)
                 Ctx.strokeStyle = '#000000';
             else
-                Ctx.strokeStyle = '#FFFFFF';            
+                Ctx.strokeStyle = '#FFFFFF';
             Ctx.closePath();
             Ctx.lineWidth = 3;
-            
+
             Ctx.stroke();
 
             Offset += this.ItemHeight / 2;

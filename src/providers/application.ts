@@ -22,9 +22,6 @@ export class TApplication extends TAppController
         return Storage.Get('accepted terms')
             .then(value => this.AcceptedTerms = value ==='yes')
             .catch(err => { })
-            // .then(() =>Storage.Get('Skin'))
-            // .then(Name => this.SkinName = Name)
-            .catch(err => { })
     }
 
     get IsAndroid(): boolean

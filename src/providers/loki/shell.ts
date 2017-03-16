@@ -13,7 +13,7 @@ import {THashCrc16} from '../../UltraCreation/Hash';
 
 const REQUEST_TIMEOUT = 3000;
 
-const BLE_FILTER_NAMES: string[] = ['thunderbolt', 'miniq', '.blt'];
+const BLE_FILTER_NAMES: string[] = ['thunderbolt', 'uctenqt1', 'uctenqt3', '.blt'];
 const BLE_SCAN_TIMEOUT = 60000;
 const BLE_CONNECTION_TIMEOUT = 5000;
 
@@ -104,6 +104,11 @@ export class TShell extends TAbstractShell
     }
 
 /* USB only */
+    static IsSupportedOTG(): Promise<boolean>
+    {
+        return USBSerial.OTG.IsSupported();
+    }
+
     static StartOTG(): USBSerial.OTG
     {
         this.UsbProxy = new TProxyUsbShell();
