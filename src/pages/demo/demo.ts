@@ -23,6 +23,7 @@ export class DemoPage implements OnInit, OnDestroy
         this.Canvas.style.height = height.toString();
         this.Canvas.width = width;
         this.Canvas.height = height;
+        console.log((height-width)/(height+width))
         this.AnimationFlow();        
     }
 
@@ -30,12 +31,12 @@ export class DemoPage implements OnInit, OnDestroy
     {
         Ctx.save();
         Ctx.globalAlpha = Alpha/10;
-        Ctx.font = this.SetIconFontSize(0.48);
+        Ctx.font = this.SetIconFontSize(0.28);
         let Str: string = String.fromCharCode(0xe91c);
         let text = Ctx.measureText(Str);
         let x:number = this.SetX(text, 6);
         Ctx.fillStyle = "#FFFFFF";
-        Ctx.fillText(Str, x, this.Canvas.width * 0.5);
+        Ctx.fillText(Str, x, this.Canvas.height * 0.25);
         Ctx.restore();
     }
   
@@ -49,12 +50,12 @@ export class DemoPage implements OnInit, OnDestroy
     {
         Ctx.save();
         Ctx.globalAlpha = Alpha/10;
-        Ctx.font = this.SetIconFontSize(0.21);
+        Ctx.font = this.SetIconFontSize(0.14);
         let Str: string = String.fromCharCode(0xe91d);
         let text = Ctx.measureText(Str);
         let x:number = this.SetX(text, 2.3);
         Ctx.fillStyle = "#FFFFFF";
-        Ctx.fillText(Str, x, this.Canvas.width * 0.42);
+        Ctx.fillText(Str, x, this.Canvas.height * 0.22);
         Ctx.restore();
     }
 
@@ -232,7 +233,7 @@ export class DemoPage implements OnInit, OnDestroy
 
     SetIconFontSize(value: number): string
     {
-        return this.Canvas.width * value + 'px Thundericons';
+        return this.Canvas.height * value + 'px Thundericons';
     }
 
     SetFontSize(value: number): string
