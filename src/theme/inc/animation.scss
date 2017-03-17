@@ -68,7 +68,7 @@
     -webkit-transform: scale(.7);
   }
   50% {
-    opacity: .6;
+    opacity: .7;
     -webkit-transform: scale(1.2);
   }
   100%{
@@ -110,3 +110,14 @@
     animation-fill-mode: forwards;
 }
 
+[Animate-Canvas]{
+    position:absolute;
+    left:0;
+    top:0;
+    right:0;
+    bottom:0;
+    *{
+        position:absolute;
+        opacity:0
+    }
+}

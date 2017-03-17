@@ -16,6 +16,9 @@ $i:12;
         }
         $i:$i+1;
     }
+    [absolute]{
+        position:absolute;
+    }
     [b-g-c] {
         background-color: rgba(255, 255, 255, .3);
     }
@@ -39,6 +42,9 @@ $i:12;
     &[text-orange],
     &.text-orange {
         color: color($colors, orange, base);
+    }
+    &[text-yellow]{
+        color:#f4e827;
     }
 }
 

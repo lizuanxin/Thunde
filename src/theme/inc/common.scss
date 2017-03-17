@@ -153,3 +153,9 @@ div {
         animation-delay: 0s;
     }
 }
+
+button{
+    &[clear]{
+        background-color:transparent;
+    }
+}

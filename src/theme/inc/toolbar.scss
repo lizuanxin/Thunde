@@ -21,4 +21,9 @@ ion-toolbar {
             }
         }
     }
+    &[visible] {
+        overflow: visible;
+        contain: none;
+    }
 }
+
