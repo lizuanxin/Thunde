@@ -90,9 +90,9 @@ export class DemoPage implements OnInit, OnDestroy
                         break;
                     case STEP[6]:
                         this.AnimateFade(this.arrowPoint, [{ opacity: 0,fontSize:'1rem',left: width * 0.78 + 'px', top: height * 0.55 + 'px'}, { opacity: 1,fontSize:'6rem',left: width * 0.64 + 'px', top: height * 0.6 + 'px'}], 500);                        
+                        this.AnimateFade(this.key, [{ opacity: 0,left: width * 0.36 + 'px', top: height * 0.45 + 'px'}, { opacity: 1,left: width * 0.26 + 'px', top: height * 0.55 + 'px'}], 1500); 
                         break;
-                    case STEP[7]: 
-                        this.AnimateFade(this.key, [{ opacity: 0,left: width * 0.36 + 'px', top: height * 0.45 + 'px'}, { opacity: 1,left: width * 0.26 + 'px', top: height * 0.55 + 'px'}], 1500);                                                
+                    case STEP[7]:                                                                        
                         break;
                     case STEP[8]:
                         this.AnimateFade(this.line3, [{ opacity: 0,transform:'scale(.5)'}, { opacity: 1,transform:'scale(1)'}], 500);
@@ -132,7 +132,7 @@ export class DemoPage implements OnInit, OnDestroy
             case 2:
                 if (this.TypeMode > STEP[3]) return 'animateTips';
             case 3:
-                if (this.TypeMode > STEP[8]) return 'animateTips';            
+                if (this.TypeMode > STEP[9]) return 'animateTips';            
         } 
     }
 
