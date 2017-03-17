@@ -1,6 +1,35 @@
-<ion-content no-scroll [ngStyle]="{'background-color':'#5b8cc3'}">
-    <div class="animate tips" [ngStyle]="SetTipsStyle(0)" [ngClass]="SetTipsClass"></div>
-    <div class="animate tips" [ngStyle]="SetTipsStyle(1)" [ngClass]="SetTipsClass"></div>    
-    <div class="animate tips" [ngStyle]="SetTipsStyle(2)" [ngClass]="SetTipsClass"></div>
-    <canvas id="demo_canvas" [ngStyle]="{'width':'100%'}"></canvas>    
+<ion-content no-scroll padding [ngStyle]="{'background-color':'#5b8cc3'}">    
+    <ion-row>
+        <ion-col text-center text-light>
+            <ion-icon #body app-icon [ngStyle]="SetElement('body')">&#xe91f;</ion-icon>
+        </ion-col>
+    </ion-row>
+    <div Animate-Canvas>
+        <span class="animate tips" [ngStyle]="SetTipsStyle(0)" [ngClass]="SetTipsClass(1)"></span>
+        <span class="animate tips" [ngStyle]="SetTipsStyle(1)" [ngClass]="SetTipsClass(2)"></span>
+        <span class="animate tips" [ngStyle]="SetTipsStyle(2)" [ngClass]="SetTipsClass(3)"></span>
+        <span #describe1 [ngStyle]="SetElement('describe1')">电极贴贴法</span>
+        <span #describe2 [ngStyle]="SetElement('describe2')">手<br>机<br>取<br>电</span>
+        <span #describe3 [ngStyle]="SetElement('describe3')">开关控制</span>
+        <span #describe4 [ngStyle]="SetElement('describe4')">强弱控制</span>
+        <ion-icon app-icon #line1 [ngStyle]="SetElement('line1')">&#xe92a;</ion-icon>
+        <ion-icon app-icon #line2 [ngStyle]="SetElement('line2')">&#xe930;</ion-icon>
+        <ion-icon app-icon #line3 [ngStyle]="SetElement('line3')">&#xe931;</ion-icon>
+        <ion-icon app-icon #line4 [ngStyle]="SetElement('line4')">&#xe935;</ion-icon>
+        <ion-icon app-icon #num1 [ngStyle]="SetElement('num')">&#xe923;</ion-icon>
+        <ion-icon app-icon #num2 [ngStyle]="SetElement('num')">&#xe924;</ion-icon>
+        <ion-icon app-icon #num3 [ngStyle]="SetElement('num')">&#xe925;</ion-icon>
+        <ion-icon app-icon #num4 [ngStyle]="SetElement('num')">&#xe927;</ion-icon>
+        <ion-icon app-icon #arrowPoint [ngStyle]="SetElement('arrowPoint')">&#xe928;</ion-icon>
+        <ion-icon app-icon #key [ngStyle]="SetElement('key')">&#xe921;</ion-icon>
+    </div>
 </ion-content>
+<ion-footer no-shadow no-border>
+    <ion-toolbar transparent visible>       
+        <div text-center #ready [ngStyle]="{'opacity':0}">
+            <button clear icon-only text-light [ngStyle]="{'font-size':'3.6rem'}">
+                <ion-icon app-icon>&#xe929;</ion-icon>
+            </button>
+        </div>        
+    </ion-toolbar>
+</ion-footer>
