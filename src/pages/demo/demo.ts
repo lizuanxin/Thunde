@@ -70,44 +70,44 @@ export class DemoPage implements OnInit, OnDestroy
                 switch(this.TypeMode)
                 {
                     case STEP[0]:           
-                        this.AnimateFade(this.body, [{ opacity: 0,transform:'scale(.5)' }, { opacity: 1,transform:'scale(1)' }], 1000);
+                        this.AnimateFade(this.body, [{ opacity: 0,transform:'translateY(50px)' }, { opacity: 1,transform:'translateY(0)' }], 1000);
                         break;
                     case STEP[1]: 
-                        break;
-                    case STEP[2]: 
                         this.AnimateFade(this.line1, [{ opacity: 0,transform:'scale(.5)'}, { opacity: 1,transform:'scale(1)'}], 500);                       
                         this.AnimateFade(this.describe1, [{ opacity: 0, left: width * 0.62 + 'px', top: height * 0.16 + 'px' }, { opacity: 1, left: width * 0.62 + 'px', top: height * 0.12 + 'px' }], 1500);
-                        this.AnimateFade(this.num1, [{ opacity: 0, left: width * 0.88 + 'px', top: height * 0.06 + 'px' }, { opacity: 1, left: width * 0.88 + 'px', top: height * 0.14 + 'px' }], 2000);
+                        break;
+                    case STEP[2]:
+                        this.AnimateFade(this.num1, [{ opacity: 0, left: width * 0.88 + 'px', top: height * 0.06 + 'px' }, { opacity: 1, left: width * 0.88 + 'px', top: height * 0.14 + 'px' }], 1000);
                         break;
                     case STEP[3]:
                         break;
                     case STEP[4]:
-                         this.AnimateFade(this.line2, [{ opacity: 0,transform:'scale(.5)'}, { opacity: 1,transform:'scale(1)'}], 500);
-                         this.AnimateFade(this.describe2, [{ opacity: 0, left: width * 0.85 + 'px', top: height * 0.35 + 'px',transform:'scale(.3)' }, { opacity: 1, left: width * 0.85 + 'px', top: height * 0.35 + 'px',transform:'scale(1)' }], 1000);
-                         this.AnimateFade(this.num2, [{ opacity: 0, left: width * 0.88 + 'px', top: height * 0.52 + 'px' }, { opacity: 1, left: width * 0.88 + 'px', top: height * 0.56 + 'px' }], 500);
+                        this.AnimateFade(this.describe2, [{ opacity: 0, left: width * 0.85 + 'px', top: height * 0.35 + 'px',transform:'translateY(0)' }, { opacity: 1, left: width * 0.85 + 'px', top: height * 0.35 + 'px',transform:'translateY(0)' }], 1000);
                         break;
-                    case STEP[5]:                         
+                    case STEP[5]:
+                        this.AnimateFade(this.line2, [{ opacity: 0,transform:'scale(.5)'}, { opacity: 1,transform:'scale(1)'}], 500);
+                        this.AnimateFade(this.num2, [{ opacity: 0, left: width * 0.88 + 'px', top: height * 0.52 + 'px' }, { opacity: 1, left: width * 0.88 + 'px', top: height * 0.56 + 'px' }], 500);
                         break;
                     case STEP[6]:
-                        this.AnimateFade(this.arrowPoint, [{ opacity: 0,fontSize:'1rem',left: width * 0.78 + 'px', top: height * 0.55 + 'px'}, { opacity: 1,fontSize:'6rem',left: width * 0.64 + 'px', top: height * 0.6 + 'px'}], 500);                        
-                        this.AnimateFade(this.key, [{ opacity: 0,left: width * 0.36 + 'px', top: height * 0.45 + 'px'}, { opacity: 1,left: width * 0.26 + 'px', top: height * 0.55 + 'px'}], 1500); 
+                        this.AnimateFade(this.arrowPoint, [{ opacity: 0, fontSize: '1rem', left: width * 0.74 + 'px', top: height * 0.6 + 'px' }, { opacity: 1, fontSize: '6rem', left: width * 0.64 + 'px', top: height * 0.6 + 'px' }], 600);                        
+                        this.AnimateFade(this.key, [{ opacity: 0,left: width * 0.36 + 'px', top: height * 0.5 + 'px'}, { opacity: 1,left: width * 0.26 + 'px', top: height * 0.55 + 'px'}], 1000); 
                         break;
-                    case STEP[7]:                                                                        
+                    case STEP[7]:
+                        this.AnimateFade(this.line3, [{ opacity: 0,transform:'scale(.5)'}, { opacity: 1,transform:'scale(1)'}], 500);
+                        this.AnimateFade(this.describe3, [{ opacity: 0, left: width * 0.18 + 'px', top: height * 0.5 + 'px' }, { opacity: 1, left: width * 0.18 + 'px', top: height * 0.52 + 'px' }], 1000);
                         break;
                     case STEP[8]:
-                        this.AnimateFade(this.line3, [{ opacity: 0,transform:'scale(.5)'}, { opacity: 1,transform:'scale(1)'}], 500);
-                        this.AnimateFade(this.describe3, [{ opacity: 0, left: width * 0.25 + 'px', top: height * 0.52 + 'px' }, { opacity: 1, left: width * 0.18 + 'px', top: height * 0.52 + 'px' }], 1000);
                         this.AnimateFade(this.num3, [{ opacity: 0, left: -width * 0.04 + 'px', top: height * 0.54 + 'px' }, { opacity: 1, left: width * 0.04 + 'px', top: height * 0.54 + 'px' }], 1000);
                         break;
                     case STEP[9]:
                         break;
                     case STEP[10]:
                         this.AnimateFade(this.line4, [{ opacity: 0,transform:'scale(.5)'}, { opacity: 1,transform:'scale(1)'}], 500);
-                        this.AnimateFade(this.num4, [{ opacity: 0, left: -width * 0.04 + 'px', top: height * 0.86 + 'px' }, { opacity: 1, left: width * 0.04 + 'px', top: height * 0.86 + 'px' }], 1000);
-                        this.AnimateFade(this.describe4, [{ opacity: 0, left: width * 0.25 + 'px', top: height * 0.84 + 'px' }, { opacity: 1, left: width * 0.18 + 'px', top: height * 0.84 + 'px' }], 1000);
+                        this.AnimateFade(this.describe4, [{ opacity: 0, left: width * 0.18 + 'px', top: height * 0.82 + 'px' }, { opacity: 1, left: width * 0.18 + 'px', top: height * 0.84 + 'px' }], 1000);
                         break;
                     case STEP[11]:
-                        this.AnimateFade(this.ready, [{ opacity: 0, marginTop: 0 }, { opacity: 1, marginTop: '-50px' }], 600);
+                        this.AnimateFade(this.num4, [{ opacity: 0, left: -width * 0.04 + 'px', top: height * 0.86 + 'px' }, { opacity: 1, left: width * 0.04 + 'px', top: height * 0.86 + 'px' }], 1000);
+                        this.AnimateFade(this.ready, [{ opacity: 0, marginTop: '-70px' }, { opacity: 1, marginTop: '-50px' }], 1500);
                         break;
                 }      
             } else {
