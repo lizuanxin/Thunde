@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy,Renderer,ElementRef,ViewChild } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-const STEP = [1,2,3,4,5,6,7,8,9,10,11,12];
+const STEP: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 @Component({
   selector: 'page-demo',
@@ -83,8 +83,7 @@ export class DemoPage implements OnInit, OnDestroy
                     case STEP[4]:
                         this.AnimateFade(this.describe2, [{ opacity: 0, left: width * 0.85 + 'px', top: height * 0.35 + 'px',transform:'translateY(0)' }, { opacity: 1, left: width * 0.85 + 'px', top: height * 0.35 + 'px',transform:'translateY(0)' }], 1000);
                         break;
-                    case STEP[5]:
-                        // this.AnimateFade(this.line2, [{ opacity: 0,transform:'scale(.5)'}, { opacity: 1,transform:'scale(1)'}], 500);
+                    case STEP[5]:                        
                         this.AnimateFade(this.num2, [{ opacity: 0, left: width * 0.88 + 'px', top: height * 0.5 + 'px' }, { opacity: 1, left: width * 0.88 + 'px', top: height * 0.5 + 'px' }], 500);
                         break;
                     case STEP[6]:
