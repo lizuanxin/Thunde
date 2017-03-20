@@ -165,10 +165,8 @@ export class DemoPage implements OnInit, OnDestroy
             case 'line1':
                 return { opacity: 0, zIndex: 0, fontSize: '50vw', color: colorYellow, left: width * 0.5 + 'px', top: height * 0.02 + 'px', transformOrigin: 'left center' }
             case 'line2':
-                return { opacity: 0, zIndex: 0, fontSize: '10vw', color: colorYellow, left: width * 0.87 + 'px', top: height * 0.49 + 'px', transformOrigin: 'left top' }
-            case 'line3':
                 return { opacity: 0, zIndex: 0, fontSize: '50vw', color: colorYellow, left: width * 0.14 + 'px', top: height * 0.46 + 'px', transformOrigin: 'right bottom' }
-            case 'line4':
+            case 'line3':
                 return { opacity: 0, zIndex: 0, fontSize: '72vw', color: colorYellow, left: width * 0.14 + 'px', top: height * 0.62 + 'px', transformOrigin: 'right center' }
             case 'describe1':
                 return { fontSize: '1.6rem', color: colorYellow }
