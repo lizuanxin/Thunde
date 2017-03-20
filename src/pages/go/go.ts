@@ -28,7 +28,8 @@ export class GoPage implements OnInit, OnDestroy {
 
     }
 
-    ngOnInit(): void {
+    ngOnInit(): void 
+    {
         if (!Loki.TShell.IsUsbPlugin) {
             if (this.platform.is('android'))
                 BLE.Enable().then(() => this.StartScan())
@@ -37,14 +38,16 @@ export class GoPage implements OnInit, OnDestroy {
         }
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy(): void 
+    {
         if (TypeInfo.Assigned(this.ScanSubscription))
             this.ScanSubscription.unsubscribe();
 
         Loki.TShell.StopScan().catch(err => { });
     }
 
-    Go() {
+    Go() 
+    {
         if (!Loki.TShell.IsUsbPlugin) {
             if (this.DeviceList.length === 1)
                 this.Start(this.DeviceList[0].id);
@@ -55,7 +58,8 @@ export class GoPage implements OnInit, OnDestroy {
             this.Start('USB');
     }
 
-    ShowDesc(event) {
+    ShowDesc(event) 
+    {
         if (!this.IsShowDescIcon) {
             let target = event.target || event.srcElement || event.currentTarget;
             let targetId = target.parentElement.id;
@@ -97,7 +101,8 @@ export class GoPage implements OnInit, OnDestroy {
             return 'right:21px;';
     }
 
-    CloseDesc() {
+    CloseDesc() 
+    {
         this.OutBox.setAttribute('style', this.InitialPosition);        
         setTimeout(() => {
             this.IsShowDescIcon = false;
@@ -109,7 +114,8 @@ export class GoPage implements OnInit, OnDestroy {
 
 
 
-    ShowFileDetail() {
+    ShowFileDetail() 
+    {
         
         let gridBody = document.getElementById('gridBody');
 
@@ -126,7 +132,8 @@ export class GoPage implements OnInit, OnDestroy {
 
     }
 
-    FileDetails(): Array<string> {
+    FileDetails(): Array<string> 
+    {
         let RetVal = new Array<string>();
         for (let d of this.ScriptFile.Details) {
             let obj: { effect_freq: string, cluster_freq?: string, pulse_width: string } = JSON.parse(d.Desc);
@@ -147,11 +154,13 @@ export class GoPage implements OnInit, OnDestroy {
         return RetVal;
     }
 
-    SelectionDevice(Device: BLE.IScanDiscovery) {
+    SelectionDevice(Device: BLE.IScanDiscovery) 
+    {
         this.Start(Device.id);
     }
 
-    private StartScan() {
+    private StartScan() 
+    {
         this.ScanSubscription = Loki.TShell.StartScan()
             .subscribe((next) => {
                 this.DeviceList = next;
@@ -165,7 +174,8 @@ export class GoPage implements OnInit, OnDestroy {
             });
     }
 
-    private Start(DeviceId: string) {
+    private Start(DeviceId: string) 
+    {
         if (TypeInfo.Assigned(this.ScanSubscription)) {
             this.ScanSubscription.unsubscribe();
             this.ScanSubscription = null;

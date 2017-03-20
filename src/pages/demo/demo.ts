@@ -16,7 +16,6 @@ export class DemoPage implements OnInit, OnDestroy
     @ViewChild('line1') line1 : ElementRef;
     @ViewChild('line2') line2 : ElementRef;
     @ViewChild('line3') line3 : ElementRef;
-    @ViewChild('line4') line4 : ElementRef;
     @ViewChild('describe1') describe1: ElementRef;
     @ViewChild('describe2') describe2: ElementRef;
     @ViewChild('describe3') describe3: ElementRef;
@@ -93,7 +92,7 @@ export class DemoPage implements OnInit, OnDestroy
                         this.AnimateFade(this.key, [{ opacity: 0,left: width * 0.36 + 'px', top: height * 0.5 + 'px'}, { opacity: 1,left: width * 0.26 + 'px', top: height * 0.55 + 'px'}], 1000); 
                         break;
                     case STEP[7]:
-                        this.AnimateFade(this.line3, [{ opacity: 0,transform:'scale(.5)'}, { opacity: 1,transform:'scale(1)'}], 500);
+                        this.AnimateFade(this.line2, [{ opacity: 0,transform:'scale(.5)'}, { opacity: 1,transform:'scale(1)'}], 500);
                         this.AnimateFade(this.describe3, [{ opacity: 0, left: width * 0.18 + 'px', top: height * 0.5 + 'px' }, { opacity: 1, left: width * 0.18 + 'px', top: height * 0.52 + 'px' }], 1000);
                         break;
                     case STEP[8]:
@@ -102,7 +101,7 @@ export class DemoPage implements OnInit, OnDestroy
                     case STEP[9]:
                         break;
                     case STEP[10]:
-                        this.AnimateFade(this.line4, [{ opacity: 0,transform:'scale(.5)'}, { opacity: 1,transform:'scale(1)'}], 500);
+                        this.AnimateFade(this.line3, [{ opacity: 0,transform:'scale(.5)'}, { opacity: 1,transform:'scale(1)'}], 500);
                         this.AnimateFade(this.describe4, [{ opacity: 0, left: width * 0.18 + 'px', top: height * 0.82 + 'px' }, { opacity: 1, left: width * 0.18 + 'px', top: height * 0.84 + 'px' }], 1000);
                         break;
                     case STEP[11]:
