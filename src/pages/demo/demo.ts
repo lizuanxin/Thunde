@@ -85,8 +85,8 @@ export class DemoPage implements OnInit, OnDestroy
                         this.AnimateFade(this.describe2, [{ opacity: 0, left: width * 0.85 + 'px', top: height * 0.35 + 'px',transform:'translateY(0)' }, { opacity: 1, left: width * 0.85 + 'px', top: height * 0.35 + 'px',transform:'translateY(0)' }], 1000);
                         break;
                     case STEP[5]:
-                        this.AnimateFade(this.line2, [{ opacity: 0,transform:'scale(.5)'}, { opacity: 1,transform:'scale(1)'}], 500);
-                        this.AnimateFade(this.num2, [{ opacity: 0, left: width * 0.88 + 'px', top: height * 0.52 + 'px' }, { opacity: 1, left: width * 0.88 + 'px', top: height * 0.56 + 'px' }], 500);
+                        // this.AnimateFade(this.line2, [{ opacity: 0,transform:'scale(.5)'}, { opacity: 1,transform:'scale(1)'}], 500);
+                        this.AnimateFade(this.num2, [{ opacity: 0, left: width * 0.88 + 'px', top: height * 0.5 + 'px' }, { opacity: 1, left: width * 0.88 + 'px', top: height * 0.5 + 'px' }], 500);
                         break;
                     case STEP[6]:
                         this.AnimateFade(this.arrowPoint, [{ opacity: 0, fontSize: '1rem', left: width * 0.74 + 'px', top: height * 0.6 + 'px' }, { opacity: 1, fontSize: '6rem', left: width * 0.64 + 'px', top: height * 0.6 + 'px' }], 600);                        
@@ -158,7 +158,7 @@ export class DemoPage implements OnInit, OnDestroy
             case 'body':
                 return { fontSize: '80vw', transformOrigin: 'center bottom' }
             case 'num':
-                return { fontSize: '3rem', color: colorYellow }
+                return { fontSize: '2.8rem', color: colorYellow }
             case 'arrowPoint':
                 return { color: colorLightOpacity, transform: 'rotate(-155deg)' }
             case 'key':
