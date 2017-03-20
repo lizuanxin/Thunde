@@ -152,7 +152,7 @@ export class DemoPage implements OnInit, OnDestroy
 
     SetElement(Str: string): Object
     {
-        let width = window.innerWidth, height = width * 1.5, colorYellow = "#f4e827", colorLight = "#FFFFFF", colorLightOpacity = 'rgba(255,255,255,.5';
+        let width = window.innerWidth, height = width * 1.5, colorYellow = "#f4e827", colorLight = "#FFFFFF", colorLightOpacity = 'rgba(255,255,255,.5)';
 
         switch(Str){
             case 'body':
