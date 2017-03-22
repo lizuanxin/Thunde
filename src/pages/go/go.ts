@@ -5,21 +5,20 @@ import { Platform, NavController, ViewController, NavParams, ModalController, Co
 import { TypeInfo, EAbort } from '../../UltraCreation/Core';
 
 import { BLE, Loki, TApplication, TLocalizeService, TDistributeService, TCategory, TScriptFile } from '../services';
+import { DemoModeRunningPage } from '../demo/demo_mode_running';
 import { RunningPage } from '../running/running';
 import { OtaUpdatePage } from '../ota_update/ota_update';
+
 //import {FiledetailsPage} from '../filedetails/filedetails';
 
-@Component({
-    selector: 'page-go', templateUrl: 'go.html',
-})
-
-export class GoPage implements OnInit, OnDestroy {
-    @ViewChild(Content) content: Content;
-
+@Component({selector: 'page-go', templateUrl: 'go.html'})
+export class GoPage implements OnInit, OnDestroy
+{
     constructor(public nav: NavController, public modalCtrl: ModalController, private view: ViewController, private navParams: NavParams, private platform: Platform,
         private app: TApplication, private Localize: TLocalizeService, private Distribute: TDistributeService) {
         this.Category = navParams.get('Category');
         this.ScriptFile = navParams.get('ScriptFile');
+        this.DemoMode = navParams.get('DemoMode');
 
         if (platform.is('ios'))
             Loki.TShell.LinearTable = '3.3v';
@@ -28,7 +27,7 @@ export class GoPage implements OnInit, OnDestroy {
 
     }
 
-    ngOnInit(): void 
+    ngOnInit(): void
     {
         if (!Loki.TShell.IsUsbPlugin) {
             if (this.platform.is('android'))
@@ -38,7 +37,7 @@ export class GoPage implements OnInit, OnDestroy {
         }
     }
 
-    ngOnDestroy(): void 
+    ngOnDestroy(): void
     {
         if (TypeInfo.Assigned(this.ScanSubscription))
             this.ScanSubscription.unsubscribe();
@@ -46,7 +45,7 @@ export class GoPage implements OnInit, OnDestroy {
         Loki.TShell.StopScan().catch(err => { });
     }
 
-    Go() 
+    Go()
     {
         if (!Loki.TShell.IsUsbPlugin) {
             if (this.DeviceList.length === 1)
@@ -58,7 +57,7 @@ export class GoPage implements OnInit, OnDestroy {
             this.Start('USB');
     }
 
-    ShowDesc(event) 
+    ShowDesc(event)
     {
         if (!this.IsShowDescIcon) {
             let target = event.target || event.srcElement || event.currentTarget;
@@ -66,24 +65,22 @@ export class GoPage implements OnInit, OnDestroy {
             if (targetId !== '') {
                 this.IsShowDescIcon = true;
                 this.OutBox = <HTMLElement>document.getElementById('ShowDescIcon');
-                let ELE = <HTMLElement>document.getElementById(targetId);                
+                let ELE = <HTMLElement>document.getElementById(targetId);
                 this.Point = ELE.getBoundingClientRect();
                 this.ShowBox = ELE.cloneNode(true);
                 let position = 'position:fixed;z-index:99;';
                 let Client = 'width:' + Math.trunc(this.Point.width) + 'px;height:' + Math.trunc(this.Point.height) + 'px;'
-                this.InitialPosition = position + Client + this.StyleDirection + 'top:' + Math.trunc(this.Point.top) + 'px;transform:scale(1)'; 
+                this.InitialPosition = position + Client + this.StyleDirection + 'top:' + Math.trunc(this.Point.top) + 'px;transform:scale(1)';
                 this.OutBox.setAttribute('style', this.InitialPosition);
                 this.OutBox.appendChild(this.ShowBox);
                 this.OutBox.addEventListener("click", this.CloseDesc.bind(this));
                 let Fade = position + Client + 'top:42vh;' + this.StyleTransform;
-                setTimeout(() => {                    
+                setTimeout(() => {
                     this.OutBox.setAttribute('style', Fade);
                 }, 100)
             }
         }
     }
-
-
 
     get StyleTransform(): string
     {
@@ -101,9 +98,9 @@ export class GoPage implements OnInit, OnDestroy {
             return 'right:21px;';
     }
 
-    CloseDesc() 
+    CloseDesc()
     {
-        this.OutBox.setAttribute('style', this.InitialPosition);        
+        this.OutBox.setAttribute('style', this.InitialPosition);
         setTimeout(() => {
             this.IsShowDescIcon = false;
             if (this.OutBox.childNodes.length === 0) return;
@@ -112,11 +109,9 @@ export class GoPage implements OnInit, OnDestroy {
         }, 800)
     }
 
-
-
-    ShowFileDetail() 
+    ShowFileDetail()
     {
-        
+
         let gridBody = document.getElementById('gridBody');
 
         if (this.IsShowFileDetail) {
@@ -128,11 +123,10 @@ export class GoPage implements OnInit, OnDestroy {
                 this.content.scrollTo(0, this.content.scrollHeight - this.content.contentTop * 2 -16, 1500);
             else
                 this.content.scrollTo(0, gridBody.clientHeight - 50 * 2, 1500);
-        }         
-
+        }
     }
 
-    FileDetails(): Array<string> 
+    FileDetails(): Array<string>
     {
         let RetVal = new Array<string>();
         for (let d of this.ScriptFile.Details) {
@@ -154,12 +148,12 @@ export class GoPage implements OnInit, OnDestroy {
         return RetVal;
     }
 
-    SelectionDevice(Device: BLE.IScanDiscovery) 
+    SelectionDevice(Device: BLE.IScanDiscovery)
     {
         this.Start(Device.id);
     }
 
-    private StartScan() 
+    private StartScan()
     {
         this.ScanSubscription = Loki.TShell.StartScan()
             .subscribe((next) => {
@@ -174,7 +168,7 @@ export class GoPage implements OnInit, OnDestroy {
             });
     }
 
-    private Start(DeviceId: string) 
+    private Start(DeviceId: string)
     {
         if (TypeInfo.Assigned(this.ScanSubscription)) {
             this.ScanSubscription.unsubscribe();
@@ -196,16 +190,29 @@ export class GoPage implements OnInit, OnDestroy {
                 .then(Buf => {
                     params.Shell = Shell;
                     params.Firmware = Buf;
-                    return this.nav.push(OtaUpdatePage, params);
+
+                    if (! this.DemoMode)
+                        return this.nav.push(OtaUpdatePage, params);
+                    else
+                        return Promise.reject(new EAbort);
                 })
                 .catch(err => {
                     if (err instanceof EAbort)
-                        this.nav.push(RunningPage, params);
+                    {
+                        if (! this.DemoMode)
+                            this.nav.push(RunningPage, params);
+                        else
+                            this.nav.push(DemoModeRunningPage, params);
+                    }
                     else
                         loading.dismiss().then(() => this.app.ShowHintId(err.message));
                 })
         });
     }
+
+    @ViewChild(Content) content: Content;
+
+    DemoMode: boolean = false;
 
     Category: TCategory;
     ScriptFile: TScriptFile;
