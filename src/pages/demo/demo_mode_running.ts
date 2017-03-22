@@ -273,9 +273,14 @@ export class DemoModeRunningPage implements AfterViewInit//, OnDestroy
             .then(() => this.Adjusting = null);
     }
 
+    get SetDetail():Object
+    {
+        return { height: Math.ceil(window.innerHeight * 0.25)+ 'px', overflowY: 'auto' }
+    }
+
     private AddDialElement()
     {
-        let boxSize = screen.width - 48 * 2;
+        let boxSize = screen.width - 48 * 4;
         let value = Math.trunc((boxSize - Math.trunc(boxSize * 0.8)) / 2);
         let valueTop = value - 6;
         let textValSize = Math.trunc(boxSize * 0.4);

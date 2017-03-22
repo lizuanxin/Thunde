@@ -8,14 +8,8 @@ body,
     font-family: brandontext_normal, 'microsoft yahei';
 }
 
-$i:12;
 * {
-    @while $i < 65 {
-        &[#{f}-#{$i}] {
-            font-size: $i+px;
-        }
-        $i:$i+1;
-    }
+    @include FontGeneration();
     [absolute]{
         position:absolute;
     }

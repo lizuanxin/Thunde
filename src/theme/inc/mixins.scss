@@ -122,3 +122,14 @@ $outlinewidth) {
     -o-transform:scale($s1);
     -ms-transform:scale($s1);
 }
+
+@mixin FontGeneration($num:9) {
+    @for $i from 1 through $num {
+        @for $j from 0 through $num {
+            &[f-#{$i}-#{$j}],
+            &.f-#{$i}-#{$j} {
+                font-size: $i + $j/10 + rem;
+            }
+        }
+    }
+}
