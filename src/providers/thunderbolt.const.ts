@@ -230,4 +230,11 @@ export namespace const_data
             BodyParts: [Body.foot],
             Content: inplace_files.file8_soles},
         ]
+
+        export const DemoModes =
+        {
+            FRICTION: inplace_files.FRICTION,
+            KNEADING: inplace_files.KNEADING,
+            PRESSURE: inplace_files.PRESSURE
+        }
 }

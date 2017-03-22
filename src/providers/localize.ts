@@ -111,6 +111,21 @@ let translate_en =
         menu_tou: 'Terms of Use',
     },
 
+    demo_mode_play_page:
+    {
+        friction_title: 'FRICTION EFFECT',
+        friction_info: 'You will feel a friction effect, a tingling sensation. By sending a very fast signal to your brain, Bluetens will block the transmission of the "pain message" alleviating your pain rapidly.',
+        friction_suggestion: 'This action is 100% natural and works on any type of pain while safeguarding your health.',
+        kneading_title: 'KNEADING EFFECT',
+        kneading_info: 'Such stimulation kneads and deeply relaxes your muscles. We use this effect to relax your muscles and promptly relieve tension.',
+        kneading_suggestion: 'This action acts on  contractures (muscle tension) on a long-term basis.',
+        pressure_title: 'PRESSURE EFFECT',
+        pressure_info: 'This effect is the most used by physiotherapists during massage. A pacifying and relaxing sensation when the therapist’s hand glides over the skin. With respect to the intensity, the sensation will first be felt on the skin and, increasing the intensity, you will feel muscular tensions disappearing.',
+        pressure_suggestion: 'This action cleans your muscles and helps you to get rid of accumulated stress, it\'s ideal for recovering faster after a sport session.',
+        demo_play_intensity: 'Intensity  : 5-20',
+        demo_play_finish: 'Discover the hitting and contraction effects in the long list of Bluetens programs'
+    },
+
     go_page:
     {
         plug_device: 'Plugin your device...',

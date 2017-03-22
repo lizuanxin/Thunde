@@ -474,7 +474,7 @@ export class TShell extends TAbstractShell
         }, 1000)
     }
 
-    private StopTicking(): void
+    StopTicking(): void
     {
         this._Ticking = 0;
 
