@@ -79,6 +79,7 @@ export class DemoPage implements OnInit, OnDestroy
                         this.AnimateFade(this.num1, [{ opacity: 0, left: width * 0.88 + 'px', top: height * 0.06 + 'px' }, { opacity: 1, left: width * 0.88 + 'px', top: height * 0.14 + 'px' }], 1000);
                         break;
                     case STEP[3]:
+                        this.AnimateFade(this.ready, [{ opacity: 0, marginTop: '-70px' }, { opacity: 1, marginTop: '-50px' }], 1500);
                         break;
                     case STEP[4]:
                         this.AnimateFade(this.describe2, [{ opacity: 0, left: width * 0.85 + 'px', top: height * 0.35 + 'px',transform:'translateY(0)' }, { opacity: 1, left: width * 0.85 + 'px', top: height * 0.35 + 'px',transform:'translateY(0)' }], 1000);
@@ -105,7 +106,7 @@ export class DemoPage implements OnInit, OnDestroy
                         break;
                     case STEP[11]:
                         this.AnimateFade(this.num4, [{ opacity: 0, left: -width * 0.04 + 'px', top: height * 0.86 + 'px' }, { opacity: 1, left: width * 0.04 + 'px', top: height * 0.86 + 'px' }], 1000);
-                        this.AnimateFade(this.ready, [{ opacity: 0, marginTop: '-70px' }, { opacity: 1, marginTop: '-50px' }], 1500);
+                        
                         break;
                 }      
             } else {
