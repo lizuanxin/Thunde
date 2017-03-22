@@ -1,21 +1,23 @@
 import {Component, OnInit, OnDestroy, EventEmitter} from '@angular/core';
-import {NavController} from 'ionic-angular';
+import {NavController, NavParams} from 'ionic-angular';
 
 import {TypeInfo} from '../../UltraCreation/Core'
 import * as UI from '../../UltraCreation/Graphic'
 
 import {const_data, TApplication, TLocalizeService, TAssetService, TCategory, TScriptFile, TDistributeService} from '../services';
-import {DemoPage} from '../demo/demo';
+//import {DemoPage} from '../demo/demo';
+import { DemoModeRunningPage } from '../demo/demo_mode_running';
 import {TouPage} from '../tou/tou';
 import {GoPage} from '../go/go';
 import {SkinPage} from '../skin/skin';
+
 
 const SHOWING_ITEM_COUNT = 6;
 
 @Component({selector: 'page-home', templateUrl: 'home.html'})
 export class HomePage implements OnInit, OnDestroy
 {
-    constructor(public nav: NavController, private Asset: TAssetService,
+    constructor(public nav: NavController, private navParams: NavParams, private Asset: TAssetService,
         private app: TApplication, private Localize: TLocalizeService, private Distrubute: TDistributeService)
     {
     }
@@ -101,7 +103,36 @@ export class HomePage implements OnInit, OnDestroy
 
     ShowDemo()
     {
-        this.nav.push(DemoPage);
+        let DemoCategory = this.SelectedCategory;
+        if (! TypeInfo.Assigned(DemoCategory))
+            DemoCategory = this.Categories[0];
+
+        this.Asset.FileList(DemoCategory.Id)
+            .then(List =>
+            {
+                this.FileList = List;
+                this.Content.NewFileList(List);
+
+                switch (DemoCategory.Id)
+                {
+                case const_data.Category.therapy.Id:
+                    this.app.SetSkin(this.app.Skins[1]);
+                    break;
+                case const_data.Category.fat_burning.Id:
+                    this.app.SetSkin(this.app.Skins[3]);
+                    break;
+                case const_data.Category.muscle_training.Id:
+                    this.app.SetSkin(this.app.Skins[2]);
+                    break;
+                case const_data.Category.relax.Id:
+                    this.app.SetSkin(this.app.Skins[0]);
+                    break;
+                }
+
+                return this.Asset.FileDesc(this.FileList[0])
+                    .then(() => this.nav.push(DemoModeRunningPage, { Category: this.SelectedCategory, ScriptFile: this.FileList[0], DemoMode: false}));
+            })
+            .catch(err => console.log(err));
     }
 
     ShowTOU()
@@ -118,7 +149,7 @@ export class HomePage implements OnInit, OnDestroy
     SelectFile(ScriptFile: TScriptFile)
     {
         this.Asset.FileDesc(ScriptFile)
-            .then(() => this.nav.push(GoPage, { Category: this.SelectedCategory, ScriptFile: ScriptFile }));
+            .then(() => this.nav.push(GoPage, { Category: this.SelectedCategory, ScriptFile: ScriptFile, DemoMode: false}));
     }
 
     Categories: Array<TCategory>;
