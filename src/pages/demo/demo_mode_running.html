@@ -1,0 +1,128 @@
+<ion-content no-scroll padding [ngClass]="app.Skin('running')">
+    <template [ngIf]="!Finish">
+      <div *ngIf="!Downloading">
+        <ion-row>
+          <ion-col width-33 offset-33><img src="{{ModeGif}}"></ion-col>
+        </ion-row>
+        <div b-g-c-e>
+          <div padding-horizontal text-blueske>{{'demo_mode_play_page.'+ModeTitle|translate}}</div>
+          <div padding-horizontal text-light f-1-1>{{'demo_mode_play_page.'+ModeInfo|translate}}</div>
+          <div padding-horizontal text-light f-1-2><strong>{{'demo_mode_play_page.'+ModeSuggestion|translate}}</strong></div>
+          <div padding-horizontal text-light f-1-3><strong>{{'demo_mode_play_page.demo_play_intensity'|translate}}</strong></div>
+        </div>
+      </div>
+
+      <canvas id="demo_mode_canvas_countdown" style="display: none; height:280px"></canvas>
+
+      <div pull-bottom [ngStyle]="{'width':'50%','bottom':'22px', 'text-alain':'center'}">
+        <ion-row align-items-center>
+          <ion-col no-padding>
+            <div id = "box">
+              <div id = "point" class="point" [ngStyle] = "{'-webkit-transform':PointRotate()}"></div>
+              <div id = "textVal" class="text" f-48 [ngClass] = "app.SkinColor">
+                    {{Intensity}}
+                    <div class="bg-value" [ngStyle] = "{'animation-duration':Strength}"></div>
+                </div>
+                <div id="controlBtn" class="controlBtn">
+                  <ion-row>
+                    <ion-col width-33 text-center padding>
+                      <button ion-button icon-only outline text-uppercase [ngClass] = "app.SkinBorderColor" (click)="AdjustIntensity(-1)" tappable>
+                            <ion-icon>&#xf368;</ion-icon>
+                      </button>
+                    </ion-col>
+                    <ion-col width-33></ion-col>
+                    <ion-col width-33 text-center padding>
+                      <button ion-button icon-only outline text-uppercase [ngClass] = "app.SkinBorderColor" (click)="AdjustIntensity(1)" tappable>
+                          <ion-icon>&#xf273;</ion-icon>
+                    </button>
+                    </ion-col>
+                  </ion-row>
+                </div>
+              </div>
+          </ion-col>
+        </ion-row>
+
+      <!--<div pull-bottom [ngStyle]="{'width':'100%','bottom':'22px'}">
+          <p text-center text-light>{{TickingDownHint}}</p>
+          <ion-row>
+            <ion-col width-80 offset-10>
+                <div padding-horizontal class="spin-range">
+                    <button color="blueske" ion-button no-shadow (click)="AdjustIntensity(-1)">
+                      <ion-icon name="remove"></ion-icon>
+                    </button>
+                    <div class="cen-range">
+                      <canvas id="demo_mode_canvas_intensity" height="200"></canvas>
+                    </div>
+
+                    <button color="blueske" running ion-button clear-both [ngClass]="{'twinkleLight': IsNeverClicked}" (click)="AdjustIntensity(1)">
+                      <ion-icon name="add"></ion-icon>
+                    </button>
+                </div>
+            </ion-col>
+          </ion-row>-->
+          <ion-row [ngStyle]="{'position':'relative','z-index':100}">
+            <ion-col width-80 offset-10>
+              <ion-list transparent no-margin>
+                <ion-item no-lines>
+                  <ion-range min="0" max="100" [ngModel]="InitRange" color="secondary" disabled progress-bar>
+                    <ion-label range-right [ngClass] = "app.SkinColor" [ngStyle]="{'margin':'0 0 0 5px'}">{{TotalMinute}}</ion-label>
+                  </ion-range>
+                </ion-item>
+              </ion-list>
+            </ion-col>
+          </ion-row>
+      </div>
+    </template>
+    <template [ngIf]="Finish">
+        <div text-light v-m style="height:100%;">
+            <div text-center>
+                <h2>{{'hint.congratulations'|translate}}</h2>
+                <p padding>{{'demo_mode_play_page.demo_play_finish'|translate}}</p>
+                <p><ion-icon app-icon text-light [ngStyle]="{'font-size':'50vw'}">&#xe95c;</ion-icon></p>
+            </div>
+        </div>
+    </template>
+</ion-content>
+
+<ion-footer no-shadow>
+  <ion-toolbar *ngIf="! Finish" color="blueske" no-border visible center>
+    <ion-row no-padding>
+        <ion-col offset-33 text-center  [ngStyle]="{'margin-top':'-6vh'}">
+            <button text-uppercase outline-bold round-large color-green (click)="Shutdown()" tappable>
+                <ion-icon name="power"></ion-icon>
+            </button>
+        </ion-col>
+        <ion-col text-right center>
+            <button clear ion-button icon-only text-light tappable>
+              <ion-icon class="blue-icon" *ngIf="BatteryLevel === 0">&#xe925;</ion-icon>
+              <ion-icon class="blue-icon" *ngIf="BatteryLevel === 1">&#xe926;</ion-icon>
+              <ion-icon class="blue-icon" *ngIf="BatteryLevel === 2">&#xe927;</ion-icon>
+              <ion-icon class="blue-icon" *ngIf="BatteryLevel === 3">&#xe928;</ion-icon>
+              <ion-icon class="blue-icon" *ngIf="BatteryLevel === 4">&#xe929;</ion-icon>
+            </button>
+        </ion-col>
+    </ion-row>
+  </ion-toolbar>
+
+  <ion-toolbar *ngIf="Finish" color="deepdark" no-border visible center>
+    <ion-row>
+        <ion-col offset-33 text-center [ngStyle]="{'margin-top':'-8vh'}">
+            <button text-uppercase outline-bold round-large color-green (click)="nav.popToRoot()" tappable>
+                {{'button.go'|translate}}
+            </button>
+        </ion-col>
+        <ion-col text-right center>
+          <ion-buttons>
+            <button clear ion-button icon-only text-light tappable>
+              <ion-icon class="blue-icon" *ngIf="BatteryLevel === 0" item-right>&#xe925;</ion-icon>
+              <ion-icon class="blue-icon" *ngIf="BatteryLevel === 1" item-right>&#xe926;</ion-icon>
+              <ion-icon class="blue-icon" *ngIf="BatteryLevel === 2" item-right>&#xe927;</ion-icon>
+              <ion-icon class="blue-icon" *ngIf="BatteryLevel === 3" item-right>&#xe928;</ion-icon>
+              <ion-icon class="blue-icon" *ngIf="BatteryLevel === 4" item-right>&#xe929;</ion-icon>
+            </button>
+          </ion-buttons>
+        </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>
+
