@@ -85,7 +85,8 @@ let translate_en =
         no_load: 'Apply all the electrodes.',
         hardware_error: 'Hardware error, Please contact Customer Service.',
 
-        network_unavailable: 'Network Unavailable.'
+        network_unavailable: 'Network Unavailable.',
+        congratulations: 'Congratulations',
     },
 
     button:

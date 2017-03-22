@@ -40,6 +40,10 @@ body,
     &[text-yellow]{
         color:#f4e827;
     }
+    &[pull-bottom]{
+        position:absolute;
+        bottom:0;
+    }
 }
 
 ion-content {

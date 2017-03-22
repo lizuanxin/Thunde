@@ -14,7 +14,7 @@ const DEMO_MODES: string[] = ["FRICTION", "KNEADING", "PRESSURE"];
 const DEMO_MODES_TIMES: number[] = [45, 70, 80];
 
 @Component({selector: "page-demo_mode_running", templateUrl: "demo_mode_running.html"})
-export class DemoModeRunningPage implements AfterViewInit//, OnDestroy
+export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 {
     constructor(public nav: NavController, private navParams: NavParams, private view: ViewController,
         private app: TApplication, private Localize: TLocalizeService, private AssetSvc:TAssetService)
@@ -25,67 +25,63 @@ export class DemoModeRunningPage implements AfterViewInit//, OnDestroy
         this.Shell = Loki.TShell.Get(DeviceId);
     }
 
-    // ngOnInit()
-    // {
-    //     this.ShellNotifySubscription = this.Shell.OnNotify.subscribe(
-    //         Notify =>
-    //         {
-    //             switch(Notify)
-    //             {
-    //             case Loki.TShellNotify.Shutdown:
-    //                 this.Close('shutdown');
-    //                 break;
-    //             case Loki.TShellNotify.Disconnected:
-    //                 this.Close('disconnected');
-    //                 break;
-    //             case Loki.TShellNotify.LowBattery:
-    //                 this.Close('low_battery');
-    //                 break;
-    //             case Loki.TShellNotify.HardwareError:
-    //                 this.Close('hardware_error');
-    //                 break;
+    ngOnInit()
+    {
+        this.ShellNotifySubscription = this.Shell.OnNotify.subscribe(
+            Notify =>
+            {
+                switch(Notify)
+                {
+                case Loki.TShellNotify.Shutdown:
+                    this.Close('shutdown');
+                    break;
+                case Loki.TShellNotify.Disconnected:
+                    this.Close('disconnected');
+                    break;
+                case Loki.TShellNotify.LowBattery:
+                    this.Close('low_battery');
+                    break;
+                case Loki.TShellNotify.HardwareError:
+                    this.Close('hardware_error');
+                    break;
 
-    //             case Loki.TShellNotify.NoLoad:
-    //                 this.Close('no_load');
-    //                 break;
+                case Loki.TShellNotify.NoLoad:
+                    this.Close('no_load');
+                    break;
 
-    //             case Loki.TShellNotify.Stopped:
-    //                 this.Close('');
-    //                 break;
+                case Loki.TShellNotify.Stopped:
+                    this.Close('');
+                    break;
 
-    //             case Loki.TShellNotify.Intensity:
-    //                 this.UpdateHeartbeatRate();
-    //                 break;
+                case Loki.TShellNotify.Intensity:
+                    this.UpdateHeartbeatRate();
+                    break;
 
-    //             case Loki.TShellNotify.Battery:
-    //                 this.UpdateBatteryLevel();
-    //                 break;
+                case Loki.TShellNotify.Ticking:
+                    this.Ticking = this.Shell.Ticking;
+                    console.log("Ticking:" + this.Ticking);
 
-    //             case Loki.TShellNotify.Ticking:
-    //                 this.Ticking = this.Shell.Ticking;
-    //                 console.log("Ticking:" + this.Ticking);
-
-    //                 if (DEMO_MODES_TIMES[this.CurrentRunningIndex] - this.Ticking <= 2)
-    //                     this.NextMode();
-    //                 break;
-    //             }
-    //         },
-    //         err=> console.log(err.message));
-    // }
+                    if (DEMO_MODES_TIMES[this.CurrentRunningIndex] - this.Ticking <= 2)
+                        this.NextMode();
+                    break;
+                }
+            },
+            err=> console.log(err.message));
+    }
 
     ngAfterViewInit(): void
     {
         this.AddDialElement();
-        // this.nav.remove(1, this.view.index - 1, {animate: false})
-        //     .then(() => this.Start());
+        this.nav.remove(1, this.view.index - 1, {animate: false})
+            .then(() => this.Start());
     }
 
-    // ngOnDestroy(): void
-    // {
-    //     this.ShellNotifySubscription.unsubscribe();
-    //     this.app.HideLoading();
-    //     this.Shell.Detach();
-    // }
+    ngOnDestroy(): void
+    {
+        this.ShellNotifySubscription.unsubscribe();
+        this.app.HideLoading();
+        this.Shell.Detach();
+    }
 
     SetModeInfo(runningIndex: string)
     {
@@ -99,7 +95,6 @@ export class DemoModeRunningPage implements AfterViewInit//, OnDestroy
     private Start()
     {
         this.Shell.ClearFileSystem(DEMO_MODES)
-            //.then(() => this.Shell.BatteryRequest())
             .then(() => this.StartMode(0))
             .catch(err =>
             {
@@ -126,11 +121,13 @@ export class DemoModeRunningPage implements AfterViewInit//, OnDestroy
                         setTimeout(() =>
                         {
                             this.CountDown = new TCountDown("demo_mode_canvas_countdown");
+                            this.CountDown.InitCanvas(window.innerWidth, 280);
                             this.CountDown.Start(2);
                         }, 100);
                     }
                     else
                     {
+                        this.CountDown.InitCanvas(window.innerWidth, 280);
                         setTimeout(() => this.CountDown.Start(2), 0);
                     }
 
@@ -143,6 +140,7 @@ export class DemoModeRunningPage implements AfterViewInit//, OnDestroy
                         if (TypeInfo.Assigned(this.CountDown))
                         {
                             this.CountDown.Stop();
+                            this.CountDown.InitCanvas(window.innerWidth, 0);
                         }
                         this.Downloading = false;
                     });
@@ -275,7 +273,7 @@ export class DemoModeRunningPage implements AfterViewInit//, OnDestroy
 
     get SetDetail():Object
     {
-        return { height: Math.ceil(window.innerHeight * 0.25)+ 'px', overflowY: 'auto' }
+        return { height: Math.ceil(window.innerHeight * 0.23)+ 'px', overflowY: 'auto' }
     }
 
     private AddDialElement()
@@ -360,27 +358,6 @@ export class DemoModeRunningPage implements AfterViewInit//, OnDestroy
             this.Strength = '1s';
     }
 
-    private UpdateBatteryLevel()
-    {
-        let CurrentPower = this.Shell.BatteryLevel;
-        if (CurrentPower >= 0 && CurrentPower <= 3800)
-        {
-            this.BatteryLevel = 1;
-        }
-        else if (CurrentPower > 3800 && CurrentPower <= 4400)
-        {
-            this.BatteryLevel = 2;
-        }
-        else if (CurrentPower > 4400 && CurrentPower <= 4700)
-        {
-            this.BatteryLevel = 3;
-        }
-        else if (CurrentPower > 4700 && CurrentPower <= 10000)
-        {
-            this.BatteryLevel = 4;
-        }
-    }
-
     private Close(MessageId: string)
     {
         if (MessageId !== '')
@@ -398,12 +375,13 @@ export class DemoModeRunningPage implements AfterViewInit//, OnDestroy
         {
             if (this.view === this.nav.getActive())
                 this.nav.popToRoot();
-        }, 100);
+        }, 300);
     }
 
     Shutdown()
     {
-        this.Shell.Shutdown().catch(() => this.ClosePage());
+        this.Shell.Shutdown()
+            .catch(() => this.ClosePage());
     }
 
     IsNeverClicked: boolean = true;
@@ -412,7 +390,6 @@ export class DemoModeRunningPage implements AfterViewInit//, OnDestroy
     CurrentRunningIndex: number = 0;
     Ticking: number = 0;
     Intensity: number = 0;
-    BatteryLevel: number = 0;
     Boundary: number = 293;
     BoxSize: number;
     Strength: string = '1s';
@@ -435,14 +412,19 @@ class TCountDown
     constructor (canvasId: string)
     {
         this.Canvas = document.getElementById(canvasId) as HTMLCanvasElement;
-        let WindWidth = window.innerWidth;
+    }
 
-        this.Canvas.style.width = WindWidth.toString();
-        this.Canvas.width = WindWidth * window.devicePixelRatio;
+    InitCanvas(width: number, height: number)
+    {
+        this.Canvas.style.width = width.toString();
+        this.Canvas.width = width;
+        this.Canvas.style.height = height +"px";
+        this.Canvas.height = height;
+
         this.Ctx = this.Canvas.getContext('2d', {});
 
-        this.Ox = WindWidth / 2;
-        this.Oy = this.Canvas.height / 2;
+        this.Ox = width / 2;
+        this.Oy = height / 2;
 
         if (this.Ox < this.Oy)
             this.Radius = this.Ox;
@@ -452,8 +434,6 @@ class TCountDown
 
     Start(StartTime: number)
     {
-        this.Canvas.style.display = 'block';
-
         let Angle = 0;
         let Per = StartTime - 1;
 
@@ -510,8 +490,6 @@ class TCountDown
 
     Stop()
     {
-        this.Canvas.style.display = 'none';
-
         if (typeof this.IntervalId !== "undefined")
         {
             clearInterval(this.IntervalId);

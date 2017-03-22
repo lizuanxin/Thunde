@@ -6,7 +6,7 @@ import * as UI from '../../UltraCreation/Graphic'
 
 import {const_data, TApplication, TLocalizeService, TAssetService, TCategory, TScriptFile, TDistributeService} from '../services';
 //import {DemoPage} from '../demo/demo';
-import { DemoModeRunningPage } from '../demo/demo_mode_running';
+import {DemoModeRunningPage} from '../demo/demo_mode_running';
 import {TouPage} from '../tou/tou';
 import {GoPage} from '../go/go';
 import {SkinPage} from '../skin/skin';
@@ -130,7 +130,7 @@ export class HomePage implements OnInit, OnDestroy
                 }
 
                 return this.Asset.FileDesc(this.FileList[0])
-                    .then(() => this.nav.push(DemoModeRunningPage, { Category: this.SelectedCategory, ScriptFile: this.FileList[0], DemoMode: false}));
+                    .then(() => this.nav.push(GoPage, { Category: this.SelectedCategory, ScriptFile: this.FileList[0], DemoMode: true}));
             })
             .catch(err => console.log(err));
     }
