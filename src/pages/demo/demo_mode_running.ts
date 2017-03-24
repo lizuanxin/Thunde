@@ -389,22 +389,10 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
         }
 
         this.Shell.Shutdown()
-            .then(() =>
-            {
-                setTimeout(() =>
-                {
-                    if (this.view === this.nav.getActive())
-                        this.nav.popToRoot();
-                }, 300);
-            })
-            .catch(() =>
-            {
-                setTimeout(() =>
-                {
-                    if (this.view === this.nav.getActive())
-                        this.nav.popToRoot();
-                }, 300);
-            });
+            .catch((err) => console.log(err.message));
+
+        if (this.view === this.nav.getActive())
+            this.nav.popToRoot();
     }
 
     IsNeverClicked: boolean = true;
