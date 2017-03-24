@@ -78,7 +78,12 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     ngOnDestroy(): void
     {
-        this.ShellNotifySubscription.unsubscribe();
+        if (TypeInfo.Assigned(this.ShellNotifySubscription))
+        {
+            this.ShellNotifySubscription.unsubscribe();
+            this.ShellNotifySubscription = null;
+        }
+
         this.app.HideLoading();
         this.Shell.Detach();
     }
@@ -168,7 +173,6 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
             if (this.CurrentRunningIndex < 2)
             {
                 this.CurrentRunningIndex ++;
-                //console.log("CurrentRunningIndex:" + this.CurrentRunningIndex + "  DEMO_MODES:" + DEMO_MODES[this.CurrentRunningIndex]);
                 this.IsNeverClicked = true;
                 this.SetModeInfo(DEMO_MODES[this.CurrentRunningIndex]);
                 this.StartMode(this.CurrentRunningIndex)
@@ -178,8 +182,8 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
                                 .then(() => this.app.ShowHintId(err.message))
                                 .then(() => this.ClosePage());
                     });
-
-            } else
+            }
+            else
             {
                 this.Finish = true;
                 this.AssetSvc.SetKey("DEMO_MODE", true).catch(err => console.log(err.message));
@@ -223,8 +227,6 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     get InitRange(): number
     {
-        console.log("ticking:" + this.Ticking);
-
         return (this.Ticking / (DEMO_MODES_TIMES[this.CurrentRunningIndex])) * 100;
     }
 
@@ -380,12 +382,34 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     Shutdown()
     {
+        if (TypeInfo.Assigned(this.ShellNotifySubscription))
+        {
+            this.ShellNotifySubscription.unsubscribe();
+            this.ShellNotifySubscription = null;
+        }
+
         this.Shell.Shutdown()
-            .catch(() => this.ClosePage());
+            .then(() =>
+            {
+                setTimeout(() =>
+                {
+                    if (this.view === this.nav.getActive())
+                        this.nav.popToRoot();
+                }, 300);
+            })
+            .catch(() =>
+            {
+                setTimeout(() =>
+                {
+                    if (this.view === this.nav.getActive())
+                        this.nav.popToRoot();
+                }, 300);
+            });
     }
 
     IsNeverClicked: boolean = true;
-    Finish = false;
+    Finish: boolean = false;
+    Downloading: boolean = false;
 
     CurrentRunningIndex: number = 0;
     Ticking: number = 0;
@@ -393,8 +417,6 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
     Boundary: number = 293;
     BoxSize: number;
     Strength: string = '1s';
-
-    Downloading: boolean = false;
 
     ModeGif: string;
     ModeTitle: string;

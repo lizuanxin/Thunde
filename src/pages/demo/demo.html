@@ -1,4 +1,4 @@
-<ion-content no-scroll padding [ngStyle]="{'background-color':'#5b8cc3'}">    
+<ion-content no-scroll padding [ngStyle]="{'background-color':'#5b8cc3'}">
     <ion-row>
         <ion-col text-center text-light>
             <ion-icon #body app-icon [ngStyle]="SetElement('body')">&#xe91f;</ion-icon>
@@ -12,7 +12,7 @@
         <span #describe2 [ngStyle]="SetElement('describe2')">手<br>机<br>取<br>电</span>
         <span #describe3 [ngStyle]="SetElement('describe3')">开关控制</span>
         <span #describe4 [ngStyle]="SetElement('describe4')">强弱控制</span>
-        <ion-icon app-icon #line1 [ngStyle]="SetElement('line1')">&#xe92a;</ion-icon>       
+        <ion-icon app-icon #line1 [ngStyle]="SetElement('line1')">&#xe92a;</ion-icon>
         <ion-icon app-icon #line2 [ngStyle]="SetElement('line2')">&#xe931;</ion-icon>
         <ion-icon app-icon #line3 [ngStyle]="SetElement('line3')">&#xe935;</ion-icon>
         <ion-icon app-icon #num1 [ngStyle]="SetElement('num')">&#xe923;</ion-icon>
@@ -22,13 +22,32 @@
         <ion-icon app-icon #arrowPoint [ngStyle]="SetElement('arrowPoint')">&#xe928;</ion-icon>
         <ion-icon app-icon #key [ngStyle]="SetElement('key')">&#xe921;</ion-icon>
     </div>
+
+    <ion-list *ngIf="IsShowingDeviceList">
+        <template [ngIf]="DeviceList.length > 0">
+            <ion-item *ngFor="let device of DeviceList" (click)="SelectionDevice(device)" tappable>
+                <p>{{device.name}}</p>
+                <ion-icon app-icon *ngIf="device.rssi<-80" item-right><span f-12>{{device.rssi}}</span>&#xe92f;</ion-icon>
+                <ion-icon app-icon *ngIf="device.rssi<-70 && device.rssi>=-80" item-right><span f-12>{{device.rssi}}</span>&#xe92e;</ion-icon>
+                <ion-icon app-icon *ngIf="device.rssi<-60 && device.rssi>=-70" item-right><span f-12>{{device.rssi}}</span>&#xe92d;</ion-icon>
+                <ion-icon app-icon *ngIf="device.rssi<-50 && device.rssi>=-60" item-right><span f-12>{{device.rssi}}</span>&#xe92c;</ion-icon>
+                <ion-icon app-icon *ngIf="device.rssi>=-50" item-right><span f-12>{{device.rssi}}</span>&#xe926;</ion-icon>
+            </ion-item>
+        </template>
+        <ion-item *ngIf="DeviceList.length === 0">
+            <span>{{'go_page.plug_device'|translate}}</span>
+        </ion-item>
+    </ion-list>
+
 </ion-content>
 <ion-footer no-shadow no-border>
-    <ion-toolbar transparent visible>       
-        <div text-center #ready [ngStyle]="{'opacity':0}">
-            <button clear icon-only text-light [ngStyle]="{'font-size':'3.6rem'}">
-                <ion-icon app-icon>&#xe929;</ion-icon>
-            </button>
-        </div>        
+    <ion-toolbar transparent visible>
+        <template [ngIf]="!IsShowingDeviceList">
+          <div text-center #ready [ngStyle]="{'opacity':0}">
+              <button clear icon-only text-light [ngStyle]="{'font-size':'3.6rem'}" (click)="Go()" tappable>
+                  <ion-icon app-icon>&#xe929;</ion-icon>
+              </button>
+          </div>
+        </template>
     </ion-toolbar>
 </ion-footer>

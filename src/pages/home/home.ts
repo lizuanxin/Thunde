@@ -5,8 +5,7 @@ import {TypeInfo} from '../../UltraCreation/Core'
 import * as UI from '../../UltraCreation/Graphic'
 
 import {const_data, TApplication, TLocalizeService, TAssetService, TCategory, TScriptFile, TDistributeService} from '../services';
-//import {DemoPage} from '../demo/demo';
-import {DemoModeRunningPage} from '../demo/demo_mode_running';
+import {DemoPage} from '../demo/demo';
 import {TouPage} from '../tou/tou';
 import {GoPage} from '../go/go';
 import {SkinPage} from '../skin/skin';
@@ -103,36 +102,38 @@ export class HomePage implements OnInit, OnDestroy
 
     ShowDemo()
     {
-        let DemoCategory = this.SelectedCategory;
-        if (! TypeInfo.Assigned(DemoCategory))
-            DemoCategory = this.Categories[0];
+        this.nav.push(DemoPage);
 
-        this.Asset.FileList(DemoCategory.Id)
-            .then(List =>
-            {
-                this.FileList = List;
-                this.Content.NewFileList(List);
+        // let DemoCategory = this.SelectedCategory;
+        // if (! TypeInfo.Assigned(DemoCategory))
+        //     DemoCategory = this.Categories[0];
 
-                switch (DemoCategory.Id)
-                {
-                case const_data.Category.therapy.Id:
-                    this.app.SetSkin(this.app.Skins[1]);
-                    break;
-                case const_data.Category.fat_burning.Id:
-                    this.app.SetSkin(this.app.Skins[3]);
-                    break;
-                case const_data.Category.muscle_training.Id:
-                    this.app.SetSkin(this.app.Skins[2]);
-                    break;
-                case const_data.Category.relax.Id:
-                    this.app.SetSkin(this.app.Skins[0]);
-                    break;
-                }
+        // this.Asset.FileList(DemoCategory.Id)
+        //     .then(List =>
+        //     {
+        //         this.FileList = List;
+        //         this.Content.NewFileList(List);
 
-                return this.Asset.FileDesc(this.FileList[0])
-                    .then(() => this.nav.push(GoPage, { Category: this.SelectedCategory, ScriptFile: this.FileList[0], DemoMode: true}));
-            })
-            .catch(err => console.log(err));
+        //         switch (DemoCategory.Id)
+        //         {
+        //         case const_data.Category.therapy.Id:
+        //             this.app.SetSkin(this.app.Skins[1]);
+        //             break;
+        //         case const_data.Category.fat_burning.Id:
+        //             this.app.SetSkin(this.app.Skins[3]);
+        //             break;
+        //         case const_data.Category.muscle_training.Id:
+        //             this.app.SetSkin(this.app.Skins[2]);
+        //             break;
+        //         case const_data.Category.relax.Id:
+        //             this.app.SetSkin(this.app.Skins[0]);
+        //             break;
+        //         }
+
+        //         return this.Asset.FileDesc(this.FileList[0])
+        //             .then(() => this.nav.push(DemoPage, { Category: this.SelectedCategory, ScriptFile: this.FileList[0], DemoMode: true}));
+        //     })
+        //     .catch(err => console.log(err));
     }
 
     ShowTOU()

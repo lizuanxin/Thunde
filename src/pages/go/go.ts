@@ -1,13 +1,12 @@
-import { Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
-import { Subscription } from 'rxjs/Rx'
-import { Platform, NavController, ViewController, NavParams, ModalController, Content } from 'ionic-angular';
+import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import {Subscription} from 'rxjs/Rx'
+import {Platform, NavController, ViewController, NavParams, ModalController, Content} from 'ionic-angular';
 
-import { TypeInfo, EAbort } from '../../UltraCreation/Core';
+import {TypeInfo, EAbort} from '../../UltraCreation/Core';
 
-import { BLE, Loki, TApplication, TLocalizeService, TDistributeService, TCategory, TScriptFile } from '../services';
-import { DemoModeRunningPage } from '../demo/demo_mode_running';
-import { RunningPage } from '../running/running';
-import { OtaUpdatePage } from '../ota_update/ota_update';
+import {BLE, Loki, TApplication, TLocalizeService, TDistributeService, TCategory, TScriptFile} from '../services';
+import {RunningPage} from '../running/running';
+import {OtaUpdatePage} from '../ota_update/ota_update';
 
 //import {FiledetailsPage} from '../filedetails/filedetails';
 
@@ -15,10 +14,10 @@ import { OtaUpdatePage } from '../ota_update/ota_update';
 export class GoPage implements OnInit, OnDestroy
 {
     constructor(public nav: NavController, public modalCtrl: ModalController, private view: ViewController, private navParams: NavParams, private platform: Platform,
-        private app: TApplication, private Localize: TLocalizeService, private Distribute: TDistributeService) {
+        private app: TApplication, private Localize: TLocalizeService, private Distribute: TDistributeService)
+    {
         this.Category = navParams.get('Category');
         this.ScriptFile = navParams.get('ScriptFile');
-        this.DemoMode = navParams.get('DemoMode');
 
         if (platform.is('ios'))
             Loki.TShell.LinearTable = '3.3v';
@@ -29,7 +28,8 @@ export class GoPage implements OnInit, OnDestroy
 
     ngOnInit(): void
     {
-        if (!Loki.TShell.IsUsbPlugin) {
+        if (!Loki.TShell.IsUsbPlugin)
+        {
             if (this.platform.is('android'))
                 BLE.Enable().then(() => this.StartScan())
             else
@@ -42,12 +42,13 @@ export class GoPage implements OnInit, OnDestroy
         if (TypeInfo.Assigned(this.ScanSubscription))
             this.ScanSubscription.unsubscribe();
 
-        Loki.TShell.StopScan().catch(err => { });
+        Loki.TShell.StopScan().catch(err => console.log(err.message));
     }
 
     Go()
     {
-        if (!Loki.TShell.IsUsbPlugin) {
+        if (!Loki.TShell.IsUsbPlugin)
+        {
             if (this.DeviceList.length === 1)
                 this.Start(this.DeviceList[0].id);
             else
@@ -59,10 +60,12 @@ export class GoPage implements OnInit, OnDestroy
 
     ShowDesc(event)
     {
-        if (!this.IsShowDescIcon) {
+        if (!this.IsShowDescIcon)
+        {
             let target = event.target || event.srcElement || event.currentTarget;
             let targetId = target.parentElement.id;
-            if (targetId !== '') {
+            if (targetId !== '')
+            {
                 this.IsShowDescIcon = true;
                 this.OutBox = <HTMLElement>document.getElementById('ShowDescIcon');
                 let ELE = <HTMLElement>document.getElementById(targetId);
@@ -75,9 +78,8 @@ export class GoPage implements OnInit, OnDestroy
                 this.OutBox.appendChild(this.ShowBox);
                 this.OutBox.addEventListener("click", this.CloseDesc.bind(this));
                 let Fade = position + Client + 'top:42vh;' + this.StyleTransform;
-                setTimeout(() => {
-                    this.OutBox.setAttribute('style', Fade);
-                }, 100)
+
+                setTimeout(() => this.OutBox.setAttribute('style', Fade), 100);
             }
         }
     }
@@ -101,7 +103,8 @@ export class GoPage implements OnInit, OnDestroy
     CloseDesc()
     {
         this.OutBox.setAttribute('style', this.InitialPosition);
-        setTimeout(() => {
+        setTimeout(() =>
+        {
             this.IsShowDescIcon = false;
             if (this.OutBox.childNodes.length === 0) return;
             this.OutBox.removeAttribute('style');
@@ -111,13 +114,14 @@ export class GoPage implements OnInit, OnDestroy
 
     ShowFileDetail()
     {
-
         let gridBody = document.getElementById('gridBody');
 
-        if (this.IsShowFileDetail) {
+        if (this.IsShowFileDetail)
+        {
             this.IsShowFileDetail = false;
         }
-        else {
+        else
+        {
             this.IsShowFileDetail = true;
             if (gridBody.clientHeight > (window).innerHeight)
                 this.content.scrollTo(0, this.content.scrollHeight - this.content.contentTop * 2 -16, 1500);
@@ -129,7 +133,8 @@ export class GoPage implements OnInit, OnDestroy
     FileDetails(): Array<string>
     {
         let RetVal = new Array<string>();
-        for (let d of this.ScriptFile.Details) {
+        for (let d of this.ScriptFile.Details)
+        {
             let obj: { effect_freq: string, cluster_freq?: string, pulse_width: string } = JSON.parse(d.Desc);
             let line: string = '';
 
@@ -156,13 +161,10 @@ export class GoPage implements OnInit, OnDestroy
     private StartScan()
     {
         this.ScanSubscription = Loki.TShell.StartScan()
-            .subscribe((next) => {
-                this.DeviceList = next;
-            },
-            (err) => {
-                console.error(err);
-            },
-            () => {
+            .subscribe((next) => this.DeviceList = next,
+            (err) => console.error(err),
+            () =>
+            {
                 if (TypeInfo.Assigned(this.ScanSubscription))
                     setTimeout(() => this.StartScan(), 0);
             });
@@ -170,7 +172,8 @@ export class GoPage implements OnInit, OnDestroy
 
     private Start(DeviceId: string)
     {
-        if (TypeInfo.Assigned(this.ScanSubscription)) {
+        if (TypeInfo.Assigned(this.ScanSubscription))
+        {
             this.ScanSubscription.unsubscribe();
             this.ScanSubscription = null;
         }
@@ -178,7 +181,8 @@ export class GoPage implements OnInit, OnDestroy
         let params = this.navParams.data;
         params.DeviceId = DeviceId;
 
-        this.app.ShowLoading().then(loading => {
+        this.app.ShowLoading().then(loading =>
+        {
             let Shell = Loki.TShell.Get(DeviceId);
 
             let StopScan: Promise<void> = Promise.resolve();
@@ -187,23 +191,16 @@ export class GoPage implements OnInit, OnDestroy
 
             StopScan.then(() => Shell.Connect())
                 .then(() => this.Distribute.ReadFirmware(Shell.Version))
-                .then(Buf => {
+                .then(Buf =>
+                {
                     params.Shell = Shell;
                     params.Firmware = Buf;
-
-                    if (! this.DemoMode)
-                        return this.nav.push(OtaUpdatePage, params);
-                    else
-                        return Promise.reject(new EAbort);
+                    return this.nav.push(OtaUpdatePage, params);
                 })
-                .catch(err => {
+                .catch(err =>
+                {
                     if (err instanceof EAbort)
-                    {
-                        if (! this.DemoMode)
-                            this.nav.push(RunningPage, params);
-                        else
-                            this.nav.push(DemoModeRunningPage, params);
-                    }
+                        this.nav.push(RunningPage, params);
                     else
                         loading.dismiss().then(() => this.app.ShowHintId(err.message));
                 })
@@ -211,8 +208,6 @@ export class GoPage implements OnInit, OnDestroy
     }
 
     @ViewChild(Content) content: Content;
-
-    DemoMode: boolean = false;
 
     Category: TCategory;
     ScriptFile: TScriptFile;

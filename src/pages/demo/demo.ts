@@ -1,39 +1,103 @@
-import { Component, OnInit, OnDestroy,Renderer,ElementRef,ViewChild } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import {Component, OnInit, AfterViewInit, OnDestroy, Renderer, ElementRef, ViewChild} from '@angular/core';
+import {NavController, NavParams, Platform} from 'ionic-angular';
+
+import {Subscription} from 'rxjs/Rx'
+import {TypeInfo} from '../../UltraCreation/Core';
+
+import {BLE, Loki, TApplication, TDistributeService} from '../services';
+
+import {DemoModeRunningPage} from '../demo/demo_mode_running';
 
 const STEP: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-@Component({
-  selector: 'page-demo',
-  templateUrl: 'demo.html',
-})
-
-export class DemoPage implements OnInit, OnDestroy
+@Component({selector: 'page-demo', templateUrl: 'demo.html'})
+export class DemoPage implements OnInit, OnDestroy, AfterViewInit
 {
-    @ViewChild('body') body : ElementRef;
-    @ViewChild('arrowPoint') arrowPoint: ElementRef;
-    @ViewChild('key') key: ElementRef;
-    @ViewChild('line1') line1 : ElementRef;
-    @ViewChild('line2') line2 : ElementRef;
-    @ViewChild('line3') line3 : ElementRef;
-    @ViewChild('describe1') describe1: ElementRef;
-    @ViewChild('describe2') describe2: ElementRef;
-    @ViewChild('describe3') describe3: ElementRef;
-    @ViewChild('describe4') describe4: ElementRef;
-    @ViewChild('num1') num1: ElementRef;
-    @ViewChild('num2') num2: ElementRef;
-    @ViewChild('num3') num3: ElementRef;
-    @ViewChild('num4') num4: ElementRef;
-    @ViewChild('ready') ready: ElementRef;
-
-    constructor(public navCtrl: NavController, public navParams: NavParams,public renderer: Renderer)
+    constructor(public nav: NavController, private navParams: NavParams, private platform: Platform, private app: TApplication,
+        private Distribute: TDistributeService, private renderer: Renderer)
     {}
 
     ngOnInit(): void
-    {      
+    {
+        this.AnimationFlow();
+    }
 
-        this.AnimationFlow();  
- 
+    ngAfterViewInit()
+    {
+        if (!Loki.TShell.IsUsbPlugin)
+        {
+            if (this.platform.is('android'))
+                BLE.Enable().then(() => this.StartScan())
+            else
+                this.StartScan();
+        }
+    }
+
+    ngOnDestroy(): void
+    {
+        if (TypeInfo.Assigned(this.ScanSubscription))
+            this.ScanSubscription.unsubscribe();
+
+        Loki.TShell.StopScan().catch(err => console.log(err.message));
+    }
+
+    private StartScan()
+    {
+        this.ScanSubscription = Loki.TShell.StartScan()
+            .subscribe((next) => this.DeviceList = next,
+            (err) => console.error(err),
+            () =>
+            {
+                if (TypeInfo.Assigned(this.ScanSubscription))
+                    setTimeout(() => this.StartScan(), 0);
+            });
+    }
+
+    SelectionDevice(Device: BLE.IScanDiscovery)
+    {
+        this.Start(Device.id);
+    }
+
+    private Start(DeviceId: string)
+    {
+        if (TypeInfo.Assigned(this.ScanSubscription))
+        {
+            this.ScanSubscription.unsubscribe();
+            this.ScanSubscription = null;
+        }
+
+        let params = this.navParams.data;
+        params.DeviceId = DeviceId;
+
+        this.app.ShowLoading().then(loading =>
+            {
+                let Shell = Loki.TShell.Get(DeviceId);
+
+                let StopScan: Promise<void> = Promise.resolve();
+                if (!Loki.TShell.IsUsbPlugin)
+                    StopScan = BLE.TGatt.StopScan();
+
+                StopScan.then(() => Shell.Connect())
+                    .then(() => this.nav.push(DemoModeRunningPage, params))
+                    .catch(err =>
+                    {
+                        loading.dismiss()
+                            .then(() => this.app.ShowHintId(err.message));
+                    })
+            });
+    }
+
+    Go()
+    {
+        if (!Loki.TShell.IsUsbPlugin)
+        {
+            if (this.DeviceList.length === 1)
+                this.Start(this.DeviceList[0].id);
+            else
+                this.IsShowingDeviceList = true;
+        }
+        else
+            this.Start('USB');
     }
 
     AnimateFade(Agrement, Array, Duration: number)
@@ -44,35 +108,33 @@ export class DemoPage implements OnInit, OnDestroy
             [
                 Array,
                 {
-                duration: Duration,
-                delay: 0,
-                fill: 'forwards'
-                }   
+                    duration: Duration,
+                    delay: 0,
+                    fill: 'forwards'
+                }
             ]
         );
-    }
-  
-    ngOnDestroy(): void 
-    {
-
     }
 
     AnimationFlow()
     {
-        if (!this.TypeMode) this.TypeMode = STEP[0];
+        if (!this.TypeMode)
+            this.TypeMode = STEP[0];
+
         let width = window.innerWidth, height = width * 1.5;
-        let time = 0, step = 0;  
+        let time = 0, step = 0;
         let Animation = () =>
         {
             time += 0.02;
-            if (time <= 2){
+            if (time <= 2)
+            {
                 switch(this.TypeMode)
                 {
-                    case STEP[0]:           
+                    case STEP[0]:
                         this.AnimateFade(this.body, [{ opacity: 0,transform:'translateY(50px)' }, { opacity: 1,transform:'translateY(0)' }], 1000);
                         break;
-                    case STEP[1]: 
-                        this.AnimateFade(this.line1, [{ opacity: 0,transform:'scale(.5)'}, { opacity: 1,transform:'scale(1)'}], 500);                       
+                    case STEP[1]:
+                        this.AnimateFade(this.line1, [{ opacity: 0,transform:'scale(.5)'}, { opacity: 1,transform:'scale(1)'}], 500);
                         this.AnimateFade(this.describe1, [{ opacity: 0, left: width * 0.62 + 'px', top: height * 0.16 + 'px' }, { opacity: 1, left: width * 0.62 + 'px', top: height * 0.12 + 'px' }], 1500);
                         break;
                     case STEP[2]:
@@ -84,12 +146,12 @@ export class DemoPage implements OnInit, OnDestroy
                     case STEP[4]:
                         this.AnimateFade(this.describe2, [{ opacity: 0, left: width * 0.85 + 'px', top: height * 0.35 + 'px',transform:'translateY(0)' }, { opacity: 1, left: width * 0.85 + 'px', top: height * 0.35 + 'px',transform:'translateY(0)' }], 1000);
                         break;
-                    case STEP[5]:                        
+                    case STEP[5]:
                         this.AnimateFade(this.num2, [{ opacity: 0, left: width * 0.88 + 'px', top: height * 0.5 + 'px' }, { opacity: 1, left: width * 0.88 + 'px', top: height * 0.5 + 'px' }], 500);
                         break;
                     case STEP[6]:
-                        this.AnimateFade(this.arrowPoint, [{ opacity: 0, fontSize: '1rem', left: width * 0.74 + 'px', top: height * 0.6 + 'px' }, { opacity: 1, fontSize: '6rem', left: width * 0.64 + 'px', top: height * 0.6 + 'px' }], 600);                        
-                        this.AnimateFade(this.key, [{ opacity: 0,left: width * 0.36 + 'px', top: height * 0.5 + 'px'}, { opacity: 1,left: width * 0.26 + 'px', top: height * 0.55 + 'px'}], 1000); 
+                        this.AnimateFade(this.arrowPoint, [{ opacity: 0, fontSize: '1rem', left: width * 0.74 + 'px', top: height * 0.6 + 'px' }, { opacity: 1, fontSize: '6rem', left: width * 0.64 + 'px', top: height * 0.6 + 'px' }], 600);
+                        this.AnimateFade(this.key, [{ opacity: 0,left: width * 0.36 + 'px', top: height * 0.5 + 'px'}, { opacity: 1,left: width * 0.26 + 'px', top: height * 0.55 + 'px'}], 1000);
                         break;
                     case STEP[7]:
                         this.AnimateFade(this.line2, [{ opacity: 0,transform:'scale(.5)'}, { opacity: 1,transform:'scale(1)'}], 500);
@@ -106,40 +168,43 @@ export class DemoPage implements OnInit, OnDestroy
                         break;
                     case STEP[11]:
                         this.AnimateFade(this.num4, [{ opacity: 0, left: -width * 0.04 + 'px', top: height * 0.86 + 'px' }, { opacity: 1, left: width * 0.04 + 'px', top: height * 0.86 + 'px' }], 1000);
-                        
+
                         break;
-                }      
-            } else {
+                }
+            }
+            else
+            {
 
                 if (step + 1 === STEP.length) return;
-                time = 0;                								
-                step += 1;                    
+                time = 0;
+                step += 1;
                 this.TypeMode = STEP[step];
             }
 
-            requestAnimationFrame(Animation);           
-                
+            requestAnimationFrame(Animation);
         }
         Animation();
     }
 
     SetTipsClass(n:number): string
-    {        
-        switch(n){
+    {
+        switch(n)
+        {
             case 1:
                 if (this.TypeMode > STEP[1]) return 'animateTips';
             case 2:
                 if (this.TypeMode > STEP[3]) return 'animateTips';
             case 3:
-                if (this.TypeMode > STEP[9]) return 'animateTips';            
-        } 
+                if (this.TypeMode > STEP[9]) return 'animateTips';
+        }
     }
 
-    SetTipsStyle(n: number): Object 
+    SetTipsStyle(n: number): Object
     {
         let width = window.innerWidth, height = width * 1.5;
 
-        switch (n) {
+        switch (n)
+        {
             case 0:
                 return { width: '5rem', height: '5rem', left: width * 0.40 + 'px', top: height * 0.15 + 'px' }
             case 1:
@@ -153,7 +218,8 @@ export class DemoPage implements OnInit, OnDestroy
     {
         let width = window.innerWidth, height = width * 1.5, colorYellow = "#f4e827", colorLight = "#FFFFFF", colorLightOpacity = 'rgba(255,255,255,.5)';
 
-        switch(Str){
+        switch(Str)
+        {
             case 'body':
                 return { fontSize: '80vw', transformOrigin: 'center bottom' }
             case 'num':
@@ -181,5 +247,23 @@ export class DemoPage implements OnInit, OnDestroy
     }
 
     TypeMode:number = STEP[0];
+    @ViewChild('body') body : ElementRef;
+    @ViewChild('arrowPoint') arrowPoint: ElementRef;
+    @ViewChild('key') key: ElementRef;
+    @ViewChild('line1') line1 : ElementRef;
+    @ViewChild('line2') line2 : ElementRef;
+    @ViewChild('line3') line3 : ElementRef;
+    @ViewChild('describe1') describe1: ElementRef;
+    @ViewChild('describe2') describe2: ElementRef;
+    @ViewChild('describe3') describe3: ElementRef;
+    @ViewChild('describe4') describe4: ElementRef;
+    @ViewChild('num1') num1: ElementRef;
+    @ViewChild('num2') num2: ElementRef;
+    @ViewChild('num3') num3: ElementRef;
+    @ViewChild('num4') num4: ElementRef;
+    @ViewChild('ready') ready: ElementRef;
 
+    IsShowingDeviceList: boolean = false;
+    DeviceList: Array<BLE.IScanDiscovery> = [];
+    private ScanSubscription: Subscription;
 }
