@@ -70,6 +70,7 @@ let translate_en =
     {
         e_usb_serial_plugin: "USB Device Error.",
         e_usb_permission: "We don't have the Permission to use USB Device.",
+        e_usb_otg: 'Your device have no USB OTG support, Our product may not porperly worked',
         e_ble_plugin: "BLE Device Error.",
         e_connect_timeout: "Connect Timeout.",
         e_request_timeout: "Request Timeout.",
@@ -249,6 +250,7 @@ let translate_zh =
     {
         e_usb_serial_plugin: "USB 设备错误。",
         e_usb_permission: "请授予权限使用USB",
+        e_usb_otg: '因为您的手机未检测到 OTG, 本产品可能不能正确使用。',
         e_ble_plugin: "BLE 设备错误。",
         e_connect_timeout: "未能成功连接上设备。",
         e_request_timeout: "请求超时。",

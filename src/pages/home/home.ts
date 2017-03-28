@@ -2,7 +2,7 @@ import {Component, OnInit, OnDestroy, EventEmitter} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 
 import {TypeInfo} from '../../UltraCreation/Core'
-import * as UI from '../../UltraCreation/Graphic'
+import * as UITypes from '../../UltraCreation/Graphic/Types'
 
 import {const_data, TApplication, TLocalizeService, TAssetService, TCategory, TScriptFile, TDistributeService} from '../services';
 import {DemoPage} from '../demo/demo';
@@ -37,8 +37,8 @@ export class HomePage implements OnInit, OnDestroy
                 {
                     if (! support_otg)
                     {
-                        this.app.ShowAlert({title: 'OTG', message: 'not support OTG',
-                            buttons: [{text: this.Localize.Translate('button.ok'), role: 'cancel'}]});
+                        this.app.ShowAlert({title: 'OTG', message: this.Localize.Translate('hint.e_usb_otg') as string,
+                            buttons: [{text: this.Localize.Translate('button.ok') as string, role: 'cancel'}]});
                     }
                 });
         }
@@ -406,10 +406,10 @@ class TContentCanvas
         Ctx.fillStyle = RestoreFillStyle;
     }
 
-    IconFont = new UI.TFont('Thundericons', 10, UI.TFontStyle.Normal, UI.TFontWeight.Bold);
-    FileNameFont = new UI.TFont('brandontext_normal', 16, UI.TFontStyle.Normal, UI.TFontWeight.Bold);
-    FileDescFont = new UI.TFont('brandontext_normal', 8, UI.TFontStyle.Italic);
-    MinuteFont = new UI.TFont('brandontext_normal', 8);
+    IconFont = new UITypes.TFont('Thundericons', 10, UITypes.TFontStyle.Normal, UITypes.TFontWeight.Bold);
+    FileNameFont = new UITypes.TFont('brandontext_normal', 16, UITypes.TFontStyle.Normal, UITypes.TFontWeight.Bold);
+    FileDescFont = new UITypes.TFont('brandontext_normal', 8, UITypes.TFontStyle.Italic);
+    MinuteFont = new UITypes.TFont('brandontext_normal', 8);
 
     OnSelectionFile = new EventEmitter<TScriptFile>();
 

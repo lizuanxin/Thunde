@@ -23,7 +23,6 @@ export class GoPage implements OnInit, OnDestroy
             Loki.TShell.LinearTable = '3.3v';
         else if (platform.is('android'))
             Loki.TShell.LinearTable = '5v';
-
     }
 
     ngOnInit(): void
@@ -186,7 +185,7 @@ export class GoPage implements OnInit, OnDestroy
             let Shell = Loki.TShell.Get(DeviceId);
 
             let StopScan: Promise<void> = Promise.resolve();
-            if (!Loki.TShell.IsUsbPlugin)
+            if (! Loki.TShell.IsUsbPlugin)
                 StopScan = BLE.TGatt.StopScan();
 
             StopScan.then(() => Shell.Connect())
@@ -223,5 +222,4 @@ export class GoPage implements OnInit, OnDestroy
     Point: any;
 
     private ScanSubscription: Subscription;
-
 }
