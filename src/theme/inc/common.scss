@@ -76,7 +76,11 @@
             button {
                 margin: 0;
                 &[mini] {
+                    width: $conFooterHeight;
                     height: $conFooterHeight;
+                    ion-icon {
+                        font-size: 8vw;
+                    }
                 }
                 &[large] {
                     width: 24vw;
@@ -91,6 +95,7 @@
                 &[outline] {
                     border-color: #fff;
                     border-style: solid;
+                    border-width: 2px;
                 }
                 &[round] {
                     border-radius: 50%;
@@ -100,6 +105,9 @@
                 }
                 &[medium-outline] {
                     border: solid 2vw;
+                }
+                &[transparent]{
+                    background-color:transparent;
                 }
                 &[gradient-purple] {
                     background-color: color($colors, purple, base);
