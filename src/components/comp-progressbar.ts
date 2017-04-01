@@ -99,7 +99,7 @@ export class Progressbar implements OnInit
                     y: this.CenterY,
                     radius: this.Radius,
                     angle: 0.5005*Math.PI + (this.StartAngle - 0.5005*Math.PI)/2,
-                    font: this.SetFont(20, true),
+                    font: this.SetFontSize(0.08),
                     fillColor: '#9a9b9b'
                 });
 
@@ -108,14 +108,14 @@ export class Progressbar implements OnInit
                     y: this.CenterY,
                     radius: this.Radius,
                     angle: this.EndAngle%(2 * Math.PI) + (0.4995 * Math.PI - this.EndAngle%(2 * Math.PI))/2,
-                    font: this.SetFont(20, true),
+                    font: this.SetFontSize(0.08),
                     fillColor: '#9a9b9b'
                 });
 
                 this.DrawText(Math.trunc(Progress).toString(), {
                     x: this.CenterX,
                     y: this.CenterY,
-                    font: this.SetFont(96),
+                    font: this.SetFontSize(0.3),
                     fillColor: '#aaffff'
                 })
             });
@@ -229,19 +229,20 @@ export class Progressbar implements OnInit
         let rightButtonClicked = false;
 
         let rect = this.Canvas.getBoundingClientRect();
+        let realTouchPointX = x - rect.left * (this.Canvas.width / rect.width);
         let realTouchPointY = y - rect.top * (this.Canvas.height / rect.height);
-
+        
         let leftX = this.CenterX - this.Radius;
-        let bottomY = realTouchPointY + this.Radius * 1.5;
+        let bottomY = this.CenterY + this.Radius * 1.5;
 
         let rightX = this.CenterX + this.Radius;
         let topY = this.CenterY;
 
-        if ((leftX < x && x < this.CenterX) &&
+        if ((leftX < realTouchPointX && realTouchPointX < this.CenterX) &&
             (topY < realTouchPointY && realTouchPointY < bottomY))
             leftButtonClicked = true;
 
-        if ((this.CenterX < x && x < rightX) &&
+        if ((this.CenterX < realTouchPointX && realTouchPointX < rightX) &&
             (topY < realTouchPointY && realTouchPointY < bottomY))
             rightButtonClicked = true;
 
@@ -250,16 +251,21 @@ export class Progressbar implements OnInit
         return {left: leftButtonClicked, right: rightButtonClicked};
     }
 
-    private SetFont(size: number = 20, bold: boolean = false): string
+    // private SetFont(size: number = 20, bold: boolean = false): string
+    // {
+    //     let Font = null;
+
+    //     if (bold)
+    //         Font = new UITypes.TFont('brandontext_normal', size, UITypes.TFontStyle.Normal, UITypes.TFontWeight.Bold);
+    //     else
+    //         Font = new UITypes.TFont('arial', size, UITypes.TFontStyle.Normal);
+
+    //     return Font.toString();
+    // }
+
+    private SetFontSize(size: number, iconFont: boolean = false): string
     {
-        let Font = null;
-
-        if (bold)
-            Font = new UITypes.TFont('brandontext_normal', size, UITypes.TFontStyle.Normal, UITypes.TFontWeight.Bold);
-        else
-            Font = new UITypes.TFont('brandontext_normal', size, UITypes.TFontStyle.Normal);
-
-        return Font.toString();
+        return (this.Canvas.width * size + 'px ' + (iconFont ? 'Thundericons' : 'arial')).toString();
     }
 
     @Input()
