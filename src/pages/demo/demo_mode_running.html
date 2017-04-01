@@ -12,8 +12,12 @@
         </div>
       </div>
 
-      <div pull-bottom [ngStyle]="{'width':'100%','bottom':'20px'}">
-        <comp-progressbar [Min]="0" [Max]="60" [Progress]="Intensity" (OnValueChanged)="AdjustIntensity($event)"></comp-progressbar>
+      <div pull-bottom [ngStyle]="{'width':'100%','bottom':'20px'}">        
+        <ion-row>
+            <ion-col col-8 offset-2>
+                <comp-progressbar [Min]="0" [Max]="60" [Progress]="Intensity" (OnValueChanged)="AdjustIntensity($event)"></comp-progressbar>
+            </ion-col>
+        </ion-row>
         <ion-row [ngStyle]="{'position':'relative','z-index':100}">
           <ion-col width-80 offset-10>
             <ion-list transparent no-margin>
@@ -38,17 +42,17 @@
     </template>
 </ion-content>
 <ion-footer no-border>
-  <div content-footer>
-     <div wrap>
-            <div aims center-up>
-                <button mini round outline transparent text-uppercase text-center text-light *ngIf="CurrentRunningIndex < 2" (click)="NextMode()" tappable>
-                    <ion-icon>&#xf217;</ion-icon>
-                </button>
-                <button mini round outline transparent text-uppercase text-center text-light *ngIf="CurrentRunningIndex >= 2" (click)="Shutdown()" tappable>
-                    <ion-icon>&#xf359;</ion-icon>
-                </button>
-            </div>
-     </div>
-  </div>
+  <ion-toolbar visible transparent>
+    <ion-row [ngStyle]="{'margin-top':'-35px'}">
+        <ion-col text-center>
+            <button ion-fab [ngStyle]="{display:'inline-flex'}" *ngIf="CurrentRunningIndex < 2" (click)="NextMode()" tappable>
+                <ion-icon>&#xf217;</ion-icon>
+            </button>
+            <button ion-fab [ngStyle]="{display:'inline-flex'}" *ngIf="CurrentRunningIndex >= 2" (click)="Shutdown()" tappable>
+                <ion-icon>&#xf359;</ion-icon>
+            </button>
+        </ion-col>
+    </ion-row>
+  </ion-toolbar>
 </ion-footer>
 

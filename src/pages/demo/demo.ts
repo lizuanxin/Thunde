@@ -89,15 +89,16 @@ export class DemoPage implements OnInit, OnDestroy, AfterViewInit
 
     Go()
     {
-        if (!Loki.TShell.IsUsbPlugin)
-        {
-            if (this.DeviceList.length === 1)
-                this.Start(this.DeviceList[0].id);
-            else
-                this.IsShowingDeviceList = true;
-        }
-        else
-            this.Start('USB');
+        this.nav.push(this.nav.push(DemoModeRunningPage))
+        // if (!Loki.TShell.IsUsbPlugin)
+        // {
+        //     if (this.DeviceList.length === 1)
+        //         this.Start(this.DeviceList[0].id);
+        //     else
+        //         this.IsShowingDeviceList = true;
+        // }
+        // else
+        //     this.Start('USB');
     }
 
     AnimateFade(Agrement, Array, Duration: number)
