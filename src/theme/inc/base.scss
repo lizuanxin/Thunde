@@ -1,6 +1,11 @@
 @font-face {
-    font-family: brandontext_normal;
-    src: url('../assets/fonts/brandontext_normal.ttf');
+    font-family: 'brandontext_normal';
+    src: url($ionicons-font-path + '/brandontext_normal.ttf');
+}
+
+@font-face {
+    font-family: 'ostrich-sans-regular';
+    src: url($ionicons-font-path + '/ostrich-sans-regular.ttf') format('truetype');
 }
 
 body,
