@@ -203,45 +203,42 @@ export class Progressbar implements OnInit
 
     private HandlerEvent(x: number, y: number)
     {
-        let rightButtonClicked = this.ArcInPath(
-        {
+        let clickResult = this.ArcInPath({
             x: this.CenterX,
             y: this.CenterY,
             radius: this.Radius,
-            startAngle: 0.1 * Math.PI,
-            endAngle: 0.4995 * Math.PI,
-            lineWidth: this.CanvasWidth * 0.1,
         },
         x,
         y);
 
-        let leftButtonClicked = this.ArcInPath(
-        {
-            x: this.CenterX,
-            y: this.CenterY,
-            radius: this.Radius,
-            startAngle: 0.5005 * Math.PI,
-            endAngle: this.StartAngle,
-            lineWidth: this.CanvasWidth * 0.1,
-        },
-        x,
-        y);
-
-        if (rightButtonClicked)
+        if (clickResult.right)
             this.OnValueChanged.emit(1);
-        else if (leftButtonClicked)
+        else if (clickResult.left)
             this.OnValueChanged.emit(-1);
-        console.log("rightButtonClicked:" + rightButtonClicked + " leftButtonClicked:" + leftButtonClicked);
     }
 
-    private ArcInPath(option: ICanvasDrawOption, x: number, y: number): boolean
+    private ArcInPath(option: ICanvasDrawOption, x: number, y: number)
     {
-        this.Ctx.beginPath();
-        this.Ctx.arc(option.x, option.y, option.radius, option.startAngle, option.endAngle, false);
-        this.Ctx.lineWidth = option.lineWidth;
-        this.Ctx.closePath();
+        let leftButtonClicked = false;
+        let rightButtonClicked = false;
 
-        return this.Ctx.isPointInPath(x, y);
+        let leftX = this.CenterX - this.Radius;
+        let bottomY = this.CenterY + this.Radius * 1.5;
+
+        let rightX = this.CenterX + this.Radius;
+        let topY = this.CenterY;
+
+        if ((leftX < x && x < this.CenterX) &&
+            (topY < y && y < bottomY))
+            leftButtonClicked = true;
+
+        if ((this.CenterX < x && x < rightX) &&
+            (topY < y && y < bottomY))
+            rightButtonClicked = true;
+
+        console.log("rightButtonClicked:" + rightButtonClicked + " leftButtonClicked:" + leftButtonClicked);
+
+        return {left: leftButtonClicked, right: rightButtonClicked};
     }
 
     private SetFont(size: number = 20, bold: boolean = false): string
