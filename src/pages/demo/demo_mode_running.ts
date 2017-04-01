@@ -71,6 +71,8 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     ngAfterViewInit(): void
     {
+        this.CurrrentViewIndex  = this.view.index;
+
         this.nav.remove(1, this.view.index - 1, {animate: false})
             .then(() => this.Start());
     }
@@ -238,8 +240,9 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 
         setTimeout(() =>
         {
-            if (this.view === this.nav.getActive())
-                this.nav.popToRoot();
+            console.log(this.view.index, this.CurrentRunningIndex);            
+            if (this.view.index === this.CurrrentViewIndex)
+                this.nav.popToRoot();                
         }, 300);
     }
 
@@ -270,6 +273,7 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
     ModeInfo: string;
     ModeSuggestion: string;
 
+    private CurrrentViewIndex = 0;
     private Adjusting: Promise<any> = null;
     private Shell: Loki.TShell;
     private ShellNotifySubscription: Subscription;
