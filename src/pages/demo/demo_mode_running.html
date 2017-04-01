@@ -1,6 +1,6 @@
 <ion-content no-scroll padding [ngClass]="app.Skin('running')">
     <template [ngIf]="!Finish">
-      <div *ngIf="!Downloading">
+      <div>
         <ion-row>
           <ion-col width-33 offset-33><img src="{{ModeGif}}"></ion-col>
         </ion-row>
@@ -12,46 +12,19 @@
         </div>
       </div>
 
-      <canvas id="demo_mode_canvas_countdown"></canvas>
-
       <div pull-bottom [ngStyle]="{'width':'100%','bottom':'20px'}">
-        <ion-row align-items-center>
-          <ion-col width-80 offset-10 no-padding>
-            <div id = "box">
-              <div id = "point" class="point" [ngStyle] = "{'-webkit-transform':PointRotate()}"></div>
-              <div id = "textVal" class="text" f-48 [ngClass] = "app.SkinColor">
-                    {{Intensity}}
-                    <div class="bg-value" [ngStyle] = "{'animation-duration':Strength}"></div>
-                </div>
-                <div id="controlBtn" class="controlBtn">
-                  <ion-row>
-                    <ion-col width-33 text-center>
-                      <button ion-button icon-only outline text-uppercase [ngClass] = "app.SkinBorderColor" (click)="AdjustIntensity(-1)" tappable>
-                            <ion-icon>&#xf368;</ion-icon>
-                      </button>
-                    </ion-col>
-                    <ion-col width-33></ion-col>
-                    <ion-col width-33 text-center>
-                      <button ion-button icon-only outline text-uppercase [ngClass] = "app.SkinBorderColor" (click)="AdjustIntensity(1)" tappable>
-                          <ion-icon>&#xf273;</ion-icon>
-                    </button>
-                    </ion-col>
-                  </ion-row>
-                </div>
-              </div>
+        <comp-progressbar [Min]="0" [Max]="60" [Progress]="Intensity" (OnValueChanged)="AdjustIntensity($event)"></comp-progressbar>
+        <ion-row [ngStyle]="{'position':'relative','z-index':100}">
+          <ion-col width-80 offset-10>
+            <ion-list transparent no-margin>
+              <ion-item no-lines>
+                <ion-range min="0" max="100" [ngModel]="InitRange" color="secondary" disabled progress-bar>
+                  <ion-label range-right [ngClass] = "app.SkinColor" [ngStyle]="{'margin':'0 0 0 5px'}">{{TotalMinute}}</ion-label>
+                </ion-range>
+              </ion-item>
+            </ion-list>
           </ion-col>
         </ion-row>
-          <ion-row [ngStyle]="{'position':'relative','z-index':100}">
-            <ion-col width-80 offset-10>
-              <ion-list transparent no-margin>
-                <ion-item no-lines>
-                  <ion-range min="0" max="100" [ngModel]="InitRange" color="secondary" disabled progress-bar>
-                    <ion-label range-right [ngClass] = "app.SkinColor" [ngStyle]="{'margin':'0 0 0 5px'}">{{TotalMinute}}</ion-label>
-                  </ion-range>
-                </ion-item>
-              </ion-list>
-            </ion-col>
-          </ion-row>
       </div>
     </template>
     <template [ngIf]="Finish">
@@ -68,10 +41,10 @@
   <div content-footer>
      <div wrap>
             <div aims center-up>
-                <button mini round outline transparent text-uppercase text-center text-light *ngIf="! Finish" (click)="Shutdown()" tappable>
+                <button mini round outline transparent text-uppercase text-center text-light *ngIf="CurrentRunningIndex < 2" (click)="NextMode()" tappable>
                     <ion-icon>&#xf217;</ion-icon>
                 </button>
-                <button mini round outline transparent text-uppercase text-center text-light *ngIf="Finish" (click)="nav.popToRoot()" tappable>
+                <button mini round outline transparent text-uppercase text-center text-light *ngIf="CurrentRunningIndex >= 2" (click)="Shutdown()" tappable>
                     <ion-icon>&#xf359;</ion-icon>
                 </button>
             </div>

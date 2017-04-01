@@ -10,7 +10,6 @@ import {TouPage} from '../tou/tou';
 import {GoPage} from '../go/go';
 import {SkinPage} from '../skin/skin';
 
-
 const SHOWING_ITEM_COUNT = 6;
 
 @Component({selector: 'page-home', templateUrl: 'home.html'})
@@ -42,6 +41,8 @@ export class HomePage implements OnInit, OnDestroy
                     }
                 });
         }
+
+        //this.nav.push(TestPage);
     }
 
     ngOnDestroy(): void

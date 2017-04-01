@@ -47,7 +47,8 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
                     break;
 
                 case Loki.TShellNotify.Intensity:
-                    this.UpdateIntensity();
+                    this.Intensity = this.Shell.Intensity;
+                    console.log("ngOnInit.ngOnInit.Intensity" + this.Intensity);
                     break;
 
                 case Loki.TShellNotify.Battery:
@@ -66,8 +67,6 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     ngAfterViewInit()
     {
-        this.AddDialElement();
-
         this.nav.remove(1, this.view.index - 1, {animate: false})
             .then(() => this.Start());
     }
@@ -113,39 +112,35 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
             return;
 
         this.Adjusting = this.Shell.SetIntensity(this.Intensity + Value)
-            .then(() =>
-            {
-                this.Intensity = this.Shell.Intensity;
-                this.UpdateHeartbeatRate();
-            })
+            .then(() => this.Intensity = this.Shell.Intensity)
             .catch(err => console.log('Adjuest Intensity: + ' + err.message))
             .then(() => this.Adjusting = null);
     }
 
-    PointRotate(): string
-    {
-        // 266~446
-        let initial = 266;
-        let scale = initial + Math.trunc(this.Intensity * 180 / 60) + 'deg';
-        let str = 'rotate('+ scale +')';
-        return str;
-    }
+    // PointRotate(): string
+    // {
+    //     // 266~446
+    //     let initial = 266;
+    //     let scale = initial + Math.trunc(this.Intensity * 180 / 60) + 'deg';
+    //     let str = 'rotate('+ scale +')';
+    //     return str;
+    // }
 
-    OpacityStyle(): string
-    {
-        if (this.Intensity <= 25)
-            return 's-1';
-        if (this.Intensity > 25 && this.Intensity <= 45)
-            return 's-2';
-        else
-            return 's-3';
-    }
+    // OpacityStyle(): string
+    // {
+    //     if (this.Intensity <= 25)
+    //         return 's-1';
+    //     if (this.Intensity > 25 && this.Intensity <= 45)
+    //         return 's-2';
+    //     else
+    //         return 's-3';
+    // }
 
-    ComputeScreen(): string
-    {
-        let toscreen = Math.trunc((screen.height - this.Boundary - Math.trunc((screen.width - 32) * 0.5)) / 4);
-        if (screen.height > 480) return toscreen + 'px';
-    }
+    // ComputeScreen(): string
+    // {
+    //     let toscreen = Math.trunc((screen.height - this.Boundary - Math.trunc((screen.width - 32) * 0.5)) / 4);
+    //     if (screen.height > 480) return toscreen + 'px';
+    // }
 
     Shutdown(): void
     {
@@ -181,12 +176,6 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
             });
     }
 
-    private UpdateIntensity()
-    {
-        this.Intensity = this.Shell.Intensity;
-        this.UpdateHeartbeatRate();
-    }
-
     private UpdateBatteryLevel()
     {
         this.BatteryLevel = this.Shell.BatteryLevel;
@@ -202,102 +191,98 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     private ClosePage()
     {
-        //if (! Loki.TShell.FakeDevice)
-            setTimeout(() =>
-            {
-                if (this.view === this.nav.getActive())
-                    this.nav.pop();
-            }, 300);
-    }
-
-    private AddDialElement()
-    {
-        let boxSize = screen.width - 48 * 2;
-        let value = Math.trunc((boxSize - Math.trunc(boxSize * 0.8)) / 2);
-        let valueTop = value - 6;
-        let textValSize = Math.trunc(boxSize * 0.4);
-        let textValTop = Math.trunc((boxSize - textValSize) / 2);
-
-        let box = document.getElementById('box');
-        box.setAttribute('class','box');
-        box.setAttribute('style','width:' + boxSize + 'px;height:'+ boxSize + 'px');
-
-        let conBtn = document.getElementById('controlBtn');
-        conBtn.setAttribute('style','top:'+ Math.trunc(boxSize*0.72) +'px');
-
-        let point = document.getElementById('point');
-        point.setAttribute('style','left:'+ Math.trunc(boxSize * 0.8 / 2) +'px;-webkit-transform-origin: 0 '+ Math.trunc(boxSize * 0.8 / 2) +'px;');
-
-        let textVal = document.getElementById('textVal');
-        textVal.setAttribute('style','width:'+ textValSize +'px;top:'+ textValTop +'px;padding-top:'+ Math.trunc(textValSize * 0.5) +'px;padding-bottom:'+ Math.trunc(textValSize*0.5) +'px');
-
-        let rount = document.createElement('div');
-        rount.setAttribute('class','rount');
-        rount.setAttribute('style','height:'+ Math.trunc(boxSize * 0.6) +'px');
-        // rount.setAttribute('style','clip:rect(0, '+ boxSize +'px, '+ Math.trunc(boxSize/2) +'px, 0);');
-
-        let maxVal = document.createElement('div');
-        maxVal.setAttribute('class','maxVal');
-        maxVal.textContent = '60';
-        maxVal.setAttribute('style','top:'+ Math.trunc(boxSize * 0.6) +'px');
-
-        let linear = document.createElement('div');
-        linear.setAttribute('class','linear');
-
-        let odiv = document.createElement('div');
-        odiv.setAttribute('class','position-circle');
-        odiv.setAttribute('style','left:'+ value +'px;top:'+ valueTop +'px');
-
-        let circle = document.createElement('div');
-        circle.setAttribute('class','circle circle-'+ this.app.SkinName +'');
-        circle.setAttribute('style','width:'+ Math.trunc(boxSize * 0.8) +'px;height:'+ Math.trunc(boxSize * 0.8) +'px;');
-
-        let ul = document.createElement('ul');
-
-        rount.appendChild(linear);
-        circle.appendChild(ul);
-        box.appendChild(rount);
-        box.appendChild(maxVal);
-        box.appendChild(odiv).appendChild(circle).appendChild(point);
-
-        for(let i = 0; i <= 58; i++)
+        setTimeout(() =>
         {
-            let li = document.createElement('li');
-            li.setAttribute('style', 'left:'+ Math.trunc(boxSize * 0.4) +'px;-webkit-transform-origin: 0 '+ Math.trunc(boxSize * 0.4) +'px;')
-            ul.appendChild(li);
-        }
+            if (this.view === this.nav.getActive())
+                this.nav.pop();
+        }, 300);
     }
 
-    private UpdateHeartbeatRate()
-    {
-        if (this.Intensity >= 50)
-            this.Strength = '.2s';
-        else if (this.Intensity >= 45)
-            this.Strength = '.3s';
-        else if (this.Intensity >= 40)
-            this.Strength = '.4s';
-        else if (this.Intensity >= 35)
-            this.Strength = '.5s';
-        else if (this.Intensity >= 30)
-            this.Strength = '.6s';
-        else if (this.Intensity >= 25)
-            this.Strength = '.7s';
-        else if (this.Intensity >= 20)
-            this.Strength = '.8s';
-        else if (this.Intensity >= 10)
-            this.Strength = '.9s';
-        else
-            this.Strength = '1s';
-    }
+    // private AddDialElement()
+    // {
+    //     let boxSize = screen.width - 48 * 2;
+    //     let value = Math.trunc((boxSize - Math.trunc(boxSize * 0.8)) / 2);
+    //     let valueTop = value - 6;
+    //     let textValSize = Math.trunc(boxSize * 0.4);
+    //     let textValTop = Math.trunc((boxSize - textValSize) / 2);
+
+    //     let box = document.getElementById('box');
+    //     box.setAttribute('class','box');
+    //     box.setAttribute('style','width:' + boxSize + 'px;height:'+ boxSize + 'px');
+
+    //     let conBtn = document.getElementById('controlBtn');
+    //     conBtn.setAttribute('style','top:'+ Math.trunc(boxSize*0.72) +'px');
+
+    //     let point = document.getElementById('point');
+    //     point.setAttribute('style','left:'+ Math.trunc(boxSize * 0.8 / 2) +'px;-webkit-transform-origin: 0 '+ Math.trunc(boxSize * 0.8 / 2) +'px;');
+
+    //     let textVal = document.getElementById('textVal');
+    //     textVal.setAttribute('style','width:'+ textValSize +'px;top:'+ textValTop +'px;padding-top:'+ Math.trunc(textValSize * 0.5) +'px;padding-bottom:'+ Math.trunc(textValSize*0.5) +'px');
+
+    //     let rount = document.createElement('div');
+    //     rount.setAttribute('class','rount');
+    //     rount.setAttribute('style','height:'+ Math.trunc(boxSize * 0.6) +'px');
+    //     // rount.setAttribute('style','clip:rect(0, '+ boxSize +'px, '+ Math.trunc(boxSize/2) +'px, 0);');
+
+    //     let maxVal = document.createElement('div');
+    //     maxVal.setAttribute('class','maxVal');
+    //     maxVal.textContent = '60';
+    //     maxVal.setAttribute('style','top:'+ Math.trunc(boxSize * 0.6) +'px');
+
+    //     let linear = document.createElement('div');
+    //     linear.setAttribute('class','linear');
+
+    //     let odiv = document.createElement('div');
+    //     odiv.setAttribute('class','position-circle');
+    //     odiv.setAttribute('style','left:'+ value +'px;top:'+ valueTop +'px');
+
+    //     let circle = document.createElement('div');
+    //     circle.setAttribute('class','circle circle-'+ this.app.SkinName +'');
+    //     circle.setAttribute('style','width:'+ Math.trunc(boxSize * 0.8) +'px;height:'+ Math.trunc(boxSize * 0.8) +'px;');
+
+    //     let ul = document.createElement('ul');
+
+    //     rount.appendChild(linear);
+    //     circle.appendChild(ul);
+    //     box.appendChild(rount);
+    //     box.appendChild(maxVal);
+    //     box.appendChild(odiv).appendChild(circle).appendChild(point);
+
+    //     for(let i = 0; i <= 58; i++)
+    //     {
+    //         let li = document.createElement('li');
+    //         li.setAttribute('style', 'left:'+ Math.trunc(boxSize * 0.4) +'px;-webkit-transform-origin: 0 '+ Math.trunc(boxSize * 0.4) +'px;')
+    //         ul.appendChild(li);
+    //     }
+    // }
+
+    // private UpdateHeartbeatRate()
+    // {
+    //     if (this.Intensity >= 50)
+    //         this.Strength = '.2s';
+    //     else if (this.Intensity >= 45)
+    //         this.Strength = '.3s';
+    //     else if (this.Intensity >= 40)
+    //         this.Strength = '.4s';
+    //     else if (this.Intensity >= 35)
+    //         this.Strength = '.5s';
+    //     else if (this.Intensity >= 30)
+    //         this.Strength = '.6s';
+    //     else if (this.Intensity >= 25)
+    //         this.Strength = '.7s';
+    //     else if (this.Intensity >= 20)
+    //         this.Strength = '.8s';
+    //     else if (this.Intensity >= 10)
+    //         this.Strength = '.9s';
+    //     else
+    //         this.Strength = '1s';
+    // }
 
     ScriptFile: TScriptFile;
 
     Ticking: number = 0;
     Intensity: number = 0;
     BatteryLevel: number = 0;
-    Boundary: number = 293;
-    BoxSize: number;
-    Strength: string = '1s';
 
     private Shell: Loki.TShell;
     private ShellNotifySubscription: Subscription;

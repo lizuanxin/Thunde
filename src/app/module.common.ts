@@ -5,6 +5,8 @@ import {TranslateModule, TranslatePipe, TranslateLoader} from "ng2-translate";
 
 import {TApplication} from '../providers/application'
 
+import * as Cmp from '../components'
+
 @NgModule({
     imports: [
         IonicModule,
@@ -13,8 +15,10 @@ import {TApplication} from '../providers/application'
     exports: [
         IonicModule,
         TranslatePipe,
+        Cmp.Progressbar
     ],
     declarations: [
+      Cmp.Progressbar
     ],
     entryComponents: [
     ],

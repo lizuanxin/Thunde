@@ -15,7 +15,9 @@
     </ion-list>
   </div>
 
-  <ion-row id = "pool" [ngStyle]="{'margin-top':ComputeScreen()}">
+  <comp-progressbar [Min]="0" [Max]="60" [Progress]="Intensity" (OnValueChanged)="AdjustIntensity($event)"></comp-progressbar>
+
+  <!--<ion-row id = "pool" [ngStyle]="{'margin-top':ComputeScreen()}">
     <ion-col no-padding>
        <div id = "box">
          <div id = "point" class="point" [ngStyle] = "{'-webkit-transform':PointRotate()}"></div>
@@ -40,7 +42,7 @@
           </div>
         </div>
     </ion-col>
-  </ion-row>
+  </ion-row>-->
 </ion-content>
 <ion-footer no-border>
   <div content-footer>
