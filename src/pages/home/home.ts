@@ -41,8 +41,6 @@ export class HomePage implements OnInit, OnDestroy
                     }
                 });
         }
-
-        //this.nav.push(TestPage);
     }
 
     ngOnDestroy(): void
