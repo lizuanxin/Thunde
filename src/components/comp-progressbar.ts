@@ -2,7 +2,7 @@ import {Component, OnInit, Input, Output, EventEmitter, ElementRef} from '@angul
 
 import * as UITypes from '../UltraCreation/Graphic/Types'
 
-@Component({selector: 'comp-progressbar', template: '<canvas style="width:100%"></canvas>'})
+@Component({selector: 'comp-progressbar', template: '<canvas style="width:100%" tappable></canvas>'})
 export class Progressbar implements OnInit
 {
     constructor(private Elements: ElementRef)
@@ -17,8 +17,6 @@ export class Progressbar implements OnInit
 
         this.Canvas = this.Elements.nativeElement.children[0] as HTMLCanvasElement;
         this.Canvas.addEventListener("touchstart", this.TouchHandler.bind(this));
-
-        this.Canvas.addEventListener("click", this.Click.bind(this));
 
         let rect = this.Canvas.getBoundingClientRect();
         let width = rect.width * window.devicePixelRatio;
@@ -57,11 +55,21 @@ export class Progressbar implements OnInit
                 {
                     x: this.CenterX,
                     y: this.CenterY,
+                    radius: this.Radius - (width * 0.03)/2,
+                    startAngle: 0,
+                    endAngle: 2 * Math.PI,
+                    fillColor: 'rgba(0,0,0,.3)',
+                });
+
+                this.DrawArc(
+                {
+                    x: this.CenterX,
+                    y: this.CenterY,
                     radius: this.Radius,
                     startAngle: this.StartAngle + anglePiece * Progress,
                     endAngle: this.EndAngle,
-                    lineWidth: width * 0.05,
-                    strokeColor: '#bacade'
+                    lineWidth: width * 0.03,
+                    strokeColor: '#bacade',
                 });
 
                 this.DrawArc(
@@ -92,7 +100,7 @@ export class Progressbar implements OnInit
                     radius: this.Radius,
                     angle: 0.5005*Math.PI + (this.StartAngle - 0.5005*Math.PI)/2,
                     font: this.SetFont(20, true),
-                    fillColor: '#aaffff'
+                    fillColor: '#9a9b9b'
                 });
 
                 this.DrawRotateText("+", {
@@ -101,7 +109,7 @@ export class Progressbar implements OnInit
                     radius: this.Radius,
                     angle: this.EndAngle%(2 * Math.PI) + (0.4995 * Math.PI - this.EndAngle%(2 * Math.PI))/2,
                     font: this.SetFont(20, true),
-                    fillColor: '#aaffff'
+                    fillColor: '#9a9b9b'
                 });
 
                 this.DrawText(Math.trunc(Progress).toString(), {
@@ -117,9 +125,19 @@ export class Progressbar implements OnInit
     {
         this.Ctx.beginPath();
         this.Ctx.arc(option.x, option.y, option.radius, option.startAngle, option.endAngle, false);
-        this.Ctx.lineWidth = option.lineWidth;
-        this.Ctx.strokeStyle = option.strokeColor;
-        this.Ctx.stroke();
+
+        if (option.fillColor)
+        {
+            this.Ctx.fillStyle = option.fillColor;
+            this.Ctx.fill();
+        }
+
+        if (option.strokeColor)
+        {
+            this.Ctx.lineWidth = option.lineWidth;
+            this.Ctx.strokeStyle = option.strokeColor;
+            this.Ctx.stroke();
+        }
     }
 
     private DrawBackground(img: HTMLImageElement, width: number, height: number): Promise<any>
@@ -145,7 +163,7 @@ export class Progressbar implements OnInit
 
                 that.Ctx.strokeStyle = that.Ctx.createPattern(tempCanvas, 'no-repeat');
                 that.Ctx.beginPath();
-                that.Ctx.lineWidth = width * 0.05;
+                that.Ctx.lineWidth = width * 0.03;
                 that.Ctx.arc(width/2, width/2, that.Radius, that.StartAngle, that.EndAngle, false);
                 that.Ctx.stroke();
 
@@ -186,6 +204,7 @@ export class Progressbar implements OnInit
     {
         if (ev.targetTouches.length !== 1)  // 1 finger touch
             return;
+
         let t = ev.targetTouches[0];
         let currentX = t.clientX * window.devicePixelRatio;
         let currentY = t.clientY * window.devicePixelRatio;
@@ -194,22 +213,9 @@ export class Progressbar implements OnInit
             this.HandlerEvent(currentX, currentY);
     }
 
-    private Click(ev: MouseEvent)
-    {
-        let offsetX = ev.offsetX * window.devicePixelRatio;
-        let offsetY = ev.offsetY * window.devicePixelRatio;
-        this.HandlerEvent(offsetX, offsetY);
-    }
-
     private HandlerEvent(x: number, y: number)
     {
-        let clickResult = this.ArcInPath({
-            x: this.CenterX,
-            y: this.CenterY,
-            radius: this.Radius,
-        },
-        x,
-        y);
+        let clickResult = this.ArcInPath(x, y);
 
         if (clickResult.right)
             this.OnValueChanged.emit(1);
@@ -217,13 +223,13 @@ export class Progressbar implements OnInit
             this.OnValueChanged.emit(-1);
     }
 
-    private ArcInPath(option: ICanvasDrawOption, x: number, y: number)
+    private ArcInPath(x: number, y: number)
     {
         let leftButtonClicked = false;
         let rightButtonClicked = false;
 
         let leftX = this.CenterX - this.Radius;
-        let bottomY = this.CenterY + this.Radius * 1.5;
+        let bottomY = this.CenterY + this.Radius * 2.6;
 
         let rightX = this.CenterX + this.Radius;
         let topY = this.CenterY;
@@ -290,7 +296,6 @@ export class Progressbar implements OnInit
     private StartAngle = 0.8 * Math.PI;
     private EndAngle = 2.2 * Math.PI;
     private Radius: number;
-    private CanvasWidth: number;
     private CenterX: number;
     private CenterY: number;
     private Ctx: CanvasRenderingContext2D;
@@ -303,6 +308,7 @@ interface ICanvasDrawOption
     x?: number,
     y?: number,
     radius?: number,
+    globalAlpha?:number,
     angle?:number,
     startAngle?: number,
     endAngle?: number,
