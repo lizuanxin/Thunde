@@ -228,18 +228,21 @@ export class Progressbar implements OnInit
         let leftButtonClicked = false;
         let rightButtonClicked = false;
 
+        let rect = this.Canvas.getBoundingClientRect();
+        let realTouchPointY = y - rect.top * (this.Canvas.height / rect.height);
+
         let leftX = this.CenterX - this.Radius;
-        let bottomY = this.CenterY + this.Radius * 2.6;
+        let bottomY = realTouchPointY + this.Radius * 1.5;
 
         let rightX = this.CenterX + this.Radius;
         let topY = this.CenterY;
 
         if ((leftX < x && x < this.CenterX) &&
-            (topY < y && y < bottomY))
+            (topY < realTouchPointY && realTouchPointY < bottomY))
             leftButtonClicked = true;
 
         if ((this.CenterX < x && x < rightX) &&
-            (topY < y && y < bottomY))
+            (topY < realTouchPointY && realTouchPointY < bottomY))
             rightButtonClicked = true;
 
         console.log("rightButtonClicked:" + rightButtonClicked + " leftButtonClicked:" + leftButtonClicked);
