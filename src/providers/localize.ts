@@ -332,7 +332,7 @@ let translate_zh =
 
     category:
     {
-        therapy: '冶疗',
+        therapy: '治疗',
         fat_burning: '瘦身',
         muscle_training: '健美',
         relax: '放松'
@@ -341,8 +341,8 @@ let translate_zh =
     scriptfile:
     {
     /* THRIPY */
-        sore: '酸痛冶疗',
-        pain: '疼痛冶疗',
+        sore: '酸痛治疗',
+        pain: '疼痛治疗',
         han: '快速镇痛',
 
     /* fat-burning */
@@ -390,7 +390,7 @@ let translate_zh =
         </ul></div><br>
         <h5 class="text-orange"><span>警告!</span></h5><ul>
             <li>注意不要过度刺激甲状腺或颈动脉，或胸部和上背部，这可能导致上呼吸道的严重肌肉痉挛，呼吸困难，或影响心律或血压</li>
-            <li>不要在短波或微波冶疗设备附近使用此产品，可能會影响产品输出功率</li>
+            <li>不要在短波或微波治疗设备附近使用此产品，可能會影响产品输出功率</li>
             <li>切勿在湿度高环境下使用本产品，如淋浴时不宜使用</li>
             <li>请使用在清洁，已擦干，和没有损伤的皮肤区域</li>
             <li>在使用过程中，要保持电极贴分隔开，贴片互相接触，可能会导致过度的刺激或灼伤皮肤</li>

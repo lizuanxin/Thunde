@@ -33,6 +33,10 @@ export class EHttp extends Exception
         // http informational
         else if (Status >= 100)
             this.message = 'HTTP Informational: ' + Status;
+        else if (Status === -1)
+            this.message = 'HTTP Request Error';
+        else if (Status === -2)
+            this.message = 'HTTP Request Timeout';
         else
             this.message = 'HTTP Unknown Status: ' + Status;
     }
@@ -56,10 +60,9 @@ export function HttpRequest(Url: string,
         {
             console.log('XMLHttpRequest loading ' + ev.loaded + ' of ' + ev.total);
         };
-
         req.onload = function(this: XMLHttpRequestEventTarget, ev: Event)
         {
-            console.log('XMLHttpRequest done');
+            // console.log('XMLHttpRequest done');
 
             if (req.status === 200 || req.status === 0)
             {
@@ -70,14 +73,13 @@ export function HttpRequest(Url: string,
             else
                 observer.error(new EHttp(req.status))
         };
-
         req.onerror = function(this: XMLHttpRequestEventTarget, ev: ErrorEvent)
         {
-            observer.error(new Error('XMLHttpRequest error'));
+            observer.error(new EHttp(-1));
         };
         req.ontimeout = function(this: XMLHttpRequestEventTarget, ev: ProgressEvent)
         {
-            observer.error(new Error('XMLHttpRequest timeout'));
+            observer.error(new EHttp(-2));
         }
 
         req.open(method, Url);
