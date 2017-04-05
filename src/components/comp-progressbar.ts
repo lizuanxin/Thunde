@@ -1,7 +1,5 @@
 import {Component, OnInit, Input, Output, EventEmitter, ElementRef} from '@angular/core'
 
-import * as UITypes from '../UltraCreation/Graphic/Types'
-
 @Component({selector: 'comp-progressbar', template: '<canvas style="width:100%" tappable></canvas>'})
 export class Progressbar implements OnInit
 {
@@ -13,8 +11,6 @@ export class Progressbar implements OnInit
 
     ngOnInit()
     {
-        console.log("Progressbar.ngOnInit.ngOnInit.Intensity" + this.CurrrentProgress);
-
         this.Canvas = this.Elements.nativeElement.children[0] as HTMLCanvasElement;
         this.Canvas.addEventListener("touchstart", this.TouchHandler.bind(this));
 
@@ -46,7 +42,6 @@ export class Progressbar implements OnInit
         let width = this.Canvas.width;
 
         let anglePiece = (this.EndAngle - this.StartAngle)/this.MaxProgress;
-        console.log("" + this.StartAngle + "  Endangle" + this.EndAngle + "  anglePiece" + anglePiece + " Progress:" + Progress);
 
         this.DrawBackground(this.Image, width, width)
             .then(() =>
@@ -231,7 +226,7 @@ export class Progressbar implements OnInit
         let rect = this.Canvas.getBoundingClientRect();
         let realTouchPointX = x - rect.left * (this.Canvas.width / rect.width);
         let realTouchPointY = y - rect.top * (this.Canvas.height / rect.height);
-        
+
         let leftX = this.CenterX - this.Radius;
         let bottomY = this.CenterY + this.Radius * 1.5;
 
@@ -245,8 +240,6 @@ export class Progressbar implements OnInit
         if ((this.CenterX < realTouchPointX && realTouchPointX < rightX) &&
             (topY < realTouchPointY && realTouchPointY < bottomY))
             rightButtonClicked = true;
-
-        console.log("rightButtonClicked:" + rightButtonClicked + " leftButtonClicked:" + leftButtonClicked);
 
         return {left: leftButtonClicked, right: rightButtonClicked};
     }
@@ -283,8 +276,6 @@ export class Progressbar implements OnInit
     @Input()
     set Progress(Progress: number)
     {
-        console.log("value:" + Progress + "  ViewInited:" + this.ViewInited + "  MinProgress" + this.MinProgress + "  MaxProgress" + this.MaxProgress);
-
         if (this.CurrrentProgress === Progress)
             return;
         else
