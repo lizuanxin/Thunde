@@ -17,7 +17,7 @@ const DEMO_MODES_TIMES: number[] = [45, 70, 80];
 export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 {
     constructor(public nav: NavController, private navParams: NavParams, private view: ViewController,
-        private app: TApplication, private Localize: TLocalizeService, private AssetSvc:TAssetService)
+        public app: TApplication, private Localize: TLocalizeService, private AssetSvc:TAssetService)
     {
         this.SetModeInfo(DEMO_MODES[this.CurrentRunningIndex]);
 
@@ -71,8 +71,6 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     ngAfterViewInit(): void
     {
-        this.CurrrentViewIndex  = this.view.index;
-
         this.nav.remove(1, this.view.index - 1, {animate: false})
             .then(() => this.Start());
     }
@@ -240,24 +238,15 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 
         setTimeout(() =>
         {
-            console.log(this.view.index, this.CurrentRunningIndex);            
-            if (this.view.index === this.CurrrentViewIndex)
-                this.nav.popToRoot();                
+            console.log(this.view.index);
+            if (this.view === this.nav.getActive() && this.view.index !== 0)
+                this.nav.popToRoot();
         }, 300);
     }
 
     Shutdown()
     {
-        if (TypeInfo.Assigned(this.ShellNotifySubscription))
-        {
-            this.ShellNotifySubscription.unsubscribe();
-            this.ShellNotifySubscription = null;
-        }
-
         this.Shell.Shutdown().catch((err) => console.log(err.message));
-
-        if (this.view === this.nav.getActive())
-            this.nav.popToRoot();
     }
 
     IsNeverClicked: boolean = true;
@@ -273,7 +262,6 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
     ModeInfo: string;
     ModeSuggestion: string;
 
-    private CurrrentViewIndex = 0;
     private Adjusting: Promise<any> = null;
     private Shell: Loki.TShell;
     private ShellNotifySubscription: Subscription;

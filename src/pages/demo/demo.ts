@@ -13,7 +13,7 @@ const STEP: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 @Component({selector: 'page-demo', templateUrl: 'demo.html'})
 export class DemoPage implements OnInit, OnDestroy, AfterViewInit
 {
-    constructor(public nav: NavController, private navParams: NavParams, private platform: Platform, private app: TApplication,
+    constructor(public nav: NavController, private navParams: NavParams, private platform: Platform, public app: TApplication,
         private Distribute: TDistributeService, private renderer: Renderer)
     {}
 
@@ -79,6 +79,7 @@ export class DemoPage implements OnInit, OnDestroy, AfterViewInit
 
                 StopScan.then(() => Shell.Connect())
                     .then(() => this.nav.push(DemoModeRunningPage, params))
+                    .then(() => {loading.dismiss()})
                     .catch(err =>
                     {
                         loading.dismiss()
@@ -125,23 +126,23 @@ export class DemoPage implements OnInit, OnDestroy, AfterViewInit
         let time = 0, step = 0;
         let Animation = () =>
         {
-            time += 0.02;
+            time += 0.05;
             if (time <= 2)
             {
                 switch(this.TypeMode)
                 {
                     case STEP[0]:
-                        this.AnimateFade(this.body, [{ opacity: 0,transform:'translateY(50px)' }, { opacity: 1,transform:'translateY(0)' }], 1000);                        
+                        this.AnimateFade(this.body, [{ opacity: 0,transform:'translateY(50px)' }, { opacity: 1,transform:'translateY(0)' }], 500);
                         break;
                     case STEP[1]:
-                        this.AnimateFade(this.ready, [{ opacity: 0, marginTop: '-70px' }, { opacity: 1, marginTop: '-50px' }], 1500);
+                        this.AnimateFade(this.ready, [{ opacity: 0, marginTop: '-70px' }, { opacity: 1, marginTop: '-50px' }], 500);
                         this.AnimateFade(this.line1, [{ opacity: 0,transform:'scale(.5)'}, { opacity: 1,transform:'scale(1)'}], 500);
-                        this.AnimateFade(this.describe1, [{ opacity: 0, left: width * 0.62 + 'px', top: height * 0.16 + 'px' }, { opacity: 1, left: width * 0.62 + 'px', top: height * 0.12 + 'px' }], 1500);
+                        this.AnimateFade(this.describe1, [{ opacity: 0, left: width * 0.62 + 'px', top: height * 0.16 + 'px' }, { opacity: 1, left: width * 0.62 + 'px', top: height * 0.12 + 'px' }], 500);
                         break;
                     case STEP[2]:
-                        this.AnimateFade(this.num1, [{ opacity: 0, left: width * 0.88 + 'px', top: height * 0.06 + 'px' }, { opacity: 1, left: width * 0.88 + 'px', top: height * 0.14 + 'px' }], 1000);
+                        this.AnimateFade(this.num1, [{ opacity: 0, left: width * 0.88 + 'px', top: height * 0.06 + 'px' }, { opacity: 1, left: width * 0.88 + 'px', top: height * 0.14 + 'px' }], 500);
                         break;
-                    case STEP[3]:                        
+                    case STEP[3]:
                         break;
                     case STEP[4]:
                         this.AnimateFade(this.describe2, [{ opacity: 0, left: width * 0.85 + 'px', top: height * 0.35 + 'px',transform:'translateY(0)' }, { opacity: 1, left: width * 0.85 + 'px', top: height * 0.35 + 'px',transform:'translateY(0)' }], 1000);
@@ -168,7 +169,6 @@ export class DemoPage implements OnInit, OnDestroy, AfterViewInit
                         break;
                     case STEP[11]:
                         this.AnimateFade(this.num4, [{ opacity: 0, left: -width * 0.04 + 'px', top: height * 0.86 + 'px' }, { opacity: 1, left: width * 0.04 + 'px', top: height * 0.86 + 'px' }], 1000);
-
                         break;
                 }
             }
