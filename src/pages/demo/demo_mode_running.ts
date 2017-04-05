@@ -247,6 +247,9 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
     Shutdown()
     {
         this.Shell.Shutdown().catch((err) => console.log(err.message));
+        
+        if (this.view === this.nav.getActive() && this.view.index !== 0)
+                this.nav.popToRoot();
     }
 
     IsNeverClicked: boolean = true;
