@@ -167,3 +167,7 @@ button{
         background-color:transparent;
     }
 }
+
+[v-m]{
+    @include FlexBox();
+}

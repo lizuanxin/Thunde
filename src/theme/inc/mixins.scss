@@ -133,3 +133,13 @@ $outlinewidth) {
         }
     }
 }
+
+@mixin FlexBox($value:center) {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -ms-flex-align: $value;
+    -webkit-align-items: $value;
+    -webkit-box-align: $value;
+    align-items: $value;
+}
