@@ -115,6 +115,11 @@ let translate_en =
 
     demo_mode_play_page:
     {
+        electrode: 'the ways of sticking electrodes',
+        phone_power: 'p<br/>o<br/>w<br/>e<br/>r',
+        switch: 'switch control',
+        strength: 'strength control',
+
         friction_title: 'FRICTION EFFECT',
         friction_info: 'You will feel a friction effect, a tingling sensation. By sending a very fast signal to your brain, Bluetens will block the transmission of the "pain message" alleviating your pain rapidly.',
         friction_suggestion: 'This action is 100% natural and works on any type of pain while safeguarding your health.',
@@ -300,6 +305,14 @@ let translate_zh =
         effect_freq: '有效<b>作用</b>频率: ',
         cluster_freq: '<b>刺激簇</b>频率: ',
         pulse_width: '输出<b>脉冲</b>宽度: ',
+    },
+
+    demo_mode_play_page:
+    {
+        electrode: '电极贴贴法',
+        phone_power: '手<br/>机<br/>取<br/>电',
+        switch: '开关控制',
+        strength: '强弱控制',
     },
 
     running_page:
