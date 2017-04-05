@@ -49,6 +49,25 @@ export class HomePage implements OnInit, OnDestroy
         this.Content = null;
     }
 
+    ionViewWillEnter()
+    {
+        if (TypeInfo.Assigned(this.SelectedCategory) &&  this.SelectedCategory.Id !== const_data.Category.therapy.Id)
+        {
+            switch (this.SelectedCategory.Id)
+            {
+            case const_data.Category.fat_burning.Id:
+                this.app.SetSkin(this.app.Skins[3]);
+                break;
+            case const_data.Category.muscle_training.Id:
+                this.app.SetSkin(this.app.Skins[2]);
+                break;
+            case const_data.Category.relax.Id:
+                this.app.SetSkin(this.app.Skins[0]);
+                break;
+            }
+        }
+    }
+
     ionViewDidEnter()
     {
         if (this.app.SkinColor !== undefined)
@@ -101,38 +120,8 @@ export class HomePage implements OnInit, OnDestroy
 
     ShowDemo()
     {
+        this.app.SetSkin(this.app.Skins[1]);
         this.nav.push(DemoPage);
-
-        // let DemoCategory = this.SelectedCategory;
-        // if (! TypeInfo.Assigned(DemoCategory))
-        //     DemoCategory = this.Categories[0];
-
-        // this.Asset.FileList(DemoCategory.Id)
-        //     .then(List =>
-        //     {
-        //         this.FileList = List;
-        //         this.Content.NewFileList(List);
-
-        //         switch (DemoCategory.Id)
-        //         {
-        //         case const_data.Category.therapy.Id:
-        //             this.app.SetSkin(this.app.Skins[1]);
-        //             break;
-        //         case const_data.Category.fat_burning.Id:
-        //             this.app.SetSkin(this.app.Skins[3]);
-        //             break;
-        //         case const_data.Category.muscle_training.Id:
-        //             this.app.SetSkin(this.app.Skins[2]);
-        //             break;
-        //         case const_data.Category.relax.Id:
-        //             this.app.SetSkin(this.app.Skins[0]);
-        //             break;
-        //         }
-
-        //         return this.Asset.FileDesc(this.FileList[0])
-        //             .then(() => this.nav.push(DemoPage, { Category: this.SelectedCategory, ScriptFile: this.FileList[0], DemoMode: true}));
-        //     })
-        //     .catch(err => console.log(err));
     }
 
     ShowTOU()
@@ -190,7 +179,8 @@ class TContentCanvas
         this.Ox = 0;
         this.Oy = Math.trunc(this.DisplayHeight / 2 + this.Padding);
         this.Radius = Math.trunc(this.Canvas.width * 2 / 5);
-        if (this.Radius < this.Oy) {
+        if (this.Radius < this.Oy)
+        {
             this.Ox = this.Radius - this.Oy;
             this.Radius = Math.trunc(this.Oy * 9 / 10);
         }
@@ -234,7 +224,8 @@ class TContentCanvas
         let Idx = Math.trunc(-this.ScrollingY / this.ItemHeight);
         Ctx.globalAlpha = 1;
 
-        for (let i = Idx; i < this.FileList.length; i++) {
+        for (let i = Idx; i < this.FileList.length; i++)
+        {
             if (i < 0) {
                 Offset += this.ItemHeight;
                 continue;
