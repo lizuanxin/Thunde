@@ -79,8 +79,24 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     get TotalMinute(): string
     {
-        let Min = this.Localize.Translate('hint.min') as string;
-        return Math.trunc((this.ScriptFile.Duration + 20) / 60).toString() + Min;
+        let Time = '00:00';
+        let Min = Math.trunc(this.ScriptFile.Duration / 60);
+        if (Min === 0)
+            Time = '00:';
+        else if (Min < 10)
+            Time = '0' + Min + ':';
+        else
+            Time = Min + ':';
+
+        let Sec = this.ScriptFile.Duration % 60;
+        if (Sec === 0)
+            Time += '00';
+        else if (Sec < 10)
+            Time += Sec + '0';
+        else
+            Time += Sec + '';
+
+        return Time;
     }
 
     get TickingDownHint(): string
@@ -89,9 +105,9 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
         if (TickingDown > 0)
         {
-            let Min = Math.trunc((TickingDown - 1) / 60);
+            let Min = Math.trunc((TickingDown) / 60);
+            let Sec = TickingDown % 60;
 
-            let Sec = TickingDown % 60 - 1;
             if (Sec < 0)
             {
                 if (Min > 0)
@@ -100,7 +116,10 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
                     Sec = 0;
             }
 
-            return  (Min < 10 ? '0' : '') + Min.toString() + (Sec < 10 ? ':0' : ':') + Sec.toString();
+            if (Min > 0)
+                return (Min < 10 ? '0' : '') + Min.toString() + ':' + (Sec < 10 ? '0' : '') + Sec.toString();
+            else
+                return '00:' + (Sec < 10 ? '0' : '') + Sec.toString();
         }
         else
             return '00:00';
@@ -117,34 +136,9 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
             .then(() => this.Adjusting = null);
     }
 
-    // PointRotate(): string
-    // {
-    //     // 266~446
-    //     let initial = 266;
-    //     let scale = initial + Math.trunc(this.Intensity * 180 / 60) + 'deg';
-    //     let str = 'rotate('+ scale +')';
-    //     return str;
-    // }
-
-    // OpacityStyle(): string
-    // {
-    //     if (this.Intensity <= 25)
-    //         return 's-1';
-    //     if (this.Intensity > 25 && this.Intensity <= 45)
-    //         return 's-2';
-    //     else
-    //         return 's-3';
-    // }
-
-    // ComputeScreen(): string
-    // {
-    //     let toscreen = Math.trunc((screen.height - this.Boundary - Math.trunc((screen.width - 32) * 0.5)) / 4);
-    //     if (screen.height > 480) return toscreen + 'px';
-    // }
-
     Shutdown(): void
     {
-        this.Shell.Shutdown();//.then(() => this.ClosePage());
+        this.Shell.Shutdown().catch();//.then(() => this.ClosePage());
     }
 
     private Start()
@@ -193,90 +187,10 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
     {
         setTimeout(() =>
         {
-            if (this.view === this.nav.getActive())
+            if (this.view === this.nav.getActive() && this.view.index !== 0)
                 this.nav.pop();
         }, 300);
     }
-
-    // private AddDialElement()
-    // {
-    //     let boxSize = screen.width - 48 * 2;
-    //     let value = Math.trunc((boxSize - Math.trunc(boxSize * 0.8)) / 2);
-    //     let valueTop = value - 6;
-    //     let textValSize = Math.trunc(boxSize * 0.4);
-    //     let textValTop = Math.trunc((boxSize - textValSize) / 2);
-
-    //     let box = document.getElementById('box');
-    //     box.setAttribute('class','box');
-    //     box.setAttribute('style','width:' + boxSize + 'px;height:'+ boxSize + 'px');
-
-    //     let conBtn = document.getElementById('controlBtn');
-    //     conBtn.setAttribute('style','top:'+ Math.trunc(boxSize*0.72) +'px');
-
-    //     let point = document.getElementById('point');
-    //     point.setAttribute('style','left:'+ Math.trunc(boxSize * 0.8 / 2) +'px;-webkit-transform-origin: 0 '+ Math.trunc(boxSize * 0.8 / 2) +'px;');
-
-    //     let textVal = document.getElementById('textVal');
-    //     textVal.setAttribute('style','width:'+ textValSize +'px;top:'+ textValTop +'px;padding-top:'+ Math.trunc(textValSize * 0.5) +'px;padding-bottom:'+ Math.trunc(textValSize*0.5) +'px');
-
-    //     let rount = document.createElement('div');
-    //     rount.setAttribute('class','rount');
-    //     rount.setAttribute('style','height:'+ Math.trunc(boxSize * 0.6) +'px');
-    //     // rount.setAttribute('style','clip:rect(0, '+ boxSize +'px, '+ Math.trunc(boxSize/2) +'px, 0);');
-
-    //     let maxVal = document.createElement('div');
-    //     maxVal.setAttribute('class','maxVal');
-    //     maxVal.textContent = '60';
-    //     maxVal.setAttribute('style','top:'+ Math.trunc(boxSize * 0.6) +'px');
-
-    //     let linear = document.createElement('div');
-    //     linear.setAttribute('class','linear');
-
-    //     let odiv = document.createElement('div');
-    //     odiv.setAttribute('class','position-circle');
-    //     odiv.setAttribute('style','left:'+ value +'px;top:'+ valueTop +'px');
-
-    //     let circle = document.createElement('div');
-    //     circle.setAttribute('class','circle circle-'+ this.app.SkinName +'');
-    //     circle.setAttribute('style','width:'+ Math.trunc(boxSize * 0.8) +'px;height:'+ Math.trunc(boxSize * 0.8) +'px;');
-
-    //     let ul = document.createElement('ul');
-
-    //     rount.appendChild(linear);
-    //     circle.appendChild(ul);
-    //     box.appendChild(rount);
-    //     box.appendChild(maxVal);
-    //     box.appendChild(odiv).appendChild(circle).appendChild(point);
-
-    //     for(let i = 0; i <= 58; i++)
-    //     {
-    //         let li = document.createElement('li');
-    //         li.setAttribute('style', 'left:'+ Math.trunc(boxSize * 0.4) +'px;-webkit-transform-origin: 0 '+ Math.trunc(boxSize * 0.4) +'px;')
-    //         ul.appendChild(li);
-    //     }
-    // }
-
-    // private UpdateHeartbeatRate()
-    // {
-    //     if (this.Intensity >= 50)
-    //         this.Strength = '.2s';
-    //     else if (this.Intensity >= 45)
-    //         this.Strength = '.3s';
-    //     else if (this.Intensity >= 40)
-    //         this.Strength = '.4s';
-    //     else if (this.Intensity >= 35)
-    //         this.Strength = '.5s';
-    //     else if (this.Intensity >= 30)
-    //         this.Strength = '.6s';
-    //     else if (this.Intensity >= 25)
-    //         this.Strength = '.7s';
-    //     else if (this.Intensity >= 20)
-    //         this.Strength = '.8s';
-    //     else if (this.Intensity >= 10)
-    //         this.Strength = '.9s';
-    //     else
-    //         this.Strength = '1s';
-    // }
 
     ScriptFile: TScriptFile;
 
