@@ -1,20 +1,24 @@
-import {Injectable} from '@angular/core';
-import {App, Toast, Platform} from 'ionic-angular';
+import {Injectable, Injector} from '@angular/core';
+import {Toast} from 'ionic-angular';
 
-import {TLocalizeService} from "./localize"
 import {TSqliteStorage} from '../UltraCreation/Storage';
 import {USBSerial} from '../UltraCreation/Native';
 import {TAppController} from '../UltraCreation/ng2-ion/ion-appcontroller'
+
 import {const_data} from './thunderbolt.const'
+import {translate_en, translate_zh} from './localize'
 
 @Injectable()
 export class TApplication extends TAppController
 {
-    constructor(public Instance: App, public Localize: TLocalizeService, private platform: Platform)
+    constructor(Injector: Injector)
     {
-        super(Instance);
+        super(Injector);
 
         this.Skins = this.warm.concat(this.deep);
+        this.AddLanguage('en', translate_en);
+        this.AddLanguage('zh', translate_zh);
+
         console.log('TApplication construct');
     }
 
@@ -31,16 +35,6 @@ export class TApplication extends TAppController
             return Promise.resolve(true);
         else
             return USBSerial.OTG.IsSupported();
-    }
-
-    get IsAndroid(): boolean
-    {
-        return this.platform.is('android');
-    }
-
-    get IsIos(): boolean
-    {
-        return this.platform.is('ios');
     }
 
     get AcceptedTerms(): boolean
@@ -67,7 +61,7 @@ export class TApplication extends TAppController
 
     ShowHintId(Id: string, Animate: boolean = true): Promise<Toast>
     {
-        let msg = this.Localize.Translate('hint.' + Id) as string;
+        let msg = this.Translate('hint.' + Id) as string;
 
         if (msg !== '')
             return this.ShowToast({ message: msg, position: 'middle', cssClass: 'toast-s1', duration: 3000 });

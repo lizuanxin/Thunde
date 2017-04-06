@@ -1,70 +1,4 @@
-import {Injectable}  from '@angular/core';
-import {TranslateService} from "ng2-translate";
-
-import {TypeInfo} from '../UltraCreation/Core'
-import {TSqliteStorage} from '../UltraCreation/Storage';
-
-import {const_data} from './thunderbolt.const'
-
-@Injectable()
-export class TLocalizeService
-{
-    constructor (private TransSvc: TranslateService)
-    {
-        this.Storage = new TSqliteStorage(const_data.DatabaseName);
-        this.SetDefaultTranslate();
-
-        console.log('TLocalizeService construct');
-    }
-
-    get Languages(): string[]
-    {
-        return this.TransSvc.getLangs();
-    }
-
-    AddLanguage(Name: string, Translation: Object, Merge: boolean = false)
-    {
-        this.TransSvc.setTranslation(Name, Translation, Merge);
-    }
-
-    get Language(): string
-    {
-        let RetVal = this.TransSvc.currentLang;
-
-        if (TypeInfo.Assigned(RetVal))
-            return RetVal;
-        else
-            return 'en';
-    }
-
-    set Language(Value: string)
-    {
-        this.TransSvc.use(Value);
-    }
-
-    Translate(Key: string | string[]): string | string[]
-    {
-        return this.TransSvc.instant(Key);
-    }
-
-    private SetDefaultTranslate()
-    {
-        this.AddLanguage('en', translate_en);
-        this.AddLanguage('zh', translate_zh);
-        this.TransSvc.setDefaultLang('en');
-
-        console.log(navigator.language);
-
-        let codes = navigator.language.split('-');
-        if (codes[0] === 'zh')
-            this.Language = 'zh';
-        // this.Language = 'zh';
-    }
-
-    private Storage: TSqliteStorage;
-}
-
-let translate_en =
+export let translate_en =
 {
     hint:
     {
@@ -251,7 +185,7 @@ let translate_en =
     }
 }
 
-let translate_zh =
+export let translate_zh =
 {
     hint:
     {

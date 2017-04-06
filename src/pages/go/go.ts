@@ -4,7 +4,7 @@ import {Platform, NavController, ViewController, NavParams, ModalController, Con
 
 import {TypeInfo, EAbort} from '../../UltraCreation/Core';
 
-import {BLE, Loki, TApplication, TLocalizeService, TDistributeService, TCategory, TScriptFile} from '../services';
+import {BLE, Loki, TApplication, TDistributeService, TCategory, TScriptFile} from '../services';
 import {RunningPage} from '../running/running';
 import {OtaUpdatePage} from '../ota_update/ota_update';
 
@@ -14,7 +14,7 @@ import {OtaUpdatePage} from '../ota_update/ota_update';
 export class GoPage implements OnInit, OnDestroy
 {
     constructor(public nav: NavController, public modalCtrl: ModalController, private view: ViewController, private navParams: NavParams, private platform: Platform,
-        private app: TApplication, private Localize: TLocalizeService, private Distribute: TDistributeService)
+        private app: TApplication, private Distribute: TDistributeService)
     {
         this.Category = navParams.get('Category');
         this.ScriptFile = navParams.get('ScriptFile');
@@ -138,13 +138,13 @@ export class GoPage implements OnInit, OnDestroy
             let line: string = '';
 
             if (this.ScriptFile.Details.length > 1)
-                line += this.Localize.Translate('go_page.seq') + d.Name + '<br>';
+                line += this.app.Translate('go_page.seq') + d.Name + '<br>';
 
-            line += this.Localize.Translate('go_page.effect_freq') + obj.effect_freq + '<br>';
+            line += this.app.Translate('go_page.effect_freq') + obj.effect_freq + '<br>';
 
             if (TypeInfo.Assigned(obj.cluster_freq))
-                line += this.Localize.Translate('go_page.cluster_freq') + obj.cluster_freq + '<br>';
-            line += this.Localize.Translate('go_page.pulse_width') + obj.pulse_width;
+                line += this.app.Translate('go_page.cluster_freq') + obj.cluster_freq + '<br>';
+            line += this.app.Translate('go_page.pulse_width') + obj.pulse_width;
 
             RetVal.push(line);
         }

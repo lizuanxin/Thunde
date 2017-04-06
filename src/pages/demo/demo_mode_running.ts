@@ -3,7 +3,7 @@ import {NavController, NavParams, ViewController} from 'ionic-angular';
 
 import {Subscription} from 'rxjs/rx'
 
-import {Loki, TApplication, TLocalizeService, TAssetService} from '../services';
+import {Loki, TApplication, TAssetService} from '../services';
 import {TUtf8Encoding} from '../../UltraCreation/Encoding';
 import {TypeInfo} from '../../UltraCreation/Core';
 import {THashMd5} from '../../UltraCreation/Hash';
@@ -17,7 +17,7 @@ const DEMO_MODES_TIMES: number[] = [45, 70, 80];
 export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 {
     constructor(public nav: NavController, private navParams: NavParams, private view: ViewController,
-        public app: TApplication, private Localize: TLocalizeService, private AssetSvc:TAssetService)
+        public app: TApplication, private AssetSvc:TAssetService)
     {
         this.SetModeInfo(DEMO_MODES[this.CurrentRunningIndex]);
 

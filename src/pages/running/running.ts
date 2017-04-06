@@ -2,15 +2,13 @@ import {Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
 import {NavController, NavParams, ViewController} from 'ionic-angular';
 import {Subscription} from 'rxjs/Rx'
 
-import {TApplication, TLocalizeService, TDistributeService,
-    TScriptFile, TAssetService, Loki} from '../services';
+import {TApplication, TDistributeService, TScriptFile, TAssetService, Loki} from '../services';
 
 @Component({selector: 'page-running', templateUrl: 'running.html'})
 export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 {
     constructor(public nav: NavController, private navParams: NavParams, private view: ViewController,
-        private app: TApplication,
-        private Asset: TAssetService, private Localize: TLocalizeService, private Distibute: TDistributeService)
+        private app: TApplication, private Asset: TAssetService, private Distibute: TDistributeService)
     {
         this.ScriptFile = navParams.get('ScriptFile');
         let DeviceId = navParams.get('DeviceId');

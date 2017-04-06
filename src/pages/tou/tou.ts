@@ -1,13 +1,13 @@
 import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
-import {TApplication, TLocalizeService, TAssetService} from '../services';
+import {TApplication, TAssetService} from '../services';
 
 import {DemoPage} from '../demo/demo';
 
 @Component({selector: 'page-tou', templateUrl: 'tou.html'})
 export class TouPage
 {
-    constructor(public nav: NavController, public app: TApplication, private Localize: TLocalizeService, private AssetSvc: TAssetService)
+    constructor(public nav: NavController, public app: TApplication, private AssetSvc: TAssetService)
     {
         this.IsFirstTime = ! app.AcceptedTerms;
         this.AssetSvc.GetKey("DEMO_MODE")
@@ -25,35 +25,15 @@ export class TouPage
 
     Submit()
     {
-        if (this.IsDemoModeUsed)
-        {
-            this.nav.pop();
-        }
-        else
-        {
-            this.app.ShowAlert(
+        this.nav.pop()
+            .then(() =>
+            {
+                if (! this.IsDemoModeUsed)
                 {
-                    title: 'Demo Mode',
-                    message: this.Localize.Translate('hint.show_demo_mode') as string,
-                    buttons: [
-                                {
-                                    text: this.Localize.Translate('button.cancel') as string,
-                                    handler: ()=> this.nav.pop(),
-                                    role: 'cancel'
-                                },
-                                {
-                                    text: this.Localize.Translate('button.ok') as string,
-                                    handler: ()=> setTimeout(this.ShowDemoMode(), 0)
-                                }
-                            ]
-                });
-        }
-    }
-
-    ShowDemoMode()
-    {
-        this.app.SetSkin(this.app.Skins[1]);
-        this.nav.push(DemoPage);
+                    this.app.SetSkin(this.app.Skins[1]);
+                    this.nav.push(DemoPage);
+                }
+            });
     }
 
     get TopArea(): string

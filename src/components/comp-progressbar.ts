@@ -1,7 +1,7 @@
 import {Component, OnInit, Input, Output, EventEmitter, ElementRef} from '@angular/core'
 
 @Component({selector: 'comp-progressbar', template: '<canvas style="width:100%" tappable></canvas>'})
-export class Progressbar implements OnInit
+export class ComponentProgressbar implements OnInit
 {
     constructor(private Elements: ElementRef)
     {

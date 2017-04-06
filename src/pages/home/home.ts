@@ -4,7 +4,7 @@ import {NavController, NavParams} from 'ionic-angular';
 import {TypeInfo} from '../../UltraCreation/Core'
 import * as UITypes from '../../UltraCreation/Graphic/Types'
 
-import {const_data, TApplication, TLocalizeService, TAssetService, TCategory, TScriptFile, TDistributeService} from '../services';
+import {const_data, TApplication, TAssetService, TCategory, TScriptFile, TDistributeService} from '../services';
 import {DemoPage} from '../demo/demo';
 import {TouPage} from '../tou/tou';
 import {GoPage} from '../go/go';
@@ -16,14 +16,14 @@ const SHOWING_ITEM_COUNT = 6;
 export class HomePage implements OnInit, OnDestroy
 {
     constructor(public nav: NavController, private navParams: NavParams, private Asset: TAssetService,
-        private app: TApplication, private Localize: TLocalizeService, private Distrubute: TDistributeService)
+        private app: TApplication, private Distrubute: TDistributeService)
     {
     }
 
     ngOnInit(): void
     {
         let Canvas = document.getElementById('content_canvas') as HTMLCanvasElement;
-        this.Content = new TContentCanvas(Canvas, this.Localize,this.app);
+        this.Content = new TContentCanvas(Canvas, this.app);
         this.Content.OnSelectionFile.subscribe(file => this.SelectFile(file));
 
         this.Categories = this.Asset.Categories;
@@ -36,8 +36,8 @@ export class HomePage implements OnInit, OnDestroy
                 {
                     if (! support_otg)
                     {
-                        this.app.ShowAlert({title: 'OTG', message: this.Localize.Translate('hint.e_usb_otg') as string,
-                            buttons: [{text: this.Localize.Translate('button.ok') as string, role: 'cancel'}]});
+                        this.app.ShowAlert({title: 'OTG', message: this.app.Translate('hint.e_usb_otg') as string,
+                            buttons: [{text: this.app.Translate('button.ok') as string, role: 'cancel'}]});
                     }
                 });
         }
@@ -153,7 +153,7 @@ export class HomePage implements OnInit, OnDestroy
 
 class TContentCanvas
 {
-    constructor(private Canvas: HTMLCanvasElement, private Localize: TLocalizeService,private app: TApplication)
+    constructor(private Canvas: HTMLCanvasElement, private app: TApplication)
     {
         Canvas.addEventListener("touchstart", this.TouchHandler.bind(this));
         Canvas.addEventListener("touchmove", this.TouchHandler.bind(this));
@@ -281,7 +281,7 @@ class TContentCanvas
             Ctx.textAlign = 'left';
             Ctx.font = this.FileNameFont.toString();
 
-            Str = this.Localize.Translate(ScriptFile.Name_LangId) as string;
+            Str = this.app.Translate(ScriptFile.Name_LangId) as string;
             x += TextWidth * 1.2;
             // Ctx.strokeText(Str, x, Offset);
             Ctx.fillText(Str, x, Offset);
@@ -291,7 +291,7 @@ class TContentCanvas
             Ctx.textBaseline = "top"
             Ctx.font = this.MinuteFont.toString();
 
-            Str = Math.trunc((ScriptFile.Duration + 30) / 60).toString() + this.Localize.Translate('hint.min');
+            Str = Math.trunc((ScriptFile.Duration + 30) / 60).toString() + this.app.Translate('hint.min');
             TextWidth = this.Ctx.measureText('H').width;
             Ctx.fillText(Str, Canvas.width - TextWidth * 3.5, Offset);
             // minute pie

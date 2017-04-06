@@ -246,6 +246,7 @@ export class DemoPage implements OnInit, OnDestroy, AfterViewInit
     }
 
     TypeMode:number = STEP[0];
+
     @ViewChild('body') body : ElementRef;
     @ViewChild('arrowPoint') arrowPoint: ElementRef;
     @ViewChild('key') key: ElementRef;
