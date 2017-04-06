@@ -1,4 +1,5 @@
 import {NgModule, ErrorHandler} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular';
 import {TranslateModule} from "../UltraCreation/ng2-ion/translate";
 
@@ -32,6 +33,7 @@ let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
 
 @NgModule({
     imports: [
+        BrowserModule,
         IonicModule.forRoot(MyApp, config),
         TranslateModule.forRoot()
     ],
