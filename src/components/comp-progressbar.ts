@@ -268,9 +268,9 @@ export class Progressbar implements OnInit
     }
 
     @Input()
-    set Max(min: number)
+    set Max(max: number)
     {
-        this.MaxProgress = min;
+        this.MaxProgress = max;
     }
 
     @Input()
