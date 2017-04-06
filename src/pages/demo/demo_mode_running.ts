@@ -149,7 +149,6 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
             if (this.CurrentRunningIndex < 2)
             {
                 this.CurrentRunningIndex ++;
-                this.IsNeverClicked = true;
                 this.SetModeInfo(DEMO_MODES[this.CurrentRunningIndex]);
                 this.StartMode(this.CurrentRunningIndex);
             }
@@ -191,8 +190,29 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     get TotalMinute(): string
     {
-        let Min = this.Localize.Translate('hint.min') as string;
-        return Math.trunc((DEMO_MODES_TIMES[this.CurrentRunningIndex]) / 60).toString() + Min;
+        let Time = '00:00';
+        let Min = Math.trunc((DEMO_MODES_TIMES[this.CurrentRunningIndex]) / 60);
+        if (Min === 0)
+            Time = '00:';
+        else if (Min < 10)
+            Time = '0' + Min + ':';
+        else
+            Time = Min + ':';
+
+        let Sec = DEMO_MODES_TIMES[this.CurrentRunningIndex] % 60;
+        if (Sec === 0)
+            Time += '00';
+        else if (Sec < 10)
+            Time += Sec + '0';
+        else
+            Time += Sec + '';
+
+        return Time;
+    }
+
+    get CurrentMinute(): string
+    {
+        return Math.trunc((DEMO_MODES_TIMES[this.CurrentRunningIndex]) / 60).toString();
     }
 
     get InitRange(): number
@@ -211,9 +231,6 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     AdjustIntensity(Value: number)
     {
-        if (this.IsNeverClicked)
-            this.IsNeverClicked = false;
-
         if (! this.Shell.IsAttached || this.Adjusting)
             return;
 
@@ -238,21 +255,28 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 
         setTimeout(() =>
         {
-            console.log(this.view.index);
             if (this.view === this.nav.getActive() && this.view.index !== 0)
-                this.nav.popToRoot();
+                this.nav.pop();
         }, 300);
     }
 
     Shutdown()
     {
+        if (TypeInfo.Assigned(this.ShellNotifySubscription))
+        {
+            this.ShellNotifySubscription.unsubscribe();
+            this.ShellNotifySubscription = null;
+        }
+
         this.Shell.Shutdown().catch((err) => console.log(err.message));
-        
-        if (this.view === this.nav.getActive() && this.view.index !== 0)
+
+        setTimeout(() =>
+        {
+            if (this.view === this.nav.getActive() && this.view.index !== 0)
                 this.nav.popToRoot();
+        }, 300);
     }
 
-    IsNeverClicked: boolean = true;
     Finish: boolean = false;
     Downloading: boolean = false;
 
