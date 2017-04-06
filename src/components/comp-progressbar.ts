@@ -110,7 +110,7 @@ export class Progressbar implements OnInit
                 this.DrawText(Math.trunc(Progress).toString(), {
                     x: this.CenterX,
                     y: this.CenterY,
-                    font: this.SetFontSize(0.3),
+                    font: this.SetFontSize(0.38),
                     fillColor: '#aaffff'
                 })
             });
