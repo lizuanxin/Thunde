@@ -1,13 +1,18 @@
 import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
-import {TApplication, TLocalizeService} from '../services';
+import {TApplication, TLocalizeService, TAssetService} from '../services';
+
+import {DemoPage} from '../demo/demo';
 
 @Component({selector: 'page-tou', templateUrl: 'tou.html'})
 export class TouPage
 {
-    constructor(public nav: NavController, public app: TApplication, private Localize: TLocalizeService)
+    constructor(public nav: NavController, public app: TApplication, private Localize: TLocalizeService, private AssetSvc: TAssetService)
     {
         this.IsFirstTime = ! app.AcceptedTerms;
+        this.AssetSvc.GetKey("DEMO_MODE")
+            .then((value: boolean) => this.IsDemoModeUsed = value)
+            .catch(err => console.log(err.message));
     }
 
     ionViewDidLoad()
@@ -16,6 +21,39 @@ export class TouPage
         this.Touch.Outer.addEventListener("touchstart", this.TouchHandler.bind(this));
         this.Touch.Outer.addEventListener("touchmove", this.TouchHandler.bind(this));
         this.Touch.Outer.addEventListener("touchend", this.TouchHandler.bind(this));
+    }
+
+    Submit()
+    {
+        if (this.IsDemoModeUsed)
+        {
+            this.nav.pop();
+        }
+        else
+        {
+            this.app.ShowAlert(
+                {
+                    title: 'Demo Mode',
+                    message: this.Localize.Translate('hint.show_demo_mode') as string,
+                    buttons: [
+                                {
+                                    text: this.Localize.Translate('button.cancel') as string,
+                                    handler: ()=> this.nav.pop(),
+                                    role: 'cancel'
+                                },
+                                {
+                                    text: this.Localize.Translate('button.ok') as string,
+                                    handler: ()=> setTimeout(this.ShowDemoMode(), 0)
+                                }
+                            ]
+                });
+        }
+    }
+
+    ShowDemoMode()
+    {
+        this.app.SetSkin(this.app.Skins[1]);
+        this.nav.push(DemoPage);
     }
 
     get TopArea(): string
@@ -55,6 +93,7 @@ export class TouPage
         }
     }
 
+    private IsDemoModeUsed: boolean = false;
     public IsFirstTime: boolean = true;
     public Touch = new TouchParam();
 }
