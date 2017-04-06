@@ -21,7 +21,6 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
     {
         this.SetModeInfo(DEMO_MODES[this.CurrentRunningIndex]);
 
-        this.OldSkin = navParams.get('OldSkin')
         let DeviceId = navParams.get('DeviceId');
         this.Shell = Loki.TShell.Get(DeviceId);
     }
@@ -276,7 +275,7 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
         setTimeout(() =>
         {
             if (this.view === this.nav.getActive() && this.view.index !== 0)
-                this.nav.popToRoot().then(() => this.app.SetSkin(this.OldSkin));
+                this.nav.popToRoot();
         }, 300);
     }
 
@@ -295,5 +294,4 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
     private Adjusting: Promise<any> = null;
     private Shell: Loki.TShell;
     private ShellNotifySubscription: Subscription;
-    private OldSkin: string;
 }

@@ -5,12 +5,12 @@
             <ion-icon app-icon item-left [ngStyle]="{'font-size':app.IsAndroid ? '2.4rem' : null}">&#xe906;</ion-icon>
             {{'home_page.title'|translate}}
         </ion-item-divider>
-        <button menuToggle ion-item  text-light detail-none (click)="ShowTOU()" tappable>
-            {{'home_page.menu_tou'|translate}}
-            <ion-note item-right><ion-icon>&#xf3d1;</ion-icon></ion-note>
-        </button>
         <button menuToggle ion-item  text-light detail-none (click)="ShowDemo()" tappable>
             {{'home_page.menu_demo_mode'|translate}}
+            <ion-note item-right><ion-icon>&#xf3d1;</ion-icon></ion-note>
+        </button>
+        <button menuToggle ion-item  text-light detail-none (click)="ShowTOU()" tappable>
+            {{'home_page.menu_tou'|translate}}
             <ion-note item-right><ion-icon>&#xf3d1;</ion-icon></ion-note>
         </button>
       </ion-list>

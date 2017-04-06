@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy, EventEmitter} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {NavController, MenuController} from 'ionic-angular';
 
 import {TypeInfo} from '../../UltraCreation/Core'
 import * as UITypes from '../../UltraCreation/Graphic/Types'
@@ -8,15 +8,14 @@ import {const_data, TApplication, TAssetService, TCategory, TScriptFile, TDistri
 import {DemoPage} from '../demo/demo';
 import {TouPage} from '../tou/tou';
 import {GoPage} from '../go/go';
-import {SkinPage} from '../skin/skin';
 
 const SHOWING_ITEM_COUNT = 6;
 
 @Component({selector: 'page-home', templateUrl: 'home.html'})
 export class HomePage implements OnInit, OnDestroy
 {
-    constructor(public nav: NavController, private navParams: NavParams, private Asset: TAssetService,
-        private app: TApplication, private Distrubute: TDistributeService)
+    constructor( private app: TApplication, public nav: NavController, private MenuCtrl: MenuController,
+        private Asset: TAssetService, private Distrubute: TDistributeService)
     {
     }
 
@@ -114,19 +113,16 @@ export class HomePage implements OnInit, OnDestroy
             .catch(err => console.log(err));
     }
 
-    SelectSkin()
-    {
-        this.nav.push(SkinPage);
-    }
-
     ShowDemo()
     {
-        this.nav.push(DemoPage);
+        this.MenuCtrl.close()
+            .then(() => this.nav.push(DemoPage))
     }
 
     ShowTOU()
     {
-        return this.nav.push(TouPage);
+        return this.MenuCtrl.close()
+            .then(() => this.nav.push(TouPage));
     }
 
     StateCategory(Category: TCategory)

@@ -10,9 +10,6 @@ export class TouPage
     constructor(public nav: NavController, public app: TApplication, private AssetSvc: TAssetService)
     {
         this.IsFirstTime = ! app.AcceptedTerms;
-        this.AssetSvc.GetKey("DEMO_MODE")
-            .then((value: boolean) => this.IsDemoModeUsed = value)
-            .catch(err => console.log(err.message));
     }
 
     ionViewDidLoad()
@@ -28,11 +25,8 @@ export class TouPage
         this.nav.pop()
             .then(() =>
             {
-                if (! this.IsDemoModeUsed)
-                {
-                    this.app.SetSkin(this.app.Skins[1]);
+                if (this.IsFirstTime)
                     this.nav.push(DemoPage);
-                }
             });
     }
 
@@ -59,11 +53,9 @@ export class TouPage
         switch (e.type)
         {
             case 'touchstart':
-                //起始Y坐标
                 this.Touch.Start_Y = e.touches[0].pageY;
                 break;
             case 'touchmove':
-                //滑动Y距离
                 this.Touch.y = e.touches[0].pageY - this.Touch.Start_Y;
                 this.OffsetY;
                 break;
@@ -73,7 +65,6 @@ export class TouPage
         }
     }
 
-    private IsDemoModeUsed: boolean = false;
     public IsFirstTime: boolean = true;
     public Touch = new TouchParam();
 }
