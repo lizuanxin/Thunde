@@ -10,7 +10,7 @@
 </ion-header>
 <ion-content [ngClass]="app.Skin('go')" padding class="card-background-page">
   <ion-row wrap no-padding>
-    <ion-col no-padding width-50 *ngFor = "let skin of app.Skins">
+    <ion-col no-padding col-6 *ngFor = "let skin of app.Skins">
         <ion-card (click)="SelectSkin(skin)" tappable>
           <img src="assets/img/class/{{skin}}.jpg"/>
           <!--<div class="card-title">{{skin}}</div>-->
