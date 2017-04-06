@@ -171,3 +171,7 @@ button{
 [v-m]{
     @include FlexBox();
 }
+
+[inline-block]{
+  display:inline-block;
+}
