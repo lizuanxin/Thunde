@@ -174,7 +174,6 @@ export class DemoPage implements OnInit, OnDestroy, AfterViewInit
             }
             else
             {
-
                 if (step + 1 === STEP.length) return;
                 time = 0;
                 step += 1;
