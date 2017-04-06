@@ -91,7 +91,6 @@ export class DemoPage implements OnDestroy, AfterViewInit
 
     Go()
     {
-        /*
         if (!Loki.TShell.IsUsbPlugin)
         {
             if (this.DeviceList.length === 1)
@@ -101,8 +100,6 @@ export class DemoPage implements OnDestroy, AfterViewInit
         }
         else
             this.Start('USB');
-            */
-            this.nav.pop();
     }
 
     AnimateFade(Agrement, Array, Duration: number)
