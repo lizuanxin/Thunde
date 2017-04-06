@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, OnDestroy, Renderer, ElementRef, ViewChild} from '@angular/core';
+import {Component, AfterViewInit, OnDestroy, Renderer, ElementRef, ViewChild} from '@angular/core';
 import {NavController, NavParams, Platform} from 'ionic-angular';
 
 import {Subscription} from 'rxjs/Rx'
@@ -11,26 +11,28 @@ import {DemoModeRunningPage} from '../demo/demo_mode_running';
 const STEP: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 @Component({selector: 'page-demo', templateUrl: 'demo.html'})
-export class DemoPage implements OnInit, OnDestroy, AfterViewInit
+export class DemoPage implements OnDestroy, AfterViewInit
 {
-    constructor(public nav: NavController, private navParams: NavParams, private platform: Platform, public app: TApplication,
+    constructor(public app: TApplication, public nav: NavController, private navParams: NavParams,
         private Distribute: TDistributeService, private renderer: Renderer)
-    {}
-
-    ngOnInit(): void
     {
-        this.AnimationFlow();
     }
 
     ngAfterViewInit()
     {
-        if (!Loki.TShell.IsUsbPlugin)
+        if (! Loki.TShell.IsUsbPlugin)
         {
-            if (this.platform.is('android'))
+            if (this.app.IsAndroid)
                 BLE.Enable().then(() => this.StartScan())
             else
                 this.StartScan();
         }
+
+
+        this.OldSkin = this.app.SkinName;
+        if (this.OldSkin !== this.app.Skins[1])
+            setTimeout(() => this.app.SetSkin(this.app.Skins[1]), 300);
+        setTimeout(() => this.AnimationFlow(), 350);
     }
 
     ngOnDestroy(): void
@@ -39,6 +41,9 @@ export class DemoPage implements OnInit, OnDestroy, AfterViewInit
             this.ScanSubscription.unsubscribe();
 
         Loki.TShell.StopScan().catch(err => console.log(err.message));
+
+        if (this.OldSkin !== this.app.SkinName)
+            setTimeout(() => this.app.SetSkin(this.OldSkin), 300);
     }
 
     private StartScan()
@@ -68,6 +73,7 @@ export class DemoPage implements OnInit, OnDestroy, AfterViewInit
 
         let params = this.navParams.data;
         params.DeviceId = DeviceId;
+        params.OldSkin = this.OldSkin;
 
         this.app.ShowLoading().then(loading =>
             {
@@ -265,5 +271,7 @@ export class DemoPage implements OnInit, OnDestroy, AfterViewInit
 
     IsShowingDeviceList: boolean = false;
     DeviceList: Array<BLE.IScanDiscovery> = [];
+
     private ScanSubscription: Subscription;
+    private OldSkin: string;
 }

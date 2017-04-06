@@ -121,7 +121,6 @@ export class HomePage implements OnInit, OnDestroy
 
     ShowDemo()
     {
-        this.app.SetSkin(this.app.Skins[1]);
         this.nav.push(DemoPage);
     }
 

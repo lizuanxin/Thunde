@@ -1,32 +1,36 @@
 <ion-content no-scroll padding [ngClass]="app.Skin('home')" color="light">
-    <ion-list *ngIf="IsShowingDeviceList" absolute [ngStyle]="{zIndex:1,top:0,left:0,right:0}">
-        <ng-template [ngIf]="DeviceList.length > 0">
-            <ion-item *ngFor="let device of DeviceList" (click)="SelectionDevice(device)" tappable>
-                <p>{{device.name}}</p>
-                <ion-icon app-icon *ngIf="device.rssi<-80" item-right><span f-12>{{device.rssi}}</span>&#xe92f;</ion-icon>
-                <ion-icon app-icon *ngIf="device.rssi<-70 && device.rssi>=-80" item-right><span f-12>{{device.rssi}}</span>&#xe92e;</ion-icon>
-                <ion-icon app-icon *ngIf="device.rssi<-60 && device.rssi>=-70" item-right><span f-12>{{device.rssi}}</span>&#xe92d;</ion-icon>
-                <ion-icon app-icon *ngIf="device.rssi<-50 && device.rssi>=-60" item-right><span f-12>{{device.rssi}}</span>&#xe92c;</ion-icon>
-                <ion-icon app-icon *ngIf="device.rssi>=-50" item-right><span f-12>{{device.rssi}}</span>&#xe926;</ion-icon>
-            </ion-item>
-        </ng-template>
-        <ion-item *ngIf="DeviceList.length === 0">
-            <span>{{'go_page.plug_device'|translate}}</span>
-        </ion-item>
-    </ion-list>
     <ion-row>
         <ion-col text-center text-light>
             <ion-icon #body app-icon [ngStyle]="SetElement('body')">&#xe91f;</ion-icon>
         </ion-col>
+
+        <ion-col text-center text-light>
+        <ion-list *ngIf="IsShowingDeviceList" absolute [ngStyle]="{zIndex:1,top:0,left:0,right:0}">
+            <ng-template [ngIf]="DeviceList.length > 0">
+                <ion-item *ngFor="let device of DeviceList" (click)="SelectionDevice(device)" tappable>
+                    <p>{{device.name}}</p>
+                    <ion-icon app-icon *ngIf="device.rssi<-80" item-right><span f-12>{{device.rssi}}</span>&#xe92f;</ion-icon>
+                    <ion-icon app-icon *ngIf="device.rssi<-70 && device.rssi>=-80" item-right><span f-12>{{device.rssi}}</span>&#xe92e;</ion-icon>
+                    <ion-icon app-icon *ngIf="device.rssi<-60 && device.rssi>=-70" item-right><span f-12>{{device.rssi}}</span>&#xe92d;</ion-icon>
+                    <ion-icon app-icon *ngIf="device.rssi<-50 && device.rssi>=-60" item-right><span f-12>{{device.rssi}}</span>&#xe92c;</ion-icon>
+                    <ion-icon app-icon *ngIf="device.rssi>=-50" item-right><span f-12>{{device.rssi}}</span>&#xe926;</ion-icon>
+                </ion-item>
+            </ng-template>
+            <ion-item *ngIf="DeviceList.length === 0">
+                <span>{{'go_page.plug_device'|translate}}</span>
+            </ion-item>
+        </ion-list>
+        </ion-col>
     </ion-row>
+
     <div Animate-Canvas>
         <span class="animate tips" [ngStyle]="SetTipsStyle(0)" [ngClass]="SetTipsClass(1)"></span>
         <span class="animate tips" [ngStyle]="SetTipsStyle(1)" [ngClass]="SetTipsClass(2)"></span>
         <span class="animate tips" [ngStyle]="SetTipsStyle(2)" [ngClass]="SetTipsClass(3)"></span>
         <span #describe1 [ngStyle]="SetElement('describe1')">{{'demo_mode_play_page.electrode'|translate}}</span>
         <span #describe2 [ngStyle]="SetElement('describe2')" [innerHTML]="'demo_mode_play_page.phone_power'|translate"></span>
-        <span #describe3 [ngStyle]="SetElement('describe3')">{{'demo_mode_play_page.switch'|translate}}</span>
-        <span #describe4 [ngStyle]="SetElement('describe4')">{{'demo_mode_play_page.strength'|translate}}</span>
+        <span #describe3 [ngStyle]="SetElement('describe3')" [innerHTML]="'demo_mode_play_page.switch'|translate"></span>
+        <span #describe4 [ngStyle]="SetElement('describe4')" [innerHTML]="'demo_mode_play_page.strength'|translate"></span>
         <ion-icon app-icon #line1 [ngStyle]="SetElement('line1')">&#xe92a;</ion-icon>
         <ion-icon app-icon #line2 [ngStyle]="SetElement('line2')">&#xe931;</ion-icon>
         <ion-icon app-icon #line3 [ngStyle]="SetElement('line3')">&#xe935;</ion-icon>
@@ -37,7 +41,6 @@
         <ion-icon app-icon #arrowPoint [ngStyle]="SetElement('arrowPoint')">&#xe928;</ion-icon>
         <ion-icon app-icon #key [ngStyle]="SetElement('key')">&#xe921;</ion-icon>
     </div>
-
 </ion-content>
 <ion-footer no-shadow no-border>
     <ion-toolbar transparent visible>

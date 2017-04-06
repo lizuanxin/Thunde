@@ -46,15 +46,15 @@ export let translate_en =
     {
         title: 'Thunderbolt',
         menu_tou: 'Terms of Use',
-        menu_demo_mode: 'Demo mode',
+        menu_demo_mode: 'Quick Start',
     },
 
     demo_mode_play_page:
     {
-        electrode: 'the ways of sticking electrodes',
-        phone_power: 'p<br/>o<br/>w<br/>e<br/>r',
-        switch: 'switch control',
-        strength: 'strength control',
+        electrode: 'Apply all the Electrodes',
+        phone_power: 'O<br/>T<br/>G<br/>',
+        switch: 'Mode Switch /<br/>Press to Power Off',
+        strength: 'Intensity Control',
 
         friction_title: 'FRICTION EFFECT',
         friction_info: 'You will feel a friction effect, a tingling sensation. By sending a very fast signal to your brain, Bluetens will block the transmission of the "pain message" alleviating your pain rapidly.',
@@ -230,7 +230,7 @@ export let translate_zh =
     {
         title: '小摩线',
         menu_tou: '使用条款',
-        menu_demo_mode: '引导模式',
+        menu_demo_mode: '快速入门',
     },
 
     go_page:
@@ -247,10 +247,10 @@ export let translate_zh =
 
     demo_mode_play_page:
     {
-        electrode: '电极贴贴法',
+        electrode: '帖好电极贴',
         phone_power: '手<br/>机<br/>取<br/>电',
-        switch: '开关控制',
-        strength: '强弱控制',
+        switch: '模式切换<br/>常按关机',
+        strength: '强度控制',
     },
 
     running_page:
@@ -283,10 +283,10 @@ export let translate_zh =
 
     category:
     {
-        therapy: '治疗',
+        relax: '放松',
+        muscle_training: '运动',
         fat_burning: '瘦身',
-        muscle_training: '健美',
-        relax: '放松'
+        therapy: '治疗',
     },
 
     scriptfile:
