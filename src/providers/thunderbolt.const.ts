@@ -105,18 +105,18 @@ export namespace const_data
 
     export const Categories: Array<ICategory> =
     [
-        {Id: '{00000000-0000-4000-3000-000000000001}', Icon: 0xe90b, Name: 'therapy'},
-        {Id: '{00000000-0000-4000-3000-000000000002}', Icon: 0xe905, Name: 'fat_burning'},
-        {Id: '{00000000-0000-4000-3000-000000000003}', Icon: 0xe91e, Name: 'muscle_training'},
         {Id: '{00000000-0000-4000-3000-000000000004}', Icon: 0xe917, Name: 'relax'},
+        {Id: '{00000000-0000-4000-3000-000000000003}', Icon: 0xe91e, Name: 'muscle_training'},
+        {Id: '{00000000-0000-4000-3000-000000000002}', Icon: 0xe905, Name: 'fat_burning'},
+        {Id: '{00000000-0000-4000-3000-000000000001}', Icon: 0xe90b, Name: 'therapy'},
     ]
 
     export const Category =
     {
-        therapy: Categories[0],
-        fat_burning: Categories[1],
-        muscle_training: Categories[2],
-        relax: Categories[3],
+        relax: Categories[0],
+        muscle_training: Categories[1],
+        fat_burning: Categories[2],
+        therapy: Categories[3],
     }
 
     export interface IScriptFile

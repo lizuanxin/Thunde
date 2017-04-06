@@ -1,6 +1,6 @@
 <ion-content no-scroll padding [ngClass]="app.Skin('home')" color="light">
     <ion-list *ngIf="IsShowingDeviceList" absolute [ngStyle]="{zIndex:1,top:0,left:0,right:0}">
-        <template [ngIf]="DeviceList.length > 0">
+        <ng-template [ngIf]="DeviceList.length > 0">
             <ion-item *ngFor="let device of DeviceList" (click)="SelectionDevice(device)" tappable>
                 <p>{{device.name}}</p>
                 <ion-icon app-icon *ngIf="device.rssi<-80" item-right><span f-12>{{device.rssi}}</span>&#xe92f;</ion-icon>
@@ -9,7 +9,7 @@
                 <ion-icon app-icon *ngIf="device.rssi<-50 && device.rssi>=-60" item-right><span f-12>{{device.rssi}}</span>&#xe92c;</ion-icon>
                 <ion-icon app-icon *ngIf="device.rssi>=-50" item-right><span f-12>{{device.rssi}}</span>&#xe926;</ion-icon>
             </ion-item>
-        </template>
+        </ng-template>
         <ion-item *ngIf="DeviceList.length === 0">
             <span>{{'go_page.plug_device'|translate}}</span>
         </ion-item>
@@ -41,12 +41,12 @@
 </ion-content>
 <ion-footer no-shadow no-border>
     <ion-toolbar transparent visible>
-        <template [ngIf]="!IsShowingDeviceList">
+        <ng-template [ngIf]="!IsShowingDeviceList">
           <div text-center #ready [ngStyle]="{'opacity':0}">
               <button clear icon-only text-light [ngStyle]="{'font-size':'3.6rem'}" (click)="Go()" tappable>
                   <ion-icon app-icon>&#xe929;</ion-icon>
               </button>
           </div>
-        </template>
+        </ng-template>
     </ion-toolbar>
 </ion-footer>

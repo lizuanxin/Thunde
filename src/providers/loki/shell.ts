@@ -588,7 +588,7 @@ export class TShell extends TAbstractShell
     OnNotify: TShellNotifyEvent = new Subject<TShellNotify>();
 
     private _Ticking: number = 0;
-    private TickIntervalId: number = null;
+    private TickIntervalId: any = null;
 
     private _Version: number;
     private _Intensity: number = 0;

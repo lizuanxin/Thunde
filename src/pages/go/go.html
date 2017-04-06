@@ -3,8 +3,8 @@
         <ion-title text-center><span [ngClass]="app.SkinColor">{{ScriptFile.Name_LangId|translate}}</span></ion-title>
     </ion-toolbar>
 </ion-header>
-<ion-content [ngClass]="app.Skin('go')" [class.no-scroll]="IsShowDescIcon">    
-    <template [ngIf]="!IsShowingDeviceList">
+<ion-content [ngClass]="app.Skin('go')" [class.no-scroll]="IsShowDescIcon">
+    <ng-template [ngIf]="!IsShowingDeviceList">
         <div [ngClass]="{'fadeout':IsShowDescIcon}" id="gridBody">
             <div *ngFor="let body of ScriptFile.BodyParts;let i = index">
                 <h5 [ngClass]="app.SkinColor" padding-left>{{'go_page.advise'|translate}}<b>{{body.Name_LangId|translate}}</b></h5>
@@ -18,21 +18,21 @@
             </div>
             <div class="grid" [ngClass]="app.SkinColor" margin>
                 <h5 (click)="ShowFileDetail()" tappable>
-                    <template [ngIf]="!IsShowFileDetail"><ion-icon [ngStyle]="{'vertical-align': 'text-top'}">&#xf3d1;</ion-icon></template>
-                    <template [ngIf]="IsShowFileDetail"><ion-icon [ngStyle]="{'vertical-align': 'text-top'}">&#xf3d0;</ion-icon></template>
+                    <ng-template [ngIf]="!IsShowFileDetail"><ion-icon [ngStyle]="{'vertical-align': 'text-top'}">&#xf3d1;</ion-icon></ng-template>
+                    <ng-template [ngIf]="IsShowFileDetail"><ion-icon [ngStyle]="{'vertical-align': 'text-top'}">&#xf3d0;</ion-icon></ng-template>
                     &nbsp;{{'go_page.professional'|translate}}
                 </h5>
-                <template [ngIf]="IsShowFileDetail">
+                <ng-template [ngIf]="IsShowFileDetail">
                     <div class="row" *ngFor="let d of FileDetails()">
                         <div class="cell cell-max" [innerHTML]="d"></div>
                     </div>
-                </template>
+                </ng-template>
             </div>
             <br><br><br>
         </div>
-    </template>
+    </ng-template>
     <ion-list *ngIf="IsShowingDeviceList">
-        <template [ngIf]="DeviceList.length > 0">
+        <ng-template [ngIf]="DeviceList.length > 0">
             <ion-item *ngFor="let device of DeviceList" (click)="SelectionDevice(device)" tappable>
                 <p>{{device.name}}</p>
                 <ion-icon app-icon *ngIf="device.rssi<-80" item-right><span f-12>{{device.rssi}}</span>&#xe92f;</ion-icon>
@@ -41,7 +41,7 @@
                 <ion-icon app-icon *ngIf="device.rssi<-50 && device.rssi>=-60" item-right><span f-12>{{device.rssi}}</span>&#xe92c;</ion-icon>
                 <ion-icon app-icon *ngIf="device.rssi>=-50" item-right><span f-12>{{device.rssi}}</span>&#xe926;</ion-icon>
             </ion-item>
-        </template>
+        </ng-template>
         <ion-item *ngIf="DeviceList.length === 0">
             <span>{{'go_page.plug_device'|translate}}</span>
         </ion-item>
@@ -56,13 +56,13 @@
                     <ion-icon app-icon [ngClass] = "app.SkinColor">&#xe92b;</ion-icon>
                 </button>
             </div>
-            <template [ngIf]="!IsShowingDeviceList">
+            <ng-template [ngIf]="!IsShowingDeviceList">
                 <div aims center-up>
                     <button large round outline text-uppercase text-center text-light gradient-purple (click)="Go()" tappable>
                         <ion-icon>&#xf488;</ion-icon>
                     </button>
                 </div>
-            </template>
+            </ng-template>
         </div>
     </div>
 </ion-footer>

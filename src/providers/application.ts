@@ -5,7 +5,6 @@ import {TSqliteStorage} from '../UltraCreation/Storage';
 import {USBSerial} from '../UltraCreation/Native';
 import {TAppController} from '../UltraCreation/ng2-ion/ion-appcontroller'
 
-import {const_data} from './thunderbolt.const'
 import {translate_en, translate_zh} from './localize'
 
 @Injectable()
@@ -19,11 +18,17 @@ export class TApplication extends TAppController
         this.AddLanguage('en', translate_en);
         this.AddLanguage('zh', translate_zh);
 
+        console.log(navigator.language);
+        let codes = navigator.language.split('-');
+        this.Language = codes[0];
+
         console.log('TApplication construct');
     }
 
     static Initialize(Storage: TSqliteStorage): Promise<void>
     {
+        this.Storage = Storage;
+
         return Storage.Get('accepted terms')
             .then(value => this.AcceptedTerms = value ==='yes')
             .catch(err => { })
@@ -46,7 +51,7 @@ export class TApplication extends TAppController
     {
         if (Value)
         {
-            let Storage = new TSqliteStorage(const_data.DatabaseName);
+            let Storage = (this.constructor as typeof TApplication).Storage;
             Storage.Set('accepted terms', 'yes')
                 .then(() => TApplication.AcceptedTerms = true);
         }
@@ -120,7 +125,9 @@ export class TApplication extends TAppController
     }
 
     public Skins: Array<string>;
-    private static SkinName: string = 'abstract';
-    private deep = ['abstract', 'BlackRed','spots'];
+    private deep = ['abstract', 'BlackRed', 'spots'];
     private warm = ['strengths'];
+
+    private static SkinName: string = 'strengths';
+    private static Storage: TSqliteStorage;
 }
