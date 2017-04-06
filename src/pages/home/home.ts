@@ -51,7 +51,7 @@ export class HomePage implements OnInit, OnDestroy
 
     ionViewWillEnter()
     {
-        if (TypeInfo.Assigned(this.SelectedCategory) &&  this.SelectedCategory.Id !== const_data.Category.therapy.Id)
+        if (TypeInfo.Assigned(this.SelectedCategory) && this.SelectedCategory.Id !== const_data.Category.therapy.Id)
         {
             switch (this.SelectedCategory.Id)
             {
@@ -75,7 +75,8 @@ export class HomePage implements OnInit, OnDestroy
         else
             this.Content.Color = '#222222';
 
-        if (!TypeInfo.Assigned(this.SelectedCategory)) {
+        if (!TypeInfo.Assigned(this.SelectedCategory))
+        {
             this.SelectCategory(this.Categories[0]);
             this.Content.Paint();
         }
@@ -138,7 +139,7 @@ export class HomePage implements OnInit, OnDestroy
     SelectFile(ScriptFile: TScriptFile)
     {
         this.Asset.FileDesc(ScriptFile)
-            .then(() => this.nav.push(GoPage, { Category: this.SelectedCategory, ScriptFile: ScriptFile, DemoMode: false}));
+            .then(() => this.nav.push(GoPage, { Category: this.SelectedCategory, ScriptFile: ScriptFile}));
     }
 
     Categories: Array<TCategory>;
