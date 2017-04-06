@@ -86,6 +86,7 @@ let translate_en =
         no_load: 'Apply all the electrodes.',
         hardware_error: 'Hardware error, Please contact Customer Service.',
 
+        show_demo_mode: 'Go to Demo Mode',
         network_unavailable: 'Network Unavailable.',
         congratulations: 'Congratulations',
     },
@@ -111,6 +112,7 @@ let translate_en =
     {
         title: 'Thunderbolt',
         menu_tou: 'Terms of Use',
+        menu_demo_mode: 'Demo mode',
     },
 
     demo_mode_play_page:
@@ -271,6 +273,7 @@ let translate_zh =
         no_load: '请检查电极帖',
         hardware_error: 'Hardware error, Please contact Customer Service.',
 
+        show_demo_mode: '进入演示模式',
         network_unavailable: '无网络'
     },
 
@@ -293,6 +296,7 @@ let translate_zh =
     {
         title: '小摩线',
         menu_tou: '使用条款',
+        menu_demo_mode: '引导模式',
     },
 
     go_page:
