@@ -34,7 +34,7 @@
     <ion-list *ngIf="IsShowingDeviceList">
         <ng-template [ngIf]="DeviceList.length > 0">
             <ion-item *ngFor="let device of DeviceList" (click)="SelectionDevice(device)" tappable>
-                <p>{{device.name}}</p>
+                <p>{{'home_page.title'|translate}}</p>
                 <ion-icon app-icon *ngIf="device.rssi<-80" item-right><span f-12>{{device.rssi}}</span>&#xe92f;</ion-icon>
                 <ion-icon app-icon *ngIf="device.rssi<-70 && device.rssi>=-80" item-right><span f-12>{{device.rssi}}</span>&#xe92e;</ion-icon>
                 <ion-icon app-icon *ngIf="device.rssi<-60 && device.rssi>=-70" item-right><span f-12>{{device.rssi}}</span>&#xe92d;</ion-icon>
