@@ -31,6 +31,7 @@ export class DemoPage implements OnDestroy, AfterViewInit
                 this.StartScan();
         }
 
+        this.AnimateFade(this.body, [{opacity: 0}, {opacity: 0}], 0);
         setTimeout(() => this.AnimationFlow(), 200);
     }
 
@@ -120,7 +121,7 @@ export class DemoPage implements OnDestroy, AfterViewInit
 
     AnimationFlow()
     {
-        if (!this.TypeMode)
+        if (! this.TypeMode)
             this.TypeMode = STEP[0];
 
         let width = window.innerWidth, height = width * 1.5;
@@ -133,12 +134,12 @@ export class DemoPage implements OnDestroy, AfterViewInit
                 switch(this.TypeMode)
                 {
                 case STEP[0]:
-                    this.AnimateFade(this.body, [{ opacity: 0,transform:'translateY(50px)' }, { opacity: 1,transform:'translateY(0)' }], 500);
+                    this.AnimateFade(this.body, [{opacity: 0,transform:'translateY(50px)' }, { opacity: 1,transform:'translateY(0)'}], 500);
                     break;
                 case STEP[1]:
-                    this.AnimateFade(this.ready, [{ opacity: 0, marginTop: '-70px' }, { opacity: 1, marginTop: '-50px' }], 500);
-                    this.AnimateFade(this.line1, [{ opacity: 0,transform:'scale(.5)'}, { opacity: 1,transform:'scale(1)'}], 500);
-                    this.AnimateFade(this.describe1, [{ opacity: 0, left: width * 0.62 + 'px', top: height * 0.16 + 'px' }, { opacity: 1, left: width * 0.62 + 'px', top: height * 0.12 + 'px' }], 500);
+                    this.AnimateFade(this.ready, [{opacity: 0, marginTop: '-70px' }, { opacity: 1, marginTop: '-50px' }], 500);
+                    this.AnimateFade(this.line1, [{opacity: 0,transform:'scale(.5)'}, { opacity: 1,transform:'scale(1)'}], 500);
+                    this.AnimateFade(this.describe1, [{opacity: 0, left: width * 0.62 + 'px', top: height * 0.16 + 'px' }, { opacity: 1, left: width * 0.62 + 'px', top: height * 0.12 + 'px' }], 500);
                     break;
                 case STEP[2]:
                     this.AnimateFade(this.num1, [{ opacity: 0, left: width * 0.88 + 'px', top: height * 0.06 + 'px' }, { opacity: 1, left: width * 0.88 + 'px', top: height * 0.14 + 'px' }], 500);
@@ -186,7 +187,7 @@ export class DemoPage implements OnDestroy, AfterViewInit
         Animation();
     }
 
-    SetTipsClass(n:number): string
+    SetTipsClass(n: number): string
     {
         switch(n)
         {
@@ -245,7 +246,7 @@ export class DemoPage implements OnDestroy, AfterViewInit
         }
     }
 
-    TypeMode:number = STEP[0];
+    TypeMode: number = STEP[0];
 
     @ViewChild('body') body : ElementRef;
     @ViewChild('arrowPoint') arrowPoint: ElementRef;
