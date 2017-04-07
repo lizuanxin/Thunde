@@ -134,17 +134,17 @@ export class TDistributeService
         {
         case 1:
             if (Rev === 1)
-                FileName = 'Thunderbolt';
+                FileName = 'UCtenQT2';      // USB version
             else
-                FileName = 'MiniQ';
+                FileName = 'UCtenQT1';      // BLE Version
             break;
         case 2:
             if (Rev <= 4)    // hardware 4.3k res
                 return Promise.reject(new EAbort());
-            FileName = 'ThunderboltQ';
+            FileName = 'UCtenQT3';          // BLE Version
             break;
         case 3:
-            FileName = 'Thunderbolt'
+            FileName = 'UCtenQT2'
             break;
 
         default:
