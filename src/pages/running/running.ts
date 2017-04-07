@@ -2,6 +2,7 @@ import {Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
 import {NavController, NavParams, ViewController} from 'ionic-angular';
 import {Subscription} from 'rxjs/Rx'
 
+import {PowerManagement} from '../../UltraCreation/Native/PowerManagement'
 import {TApplication, TDistributeService, TScriptFile, TAssetService, Loki} from '../services';
 
 @Component({selector: 'page-running', templateUrl: 'running.html'})
@@ -18,6 +19,8 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     ngOnInit()
     {
+        PowerManagement.Acquire();
+
         this.ShellNotifySubscription = this.Shell.OnNotify.subscribe(
             Notify =>
             {
@@ -73,6 +76,8 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
     {
         this.ShellNotifySubscription.unsubscribe();
         this.Shell.Detach();
+
+        PowerManagement.Release();
     }
 
     get TotalMinute(): string
