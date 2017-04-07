@@ -13,7 +13,7 @@ import {THashCrc16} from '../../UltraCreation/Hash';
 
 const REQUEST_TIMEOUT = 3000;
 
-const BLE_FILTER_NAMES: string[] = ['thunderbolt', 'uctenqt1', 'uctenqt3', '.blt'];
+const BLE_FILTER_NAMES: string[] = ['uctenqt3', 'thunderbolt', 'uctenqt1', 'quintic ble', 'ble hw1.0.0', '.blt'];
 const BLE_SCAN_TIMEOUT = 60000;
 const BLE_CONNECTION_TIMEOUT = 5000;
 
