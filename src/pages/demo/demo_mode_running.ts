@@ -229,7 +229,7 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
     get TextStyle(): Object
     {
         let screen = window.innerHeight;
-        return { height: screen * 0.2 + "px", overflowY: "scroll" }
+        return { height: screen * 0.15 + "px", overflowY: "scroll" }
     }
 
     PointRotate(): string
