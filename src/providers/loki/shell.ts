@@ -7,7 +7,6 @@ import {TUtf8Encoding} from '../../UltraCreation/Encoding/Utf8';
 import {TAbstractShell, TShellRequest, ERequestTimeout, EDisconnected} from '../../UltraCreation/Native/Abstract.Shell'
 export {ERequestTimeout};
 import * as BLE from '../../UltraCreation/Native/BluetoothLE';
-import * as BLE_Shell from '../../UltraCreation/Native/BluetoothLE.Shell';
 import {USBSerial} from '../../UltraCreation/Native';
 import {THashCrc16} from '../../UltraCreation/Hash';
 
@@ -609,7 +608,7 @@ export interface IProxyShell extends TAbstractShell
 
 /** Proxy to BLE Shell */
 
-export class TProxyBLEShell extends BLE_Shell.TShell implements IProxyShell
+export class TProxyBLEShell extends BLE.TShell implements IProxyShell
 {
     Owner: TShell;
 
