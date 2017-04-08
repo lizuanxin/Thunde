@@ -43,7 +43,7 @@
     </div>
 </ion-content>
 <ion-footer no-shadow no-border>
-    <ion-toolbar transparent visible>
+    <!--<ion-toolbar transparent visible>-->
         <ng-template [ngIf]="!IsShowingDeviceList">
           <div text-center #ready class="animation" [ngStyle]="{opacity:0}">
               <button clear icon-only text-light [ngStyle]="{'font-size':'3.6rem'}" (click)="Go()" tappable>
@@ -51,5 +51,5 @@
               </button>
           </div>
         </ng-template>
-    </ion-toolbar>
+    <!--</ion-toolbar>-->
 </ion-footer>
