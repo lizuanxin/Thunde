@@ -1,4 +1,4 @@
-import {Component, AfterViewInit, OnDestroy, Renderer, ElementRef, ViewChild} from '@angular/core';
+import {Component, AfterViewInit, OnDestroy, ElementRef, ViewChild} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 
 import {Subscription} from 'rxjs/Rx'
@@ -7,12 +7,14 @@ import {TypeInfo} from '../../UltraCreation/Core';
 import {BLE, Loki, TApplication} from '../services';
 import {DemoModeRunningPage} from '../demo/demo_mode_running';
 
-const STEP: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+const ID = {'tips1':0, 'tips2':1, 'tips3':2, 'electrode':3, 'power':4, 'switch':5, 'strength':6, 
+    'line1':7, 'line2':8, 'line3':9, 'num1':10, 'num2':11, 'num3':12, 'num4':13, 
+    'arrowPoint':14, 'key':15, 'body':16};
 
 @Component({selector: 'page-demo', templateUrl: 'demo.html'})
 export class DemoPage implements OnDestroy, AfterViewInit
 {
-    constructor(public app: TApplication, public nav: NavController, private navParams: NavParams, private renderer: Renderer)
+    constructor(public app: TApplication, public nav: NavController, private navParams: NavParams)
     {
     }
 
@@ -30,8 +32,7 @@ export class DemoPage implements OnDestroy, AfterViewInit
             else
                 this.StartScan();
         }
-
-        this.AnimateFade(this.body, [{opacity: 0}, {opacity: 0}], 0);
+        this.InitElementStyle();        
         setTimeout(() => this.AnimationFlow(), 200);
     }
 
@@ -103,167 +104,155 @@ export class DemoPage implements OnDestroy, AfterViewInit
             this.Start('USB');
     }
 
-    AnimateFade(Agrement, Array, Duration: number)
+
+    InitElementStyle()
     {
-        this.renderer.invokeElementMethod(
-            Agrement.nativeElement,
-            'animate',
-            [
-                Array,
-                {
-                    duration: Duration,
-                    delay: 0,
-                    fill: 'forwards'
-                }
-            ]
-        );
-    }
+        let ele = this.animatedef.nativeElement, 
+            width = window.innerWidth, 
+            height = width * 1.5,
+            colorYellow = "#f4e827", colorLight = "#FFFFFF", colorLightOpacity = 'rgba(255,255,255,.5)';
+        ele.children[ID.tips1].setAttribute("style",  "width: " + width * 0.14 + "px; height: " + width * 0.14 + "px; left: " + width * 0.39 + "px; top:" + height * 0.15 + "px");
+        ele.children[ID.tips2].setAttribute("style",  "width: " + width * 0.05 + "px; height: " + width * 0.05 + "px; left: " + width * 0.83 + "px; top:" + height * 0.455 + "px");
+        ele.children[ID.tips3].setAttribute("style",  "width: " + width * 0.14 + "px; height: " + width * 0.14 + "px; left: " + width * 0.62 + "px; top:" + height * 0.76 + "px");
+        ele.children[ID.electrode].setAttribute("style",  "font-size: 1.6rem; color: " + colorYellow + ";left: " + width * 0.62 + "px; top: " + height * 0.16 + "px");
+        ele.children[ID.power].setAttribute("style",  "transform:translateY(0); transform-origin: center bottom; font-size: 1.2rem; line-height:1.4rem; color: " + colorYellow + "; left: " + width * 0.85 + "px; top: " + height * 0.35 + "px;");
+        ele.children[ID.switch].setAttribute("style",  "font-size: 1.6rem; color: " + colorYellow + ";left: " + width * 0.18 + "px; top: " + height * 0.5 + "px");
+        ele.children[ID.strength].setAttribute("style",  "font-size: 1.6rem; color: " + colorYellow + ";left: " + width * 0.18 + "px; top: " + height * 0.82 + "px");
+        ele.children[ID.line1].setAttribute("style",  "z-index:0; transform-origin: left center;transform:scale(.5); font-size: 50vw; color: " + colorYellow + ";left: " + width * 0.5 + "px; top: " + -height * 0.08 + "px");
+        ele.children[ID.line2].setAttribute("style",  "z-index:0; transform-origin: right bottom; font-size: 50vw; color: " + colorYellow + ";left: " + width * 0.12 + "px; top: " + height * 0.38 + "px");
+        ele.children[ID.line3].setAttribute("style",  "z-index:0; transform-origin: right center; font-size: " + width * 0.68 + "px; color: " + colorYellow + ";left: " + width * 0.12 + "px; top: " + height * 0.50 + "px");
+        ele.children[ID.num1].setAttribute("style", "font-size: 2.8rem; color: " + colorYellow + ";left: " + width * 0.88 + "px; top: " + height * 0.06 + "px");
+        ele.children[ID.num2].setAttribute("style", "font-size: 2.8rem; color: " + colorYellow + ";left: " + width * 0.88 + "px; top: " + height * 0.5 + "px");
+        ele.children[ID.num3].setAttribute("style", "font-size: 2.8rem; color: " + colorYellow + ";left: " + -width * 0.04 + "px; top: " + height * 0.55 + "px");
+        ele.children[ID.num4].setAttribute("style", "font-size: 2.8rem; color: " + colorYellow + ";left: " + -width * 0.04 + "px; top: " + height * 0.87 + "px");
+        ele.children[ID.arrowPoint].setAttribute("style", "transform: rotate(-170deg); font-size: 1rem; color: " + colorLightOpacity + ";left: " + width * 0.74 + "px; top: " + height * 0.6 + "px");
+        ele.children[ID.key].setAttribute("style", "font-size: " + width * 0.5 + "px; color: " + colorLight + "; left: " + width * 0.36 + "px; top: " + height * 0.5 + "px");
+        ele.children[ID.body].setAttribute("style", "font-size:" + width * 0.67 + "px; color: " + colorLight + "; top:"  + -height * 0.07 + "px; ");
+
+        this.ready.nativeElement.setAttribute("style", "z-index: 0; opacity: 0; margin-top: -30px");
+    }    
 
     AnimationFlow()
-    {
-        if (! this.TypeMode)
-            this.TypeMode = STEP[0];
-
+    {        
+        let ele = this.animatedef.nativeElement;
         let width = window.innerWidth, height = width * 1.5;
-        let time = 0, step = 0;
+
         let Animation = () =>
         {
-            time += 0.05;
-            if (time <= 2)
+            console.log("TypeMode:" + this.TypeMode);
+            
+            if (this.TypeMode > 9) return; 
+          
+            switch(this.TypeMode)
             {
-                switch(this.TypeMode)
-                {
-                case STEP[0]:
-                    this.AnimateFade(this.body, [{opacity: 0,transform:'translateY(50px)' }, { opacity: 1,transform:'translateY(0)'}], 500);
+                case 0:                    
+                    setTimeout(() => {
+                        ele.children[ID.body].style.opacity = 1;
+                        ele.children[ID.body].style.left = width * 0.05 + "px";
+                        ele.children[ID.body].style.top = -height * 0.07 + "px";
+                        Animation();
+                    }, 150);                                    
                     break;
-                case STEP[1]:
-                    this.AnimateFade(this.ready, [{opacity: 0, marginTop: '-70px' }, { opacity: 1, marginTop: '-50px' }], 500);
-                    this.AnimateFade(this.line1, [{opacity: 0,transform:'scale(.5)'}, { opacity: 1,transform:'scale(1)'}], 500);
-                    this.AnimateFade(this.describe1, [{opacity: 0, left: width * 0.62 + 'px', top: height * 0.16 + 'px' }, { opacity: 1, left: width * 0.62 + 'px', top: height * 0.12 + 'px' }], 500);
+
+                case 1:                
+                    setTimeout(() => {
+                        this.ready.nativeElement.style.opacity = 1;
+                        this.ready.nativeElement.style.marginTop = "-70px";
+                        ele.children[ID.line1].style.opacity = 1;
+                        ele.children[ID.line1].style.transform = "scale(1)";                        
+                        Animation();
+                    }, 500);
+
+                    setTimeout(() => {
+                        ele.children[ID.electrode].style.opacity = 1;
+                        ele.children[ID.electrode].style.top = height * 0.12 + "px";
+                        Animation();
+                    }, 700);
                     break;
-                case STEP[2]:
-                    this.AnimateFade(this.num1, [{ opacity: 0, left: width * 0.88 + 'px', top: height * 0.06 + 'px' }, { opacity: 1, left: width * 0.88 + 'px', top: height * 0.14 + 'px' }], 500);
+
+                case 2:
+                    setTimeout(() => {
+                        ele.children[ID.num1].style.opacity = 1;
+                        ele.children[ID.num1].style.top = height * 0.13 + "px";
+                        Animation();
+                    }, 700);
                     break;
-                case STEP[3]:
+
+                case 3:
+                    setTimeout(() => {
+                        ele.children[ID.power].style.opacity = 1;
+                        ele.children[ID.power].style.transform = "translateY(0)";
+                        Animation();
+                    }, 700);                    
                     break;
-                case STEP[4]:
-                    this.AnimateFade(this.describe2, [{ opacity: 0, left: width * 0.85 + 'px', top: height * 0.35 + 'px',transform:'translateY(0)' }, { opacity: 1, left: width * 0.85 + 'px', top: height * 0.35 + 'px',transform:'translateY(0)' }], 1000);
+
+                case 4:
+                    setTimeout(() => {
+                        ele.children[ID.num2].style.opacity = 1
+                        Animation();
+                    }, 700);                    
                     break;
-                case STEP[5]:
-                    this.AnimateFade(this.num2, [{ opacity: 0, left: width * 0.88 + 'px', top: height * 0.5 + 'px' }, { opacity: 1, left: width * 0.88 + 'px', top: height * 0.5 + 'px' }], 500);
+
+                case 5:
+                    setTimeout(() => {
+                        ele.children[ID.arrowPoint].style.opacity = 1;
+                        ele.children[ID.arrowPoint].style.left = width * 0.64 + "px";
+                        ele.children[ID.arrowPoint].style.fontSize = "6rem";
+                        ele.children[ID.key].style.opacity = 1;
+                        ele.children[ID.key].style.left = width * 0.3 + "px";
+                        ele.children[ID.key].style.top = height * 0.5 + "px";
+                        Animation();
+                    }, 700);
                     break;
-                case STEP[6]:
-                    this.AnimateFade(this.arrowPoint, [{ opacity: 0, fontSize: '1rem', left: width * 0.74 + 'px', top: height * 0.6 + 'px' }, { opacity: 1, fontSize: '6rem', left: width * 0.64 + 'px', top: height * 0.6 + 'px' }], 600);
-                    this.AnimateFade(this.key, [{ opacity: 0,left: width * 0.36 + 'px', top: height * 0.5 + 'px'}, { opacity: 1,left: width * 0.26 + 'px', top: height * 0.55 + 'px'}], 1000);
+
+                case 6:
+                    setTimeout(() => {
+                        ele.children[ID.line2].style.opacity = 1;
+                        ele.children[ID.line2].style.transform = 'scale(1)';
+                        
+                        ele.children[ID.switch].style.opacity = 1;
+                        ele.children[ID.switch].style.top = height * 0.48 + "px";
+                        Animation();
+                    }, 700);                    
                     break;
-                case STEP[7]:
-                    this.AnimateFade(this.line2, [{ opacity: 0,transform:'scale(.5)'}, { opacity: 1,transform:'scale(1)'}], 500);
-                    this.AnimateFade(this.describe3, [{ opacity: 0, left: width * 0.18 + 'px', top: height * 0.5 + 'px' }, { opacity: 1, left: width * 0.18 + 'px', top: height * 0.52 + 'px' }], 1000);
+
+                case 7:
+                    setTimeout(() => {
+                        ele.children[ID.num3].style.opacity = 1;
+                        ele.children[ID.num3].style.left = width * 0.06 + 'px';
+                        Animation();
+                    }, 700); 
                     break;
-                case STEP[8]:
-                    this.AnimateFade(this.num3, [{ opacity: 0, left: -width * 0.04 + 'px', top: height * 0.54 + 'px' }, { opacity: 1, left: width * 0.04 + 'px', top: height * 0.54 + 'px' }], 1000);
+
+                case 8:
+                     setTimeout(() => {
+                        ele.children[ID.line3].style.opacity = 1;
+
+                        ele.children[ID.num4].style.opacity = 1;
+                        ele.children[ID.num4].style.left = width * 0.06 + 'px';
+                        Animation();
+                    }, 700);                     
                     break;
-                case STEP[9]:
-                    break;
-                case STEP[10]:
-                    this.AnimateFade(this.line3, [{ opacity: 0,transform:'scale(.5)'}, { opacity: 1,transform:'scale(1)'}], 500);
-                    this.AnimateFade(this.describe4, [{ opacity: 0, left: width * 0.18 + 'px', top: height * 0.82 + 'px' }, { opacity: 1, left: width * 0.18 + 'px', top: height * 0.84 + 'px' }], 1000);
-                    break;
-                case STEP[11]:
-                    this.AnimateFade(this.num4, [{ opacity: 0, left: -width * 0.04 + 'px', top: height * 0.86 + 'px' }, { opacity: 1, left: width * 0.04 + 'px', top: height * 0.86 + 'px' }], 1000);
-                    break;
-                }
-            }
-            else
-            {
-                if (step + 1 === STEP.length) return;
-                time = 0;
-                step += 1;
-                this.TypeMode = STEP[step];
+
+                case 9:
+                    setTimeout(() => {
+                        ele.children[ID.strength].style.opacity = 1;
+                        ele.children[ID.strength].style.top = height * 0.84 + 'px';
+                        Animation();
+                    }, 700);
+                break;
             }
 
-            requestAnimationFrame(Animation);
+            this.TypeMode ++;
         }
         Animation();
     }
+   
 
-    SetTipsClass(n: number): string
-    {
-        switch(n)
-        {
-        case 1:
-            if (this.TypeMode > STEP[1]) return 'animateTips';
-        case 2:
-            if (this.TypeMode > STEP[3]) return 'animateTips';
-        case 3:
-            if (this.TypeMode > STEP[9]) return 'animateTips';
-        }
-    }
+    TypeMode: number = 0;
 
-    SetTipsStyle(n: number): Object
-    {
-        let width = window.innerWidth, height = width * 1.5;
-
-        switch (n)
-        {
-        case 0:
-            return {width: '5rem', height: '5rem', left: width * 0.40 + 'px', top: height * 0.15 + 'px'}
-        case 1:
-            return {width: '2rem', height: '2rem', left: width * 0.83 + 'px', top: height * 0.455 + 'px'}
-        case 2:
-            return {width: '4rem', height: '4rem', left: width * 0.62 + 'px', top: height * 0.75 + 'px'}
-        }
-    }
-
-    SetElement(Str: string): Object
-    {
-        let width = window.innerWidth, height = width * 1.5, colorYellow = "#f4e827", colorLight = "#FFFFFF", colorLightOpacity = 'rgba(255,255,255,.5)';
-
-        switch(Str)
-        {
-        case 'body':
-            return {fontSize: '80vw', transformOrigin: 'center bottom'}
-        case 'num':
-            return {fontSize: '2.8rem', color: colorYellow }
-        case 'arrowPoint':
-            return {color: colorLightOpacity, transform: 'rotate(-155deg)'}
-        case 'key':
-            return {fontSize: '60vw', color: colorLight}
-        case 'line1':
-            return {opacity: 0, zIndex: 0, fontSize: '50vw', color: colorYellow, left: width * 0.5 + 'px', top: height * 0.02 + 'px', transformOrigin: 'left center'}
-        case 'line2':
-            return {opacity: 0, zIndex: 0, fontSize: '50vw', color: colorYellow, left: width * 0.14 + 'px', top: height * 0.46 + 'px', transformOrigin: 'right bottom'}
-        case 'line3':
-            return {opacity: 0, zIndex: 0, fontSize: '72vw', color: colorYellow, left: width * 0.14 + 'px', top: height * 0.62 + 'px', transformOrigin: 'right center'}
-        case 'describe1':
-            return {fontSize: '1.6rem', color: colorYellow}
-        case 'describe2':
-            return {fontSize: '1.2rem', lineHeight: '1.4rem', color: colorYellow, transformOrigin: 'center bottom'}
-        case 'describe3':
-            return {fontSize: '1.6rem', color: colorYellow}
-        case 'describe4':
-            return {fontSize: '1.6rem', color: colorYellow}
-        }
-    }
-
-    TypeMode: number = STEP[0];
-
-    @ViewChild('body') body : ElementRef;
-    @ViewChild('arrowPoint') arrowPoint: ElementRef;
-    @ViewChild('key') key: ElementRef;
-    @ViewChild('line1') line1 : ElementRef;
-    @ViewChild('line2') line2 : ElementRef;
-    @ViewChild('line3') line3 : ElementRef;
-    @ViewChild('describe1') describe1: ElementRef;
-    @ViewChild('describe2') describe2: ElementRef;
-    @ViewChild('describe3') describe3: ElementRef;
-    @ViewChild('describe4') describe4: ElementRef;
-    @ViewChild('num1') num1: ElementRef;
-    @ViewChild('num2') num2: ElementRef;
-    @ViewChild('num3') num3: ElementRef;
-    @ViewChild('num4') num4: ElementRef;
     @ViewChild('ready') ready: ElementRef;
-
+    @ViewChild('animatedef') animatedef: ElementRef;
     IsShowingDeviceList: boolean = false;
     DeviceList: Array<BLE.IScanDiscovery> = [];
 

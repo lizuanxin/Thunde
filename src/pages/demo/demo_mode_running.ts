@@ -226,6 +226,12 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
         return (this.Ticking / (DEMO_MODES_TIMES[this.CurrentRunningIndex])) * 100;
     }
 
+    get TextStyle(): Object
+    {
+        let screen = window.innerHeight;
+        return { height: screen * 0.2 + "px", overflowY: "scroll" }
+    }
+
     PointRotate(): string
     {
         // 266~446

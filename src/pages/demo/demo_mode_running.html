@@ -4,26 +4,26 @@
         <ion-row>
           <ion-col col-4 offset-4><img src="{{ModeGif}}"></ion-col>
         </ion-row>
-        <div [ngStyle]="SetDetail">
+        <div [ngStyle]="TextStyle">
           <div padding-horizontal text-light f-1-8><strong>{{'demo_mode_play_page.'+ModeTitle|translate}}</strong></div>
           <div padding-horizontal text-light f-1-1>{{'demo_mode_play_page.'+ModeInfo|translate}}</div>
           <div padding-horizontal text-light f-1-2><strong>{{'demo_mode_play_page.'+ModeSuggestion|translate}}</strong></div>
         </div>
       </div>
 
-      <div pull-bottom [ngStyle]="{'width':'100%','bottom':'10px'}">
-        <ion-row [ngStyle]="{'margin-top':'0px','padding':'0px'}">
-            <ion-col col-8 offset-2 [ngStyle]="{'margin-top':'0px','padding':'0px'}">
+      <div pull-bottom [ngStyle]="{width:'100%',bottom:'20px'}">
+        <ion-row [ngStyle]="{marginBottom:'-15px'}">
+            <ion-col col-8 offset-2 [ngStyle]="{marginTop:0,padding:0}">
                 <comp-progressbar [Min]="0" [Max]="60" [Progress]="Intensity" (OnValueChanged)="AdjustIntensity($event)"></comp-progressbar>
             </ion-col>
         </ion-row>
-        <ion-row [ngStyle]="{'position':'relative','z-index':100,'margin':'0px','padding':'0px'}">
-          <ion-col style="padding: 0px; margin-top: -6px">
+        <ion-row [ngStyle]="{position:'relative',zIndex:100}" no-padding no-margin>
+          <ion-col>
             <ion-list transparent no-margin>
-              <ion-item no-lines style="padding: 0px; margin: 0px">
-                <ion-range min="0" max="100" [ngModel]="InitRange" color="secondary" [ngStyle]="{'margin-top':'0px','padding':'0px'}" disabled progress-bar>
-                  <ion-label range-right [ngClass] = "app.SkinColor" [ngStyle]="{'margin':'0 20px 0 5px'}">{{TotalMinute}}</ion-label>
-                  <ion-label range-left [ngClass] = "app.SkinColor" [ngStyle]="{'margin':'0 5px 0 20px'}">{{TickingDownHint}}</ion-label>
+              <ion-item no-padding no-lines>
+                <ion-range min="0" max="100" [ngModel]="InitRange" color="secondary" [ngStyle]="{marginTop:0,padding:0}" disabled progress-bar>
+                  <ion-label range-right [ngClass] = "app.SkinColor" [ngStyle]="{margin:'0 15px 0 10px'}">{{TickingDownHint}}</ion-label>
+                  <ion-label range-left [ngClass] = "app.SkinColor" [ngStyle]="{margin:'0 10px 0 15px'}">{{TotalMinute}}</ion-label>
                 </ion-range>
               </ion-item>
             </ion-list>

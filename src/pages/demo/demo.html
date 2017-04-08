@@ -1,8 +1,8 @@
 <ion-content no-scroll padding [ngClass]="app.Skin('home')" color="light">
     <ion-row>
-        <ion-col text-center text-light>
+        <!--<ion-col text-center text-light>
             <ion-icon #body app-icon [ngStyle]="SetElement('body')">&#xe91f;</ion-icon>
-        </ion-col>
+        </ion-col>-->
 
         <ion-col text-center text-light>
         <ion-list *ngIf="IsShowingDeviceList" absolute [ngStyle]="{zIndex:1,top:0,left:0,right:0}">
@@ -22,29 +22,30 @@
         </ion-list>
         </ion-col>
     </ion-row>
-    <div Animate-Canvas>
-        <span class="animate tips" [ngStyle]="SetTipsStyle(0)" [ngClass]="SetTipsClass(1)"></span>
-        <span class="animate tips" [ngStyle]="SetTipsStyle(1)" [ngClass]="SetTipsClass(2)"></span>
-        <span class="animate tips" [ngStyle]="SetTipsStyle(2)" [ngClass]="SetTipsClass(3)"></span>
-        <span #describe1 [ngStyle]="SetElement('describe1')">{{'demo_mode_play_page.electrode'|translate}}</span>
-        <span #describe2 [ngStyle]="SetElement('describe2')" [innerHTML]="'demo_mode_play_page.phone_power'|translate"></span>
-        <span #describe3 [ngStyle]="SetElement('describe3')" [innerHTML]="'demo_mode_play_page.switch'|translate"></span>
-        <span #describe4 [ngStyle]="SetElement('describe4')" [innerHTML]="'demo_mode_play_page.strength'|translate"></span>
-        <ion-icon app-icon #line1 [ngStyle]="SetElement('line1')">&#xe92a;</ion-icon>
-        <ion-icon app-icon #line2 [ngStyle]="SetElement('line2')">&#xe931;</ion-icon>
-        <ion-icon app-icon #line3 [ngStyle]="SetElement('line3')">&#xe935;</ion-icon>
-        <ion-icon app-icon #num1 [ngStyle]="SetElement('num')">&#xe923;</ion-icon>
-        <ion-icon app-icon #num2 [ngStyle]="SetElement('num')">&#xe924;</ion-icon>
-        <ion-icon app-icon #num3 [ngStyle]="SetElement('num')">&#xe925;</ion-icon>
-        <ion-icon app-icon #num4 [ngStyle]="SetElement('num')">&#xe927;</ion-icon>
-        <ion-icon app-icon #arrowPoint [ngStyle]="SetElement('arrowPoint')">&#xe928;</ion-icon>
-        <ion-icon app-icon #key [ngStyle]="SetElement('key')">&#xe921;</ion-icon>
+    <div Animate-Canvas #animatedef>
+        <div #tips1 class="tips" [class.animateTips]="TypeMode > 3"></div>
+        <div #tips2 class="tips" [class.animateTips]="TypeMode > 4"></div>
+        <div #tips3 class="tips" [class.animateTips]="TypeMode > 9"></div>
+        <div #electrode>{{'demo_mode_play_page.electrode'|translate}}</div>
+        <div #power [innerHTML]="'demo_mode_play_page.phone_power'|translate"></div>
+        <div #switch [innerHTML]="'demo_mode_play_page.switch'|translate"></div>
+        <div #strength [innerHTML]="'demo_mode_play_page.strength'|translate"></div>
+        <div><ion-icon app-icon #line1>&#xe92a;</ion-icon></div>
+        <div><ion-icon app-icon #line2>&#xe931;</ion-icon></div>
+        <div><ion-icon app-icon #line3>&#xe935;</ion-icon></div>
+        <div><ion-icon app-icon #num1>&#xe923;</ion-icon></div>
+        <div><ion-icon app-icon #num2>&#xe924;</ion-icon></div>
+        <div><ion-icon app-icon #num3>&#xe925;</ion-icon></div>
+        <div><ion-icon app-icon #num4>&#xe927;</ion-icon></div>
+        <div><ion-icon app-icon #arrowPoint>&#xe928;</ion-icon></div>
+        <div><ion-icon app-icon #key>&#xe921;</ion-icon></div>
+        <div><ion-icon #body app-icon>&#xe91f;</ion-icon></div>       
     </div>
 </ion-content>
 <ion-footer no-shadow no-border>
     <ion-toolbar transparent visible>
         <ng-template [ngIf]="!IsShowingDeviceList">
-          <div text-center #ready [ngStyle]="{'opacity':0}">
+          <div text-center #ready class="animation" [ngStyle]="{opacity:0}">
               <button clear icon-only text-light [ngStyle]="{'font-size':'3.6rem'}" (click)="Go()" tappable>
                   <ion-icon app-icon>&#xe929;</ion-icon>
               </button>
