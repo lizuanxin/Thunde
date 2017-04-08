@@ -43,7 +43,7 @@
     </div>
     <ng-template [ngIf]="!IsShowingDeviceList">
         <div text-center #ready class="animation" [ngStyle]="{opacity:0}">
-            <button clear icon-only text-light [ngStyle]="{'font-size':'3.6rem'}" (click)="Go()" tappable>
+            <button clear icon-only text-light [ngStyle]="{fontSize:'3.6rem',overflow:'visible'}" (click)="Go()" tappable>
                 <ion-icon app-icon>&#xe929;</ion-icon>
             </button>
         </div>
