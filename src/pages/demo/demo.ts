@@ -129,8 +129,8 @@ export class DemoPage implements OnDestroy, AfterViewInit
         ele.children[ID.key].setAttribute("style", "font-size: " + width * 0.5 + "px; color: " + colorLight + "; left: " + width * 0.36 + "px; top: " + height * 0.5 + "px");
         ele.children[ID.body].setAttribute("style", "font-size:" + width * 0.67 + "px; color: " + colorLight + "; top:"  + -height * 0.07 + "px; ");
 
-        this.ready.nativeElement.setAttribute("style", "z-index: 0; opacity: 0; margin-top: -30px");
-    }    
+        this.ready.nativeElement.setAttribute("style", "z-index: 0; position:absolute; left:0; right:0; bottom:20px; opacity: 0;");
+    }   
 
     AnimationFlow()
     {        
@@ -157,7 +157,7 @@ export class DemoPage implements OnDestroy, AfterViewInit
                 case 1:                
                     setTimeout(() => {
                         this.ready.nativeElement.style.opacity = 1;
-                        this.ready.nativeElement.style.marginTop = "-70px";
+                        this.ready.nativeElement.style.bottom = "30px";
                         ele.children[ID.line1].style.opacity = 1;
                         ele.children[ID.line1].style.transform = "scale(1)";                        
                         Animation();
