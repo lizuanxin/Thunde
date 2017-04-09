@@ -184,8 +184,10 @@ export class GoPage implements OnInit, OnDestroy
         {
             let Shell = Loki.TShell.Get(DeviceId);
 
-            let StopScan: Promise<void> = Promise.resolve();
-            if (! Loki.TShell.IsUsbPlugin)
+            let StopScan: Promise<void>;
+            if (Loki.TShell.IsUsbPlugin)
+                StopScan = Promise.resolve();
+            else
                 StopScan = BLE.TGatt.StopScan();
 
             StopScan.then(() => Shell.Connect())
@@ -199,9 +201,9 @@ export class GoPage implements OnInit, OnDestroy
                 .catch(err =>
                 {
                     if (err instanceof EAbort)
-                        this.nav.push(RunningPage, params);
+                        return this.nav.push(RunningPage, params);
                     else
-                        loading.dismiss().then(() => this.app.ShowHintId(err.message));
+                        return loading.dismiss().then(() => this.app.ShowHintId(err.message));
                 })
         });
     }

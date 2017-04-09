@@ -154,7 +154,11 @@ export class TDistributeService
         return HttpRequest(WebRoot + '/assets/Firmware.json', 'GET', 'json')
             .then(Info =>
             {
-                let NewVersion = Info[FileName].split('.');
+                let NewVersionStr = Info[FileName];
+                if (! TypeInfo.Assigned(NewVersionStr))
+                    return;
+
+                let NewVersion = NewVersionStr.split('.')
                 if (NewVersion.length !== 3)
                     return Promise.reject(new EAbort());
 

@@ -23,6 +23,32 @@ export class TApplication extends TAppController
         this.Language = codes[0];
 
         console.log('TApplication construct');
+
+        let ts = new Date().getTime();
+        this.Platform.ready()
+            .then(() =>
+            {
+                this.Platform.registerBackButtonAction(() =>
+                {
+                    console.log('Hardware GoBack');
+
+                    let nav = this.Instance.getActiveNav();
+                    if (nav.canGoBack())
+                    {
+                        nav.pop();
+                        return;
+                    }
+
+                    let now = new Date().getTime();
+                    if (now - ts > 500)
+                    {
+                        ts = now;
+                        this.ShowHintId('back_twice_exit', 'bottom', 1500);
+                    }
+                    else
+                        this.Platform.exitApp();
+                })
+            })
     }
 
     static Initialize(Storage: TSqliteStorage): Promise<void>
@@ -64,12 +90,12 @@ export class TApplication extends TAppController
         return super.ShowLoading({spinner: 'crescent', content: Msg, cssClass: 'loading-s1'});
     }
 
-    ShowHintId(Id: string, Animate: boolean = true): Promise<Toast>
+    ShowHintId(Id: string, Position: 'top' | 'bottom' | 'middle' = 'middle', Duration = 3000): Promise<Toast>
     {
         let msg = this.Translate('hint.' + Id) as string;
 
         if (msg !== '')
-            return this.ShowToast({ message: msg, position: 'middle', cssClass: 'toast-s1', duration: 3000 });
+            return this.ShowToast({message: msg, position: Position, cssClass: 'toast-s1', duration: Duration});
         else
             return Promise.resolve(null);
     }
@@ -87,8 +113,6 @@ export class TApplication extends TAppController
     SetSkin(Name: string): void
     {
         (this.constructor as typeof TApplication).SkinName = Name;
-        // let Storage = new TSqliteStorage(const_data.DatabaseName);
-        // Storage.Set('Skin', Name);
     }
 
     get SkinBorderColor(): string {

@@ -4,7 +4,7 @@ export let translate_en =
     {
         e_usb_serial_plugin: "USB Device Error.",
         e_usb_permission: "We don't have the Permission to use USB Device.",
-        e_usb_otg: 'Your device have no USB OTG support, Our product may not porperly worked',
+        e_usb_otg: 'Your device report no USB OTG support, Our product may not porperly worked',
         e_ble_plugin: "BLE Device Error.",
         e_connect_timeout: "Connect Timeout.",
         e_request_timeout: "Request Timeout.",
@@ -14,6 +14,7 @@ export let translate_en =
 
         min: 'Minutes',
 
+        back_twice_exit: 'Press Back twice to Exit',
         shutdown: 'Thunderbolt has been shutdown.',
         low_battery: 'Battery is Low, Please recharge...',
         disconnected: '',
@@ -191,7 +192,7 @@ export let translate_zh =
     {
         e_usb_serial_plugin: "USB 设备错误。",
         e_usb_permission: "请授予权限使用USB",
-        e_usb_otg: '因为您的手机未检测到 OTG, 本产品可能不能正确使用。',
+        e_usb_otg: '因为您的手机未检测到 USB OTG, 本产品可能不能正确使用。',
         e_ble_plugin: "BLE 设备错误。",
         e_connect_timeout: "未能成功连接上设备。",
         e_request_timeout: "请求超时。",
@@ -201,6 +202,7 @@ export let translate_zh =
 
         min: '分钟',
 
+        back_twice_exit: '双击退出应用',
         shutdown: '设备已关机。',
         low_battery: '电池电量低，请充电',
         disconnected: '设备已断开。',

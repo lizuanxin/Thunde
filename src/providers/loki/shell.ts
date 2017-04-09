@@ -401,8 +401,6 @@ export class TShell extends TAbstractShell
         return this.Execute('>bat', REQUEST_TIMEOUT,
             Line =>
             {
-                console.log(Line);
-
                 strs = Line.split(':');
                 if (strs.length > 1 && strs[0] === '32769')
                 {
@@ -456,7 +454,6 @@ export class TShell extends TAbstractShell
 
                 // 1XXXBBBB
                 this._Version = (parseInt(keyvalue[1]) * 1000 + parseInt(keyvalue[2])) * 10000 + parseInt(keyvalue[3]);
-
                 console.log('firmware version: ' + this._Version);
                 return this._Version;
             })
@@ -518,7 +515,6 @@ export class TShell extends TAbstractShell
     {
         if (Proxy !== this.Proxy)
             return;
-
         this._DeviceNotification(Proxy, ['NOTIFY', 'disconnect'])
     }
 
@@ -630,7 +626,6 @@ export class TProxyBLEShell extends BLE.TShell implements IProxyShell
     protected OnRead(Line: string): void
     {
         const NOTIFY = 'NOTIFY ';
-        // const FULL_SPACE = "insufficient space";         // 空间 已满V v
 
         if (Line.substring(0, NOTIFY.length) === NOTIFY)
             this.Owner._DeviceNotification(this, Line.split(' '));
@@ -677,7 +672,6 @@ export class TProxyUsbShell extends USBSerial.TShell implements IProxyShell
     protected OnRead(Line: string): void
     {
         const NOTIFY = 'NOTIFY ';
-        // const FULL_SPACE = "insufficient space";         // 空间 已满V v
 
         if (Line.substring(0, NOTIFY.length) === NOTIFY)
             this.Owner._DeviceNotification(this, Line.split(' '));

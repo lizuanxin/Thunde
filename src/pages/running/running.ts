@@ -67,7 +67,6 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
     ngAfterViewInit()
     {
         this.AddDialElement();
-
         this.nav.remove(1, this.view.index - 1, {animate: false})
             .then(() => this.Start());
     }
@@ -169,10 +168,8 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
                         this.Downloading = false;
                     });
             })
-            .then(() =>
-            {
-                return this.app.HideLoading().then(() => this.Shell.StartScriptFile(this.ScriptFile.Name));
-            })
+            .then(() => this.app.HideLoading())
+            .then(() => this.Shell.StartScriptFile(this.ScriptFile.Name))
             .catch(err=>
             {
                 this.app.HideLoading()
@@ -202,12 +199,11 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     private ClosePage()
     {
-        //if (! Loki.TShell.FakeDevice)
-            setTimeout(() =>
-            {
-                if (this.view === this.nav.getActive())
-                    this.nav.pop();
-            }, 300);
+        setTimeout(() =>
+        {
+            if (this.view === this.nav.getActive())
+                this.nav.pop();
+        }, 300);
     }
 
     private AddDialElement()
