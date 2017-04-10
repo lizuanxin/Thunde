@@ -543,6 +543,17 @@ export class TShell extends TAbstractShell
 
         switch(Params[1])
         {
+        case 'strength':
+            this._Intensity = parseInt(Params[2]);
+            if (this._Intensity >= 0)
+            {
+                this.OnNotify.next(TShellNotify.Intensity);
+                break;
+            }
+            else
+            {
+                // continue to shutdown
+            }
         case 'shutdown':
             this.StopTicking();
             this.OnNotify.next(TShellNotify.Shutdown);
@@ -571,11 +582,6 @@ export class TShell extends TAbstractShell
         case 'stop':
             this.StopTicking();
             this.OnNotify.next(TShellNotify.Stopped);
-            break;
-
-        case 'strength':
-            this._Intensity = parseInt(Params[2]);
-            this.OnNotify.next(TShellNotify.Intensity);
             break;
         }
     }

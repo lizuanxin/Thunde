@@ -1,7 +1,6 @@
 import {Injectable}  from '@angular/core';
 
-import {TypeInfo, IPersistable, TPersistable, TPersistPropRule, TGuid} from '../UltraCreation/Core'
-import {HexToBin} from '../UltraCreation/Core/ToHex'
+import {TypeInfo, IPersistable, TPersistable, TPersistPropRule, TGuid, HexConv} from '../UltraCreation/Core'
 import {TBase64Encoding} from '../UltraCreation/Encoding'
 import {TSqlQuery, TSqliteStorage} from '../UltraCreation/Storage';
 import {const_data} from './thunderbolt.const'
@@ -351,7 +350,7 @@ export class TScriptFile extends TAsset
 
     get Md5Name(): string
     {
-        let x = TBase64Encoding.Instance.EncodeToString(HexToBin(this.Md5));
+        let x = TBase64Encoding.Instance.EncodeToString(HexConv.HexToBin(this.Md5));
         console.log(TBase64Encoding.Instance.Decode(x));
 
         return x;
