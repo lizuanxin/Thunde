@@ -69,10 +69,7 @@ export class GoPage implements OnInit, OnDestroy
                 let ELE = <HTMLElement>document.getElementById(targetId);
                 this.Point = ELE.getBoundingClientRect();
                 this.ShowBox = ELE.cloneNode(true);
-                let position = 'position:fixed; z-index:99;';
-                let Client = 'width:' + Math.trunc(this.Point.width) + 'px; height:' + Math.trunc(this.Point.height) + 'px;'
-                this.InitPosition = position + Client + this.StyleDirection + 'top:' + Math.trunc(this.Point.top) + 'px; transform:scale(1)';                 
-                this.enlarge.nativeElement.setAttribute('style',this.InitPosition);                
+                this.InitPosition();         
                 this.enlarge.nativeElement.appendChild(this.ShowBox);                
                 this.enlarge.nativeElement.addEventListener("click", this.CloseDesc.bind(this));              
 
@@ -97,17 +94,24 @@ export class GoPage implements OnInit, OnDestroy
         }
     }
 
-    get StyleDirection(): string
+    InitPosition()
     {
+        this.enlarge.nativeElement.style.zIndex = 99;
+        this.enlarge.nativeElement.style.position = 'fixed';
+        this.enlarge.nativeElement.style.width = Math.trunc(this.Point.width) + 'px';
+        this.enlarge.nativeElement.style.height = Math.trunc(this.Point.height) + 'px';
+        this.enlarge.nativeElement.style.top = Math.trunc(this.Point.top) + 'px';
+        this.enlarge.nativeElement.style.transform = 'scale(1)';
+
         if (this.Point.left < this.Point.width)
-            return 'left:21px;';
+            this.enlarge.nativeElement.style.left = '21px';
         else
-            return 'right:21px;';
+            this.enlarge.nativeElement.style.right = '21px';
     }
 
     CloseDesc()
-    {
-        this.enlarge.nativeElement.setAttribute('style', this.InitPosition);
+    {        
+        this.InitPosition();
         setTimeout(() =>
         {
             this.IsShowDescIcon = false;
@@ -225,7 +229,6 @@ export class GoPage implements OnInit, OnDestroy
     IsShowDescIcon: boolean = false;
     IsShowFileDetail: boolean = false;
     CurrentDescIcon: string;
-    InitPosition:any;
     ShowBox:any;
     Point: any;
 
