@@ -19,6 +19,8 @@ import {FiledetailsPage} from '../pages/filedetails/filedetails';
 import {DemoPage} from '../pages/demo/demo';
 import {DemoModeRunningPage} from '../pages/demo/demo_mode_running';
 
+import {TestPage} from '../pages/test/test';
+
 import {ComponentProgressbar} from '../components/comp-progressbar'
 
 let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
@@ -26,6 +28,7 @@ let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
     activator: 'none',     // "ripple", "highlight"
     // pageTransition: 'ios-transition',
     pageTransitionDelay: 0,
+    swipeBackEnabled: false,
     // animate: false,
 };
 
@@ -40,14 +43,14 @@ let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
     declarations: [
         MyApp,
         HomePage, TouPage, GoPage, RunningPage, FiledetailsPage, OtaUpdatePage,
-        DemoPage, DemoModeRunningPage,
+        DemoPage, DemoModeRunningPage, TestPage,
         ComponentProgressbar
     ],
 
     entryComponents: [
         MyApp,
         HomePage, TouPage, GoPage, RunningPage, FiledetailsPage, OtaUpdatePage,
-        DemoPage, DemoModeRunningPage
+        DemoPage, DemoModeRunningPage, TestPage
     ],
 
     providers: [
