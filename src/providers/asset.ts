@@ -1,7 +1,7 @@
 import {Injectable}  from '@angular/core';
 
 import {TypeInfo, IPersistable, TPersistable, TPersistPropRule, TGuid} from '../UltraCreation/Core'
-import {HexToBin} from '../UltraCreation/StrUtils'
+import {HexToBin} from '../UltraCreation/Core/ToHex'
 import {TBase64Encoding} from '../UltraCreation/Encoding'
 import {TSqlQuery, TSqliteStorage} from '../UltraCreation/Storage';
 import {const_data} from './thunderbolt.const'
