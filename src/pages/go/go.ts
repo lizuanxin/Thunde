@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import {Component, OnInit, OnDestroy, ElementRef, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs/Rx'
 import {Platform, NavController, ViewController, NavParams, ModalController, Content} from 'ionic-angular';
 
@@ -66,29 +66,35 @@ export class GoPage implements OnInit, OnDestroy
             if (targetId !== '')
             {
                 this.IsShowDescIcon = true;
-                this.OutBox = <HTMLElement>document.getElementById('ShowDescIcon');
                 let ELE = <HTMLElement>document.getElementById(targetId);
                 this.Point = ELE.getBoundingClientRect();
                 this.ShowBox = ELE.cloneNode(true);
-                let position = 'position:fixed;z-index:99;';
-                let Client = 'width:' + Math.trunc(this.Point.width) + 'px;height:' + Math.trunc(this.Point.height) + 'px;'
-                this.InitialPosition = position + Client + this.StyleDirection + 'top:' + Math.trunc(this.Point.top) + 'px;transform:scale(1)';
-                this.OutBox.setAttribute('style', this.InitialPosition);
-                this.OutBox.appendChild(this.ShowBox);
-                this.OutBox.addEventListener("click", this.CloseDesc.bind(this));
-                let Fade = position + Client + 'top:42vh;' + this.StyleTransform;
+                let position = 'position:fixed; z-index:99;';
+                let Client = 'width:' + Math.trunc(this.Point.width) + 'px; height:' + Math.trunc(this.Point.height) + 'px;'
+                this.InitPosition = position + Client + this.StyleDirection + 'top:' + Math.trunc(this.Point.top) + 'px; transform:scale(1)';                 
+                this.enlarge.nativeElement.setAttribute('style',this.InitPosition);                
+                this.enlarge.nativeElement.appendChild(this.ShowBox);                
+                this.enlarge.nativeElement.addEventListener("click", this.CloseDesc.bind(this));              
 
-                setTimeout(() => this.OutBox.setAttribute('style', Fade), 100);
+                setTimeout(() => 
+                {                    
+                    if (this.Point.left < this.Point.width)
+                    {
+                        this.enlarge.nativeElement.style.transformOrigin = 'left 100%';                        
+                        this.enlarge.nativeElement.style.left = '25px';
+                        
+                    }
+                    else
+                    {
+                        this.enlarge.nativeElement.style.transformOrigin = '100% 100%';
+                        this.enlarge.nativeElement.style.right = '25px';                        
+                    }
+                    this.enlarge.nativeElement.style.top = '42vh';
+                    this.enlarge.nativeElement.style.transform = 'scale(2)';
+                    
+                }, 100);
             }
         }
-    }
-
-    get StyleTransform(): string
-    {
-        if (this.Point.left < this.Point.width)
-            return 'left:25px;transform:scale(2);transform-origin:left 100%;'
-        else
-            return 'right:25px;transform:scale(2);transform-origin:100% 100%;'
     }
 
     get StyleDirection(): string
@@ -101,13 +107,13 @@ export class GoPage implements OnInit, OnDestroy
 
     CloseDesc()
     {
-        this.OutBox.setAttribute('style', this.InitialPosition);
+        this.enlarge.nativeElement.setAttribute('style', this.InitPosition);
         setTimeout(() =>
         {
             this.IsShowDescIcon = false;
-            if (this.OutBox.childNodes.length === 0) return;
-            this.OutBox.removeAttribute('style');
-            this.OutBox.removeChild(this.ShowBox);
+            if (this.enlarge.nativeElement.childNodes.length === 0) return;
+            this.enlarge.nativeElement.removeAttribute('style');
+            this.enlarge.nativeElement.removeChild(this.ShowBox);
         }, 800)
     }
 
@@ -209,6 +215,7 @@ export class GoPage implements OnInit, OnDestroy
     }
 
     @ViewChild(Content) content: Content;
+    @ViewChild('enlarge') enlarge: ElementRef;
 
     Category: TCategory;
     ScriptFile: TScriptFile;
@@ -218,8 +225,7 @@ export class GoPage implements OnInit, OnDestroy
     IsShowDescIcon: boolean = false;
     IsShowFileDetail: boolean = false;
     CurrentDescIcon: string;
-    InitialPosition:any;
-    OutBox:any;
+    InitPosition:any;
     ShowBox:any;
     Point: any;
 
