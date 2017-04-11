@@ -35,9 +35,9 @@
         <div><ion-icon app-icon #num4>&#xe927;</ion-icon></div>
         <div><ion-icon app-icon #arrowPoint>&#xe928;</ion-icon></div>
         <div><ion-icon app-icon #key>&#xe921;</ion-icon></div>
-        <div><ion-icon #body app-icon>&#xe91f;</ion-icon></div>       
+        <div><ion-icon #body app-icon>&#xe91f;</ion-icon></div>
     </div>
-    <div text-light absolute style="left:30px;bottom:30px">Skip</div>
+    <div text-light absolute style="left:30px;bottom:30px" (click)="nav.pop()">{{'demo_mode_play_page.skip'|translate}}</div>
     <ng-template [ngIf]="!IsShowingDeviceList">
         <div text-center #ready class="animation" [ngStyle]="{opacity:0}">
             <button clear text-light [ngStyle]="{fontSize:'4.2em',overflow:'visible'}" (click)="Go()" tappable>
