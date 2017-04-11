@@ -37,13 +37,11 @@
         <div><ion-icon app-icon #key>&#xe921;</ion-icon></div>
         <div><ion-icon #body app-icon>&#xe91f;</ion-icon></div>
     </div>
-    <div text-light absolute style="z-index:1;left:30px;bottom:30px" (click)="nav.pop()">{{'demo_mode_play_page.skip'|translate}}</div>
-    <!--<ng-template [ngIf]="!IsShowingDeviceList">-->
-        <div text-center #ready class="animation" [ngStyle]="{opacity:0}">
-            <button clear text-light [ngStyle]="{fontSize:'4.2em',overflow:'visible'}" (click)="Go()" tappable>
-                <ion-icon app-icon>&#xe929;</ion-icon>
-            </button>
-        </div>
-    <!--</ng-template>-->
+    <div text-light absolute style="z-index:1;left:30px;bottom:30px" (click)="nav.pop()" tappable>{{'demo_mode_play_page.skip'|translate}}</div>
+    <div text-center #ready class="animation" [ngStyle]="{opacity:0}">
+        <button clear text-light [ngStyle]="{fontSize:'4.2em',overflow:'visible'}" (click)="Go()" tappable>
+            <ion-icon app-icon>&#xe929;</ion-icon>
+        </button>
+    </div>
 </ion-content>
 

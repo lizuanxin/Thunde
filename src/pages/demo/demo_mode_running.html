@@ -1,9 +1,11 @@
 <ion-content no-scroll padding [ngClass]="app.Skin('running')">
     <ng-template [ngIf]="!Finish">
       <div>
-        <div [ngStyle]="GifStyle">
-          <img src="{{ModeGif}}">
-        </div>
+        <ion-row>
+          <ion-col col-6 offset-3>
+              <img src="{{ModeGif}}">
+          </ion-col>
+        </ion-row>
         <div [ngStyle]="TextStyle">
           <div padding-horizontal text-light f-1-8><strong>{{'demo_mode_play_page.'+ModeTitle|translate}}</strong></div>
           <div padding-horizontal text-light f-1-1>{{'demo_mode_play_page.'+ModeInfo|translate}}</div>

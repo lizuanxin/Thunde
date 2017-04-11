@@ -226,15 +226,6 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
         return (this.Ticking / (DEMO_MODES_TIMES[this.CurrentRunningIndex])) * 100;
     }
 
-    get GifStyle(): Object
-    {
-        let screenHeight = window.innerHeight;
-        let screenWidth = window.innerWidth;
-        let offset = screenWidth * 0.2 + "px";
-
-        return { height: screenHeight * 0.16 + "px", paddingLeft: offset, paddingRight: offset, margin: "0", textAlign: "center"  }
-    }
-
     get TextStyle(): Object
     {
         let screenHeight = window.innerHeight;
