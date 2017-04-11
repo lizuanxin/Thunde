@@ -98,7 +98,16 @@ export class DemoPage implements OnDestroy, AfterViewInit
             if (this.DeviceList.length === 1)
                 this.Start(this.DeviceList[0].id);
             else
-                this.IsShowingDeviceList = true;
+                if (this.DeviceList.length > 0){
+                    this.IsShowingDeviceList = true;
+                }                    
+                else
+                {
+                    this.IsShowingDeviceList = false;
+                    this.DeviceListEmpty = true;
+                    setTimeout(() => this.DeviceListEmpty = false, 3000);
+                }                                      
+                    
         }
         else
             this.Start('USB');
@@ -253,7 +262,9 @@ export class DemoPage implements OnDestroy, AfterViewInit
 
     @ViewChild('ready') ready: ElementRef;
     @ViewChild('animatedef') animatedef: ElementRef;
+
     IsShowingDeviceList: boolean = false;
+    DeviceListEmpty: boolean =  false;
     DeviceList: Array<BLE.IScanDiscovery> = [];
 
     private ScanSubscription: Subscription;
