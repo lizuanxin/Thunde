@@ -112,13 +112,13 @@ export class GoPage implements OnInit, OnDestroy
     CloseDesc()
     {        
         this.InitPosition();
+        setTimeout(() => this.IsShowDescIcon = false, 600);
         setTimeout(() =>
-        {
-            this.IsShowDescIcon = false;
+        {           
             if (this.enlarge.nativeElement.childNodes.length === 0) return;
             this.enlarge.nativeElement.removeAttribute('style');
             this.enlarge.nativeElement.removeChild(this.ShowBox);
-        }, 800)
+        }, 1000)
     }
 
     ShowFileDetail()

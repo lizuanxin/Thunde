@@ -96,6 +96,13 @@
     animation-iteration-count:1;
 }
 
+.fadein{
+    animation:fadeIn .2s infinite linear;
+    -webkit-animation:fadeIn .2s infinite;
+    animation-fill-mode: forwards;
+    animation-iteration-count:1;
+}
+
 .tips{
     opacity: 0;
     position:absolute;
