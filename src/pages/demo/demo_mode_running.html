@@ -1,8 +1,8 @@
 <ion-content no-scroll padding [ngClass]="app.Skin('running')">
     <ng-template [ngIf]="!Finish">
       <div>
-        <ion-row>
-          <ion-col col-4 offset-4><img src="{{ModeGif}}"></ion-col>
+        <ion-row [ngStyle]="GifStyle">
+          <ion-col col-8 offset-2><img src="{{ModeGif}}"></ion-col>
         </ion-row>
         <div [ngStyle]="TextStyle">
           <div padding-horizontal text-light f-1-8><strong>{{'demo_mode_play_page.'+ModeTitle|translate}}</strong></div>
@@ -36,7 +36,7 @@
             <div text-center>
                 <h2>{{'hint.congratulations'|translate}}</h2>
                 <p padding>{{'demo_mode_play_page.demo_play_finish'|translate}}</p>
-                <p><ion-icon app-icon text-light [ngStyle]="{'font-size':'50vw'}">&#xe95c;</ion-icon></p>
+                <p><ion-icon app-icon text-light [ngStyle]="{'font-size':'50vw'}">&#xe938;</ion-icon></p>
             </div>
         </div>
     </ng-template>
