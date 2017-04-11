@@ -14,9 +14,10 @@ export class MyApp
         platform.ready().then(() =>
         {
             Splashscreen.show();
-
-            StatusBar.styleDefault();
-            StatusBar.hide();
+            // StatusBar.styleDefault();
+            // StatusBar.styleBlackTranslucent()
+            // StatusBar.st
+            StatusBar.overlaysWebView(false);
 
             Initialization.Execute()
                 .then(() =>
