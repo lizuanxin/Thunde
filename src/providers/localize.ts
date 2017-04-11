@@ -21,7 +21,6 @@ export let translate_en =
         no_load: 'Apply all the electrodes.',
         hardware_error: 'Hardware error, Please contact Customer Service.',
 
-        show_demo_mode: 'Go to Demo Mode',
         network_unavailable: 'Network Unavailable.',
         congratulations: 'Congratulations',
     },
@@ -56,6 +55,7 @@ export let translate_en =
         phone_power: 'O<br/>T<br/>G<br/>',
         switch: 'Mode Switch /<br/>Press to Power Off',
         strength: 'Intensity Control',
+        skip:'Skip',
 
         friction_title: 'FRICTION EFFECT',
         friction_info: 'You will feel a friction effect, a tingling sensation. By sending a very fast signal to your brain, Bluetens will block the transmission of the "pain message" alleviating your pain rapidly.',
@@ -209,7 +209,6 @@ export let translate_zh =
         no_load: '请检查电极帖',
         hardware_error: 'Hardware error, Please contact Customer Service.',
 
-        show_demo_mode: '进入演示模式',
         network_unavailable: '无网络'
     },
 
@@ -253,6 +252,7 @@ export let translate_zh =
         phone_power: '手<br/>机<br/>取<br/>电',
         switch: '模式切换<br/>常按关机',
         strength: '强度控制',
+        skip:'跳过',
     },
 
     running_page:
