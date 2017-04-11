@@ -228,14 +228,17 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     get GifStyle(): Object
     {
-        let screen = window.innerHeight;
-        return { height: screen * 0.16 + "px", padding: "0", margin: "0" }
+        let screenHeight = window.innerHeight;
+        let screenWidth = window.innerWidth;
+        let offset = screenWidth * 0.2 + "px";
+
+        return { height: screenHeight * 0.16 + "px", paddingLeft: offset, paddingRight: offset, margin: "0", textAlign: "center"  }
     }
 
     get TextStyle(): Object
     {
-        let screen = window.innerHeight;
-        return { height: screen * 0.17 + "px", overflowY: "scroll", padding: "0", margin: "0" }
+        let screenHeight = window.innerHeight;
+        return { height: screenHeight * 0.17 + "px", overflowY: "scroll", padding: "0", margin: "0" }
     }
 
     PointRotate(): string
