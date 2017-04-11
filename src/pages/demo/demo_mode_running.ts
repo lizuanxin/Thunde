@@ -226,10 +226,16 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
         return (this.Ticking / (DEMO_MODES_TIMES[this.CurrentRunningIndex])) * 100;
     }
 
+    get GifStyle(): Object
+    {
+        let screen = window.innerHeight;
+        return { height: screen * 0.16 + "px", padding: "0", margin: "0" }
+    }
+
     get TextStyle(): Object
     {
         let screen = window.innerHeight;
-        return { height: screen * 0.15 + "px", overflowY: "scroll" }
+        return { height: screen * 0.17 + "px", overflowY: "scroll", padding: "0", margin: "0" }
     }
 
     PointRotate(): string
@@ -286,7 +292,7 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
         setTimeout(() =>
         {
             if (this.view === this.nav.getActive() && this.view.index !== 0)
-                this.nav.popToRoot();
+                this.nav.pop();
         }, 300);
     }
 
