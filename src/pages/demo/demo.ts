@@ -93,6 +93,7 @@ export class DemoPage implements OnDestroy, AfterViewInit
 
     Go()
     {
+        if (this.DeviceListEmpty) return;
         if (!Loki.TShell.IsUsbPlugin)
         {
             if (this.DeviceList.length === 1)
