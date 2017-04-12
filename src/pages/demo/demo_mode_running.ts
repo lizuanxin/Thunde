@@ -129,7 +129,7 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
                         });
                 })
                 .then(() => this.Shell.StartScriptFile(DEMO_MODES[Index]))
-                .then(() => loading.dismiss())
+                .then(() => setTimeout(loading.dismiss(), 1000))
                 .catch(err =>
                 {
                     loading.dismiss()
@@ -147,22 +147,36 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     NextMode()
     {
-        this.Shell.StopTicking(); // 提前执行 防止 函数重复调用
-        this.Ticking = 0;
-
         if (! this.Finish)
         {
             if (this.CurrentRunningIndex < 2)
             {
                 this.CurrentRunningIndex ++;
+
+                this.Shell.StopTicking(); // 提前执行 防止 函数重复调用
+                this.Ticking = 0;
+
                 this.SetModeInfo(DEMO_MODES[this.CurrentRunningIndex]);
                 this.StartMode(this.CurrentRunningIndex);
             }
             else
             {
                 this.Finish = true;
-                this.AssetSvc.SetKey("DEMO_MODE", true).catch(err => console.log(err.message));
             }
+        }
+    }
+
+    LastMode()
+    {
+        if (this.CurrentRunningIndex > 0 && this.CurrentRunningIndex <= 2)
+        {
+            this.CurrentRunningIndex --;
+
+            this.Shell.StopTicking(); // 提前执行 防止 函数重复调用
+            this.Ticking = 0;
+
+            this.SetModeInfo(DEMO_MODES[this.CurrentRunningIndex]);
+            this.StartMode(this.CurrentRunningIndex);
         }
     }
 

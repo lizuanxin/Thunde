@@ -2,7 +2,7 @@
     <ng-template [ngIf]="!Finish">
       <div>
         <ion-row>
-          <ion-col col-6 offset-3>
+          <ion-col col-4 offset-4>
               <img src="{{ModeGif}}">
           </ion-col>
         </ion-row>
@@ -47,11 +47,14 @@
   <ion-toolbar visible transparent>
     <ion-row [ngStyle]="{'margin-top':'-35px'}">
         <ion-col text-center>
-            <button ion-fab [ngStyle]="{display:'inline-flex'}" *ngIf="CurrentRunningIndex < 2" (click)="NextMode()" tappable>
-                <ion-icon>&#xf217;</ion-icon>
+            <button ion-fab [ngStyle]="{display:'inline-flex', marginRight:'5vw'}" *ngIf="! Finish && CurrentRunningIndex > 0 && CurrentRunningIndex <= 2" (click)="LastMode()" tappable>
+                <ion-icon app-icon>&#xe939;</ion-icon>
             </button>
-            <button ion-fab [ngStyle]="{display:'inline-flex'}" *ngIf="CurrentRunningIndex >= 2" (click)="Shutdown()" tappable>
-                <ion-icon>&#xf359;</ion-icon>
+            <button ion-fab [ngStyle]="{display:'inline-flex', marginLeft: CurrentRunningIndex != 0 ?'5vw':''}" *ngIf="! Finish && CurrentRunningIndex < 2" (click)="NextMode()" tappable>
+                <ion-icon app-icon>&#xe93a;</ion-icon>
+            </button>
+            <button ion-fab [ngStyle]="{display:'inline-flex', marginLeft:'5vw'}" *ngIf="CurrentRunningIndex >= 2" (click)="Shutdown()" tappable>
+                <ion-icon app-icon>&#xe93b;</ion-icon>
             </button>
         </ion-col>
     </ion-row>
