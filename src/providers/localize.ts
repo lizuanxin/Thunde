@@ -53,7 +53,7 @@ export let translate_en =
     {
         electrode: 'Apply all the Electrodes',
         phone_power: 'O<br/>T<br/>G<br/>',
-        switch: 'Mode Switch /<br/>Press to Power Off',
+        switch: 'Mode Switch /<br/>Hold down to Turn Off',
         strength: 'Intensity Control',
         skip:'Skip',
 
@@ -250,7 +250,7 @@ export let translate_zh =
     {
         electrode: '帖好电极贴',
         phone_power: '手<br/>机<br/>取<br/>电',
-        switch: '模式切换<br/>常按关机',
+        switch: '模式切换<br/>长按关闭',
         strength: '强度控制',
         skip:'跳过',
     },
