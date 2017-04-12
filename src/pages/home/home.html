@@ -17,7 +17,7 @@
   </ion-content>
 </ion-menu>
 <ion-header no-shadow no-border>
-  <ion-toolbar transparent>
+  <ion-toolbar transparent [ngClass]="PlatformShowWhen">
     <ion-buttons left>
       <button ion-button icon-only [ngStyle]="{'margin':'0 6px','padding':'0 2px','min-width':'44px'}" tappable>
           <ion-icon [ngClass]="app.SkinColor" app-icon>&#xe908;</ion-icon>

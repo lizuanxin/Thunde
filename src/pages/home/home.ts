@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy, EventEmitter} from '@angular/core';
-import {NavController, MenuController} from 'ionic-angular';
+import {NavController, MenuController, Platform} from 'ionic-angular';
 import {TypeInfo} from '../../UltraCreation/Core'
 import * as UITypes from '../../UltraCreation/Graphic/Types'
 
@@ -13,7 +13,7 @@ const SHOWING_ITEM_COUNT = 6;
 @Component({selector: 'page-home', templateUrl: 'home.html'})
 export class HomePage implements OnInit, OnDestroy
 {
-    constructor( private app: TApplication, public nav: NavController, private MenuCtrl: MenuController,
+    constructor( private platform: Platform, private app: TApplication, public nav: NavController, private MenuCtrl: MenuController,
         private Asset: TAssetService, private Distrubute: TDistributeService)
     {
     }
@@ -135,6 +135,7 @@ export class HomePage implements OnInit, OnDestroy
         this.Asset.FileDesc(ScriptFile)
             .then(() => this.nav.push(GoPage, { Category: this.SelectedCategory, ScriptFile: ScriptFile}));
     }
+
 
     Categories: Array<TCategory>;
     FileList: Array<TScriptFile> = [];
