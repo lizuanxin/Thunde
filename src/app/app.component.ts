@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {Platform} from 'ionic-angular';
 import {Splashscreen} from 'ionic-native/dist/es5/plugins/splashscreen';
 import {StatusBar} from 'ionic-native/dist/es5/plugins/statusbar';
-
 import {HomePage} from '../pages/home/home';
 import {Initialization} from '../pages/services'
 
@@ -13,20 +12,21 @@ export class MyApp
     {
         platform.ready().then(() =>
         {
+            StatusBar.hide();
             Splashscreen.show();
-            StatusBar.styleBlackTranslucent(); 
-            
-            if (platform.is('android'))
-            {
-                StatusBar.overlaysWebView(false); 
-                StatusBar.backgroundColorByHexString('#12110f'); 
-            }                              
-                                 
             Initialization.Execute()
                 .then(() =>
                 {
                     this.rootPage = HomePage;
-                    setTimeout(() => Splashscreen.hide(), 500);
+                    setTimeout(() =>
+                    {
+                        Splashscreen.hide();
+                        StatusBar.overlaysWebView(true);
+                        let StatusbarTransparent = (window as any).statusbarTransparent;
+                        if(StatusbarTransparent)
+                            StatusbarTransparent.enable();
+                        StatusBar.show();
+                    }, 500);
                 });
         });
     }
