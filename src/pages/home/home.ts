@@ -1,6 +1,5 @@
 import {Component, OnInit, OnDestroy, EventEmitter} from '@angular/core';
 import {NavController, MenuController} from 'ionic-angular';
-
 import {TypeInfo} from '../../UltraCreation/Core'
 import * as UITypes from '../../UltraCreation/Graphic/Types'
 
@@ -94,17 +93,17 @@ export class HomePage implements OnInit, OnDestroy
 
                 switch (Category.Id)
                 {
-                case const_data.Category.therapy.Id:
+                case const_data.Category.therapy.Id:                   
                     this.app.SetSkin(this.app.Skins[1]);
                     break;
-                case const_data.Category.fat_burning.Id:
+                case const_data.Category.fat_burning.Id:                    
                     this.app.SetSkin(this.app.Skins[3]);
                     break;
-                case const_data.Category.muscle_training.Id:
+                case const_data.Category.muscle_training.Id:                     
                     this.app.SetSkin(this.app.Skins[2]);
                     break;
-                case const_data.Category.relax.Id:
-                    this.app.SetSkin(this.app.Skins[0]);
+                case const_data.Category.relax.Id:                    
+                    this.app.SetSkin(this.app.Skins[0]);                   
                     break;
                 }
 

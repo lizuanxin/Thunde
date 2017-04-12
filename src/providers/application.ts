@@ -1,6 +1,5 @@
 import {Injectable, Injector} from '@angular/core';
 import {Toast} from 'ionic-angular';
-
 import {TSqliteStorage} from '../UltraCreation/Storage';
 import {USBSerial} from '../UltraCreation/Native';
 import {TAppController} from '../UltraCreation/ng2-ion/ion-appcontroller'
@@ -101,8 +100,8 @@ export class TApplication extends TAppController
     }
 
     Skin(Page: string): string
-    {
-        return (this.constructor as typeof TApplication).SkinName + '-' + Page;
+    { 
+        return (this.constructor as typeof TApplication).SkinName + '-' + Page;        
     }
 
     get SkinName(): string
