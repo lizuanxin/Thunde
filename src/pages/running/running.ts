@@ -225,7 +225,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
         point.setAttribute('style','left:'+ Math.trunc(boxSize * 0.8 / 2) +'px;-webkit-transform-origin: 0 '+ Math.trunc(boxSize * 0.8 / 2) +'px;');
 
         let textVal = document.getElementById('textVal');
-        textVal.setAttribute('style','width:'+ textValSize +'px;top:'+ textValTop +'px;padding-top:'+ Math.trunc(textValSize * 0.5) +'px;padding-bottom:'+ Math.trunc(textValSize*0.5) +'px');
+        textVal.setAttribute('style','font-size:' + boxSize * 0.2 +'px;width:'+ textValSize +'px;top:'+ textValTop +'px;padding-top:'+ Math.trunc(textValSize * 0.5) +'px;padding-bottom:'+ Math.trunc(textValSize * 0.5) +'px');
 
         let rount = document.createElement('div');
         rount.setAttribute('class','rount');
