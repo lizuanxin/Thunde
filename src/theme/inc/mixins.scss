@@ -21,6 +21,9 @@
             background-size: cover;
         }
         @if($bg=='strengths') {
+            .ios ion-nav>.ion-page>ion-header>.toolbar.statusbar-padding:first-child {
+                background-color:rgba(0,0,0,.5);
+            }
             &.#{$bg}-home {
                 canvas {
                     background-image: url(../assets/img/bg_canvas_dark.png);
