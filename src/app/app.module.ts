@@ -28,6 +28,11 @@ let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
     pageTransitionDelay: 0,
     swipeBackEnabled: false,
     // animate: false,
+    platforms: {
+      ios: {
+        statusbarPadding: true
+      }
+    }
 };
 
 @NgModule({
