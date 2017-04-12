@@ -67,7 +67,7 @@ export let translate_en =
         pressure_info: 'This effect is the most used by physiotherapists during massage. A pacifying and relaxing sensation when the therapist’s hand glides over the skin. With respect to the intensity, the sensation will first be felt on the skin and, increasing the intensity, you will feel muscular tensions disappearing.',
         pressure_suggestion: 'This action cleans your muscles and helps you to get rid of accumulated stress, it\'s ideal for recovering faster after a sport session.',
         demo_play_intensity: 'Intensity  : 5-20',
-        demo_play_finish: 'Discover the hitting and contraction effects in the long list of each programs'
+        demo_play_finish: 'Discover the hitting and contraction effects in the long list of programs'
     },
 
     go_page:
