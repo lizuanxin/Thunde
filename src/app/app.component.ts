@@ -13,10 +13,15 @@ export class MyApp
     {
         platform.ready().then(() =>
         {
-            Splashscreen.show();   
-            StatusBar.styleLightContent();                                
-            StatusBar.overlaysWebView(false); 
-            StatusBar.backgroundColorByHexString('#12110f');           
+            Splashscreen.show();
+            StatusBar.styleBlackTranslucent(); 
+            
+            if (platform.is('android'))
+            {
+                StatusBar.overlaysWebView(false); 
+                StatusBar.backgroundColorByHexString('#12110f'); 
+            }                              
+                                 
             Initialization.Execute()
                 .then(() =>
                 {
