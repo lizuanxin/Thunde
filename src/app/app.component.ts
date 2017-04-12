@@ -13,7 +13,12 @@ export class MyApp
         platform.ready().then(() =>
         {
             StatusBar.hide();
-            Splashscreen.show();
+            Splashscreen.show();             
+            
+            if (platform.is('ios'))
+            {
+                StatusBar.styleBlackTranslucent(); 
+            }
             Initialization.Execute()
                 .then(() =>
                 {

@@ -29,6 +29,11 @@ let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
     swipeBackEnabled: false,
     // statusbarPadding: true,
     // animate: false,
+    platforms: {
+      android: {
+        statusbarPadding: true
+      }
+    }
 };
 
 @NgModule({
