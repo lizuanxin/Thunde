@@ -110,10 +110,8 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     private StartMode(Index: number, Loading: boolean)
     {
-        let Load = null;
-        if(! Loading) // 解决第一次显示loading 时闪烁的问题
-            Load = Promise.resolve();
-        else
+        let Load: Promise<any> = Promise.resolve();
+        if(Loading) // 解决第一次显示loading 时闪烁的问题
             Load = this.app.ShowLoading();
 
         Load.then(() =>
