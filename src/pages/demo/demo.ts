@@ -7,8 +7,8 @@ import {TypeInfo} from '../../UltraCreation/Core';
 import {BLE, Loki, TApplication} from '../services';
 import {DemoModeRunningPage} from '../demo/demo_mode_running';
 
-const ID = {'tips1':0, 'tips2':1, 'tips3':2, 'electrode':3, 'power':4, 'switch':5, 'strength':6, 
-    'line1':7, 'line2':8, 'line3':9, 'num1':10, 'num2':11, 'num3':12, 'num4':13, 
+const ID = {'tips1':0, 'tips2':1, 'tips3':2, 'electrode':3, 'power':4, 'switch':5, 'strength':6,
+    'line1':7, 'line2':8, 'line3':9, 'num1':10, 'num2':11, 'num3':12, 'num4':13,
     'arrowPoint':14, 'key':15, 'body':16};
 
 @Component({selector: 'page-demo', templateUrl: 'demo.html'})
@@ -32,7 +32,7 @@ export class DemoPage implements OnDestroy, AfterViewInit
             else
                 this.StartScan();
         }
-        this.InitElementStyle();        
+        this.InitElementStyle();
         setTimeout(() => this.AnimationFlow(), 200);
     }
 
@@ -82,7 +82,6 @@ export class DemoPage implements OnDestroy, AfterViewInit
 
             StopScan.then(() => Shell.Connect())
                 .then(() => this.nav.push(DemoModeRunningPage, params))
-                .then(() => {loading.dismiss()})
                 .catch(err =>
                 {
                     loading.dismiss()
@@ -93,22 +92,24 @@ export class DemoPage implements OnDestroy, AfterViewInit
 
     Go()
     {
-        if (this.DeviceListEmpty) return;
+        if (this.DeviceListEmpty)
+            return;
+
         if (!Loki.TShell.IsUsbPlugin)
         {
             if (this.DeviceList.length === 1)
                 this.Start(this.DeviceList[0].id);
             else
-                if (this.DeviceList.length > 0){
+            {
+                if (this.DeviceList.length > 0)
                     this.IsShowingDeviceList = true;
-                }                    
                 else
                 {
                     this.IsShowingDeviceList = false;
                     this.DeviceListEmpty = true;
                     setTimeout(() => this.DeviceListEmpty = false, 3000);
-                }                                      
-                    
+                }
+            }
         }
         else
             this.Start('USB');
@@ -117,8 +118,8 @@ export class DemoPage implements OnDestroy, AfterViewInit
 
     InitElementStyle()
     {
-        let ele = this.animatedef.nativeElement, 
-            width = window.innerWidth, 
+        let ele = this.animatedef.nativeElement,
+            width = window.innerWidth,
             height = width * 1.5,
             colorYellow = "#f4e827", colorLight = "#FFFFFF", colorLightOpacity = 'rgba(255,255,255,.5)';
         ele.children[ID.tips1].setAttribute("style",  "width: " + width * 0.14 + "px; height: " + width * 0.14 + "px; left: " + width * 0.39 + "px; top:" + height * 0.15 + "px");
@@ -140,36 +141,36 @@ export class DemoPage implements OnDestroy, AfterViewInit
         ele.children[ID.body].setAttribute("style", "font-size:" + width * 0.67 + "px; color: " + colorLight + "; top:"  + -height * 0.07 + "px; ");
 
         this.ready.nativeElement.setAttribute("style", "z-index: 0; position:absolute; left:0; right:0; bottom:20px; opacity: 0;");
-    }   
+    }
 
     AnimationFlow()
-    {        
+    {
         let ele = this.animatedef.nativeElement;
         let width = window.innerWidth, height = width * 1.5;
 
         let Animation = () =>
         {
             console.log("TypeMode:" + this.TypeMode);
-            
-            if (this.TypeMode > 9) return; 
-          
+
+            if (this.TypeMode > 9) return;
+
             switch(this.TypeMode)
             {
-                case 0:                    
+                case 0:
                     setTimeout(() => {
                         ele.children[ID.body].style.opacity = 1;
                         ele.children[ID.body].style.left = width * 0.05 + "px";
                         ele.children[ID.body].style.top = -height * 0.07 + "px";
                         Animation();
-                    }, 150);                                    
+                    }, 150);
                     break;
 
-                case 1:                
+                case 1:
                     setTimeout(() => {
                         this.ready.nativeElement.style.opacity = 1;
                         this.ready.nativeElement.style.bottom = "30px";
                         ele.children[ID.line1].style.opacity = 1;
-                        ele.children[ID.line1].style.transform = "scale(1)";                        
+                        ele.children[ID.line1].style.transform = "scale(1)";
                         Animation();
                     }, 500);
 
@@ -193,14 +194,14 @@ export class DemoPage implements OnDestroy, AfterViewInit
                         ele.children[ID.power].style.opacity = 1;
                         ele.children[ID.power].style.transform = "translateY(0)";
                         Animation();
-                    }, 700);                    
+                    }, 700);
                     break;
 
                 case 4:
                     setTimeout(() => {
                         ele.children[ID.num2].style.opacity = 1
                         Animation();
-                    }, 700);                    
+                    }, 700);
                     break;
 
                 case 5:
@@ -219,11 +220,11 @@ export class DemoPage implements OnDestroy, AfterViewInit
                     setTimeout(() => {
                         ele.children[ID.line2].style.opacity = 1;
                         ele.children[ID.line2].style.transform = 'scale(1)';
-                        
+
                         ele.children[ID.switch].style.opacity = 1;
                         ele.children[ID.switch].style.top = height * 0.48 + "px";
                         Animation();
-                    }, 700);                    
+                    }, 700);
                     break;
 
                 case 7:
@@ -231,7 +232,7 @@ export class DemoPage implements OnDestroy, AfterViewInit
                         ele.children[ID.num3].style.opacity = 1;
                         ele.children[ID.num3].style.left = width * 0.06 + 'px';
                         Animation();
-                    }, 700); 
+                    }, 700);
                     break;
 
                 case 8:
@@ -241,7 +242,7 @@ export class DemoPage implements OnDestroy, AfterViewInit
                         ele.children[ID.num4].style.opacity = 1;
                         ele.children[ID.num4].style.left = width * 0.06 + 'px';
                         Animation();
-                    }, 700);                     
+                    }, 700);
                     break;
 
                 case 9:
@@ -257,7 +258,7 @@ export class DemoPage implements OnDestroy, AfterViewInit
         }
         Animation();
     }
-   
+
 
     TypeMode: number = 0;
 

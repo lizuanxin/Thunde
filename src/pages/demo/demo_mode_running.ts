@@ -105,12 +105,18 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
     private Start()
     {
         this.Shell.ClearFileSystem(DEMO_MODES)
-            .then(() => this.StartMode(0))
+            .then(() => this.StartMode(0, false))
     }
 
-    private StartMode(Index: number)
+    private StartMode(Index: number, Loading: boolean)
     {
-        this.app.ShowLoading().then(loading =>
+        let Load = null;
+        if(! Loading) // 解决第一次显示loading 时闪烁的问题
+            Load = Promise.resolve();
+        else
+            Load = this.app.ShowLoading();
+
+        Load.then(() =>
         {
             let RetVal = this.ReadLocalFile(DEMO_MODES[Index]);
             let Md5 = THashMd5.Get(RetVal).Print();
@@ -129,10 +135,10 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
                         });
                 })
                 .then(() => this.Shell.StartScriptFile(DEMO_MODES[Index]))
-                .then(() => setTimeout(loading.dismiss(), 1000))
+                .then(() => setTimeout(this.app.HideLoading(), 1000))
                 .catch(err =>
                 {
-                    loading.dismiss()
+                    this.app.HideLoading()
                         .then(() => this.app.ShowHintId(err.message))
                         .then(() => this.ClosePage());
                 });
@@ -157,12 +163,10 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
                 this.Ticking = 0;
 
                 this.SetModeInfo(DEMO_MODES[this.CurrentRunningIndex]);
-                this.StartMode(this.CurrentRunningIndex);
+                this.StartMode(this.CurrentRunningIndex, true);
             }
             else
-            {
                 this.Finish = true;
-            }
         }
     }
 
@@ -176,7 +180,7 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
             this.Ticking = 0;
 
             this.SetModeInfo(DEMO_MODES[this.CurrentRunningIndex]);
-            this.StartMode(this.CurrentRunningIndex);
+            this.StartMode(this.CurrentRunningIndex, true);
         }
     }
 
@@ -243,7 +247,7 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
     get TextStyle(): Object
     {
         let screenHeight = window.innerHeight;
-        return { height: screenHeight * 0.17 + "px", overflowY: "scroll", padding: "0", margin: "0" }
+        return { height: screenHeight * 0.15 + "px", overflowY: "scroll", padding: "0", margin: "0" }
     }
 
     PointRotate(): string
