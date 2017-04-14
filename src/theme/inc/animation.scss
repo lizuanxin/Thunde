@@ -1,3 +1,7 @@
+@include FadeMode(fadeIn);
+@include FadeMode(fadeOut);
+@include FadeMode(fadeInOut);
+
 @keyframes wave-animation {
     0% {
         background-position: 0 bottom;
@@ -22,7 +26,6 @@
     }
 }
 
-
 @keyframes skew-animation {
     0% {
         -moz-transform: skewY(0deg);
@@ -38,55 +41,19 @@
     }
 }
 
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    50% {
-        opacity: 0.5;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-@keyframes fadeOut {
-    0% {
-        opacity: 1;
-    }
-    50% {
-        opacity: .6;
-    }
-    100% {
-        opacity: 0;
-    }
-}
-
-@keyframes fadeInOut {
-    0% {
-        opacity: 0;
-    }
-    50% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-    }
-}
-
 @keyframes flash {
-  0% {
-    opacity: 0;
-    -webkit-transform: scale(.7);
-  }
-  50% {
-    opacity: .7;
-    -webkit-transform: scale(1.2);
-  }
-  100%{
-    opacity: 0;
-    -webkit-transform: scale(.7);
-  }
+    0% {
+        opacity: 0;
+        -webkit-transform: scale(.7);
+    }
+    50% {
+        opacity: .7;
+        -webkit-transform: scale(1.2);
+    }
+    100% {
+        opacity: 0;
+        -webkit-transform: scale(.7);
+    }
 }
 
 .animate {
@@ -101,50 +68,50 @@
     transition: all .6s ease .2s;
 }
 
-.fadeinout{
-    animation:fadeInOut 5s infinite linear;
-    -webkit-animation:fadeInOut 5s infinite;
+.fadeinout {
+    animation: fadeInOut 5s infinite linear;
+    -webkit-animation: fadeInOut 5s infinite;
     animation-fill-mode: forwards;
-    animation-iteration-count:1;
+    animation-iteration-count: 1;
 }
 
-.fadeout{
-    animation:fadeOut .2s infinite linear;
-    -webkit-animation:fadeOut .2s infinite;
+.fadeout {
+    animation: fadeOut .2s infinite linear;
+    -webkit-animation: fadeOut .2s infinite;
     animation-fill-mode: forwards;
-    animation-iteration-count:1;
+    animation-iteration-count: 1;
 }
 
-.fadein{
-    animation:fadeIn .2s infinite linear;
-    -webkit-animation:fadeIn .2s infinite;
+.fadein {
+    animation: fadeIn .2s infinite linear;
+    -webkit-animation: fadeIn .2s infinite;
     animation-fill-mode: forwards;
-    animation-iteration-count:1;
+    animation-iteration-count: 1;
 }
 
-.tips{
+.tips {
     opacity: 0;
-    position:absolute;
-    border-radius:50%;
-    background-color:#fce000;
+    position: absolute;
+    border-radius: 50%;
+    background-color: #fce000;
     -webkit-transform: scale(.5);
 }
 
-.animateTips{    
+.animateTips {
     animation: flash .7s infinite linear alternate;
-    -webkit-animation:flash .7s infinite linear alternate;
+    -webkit-animation: flash .7s infinite linear alternate;
     animation-fill-mode: forwards;
 }
 
-[Animate-Canvas]{
-    position:absolute;
-    left:0;
-    top:0;
-    right:0;
-    bottom:0;
-    >*{
-        position:absolute;
-        opacity:0;
+[Animate-Canvas] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    >* {
+        position: absolute;
+        opacity: 0;
         -webkit-transition: all .6s ease .3s;
         -moz-transition: all .6s ease .3s;
         transition: all .6s ease .3s;

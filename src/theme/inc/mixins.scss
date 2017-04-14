@@ -20,7 +20,7 @@
             background-position: right center;
             background-size: cover;
         }
-        @if($bg=='strengths') {            
+        @if($bg=='strengths') {
             &.#{$bg}-home {
                 canvas {
                     background-image: url(../assets/img/bg_canvas_dark.png);
@@ -115,12 +115,12 @@ $outlinewidth) {
     border-width: $outlinewidth;
 }
 
-@mixin scale($s1:1.2){
-    transform:scale($s1);
-    -webkit-transform:scale($s1);
-    -moz-transform:scale($s1);
-    -o-transform:scale($s1);
-    -ms-transform:scale($s1);
+@mixin scale($s1:1.2) {
+    transform: scale($s1);
+    -webkit-transform: scale($s1);
+    -moz-transform: scale($s1);
+    -o-transform: scale($s1);
+    -ms-transform: scale($s1);
 }
 
 @mixin FontGeneration($num:9) {
@@ -142,4 +142,33 @@ $outlinewidth) {
     -webkit-align-items: $value;
     -webkit-box-align: $value;
     align-items: $value;
+}
+
+@mixin FadeMode($way:fadeIn) {
+    @keyframes #{$way} {
+        0% {
+            @if $way==fadeIn or $way==fadeInOut {
+                opacity: 0;
+            }
+            @else if $way==fadeOut {
+                opacity: 1;
+            }
+        }
+        50% {
+            @if $way==fadeIn or $way==fadeOut {
+                opacity: .5;
+            }
+            @else if $way==fadeInOut {
+                opacity: 1;
+            }            
+        }
+        100% {
+            @if $way==fadeIn {
+                opacity: 1;
+            }
+            @else if $way==fadeOut or $way==fadeInOut{
+                opacity: 0;
+            }            
+        }
+    }
 }

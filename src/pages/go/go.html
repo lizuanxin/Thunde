@@ -11,7 +11,7 @@
                 <ion-row wrap padding-horizontal margin-bottom [ngClass]="app.SkinColor">
                     <ion-col col-6 *ngFor="let icon of body.DescIconChars;let j = index" (click)="ShowDesc($event)" tappable>
                         <div out-line radius b-g-c attr.id="{{i}}-{{j}}">
-                            <ion-icon app-icon class="v-w-36">{{icon}}</ion-icon>
+                            <ion-icon app-icon style="font-size:36vw">{{icon}}</ion-icon>
                         </div>
                     </ion-col>
                 </ion-row>
