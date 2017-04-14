@@ -14,8 +14,8 @@ export class TApplication extends TAppController
         super(Injector);
 
         this.Skins = this.warm.concat(this.deep);
-        this.AddLanguage('en', translate_en);
         this.AddLanguage('zh', translate_zh);
+        this.AddLanguage('en', translate_en);
 
         console.log(navigator.language);
         let codes = navigator.language.split('-');
@@ -100,8 +100,8 @@ export class TApplication extends TAppController
     }
 
     Skin(Page: string): string
-    { 
-        return (this.constructor as typeof TApplication).SkinName + '-' + Page;        
+    {
+        return (this.constructor as typeof TApplication).SkinName + '-' + Page;
     }
 
     get SkinName(): string

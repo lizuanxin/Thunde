@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="hk.com.ultracreation.thunderbolt" version="1.0.6" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Thunderbolt</name>
+    <name>小摩线</name>
     <description>
-        Thunderbolt: the Tiny TENS + EMS that relieve you pains.
+        小摩线
     </description>
     <author email="Thunderbolt@ultracreation.com.hk" href="http://ultracreation.com.hk/">UltraCreation Thunderbolt Team</author>
     <content src="index.html" />
@@ -22,7 +22,7 @@
             <meta-data android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" android:resource="@xml/usb_device_filter" />
         </config-file>
         <allow-intent href="market:*" />
-        <preference name="android-minSdkVersion" value="18" />
+        <preference name="android-minSdkVersion" value="17" />
         <preference name="android-targetSdkVersion" value="22" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
