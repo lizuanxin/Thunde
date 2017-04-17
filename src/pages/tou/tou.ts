@@ -1,8 +1,6 @@
 import {Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
 import {NavController} from 'ionic-angular';
 
-import {TypeInfo} from '../../UltraCreation/Core/TypeInfo'
-
 import {TApplication, TAssetService} from '../services';
 import {DemoPage} from '../demo/demo';
 
@@ -81,7 +79,6 @@ export class TouPage implements OnInit, OnDestroy, AfterViewInit
 
     public IsFirstTime: boolean = true;
     public Touch = new TouchParam();
-    private HardwarebackCB: Function;
 }
 
 class TouchParam
