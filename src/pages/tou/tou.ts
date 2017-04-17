@@ -1,18 +1,32 @@
-import {Component} from '@angular/core';
+import {Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
 import {NavController} from 'ionic-angular';
-import {TApplication, TAssetService} from '../services';
 
+import {TypeInfo} from '../../UltraCreation/Core/TypeInfo'
+
+import {TApplication, TAssetService} from '../services';
 import {DemoPage} from '../demo/demo';
 
 @Component({selector: 'page-tou', templateUrl: 'tou.html'})
-export class TouPage
+export class TouPage implements OnInit, OnDestroy, AfterViewInit
 {
     constructor(public nav: NavController, public app: TApplication, private AssetSvc: TAssetService)
     {
-        this.IsFirstTime = ! app.AcceptedTerms;
     }
 
-    ionViewDidLoad()
+    ngOnInit()
+    {
+        this.IsFirstTime = ! this.app.AcceptedTerms;
+
+        if (this.IsFirstTime)
+            this.app.DisableHardwareBackButton();
+    }
+
+    ngOnDestroy()
+    {
+        this.app.EnableHardwareBackButton();
+    }
+
+    ngAfterViewInit()
     {
         this.Touch.Outer = document.getElementById('OuterHtml');
         this.Touch.Outer.addEventListener("touchstart", this.TouchHandler.bind(this));
@@ -67,6 +81,7 @@ export class TouPage
 
     public IsFirstTime: boolean = true;
     public Touch = new TouchParam();
+    private HardwarebackCB: Function;
 }
 
 class TouchParam

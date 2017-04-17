@@ -29,6 +29,11 @@ export class TApplication extends TAppController
             {
                 this.Platform.registerBackButtonAction(() =>
                 {
+                    if (this.HardwareBackButtonDisabled)
+                    {
+                        console.log('Hardware GoBack is Disabled');
+                        return;
+                    }
                     console.log('Hardware GoBack');
 
                     let nav = this.Instance.getActiveNav();
@@ -41,8 +46,9 @@ export class TApplication extends TAppController
                     let now = new Date().getTime();
                     if (now - ts > 500)
                     {
+                        if (now - ts > 3000)
+                            this.ShowHintId('back_twice_exit', 'bottom', 1500);
                         ts = now;
-                        this.ShowHintId('back_twice_exit', 'bottom', 1500);
                     }
                     else
                         this.Platform.exitApp();
@@ -82,7 +88,15 @@ export class TApplication extends TAppController
         }
     }
 
-    private static AcceptedTerms: boolean = false;
+    DisableHardwareBackButton()
+    {
+        this.HardwareBackButtonDisabled = true;
+    }
+
+    EnableHardwareBackButton()
+    {
+        this.HardwareBackButtonDisabled = false;
+    }
 
     ShowLoading(Msg?: string): Promise<any>
     {
@@ -150,7 +164,9 @@ export class TApplication extends TAppController
     public Skins: Array<string>;
     private deep = ['abstract', 'BlackRed', 'spots'];
     private warm = ['strengths'];
+    private HardwareBackButtonDisabled = false;
 
+    private static AcceptedTerms: boolean = false;
     private static SkinName: string = 'strengths';
     private static Storage: TSqliteStorage;
 }
