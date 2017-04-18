@@ -3,12 +3,13 @@ import 'rxjs/add/operator/toPromise';
 
 import {TypeInfo, EAbort} from '../../UltraCreation/Core';
 import {TUtf8Encoding} from '../../UltraCreation/Encoding/Utf8';
+import {THashCrc16} from '../../UltraCreation/Hash';
 
 import {TAbstractShell, TShellRequest, ERequestTimeout, EDisconnected} from '../../UltraCreation/Native/Abstract.Shell'
 export {ERequestTimeout};
+
 import * as BLE from '../../UltraCreation/Native/BluetoothLE';
-import {USBSerial} from '../../UltraCreation/Native';
-import {THashCrc16} from '../../UltraCreation/Hash';
+import * as USBSerial from '../../UltraCreation/Native/UsbSerialOTG';
 
 const REQUEST_TIMEOUT = 3000;
 
