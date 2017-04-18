@@ -48,6 +48,7 @@ export namespace Initialization
             .then(() => TApplication.Initialize(Storage))
             .then(()=> TAssetService.Initialize(Storage))
             .then(() => TShell.StartOTG())
+            .then(() => Storage.EnableForeignKeysConstraint())
             .catch((err) => console.log(err.message));
     }
 
