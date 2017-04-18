@@ -139,8 +139,11 @@ export class TDistributeService
                 FileName = 'UCtenQT1';      // BLE Version
             break;
         case 2:
-            if (Rev <= 4)    // hardware 4.3k res
+            if (Rev <= 4)                   // hardware 4.3k res
                 return Promise.reject(new EAbort());
+            if (Version === 20000006)       // do not upgrade 2.0.6 for now
+                return Promise.reject(new EAbort());
+
             FileName = 'UCtenQT3';          // BLE Version
             break;
         case 3:
