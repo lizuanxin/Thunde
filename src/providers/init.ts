@@ -1,7 +1,7 @@
 import {TypeInfo, EAbort} from '../UltraCreation/Core'
 import {TSqliteStorage, TSqlQuery} from '../UltraCreation/Storage'
 
-import {const_data} from './thunderbolt.const'
+import {const_data} from './const_data'
 import {TApplication} from './application'
 import {TAssetService} from './asset'
 import {TShell} from './loki'

@@ -8,7 +8,7 @@ import {TUtf8Encoding} from '../../UltraCreation/Encoding';
 import {TypeInfo} from '../../UltraCreation/Core';
 import {THashMd5} from '../../UltraCreation/Hash';
 
-import {const_data} from '../../providers/thunderbolt.const';
+import {const_data} from '../services';
 
 const DEMO_MODES: string[] = ["FRICTION", "KNEADING", "PRESSURE"];
 const DEMO_MODES_TIMES: number[] = [45, 70, 80];

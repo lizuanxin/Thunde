@@ -3,7 +3,7 @@ import {Injectable}  from '@angular/core';
 import {TypeInfo, IPersistable, TPersistable, TPersistPropRule, TGuid, HexConv} from '../UltraCreation/Core'
 import {TBase64Encoding} from '../UltraCreation/Encoding'
 import {TSqlQuery, TSqliteStorage} from '../UltraCreation/Storage';
-import {const_data} from './thunderbolt.const'
+import {const_data} from './const_data'
 import * as Loki from './loki/file';
 
 module Queries
