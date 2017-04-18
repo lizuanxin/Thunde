@@ -1,6 +1,7 @@
 import {Component, AfterViewInit, OnDestroy} from '@angular/core';
 import {NavController, NavParams, ViewController} from 'ionic-angular';
 
+import {PowerManagement} from '../../UltraCreation/Native/PowerManagement'
 import {TApplication, Loki} from '../services';
 
 @Component({
@@ -39,6 +40,11 @@ export class OtaUpdatePage implements AfterViewInit, OnDestroy
         this.Firmware = navParams.get('Firmware');
     }
 
+    ngOnInit()
+    {
+        PowerManagement.Acquire();
+    }
+
     ngAfterViewInit()
     {
         this.nav.remove(1, this.view.index - 1, {animate: false})
@@ -47,25 +53,22 @@ export class OtaUpdatePage implements AfterViewInit, OnDestroy
 
     ngOnDestroy()
     {
+        PowerManagement.Release();
         this.Shell.Detach();
         this.app.HideLoading();
     }
 
     private Start()
     {
-        /*PowerManagement.acquire()
-            .then(() => */this.Shell.OTARequest(this.Firmware)
+        this.Shell.OTARequest(this.Firmware)
             .then(Progress =>
             {
                 Progress.subscribe(next => this.Percent = Math.trunc(next * 100), err => {}, () => {});
                 return Progress.toPromise();
             })
-            //.then(() => PowerManagement.release())
             .then(() => this.nav.pop())
             .catch(err =>
             {
-                //PowerManagement.release().catch(err => {});
-
                 if (err instanceof Loki.EUSBRestarting)
                 {
                     setTimeout(() =>

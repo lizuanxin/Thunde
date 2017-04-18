@@ -9,7 +9,6 @@ import {TypeInfo} from '../../UltraCreation/Core';
 import {THashMd5} from '../../UltraCreation/Hash';
 
 import {const_data} from '../../providers/thunderbolt.const';
-import {PowerManagement} from "../../UltraCreation/Native/PowerManagement";
 
 const DEMO_MODES: string[] = ["FRICTION", "KNEADING", "PRESSURE"];
 const DEMO_MODES_TIMES: number[] = [45, 70, 80];
@@ -28,8 +27,6 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     ngOnInit()
     {
-        PowerManagement.Acquire();
-
         this.ShellNotifySubscription = this.Shell.OnNotify.subscribe(
             Notify =>
             {
@@ -88,8 +85,6 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 
         this.app.HideLoading();
         this.Shell.Detach();
-
-        PowerManagement.Release();
     }
 
     SetModeInfo(runningIndex: string)
