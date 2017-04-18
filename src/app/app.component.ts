@@ -1,7 +1,9 @@
 import {Component} from '@angular/core';
 import {Platform} from 'ionic-angular';
-import {Splashscreen} from 'ionic-native/dist/es5/plugins/splashscreen';
-import {StatusBar} from 'ionic-native/dist/es5/plugins/statusbar';
+
+import {SplashScreen} from '../UltraCreation/Native/SplashScreen';
+import {StatusBar} from '../UltraCreation/Native/StatusBar';
+
 import {HomePage} from '../pages/home/home';
 import {Initialization} from '../pages/services'
 
@@ -13,11 +15,11 @@ export class MyApp
         platform.ready().then(() =>
         {
             StatusBar.hide();
-            Splashscreen.show();             
-            
+            SplashScreen.show();
+
             if (platform.is('ios'))
             {
-                StatusBar.styleBlackTranslucent(); 
+                StatusBar.styleBlackTranslucent();
             }
             Initialization.Execute()
                 .then(() =>
@@ -25,7 +27,7 @@ export class MyApp
                     this.rootPage = HomePage;
                     setTimeout(() =>
                     {
-                        Splashscreen.hide();
+                        SplashScreen.hide();
                         StatusBar.overlaysWebView(true);
                         let StatusbarTransparent = (window as any).statusbarTransparent;
                         if(StatusbarTransparent)
