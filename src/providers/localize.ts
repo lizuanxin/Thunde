@@ -57,16 +57,9 @@ export let translate_en =
         strength: 'Intensity Control',
         skip:'Skip',
 
-        friction_title: 'FRICTION EFFECT',
         friction_info: 'You will feel a friction effect, a tingling sensation. By sending a very fast signal to your brain, we will block the transmission of the "pain message" alleviating your pain rapidly.',
-        friction_suggestion: 'This action is 100% natural and works on any type of pain while safeguarding your health.',
-        kneading_title: 'KNEADING EFFECT',
         kneading_info: 'Such stimulation kneads and deeply relaxes your muscles. We use this effect to relax your muscles and promptly relieve tension.',
-        kneading_suggestion: 'This action acts on  contractures (muscle tension) on a long-term basis.',
-        pressure_title: 'PRESSURE EFFECT',
         pressure_info: 'This effect is the most used by physiotherapists during massage. A pacifying and relaxing sensation when the therapist’s hand glides over the skin. With respect to the intensity, the sensation will first be felt on the skin and, increasing the intensity, you will feel muscular tensions disappearing.',
-        pressure_suggestion: 'This action cleans your muscles and helps you to get rid of accumulated stress, it\'s ideal for recovering faster after a sport session.',
-        demo_play_intensity: 'Intensity  : 5-20',
         demo_play_finish: 'Discover the hitting and contraction effects in the long list of programs'
     },
 
@@ -209,7 +202,8 @@ export let translate_zh =
         no_load: '请检查电极帖',
         hardware_error: 'Hardware error, Please contact Customer Service.',
 
-        network_unavailable: '无网络'
+        network_unavailable: '无网络',
+        congratulations: 'Congratulations',
     },
 
     button:
@@ -253,6 +247,11 @@ export let translate_zh =
         switch: '模式切换<br/>长按关闭',
         strength: '强度控制',
         skip:'跳过',
+
+        friction_info: 'You will feel a friction effect, a tingling sensation. By sending a very fast signal to your brain, we will block the transmission of the "pain message" alleviating your pain rapidly.',
+        kneading_info: 'Such stimulation kneads and deeply relaxes your muscles. We use this effect to relax your muscles and promptly relieve tension.',
+        pressure_info: 'This effect is the most used by physiotherapists during massage. A pacifying and relaxing sensation when the therapist’s hand glides over the skin. With respect to the intensity, the sensation will first be felt on the skin and, increasing the intensity, you will feel muscular tensions disappearing.',
+        demo_play_finish: 'Discover the hitting and contraction effects in the long list of programs'
     },
 
     running_page:
