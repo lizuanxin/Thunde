@@ -2,7 +2,7 @@ import {Injectable, Injector} from '@angular/core';
 import {Toast} from 'ionic-angular';
 
 import {TSqliteStorage} from '../UltraCreation/Storage';
-import {TAppController} from '../UltraCreation/ng2-ion/ion-appcontroller'
+import {TAppController} from '../UltraCreation/ng-ion/appcontroller'
 import * as USBSerial from '../UltraCreation/Native/UsbSerialOTG';
 
 import {translate_en, translate_zh} from './localize'
