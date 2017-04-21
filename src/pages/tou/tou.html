@@ -9,7 +9,7 @@
         </ion-grid>
     </ion-toolbar>
 </ion-header>
-<ion-content padding default id="OuterHtml" [ngStyle]="{'position':'relative'}">
+<ion-content padding-left padding-right default id="OuterHtml" [ngStyle]="{'position':'relative'}">
     <div showWhen="android" [ngClass]="'radian'" [class.fadeOut]="FadeOut" [ngStyle]="{'margin-top':'-16px','min-height':OffsetY}"></div>
     <div list-warning [innerHTML]="'tou_page.terms_conditions'|translate"></div>
     <ion-list no-margin no-lines transparent *ngIf="IsFirstTime">
@@ -18,9 +18,13 @@
             <ion-checkbox class="skin-default" [(ngModel)]="app.AcceptedTerms"></ion-checkbox>
         </ion-item>
     </ion-list>
-</ion-content>
-<ion-footer padding no-shadow no-border>
     <ion-row>
-        <ion-col><button ion-button block [disabled]="! app.AcceptedTerms" (click)="Submit()">{{'button.ok'|translate}}</button></ion-col>
+        <ion-col style="padding: 0 5px 0 5px">
+            <button ion-button block [disabled]="! app.AcceptedTerms" (click)="Submit()">
+                {{'button.ok'|translate}}
+            </button>
+        </ion-col>
     </ion-row>
+</ion-content>
+<ion-footer padding no-shadow no-border style="height: 48px">
 </ion-footer>
