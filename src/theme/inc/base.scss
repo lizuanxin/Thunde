@@ -3,11 +3,6 @@
     src: url($ionicons-font-path + '/brandontext_normal.ttf');
 }
 
-@font-face {
-    font-family: 'ostrich-sans-regular';
-    src: url($ionicons-font-path + '/ostrich-sans-regular.ttf') format('truetype');
-}
-
 body,
 * {
     font-family: brandontext_normal, 'microsoft yahei';
