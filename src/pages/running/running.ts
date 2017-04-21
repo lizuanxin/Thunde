@@ -1,9 +1,9 @@
 import {Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
 import {NavController, NavParams, ViewController} from 'ionic-angular';
+import {Subscription} from 'rxjs/Subscription'
+import 'rxjs/add/operator/toPromise';
 
 import {TypeInfo} from '../../UltraCreation/Core';
-import {Subscription} from 'rxjs/Rx'
-
 import {TApplication, TDistributeService,
     TScriptFile, TAssetService, Loki} from '../services';
 
@@ -18,74 +18,73 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
         let DeviceId = navParams.get('DeviceId');
 
         this.Shell = Loki.TShell.Get(DeviceId);
-        this.Finish = true;
     }
 
     ngOnInit()
     {
-        // this.ShellNotifySubscription = this.Shell.OnNotify.subscribe(
-        //     Notify =>
-        //     {
-        //         switch(Notify)
-        //         {
-        //         case Loki.TShellNotify.Shutdown:
-        //             this.Close('shutdown');
-        //             break;
-        //         case Loki.TShellNotify.Disconnected:
-        //             this.Close('disconnected');
-        //             break;
-        //         case Loki.TShellNotify.LowBattery:
-        //             this.Close('low_battery');
-        //             break;
-        //         case Loki.TShellNotify.HardwareError:
-        //             this.Close('hardware_error');
-        //             break;
+        this.ShellNotifySubscription = this.Shell.OnNotify.subscribe(
+            Notify =>
+            {
+                switch(Notify)
+                {
+                case Loki.TShellNotify.Shutdown:
+                    this.Close('shutdown');
+                    break;
+                case Loki.TShellNotify.Disconnected:
+                    this.Close('disconnected');
+                    break;
+                case Loki.TShellNotify.LowBattery:
+                    this.Close('low_battery');
+                    break;
+                case Loki.TShellNotify.HardwareError:
+                    this.Close('hardware_error');
+                    break;
 
-        //         case Loki.TShellNotify.NoLoad:
-        //             this.Close('no_load');
-        //             break;
+                case Loki.TShellNotify.NoLoad:
+                    this.Close('no_load');
+                    break;
 
-        //         case Loki.TShellNotify.Stopped:
-        //             this.Close('');
-        //             break;
+                case Loki.TShellNotify.Stopped:
+                    this.Close('');
+                    break;
 
-        //         case Loki.TShellNotify.Intensity:
-        //             this.UpdateIntensity();
-        //             break;
+                case Loki.TShellNotify.Intensity:
+                    this.UpdateIntensity();
+                    break;
 
-        //         case Loki.TShellNotify.Battery:
-        //             this.UpdateBatteryLevel();
-        //             break;
+                case Loki.TShellNotify.Battery:
+                    this.UpdateBatteryLevel();
+                    break;
 
-        //         case Loki.TShellNotify.Ticking:
-        //             this.Ticking = this.Shell.Ticking;
-        //             if (this.Ticking >= this.ScriptFile.Duration)
-        //             {
-        //                 this.Finish = true;
-        //                 this.Shell.Shutdown();
-        //             }
-        //             break;
-        //         }
-        //     },
-        //     err=> console.log(err.message));
+                case Loki.TShellNotify.Ticking:
+                    this.Ticking = this.Shell.Ticking;
+                    if (this.Ticking >= this.ScriptFile.Duration)
+                    {
+                        this.Finish = true;
+                        this.Shell.Shutdown();
+                    }
+                    break;
+                }
+            },
+            err=> console.log(err.message));
     }
 
     ngAfterViewInit()
     {
-        // this.AddDialElement();
-        // this.nav.remove(1, this.view.index - 1, {animate: false})
-        //     .then(() => this.Start());
+        this.AddDialElement();
+        this.nav.remove(1, this.view.index - 1, {animate: false})
+            .then(() => this.Start());
     }
 
     ngOnDestroy(): void
     {
-        // if(TypeInfo.Assigned(this.ShellNotifySubscription))
-        // {
-        //     this.ShellNotifySubscription.unsubscribe();
-        //     this.ShellNotifySubscription = null;
-        // }
+        if(TypeInfo.Assigned(this.ShellNotifySubscription))
+        {
+            this.ShellNotifySubscription.unsubscribe();
+            this.ShellNotifySubscription = null;
+        }
 
-        // this.Shell.Detach();
+        this.Shell.Detach();
     }
 
     get TotalMinute(): string
@@ -320,7 +319,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
     BoxSize: number;
     Strength: string = '1s';
 
-    private Finish: boolean = false;
+    Finish: boolean = false;
     private Shell: Loki.TShell;
     private ShellNotifySubscription: Subscription;
     private Adjusting: Promise<any> = null;
