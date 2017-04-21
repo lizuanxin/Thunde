@@ -21,10 +21,7 @@ export class HomePage implements OnInit, OnDestroy
 
     ngOnInit(): void
     {
-        let Canvas = document.getElementById('content_canvas') as HTMLCanvasElement;
-        this.Content = new TContentCanvas(Canvas, this.app);
-        this.Content.OnSelectionFile.subscribe(file => this.SelectFile(file));
-
+        
         this.Categories = this.Asset.Categories;
 
         if (! this.app.AcceptedTerms)
@@ -69,46 +66,58 @@ export class HomePage implements OnInit, OnDestroy
 
     ionViewDidEnter()
     {
-        if (this.app.SkinColor !== undefined)
-            this.Content.Color = '#F2F2F2';
-        else
-            this.Content.Color = '#222222';
 
-        if (!TypeInfo.Assigned(this.SelectedCategory))
-        {
-            this.SelectCategory(this.Categories[0]);
-            this.Content.Paint();
-        }
-        else
-            this.Content.Paint();
+        if (!TypeInfo.Assigned(this.SelectedCategory))                             
+            this.SelectCategory(this.Categories[0]);        
+        else                   
+            this.Content.Paint();        
+            
     }
 
     SelectCategory(Category: TCategory)
     {
-        this.SelectedCategory = Category;
+        if(this.IsCanvas)
+        {
+            let Canvas = document.getElementById('content_canvas') as HTMLCanvasElement;
+            this.Content = new TContentCanvas(Canvas, this.app);
+            this.Content.OnSelectionFile.subscribe(file => this.SelectFile(file));
+
+        }
+        this.SelectedCategory = Category;        
         this.Asset.FileList(Category.Id)
             .then(List =>
-            {
-                this.FileList = List;
-                this.Content.NewFileList(List);
-
+            {                
+                console.log(Category.Id)
                 switch (Category.Id)
                 {
                 case const_data.Category.therapy.Id:
+                    this.IsCanvas = true;                   
                     this.app.SetSkin(this.app.Skins[1]);
                     break;
-                case const_data.Category.fat_burning.Id:
+                case const_data.Category.fat_burning.Id: 
+                    this.IsCanvas = true;                   
                     this.app.SetSkin(this.app.Skins[3]);
                     break;
-                case const_data.Category.muscle_training.Id:
+                case const_data.Category.muscle_training.Id: 
+                    this.IsCanvas = true;                    
                     this.app.SetSkin(this.app.Skins[2]);
                     break;
                 case const_data.Category.relax.Id:
-                    this.app.SetSkin(this.app.Skins[0]);
+                    this.IsCanvas = false;                     
+                    this.app.SetSkin(this.app.Skins[0]);                   
                     break;
                 }
 
+                if (this.app.SkinColor !== undefined)
+                    this.Content.Color = '#F2F2F2';
+                else
+                    this.Content.Color = '#222222';
+
+                this.FileList = List;
+                this.Content.NewFileList(List);
+
                 this.ionViewDidEnter();
+                
             })
             .catch(err => console.log(err));
     }
@@ -143,6 +152,8 @@ export class HomePage implements OnInit, OnDestroy
 
     SelectedCategory: TCategory;
     Content: TContentCanvas;
+
+    IsCanvas: boolean = false;
 }
 
 /* TContentCanvas */

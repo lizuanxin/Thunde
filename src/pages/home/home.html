@@ -1,4 +1,4 @@
-<ion-menu [content]="content" type="overlay" side="right" overlay>
+<ion-menu [content]="content" type="overlay" side="right" swipeEnabled=false overlay>
   <ion-content transparent padding-left>
     <ion-list no-lines transparent list-side>
         <ion-item-divider margin-bottom no-lines text-light menuToggle  [ngStyle]="{'min-height':app.IsAndroid ? '56px' : null}">
@@ -33,8 +33,11 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content no-scroll #content [ngClass]="app.Skin('home')" color="light">
-  <canvas style="width:100%;" height=360 id="content_canvas" [ngStyle]="{'position':'absolute'}" tappable></canvas>
+<ion-content no-scroll #content [ngClass]="app.Skin('home')" color="light">  
+
+      <comp-commonmode *ngIf="!IsCanvas"></comp-commonmode>      
+      <canvas *ngIf="IsCanvas" style="width:100%;" height=360 id="content_canvas" [ngStyle]="{'position':'absolute'}" tappable></canvas>      
+  
 </ion-content>
 <ion-footer no-shadow no-border>
   <ion-toolbar [ngClass]="app.Skin('footer')" no-padding>
