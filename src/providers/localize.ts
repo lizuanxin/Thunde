@@ -77,6 +77,7 @@ export let translate_en =
 
     running_page:
     {
+        finish: 'see you soon'
     },
 
     skin_page:
@@ -203,7 +204,7 @@ export let translate_zh =
         hardware_error: 'Hardware error, Please contact Customer Service.',
 
         network_unavailable: '无网络',
-        congratulations: 'Congratulations',
+        congratulations: '太棒啦！'
     },
 
     button:
@@ -232,7 +233,7 @@ export let translate_zh =
     {
         plug_device: '请插入您的设备...',
 
-        advise: '',
+        advise: '适用于',
         professional: '专业描述',
         seq: '<b>序列</b> ',
         effect_freq: '有效<b>作用</b>频率: ',
@@ -248,14 +249,15 @@ export let translate_zh =
         strength: '强度控制',
         skip:'跳过',
 
-        friction_info: 'You will feel a friction effect, a tingling sensation. By sending a very fast signal to your brain, we will block the transmission of the "pain message" alleviating your pain rapidly.',
-        kneading_info: 'Such stimulation kneads and deeply relaxes your muscles. We use this effect to relax your muscles and promptly relieve tension.',
-        pressure_info: 'This effect is the most used by physiotherapists during massage. A pacifying and relaxing sensation when the therapist’s hand glides over the skin. With respect to the intensity, the sensation will first be felt on the skin and, increasing the intensity, you will feel muscular tensions disappearing.',
-        demo_play_finish: 'Discover the hitting and contraction effects in the long list of programs'
+        friction_info: '这是一段麻醉痛感效果的按摩模式。小摩线会传送一种非常快速的信息至你大脑，从而阻断“痛感信息”的传输，达到缓解疼痛的效果。它是100%天然且适用于任何疼痛的治疗方法',
+        kneading_info: '这是一种揉捏且深层放松你肌肉的模式，小摩线用它来帮助你迅速的释放肌肉紧张感。这个按摩动作在长期被用于”痉挛”的临床理疗。',
+        pressure_info: '这个动作是理疗师在按摩中用到最多的，当他用力按在你感到酸痛紧张的肌肉部位时，你瞬间放松感到平静。特别在大力度下，身体肌肉压力会有种瞬间释放感。建议你尝试在大量运动后使用，帮助代谢肌肉产生的乳酸聚积，迅速摆脱运动后的肌肉酸痛。',
+        demo_play_finish: '更多体感和完整的按摩程序，请在主菜单中查找体验'
     },
 
     running_page:
     {
+        finish: '一会见'
     },
 
     skin_page:
@@ -354,6 +356,7 @@ export let translate_zh =
             <li>移除电极贴前先关产品电源</li>
             <li>只可选用由供应商提供电极贴</li>
             <li>如果出现皮肤敏感，请停用本产品</li>
+            <li>建议第一次使用本产品或某一按摩文件从较低强度开始逐渐适应</li>
         </ul>`,
     }
 }
