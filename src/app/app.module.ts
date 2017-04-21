@@ -19,7 +19,8 @@ import {FiledetailsPage} from '../pages/filedetails/filedetails';
 import {DemoPage} from '../pages/demo/demo';
 import {DemoModeRunningPage} from '../pages/demo/demo_mode_running';
 
-import {ComponentProgressbar} from '../components/comp-progressbar'
+import {ComponentProgressbar} from '../components/comp-progressbar';
+import {ComponentCommonmode} from '../components/comp-commonmode'
 
 let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
     //iconMode: 'ios',
@@ -48,7 +49,7 @@ let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
         MyApp,
         HomePage, TouPage, GoPage, RunningPage, FiledetailsPage, OtaUpdatePage,
         DemoPage, DemoModeRunningPage,
-        ComponentProgressbar
+        ComponentProgressbar, ComponentCommonmode
     ],
 
     entryComponents: [
