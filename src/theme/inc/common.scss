@@ -162,6 +162,11 @@ button{
     &[clear]{
         background-color:transparent;
     }
+    
+    &[trans-shadow]{
+        background-color:transparent;
+        box-shadow: 0 0 5px rgba(0,0,0,.5);
+    }
 }
 
 [v-m]{
