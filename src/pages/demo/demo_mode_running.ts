@@ -291,8 +291,7 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
             this.ShellNotifySubscription = null;
         }
 
-        this.Shell.Shutdown()
-            .catch((err) => console.log(err.message));
+        this.Shell.Shutdown();
 
         setTimeout(() =>
         {
