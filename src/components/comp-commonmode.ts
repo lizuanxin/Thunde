@@ -29,11 +29,11 @@ const Massage = ['酸痛缓解','疲劳缓解','快速镇痛','搓揉','按压',
             </button>
         </ion-col>
     </ion-row>  
-    <ion-row no-padding Hslide [ngStyle]="HslideH">
+    <ion-row no-padding Hslide align-items-center>
         <ion-col col-1>
             <ion-icon app-icon text-light translateLeft *ngIf="IsHArrowLeftShow">&#xe93c;</ion-icon>
         </ion-col>
-        <ion-col col-10 col-has-slides>
+        <ion-col col-10 col-has-slides [ngStyle]="HslideH">
             <ion-slides pager=false slidesPerView=3 (ionSlideDidChange)="HSlideChanged()" #HSlide>
                 <ion-slide *ngFor="let item of MasValues" [class.active]="CurrentMasValue === item" (click)="SelectMas(item)"  text-center tappable>
                     <span>{{item}}</span>
