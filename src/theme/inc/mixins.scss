@@ -142,6 +142,8 @@ $outlinewidth) {
     -webkit-align-items: $value;
     -webkit-box-align: $value;
     align-items: $value;
+    -webkit-justify-content: $value;
+    justify-content: $value;
 }
 
 @mixin FadeMode($way:fadeIn) {
@@ -160,7 +162,7 @@ $outlinewidth) {
             }
             @else if $way==fadeInOut {
                 opacity: 1;
-            }            
+            }
         }
         100% {
             @if $way==fadeIn {
@@ -168,7 +170,7 @@ $outlinewidth) {
             }
             @else if $way==fadeOut or $way==fadeInOut{
                 opacity: 0;
-            }            
+            }
         }
     }
 }
