@@ -97,15 +97,12 @@ ion-row{
                 font-size:1.6rem;
                 &.active{
                     color:#e02f5b;
-                    div[DOT]{
+                    ion-icon{
+                        -webkit-transform: rotate(90deg);
                         position:absolute;
                         left:45%;
-                        bottom:10px;
-                        width:.7rem;
-                        height:.7rem;
-                        border-radius:50%;
-                        background-color:#e02f5b;                        
-                    }
+                        top:-10px;
+                    }                   
                 }
             }
         }
@@ -121,6 +118,15 @@ ion-row{
             padding-bottom:50%;
             height:0;
             line-height:0;
+        }
+    }
+
+    ion-col{
+        &[col-has-slides]{
+            overflow:hidden;
+            .swiper-container{
+                overflow:visible;
+            }
         }
     }
 }

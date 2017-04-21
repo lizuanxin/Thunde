@@ -29,15 +29,15 @@ const Massage = ['酸痛缓解','疲劳缓解','快速镇痛','搓揉','按压',
             </button>
         </ion-col>
     </ion-row>  
-    <ion-row [ngStyle]="HslideH" Hslide align-items-center>
+    <ion-row no-padding Hslide [ngStyle]="HslideH">
         <ion-col col-1>
             <ion-icon app-icon text-light translateLeft *ngIf="IsHArrowLeftShow">&#xe93c;</ion-icon>
         </ion-col>
-        <ion-col col-10>
-            <ion-slides [ngStyle]="HslideH" pager=false slidesPerView=3 (ionSlideDidChange)="HSlideChanged()" #HSlide>
+        <ion-col col-10 col-has-slides>
+            <ion-slides pager=false slidesPerView=3 (ionSlideDidChange)="HSlideChanged()" #HSlide>
                 <ion-slide *ngFor="let item of MasValues" [class.active]="CurrentMasValue === item" (click)="SelectMas(item)"  text-center tappable>
                     <span>{{item}}</span>
-                    <div DOT></div>
+                    <ion-icon *ngIf = "CurrentMasValue === item">&#xf488;</ion-icon>                    
                 </ion-slide>
             </ion-slides>
         </ion-col>
@@ -73,7 +73,6 @@ export class ComponentCommonmode implements OnInit
   HSlideChanged()
   {
        let currentIndex = this.HSlides.getActiveIndex();
-console.log(this.HSlides.length());
 
        if (currentIndex > 0)
             this.IsHArrowLeftShow = true;
@@ -163,7 +162,7 @@ console.log(this.HSlides.length());
 
   get HslideH(): Object
   {
-      return { height: Math.ceil(window.innerHeight * 0.1) + 'px' }
+      return { height: Math.ceil(window.innerHeight * 0.08) + 'px' }
   }
 
   BodyValues: Array<string> = BODY;
