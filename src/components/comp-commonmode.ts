@@ -25,7 +25,7 @@ const Massage = ['酸痛缓解','疲劳缓解','快速镇痛','搓揉','按压',
                 <ion-col col-12 text-center><ion-icon app-icon [ngStyle]="BodyFixScreen(1)">&#xe95a;</ion-icon></ion-col>
             </ion-row>
             <button ion-fab style="position:absolute;bottom:20px;left:-20px">
-                <ion-icon>&#xf488;</ion-icon>
+                <ion-icon style="font-size:3.2rem">&#xf488;</ion-icon>
             </button>
         </ion-col>
     </ion-row>  
@@ -58,15 +58,13 @@ export class ComponentCommonmode implements OnInit
   }
 
   ngOnInit()
-  {
-    
+  {   
      
       
   } 
 
   ngAfterViewInit() 
-  {
-    //   this.HSlides.lockSwipes(true);
+  {   
       this.SetVLside();   
   }
 
@@ -86,38 +84,6 @@ export class ComponentCommonmode implements OnInit
         
        console.log(currentIndex);
        
-  }
-
-  VerticalSlideChanged()
-  {
-    
-    // let slideItem = this.Vslides.container.children[0], IndexArr = [];
-    // for (let i = 0; i < this.Vslides.length(); i++)
-    // {
-    //     let itemslide = slideItem.children[i] as HTMLElement;
-    //     itemslide.style.color = "#333";
-    //     if(slideItem.children[i].classList.contains('swiper-slide-active') || slideItem.children[i].classList.contains('swiper-slide-duplicate-active'))
-    //     {
-    //         IndexArr.push(i);
-    //     }   
-    // }
-    // setTimeout(() => 
-    // {
-    //     if (IndexArr.length > 0) 
-    //     {
-    //         for (let i = 0; i < IndexArr.length; i++)
-    //         {
-    //             if (slideItem.children[IndexArr[i] + 2]) {
-    //                 let activeItem = slideItem.children[IndexArr[i] + 2] as HTMLElement;
-    //                 activeItem.style.color = 'red';
-    //             }
-                
-    //         }
-    //     }
-    // })
-    
-    // let currentIndex = this.Vslides.getActiveIndex();
-    // console.log("Current index is", currentIndex);
   }
 
   BodyFixScreen(n: number): Object
@@ -172,9 +138,6 @@ export class ComponentCommonmode implements OnInit
   IsHArrowLeftShow: Boolean = false;
   IsHArrowRightShow: Boolean = true;
   VslideOption: Object;
-  VSLHeight: number = Math.ceil(window.innerHeight * 0.6);
-
-  
-
+  VSLHeight: number = Math.ceil(window.innerHeight * 0.6); 
  
 }
