@@ -178,3 +178,30 @@ button{
 [inline-block]{
   display:inline-block;
 }
+
+[picker-fix]{
+    .picker-columns{
+        height:180px;
+        .picker-above-highlight,.picker-below-highlight{
+            background:transparent;
+            border-color:transparent;
+        }
+        .picker-opts{
+            .picker-opt{
+                font-size:16px;
+                color:#fdedd4;
+                &.picker-opt-selected{
+                    color:#333;
+                }
+                @for $i from 1 through 10 {
+                        &:nth-child(#{$i}){
+                            transform: rotateX(-($i - 1)*21.16+deg) translate3d(0px, 0px, 90px);
+                        }
+                   
+                }
+                
+            }
+        }
+    }
+}
+

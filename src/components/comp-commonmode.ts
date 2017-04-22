@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, AfterViewInit, EventEmitter, ViewChild, ElementRef } from '@angular/core';
-import { Slides, PickerController, PickerColumnCmp, PickerColumnOption } from 'ionic-angular';
+import { Slides, PickerController, PickerColumnOption } from 'ionic-angular';
 
 const BODY = ['&#xe93d;', '&#xe93e;', '&#xe93f;', '&#xe940;', '&#xe941;', '&#xe942;'];
 const Massage = [{ text: '酸痛缓解' }, { text: '疲劳缓解' }, { text: '快速镇痛' }, { text: '搓揉' }, { text: '按压' }, { text: '肌肉放松' }];
@@ -24,7 +24,7 @@ const Massage = [{ text: '酸痛缓解' }, { text: '疲劳缓解' }, { text: '�
                     <div class="picker-ios" picker-fix>
                         <div class="picker-columns">
                             <div class="picker-above-highlight"></div>
-                            <div *ngFor="let c of Columns" [col]="c" class="picker-col" (ionChange)="_colChange($event)"></div>
+                            <div *ngFor="let c of Columns" [col]="c" class="picker-col" (ionChange)="colChange($event)"></div>
                             <div class="picker-below-highlight"></div>
                         </div>
                     </div>
@@ -47,7 +47,7 @@ const Massage = [{ text: '酸痛缓解' }, { text: '疲劳缓解' }, { text: '�
 
 export class ComponentCommonmode implements OnInit
 {
-  @ViewChild('HSlide') HSlides: Slides;
+
   @ViewChild('VLeftSide') VLSide: ElementRef;
   constructor(private Elements: ElementRef, private pickerCtrl: PickerController) 
   {
@@ -58,7 +58,7 @@ export class ComponentCommonmode implements OnInit
   {   
      this.Columns =  [
         {
-          name: 'flavor1',
+          name: 'Mas',
           align: 'center',
           options: Massage
         }
@@ -72,25 +72,8 @@ export class ComponentCommonmode implements OnInit
       this.SetVLside();   
   }  
 
-  HSlideChanged()
-  {
-       let currentIndex = this.HSlides.getActiveIndex();
 
-       if (currentIndex > 0)
-            this.IsHArrowLeftShow = true;
-       else
-            this.IsHArrowLeftShow = false;
-            
-       if (currentIndex < (this.HSlides.length() - 3))
-            this.IsHArrowRightShow = true;
-       else
-            this.IsHArrowRightShow = false;
-        
-       console.log(currentIndex);
-       
-  }
-
-  _colChange(selectedOption: PickerColumnOption) 
+  colChange(selectedOption: PickerColumnOption) 
   {
       let selected = this.getSelected();
       console.log(JSON.stringify(selected));
