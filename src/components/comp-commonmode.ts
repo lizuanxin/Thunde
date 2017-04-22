@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, AfterViewInit, EventEmitter, ViewChild, ElementRef } from '@angular/core';
-import { Slides } from 'ionic-angular';
+import { Slides, PickerController, PickerColumnCmp, PickerColumnOption } from 'ionic-angular';
 
-const BODY = ['&#xe93d;','&#xe93e;','&#xe93f;','&#xe940;','&#xe941;','&#xe942;'];
-const Massage = ['酸痛缓解','疲劳缓解','快速镇痛','搓揉','按压','肌肉放松'];
+const BODY = ['&#xe93d;', '&#xe93e;', '&#xe93f;', '&#xe940;', '&#xe941;', '&#xe942;'];
+const Massage = [{ text: '酸痛缓解' }, { text: '疲劳缓解' }, { text: '快速镇痛' }, { text: '搓揉' }, { text: '按压' }, { text: '肌肉放松' }];
 
 @Component({
   selector: 'comp-commonmode',
@@ -17,34 +17,31 @@ const Massage = ['酸痛缓解','疲劳缓解','快速镇痛','搓揉','按压',
             </ion-row>
         </ion-col>
         <ion-col col-7 text-center align-self-center>
-            <ion-icon app-icon [ngStyle]="BodyFixScreen(0)">&#xe91b;</ion-icon>
+            <ion-icon app-icon [ngStyle]="BodyFixScreen(0)">&#xe91b;</ion-icon>            
+            <ion-row margin-top>
+                <ion-col>
+                    <ion-icon app-icon translateDown absolute style="left:48%;font-size:1rem">&#xe93c;</ion-icon>
+                    <div class="picker-ios" picker-fix>
+                        <div class="picker-columns">
+                            <div class="picker-above-highlight"></div>
+                            <div *ngFor="let c of Columns" [col]="c" class="picker-col" (ionChange)="_colChange($event)"></div>
+                            <div class="picker-below-highlight"></div>
+                        </div>
+                    </div>
+                </ion-col>
+            </ion-row>
+            <button ion-fab absolute style="bottom:10%;right:-15%;">
+                 <ion-icon>&#xf488;</ion-icon>
+            </button>
         </ion-col>
-        <ion-col col-2>
+        <ion-col col-2 align-self-start>
             <ion-row RSideTop>
                 <ion-col col-12 text-center><ion-icon app-icon [ngStyle]="BodyFixScreen(1)">&#xe943;</ion-icon></ion-col>
                 <ion-col col-12 text-center><ion-icon app-icon [ngStyle]="BodyFixScreen(1)">&#xe95a;</ion-icon></ion-col>
             </ion-row>
-            <button ion-fab style="position:absolute;bottom:20px;left:-20px">
-                <ion-icon style="font-size:3.2rem">&#xf488;</ion-icon>
-            </button>
         </ion-col>
-    </ion-row>  
-    <ion-row no-padding Hslide align-items-center>
-        <ion-col col-1>
-            <ion-icon app-icon text-light translateLeft *ngIf="IsHArrowLeftShow">&#xe93c;</ion-icon>
-        </ion-col>
-        <ion-col col-10 col-has-slides [ngStyle]="HslideH">
-            <ion-slides pager=false slidesPerView=3 (ionSlideDidChange)="HSlideChanged()" #HSlide>
-                <ion-slide *ngFor="let item of MasValues" [class.active]="CurrentMasValue === item" (click)="SelectMas(item)"  text-center tappable>
-                    <span>{{item}}</span>
-                    <ion-icon *ngIf = "CurrentMasValue === item">&#xf488;</ion-icon>                    
-                </ion-slide>
-            </ion-slides>
-        </ion-col>
-        <ion-col col-1>
-            <ion-icon app-icon text-light translateRight *ngIf="IsHArrowRightShow">&#xe93c;</ion-icon>
-        </ion-col>
-    </ion-row>
+    </ion-row> 
+
   `,
 })
 
@@ -52,21 +49,28 @@ export class ComponentCommonmode implements OnInit
 {
   @ViewChild('HSlide') HSlides: Slides;
   @ViewChild('VLeftSide') VLSide: ElementRef;
-  constructor(private Elements: ElementRef) 
+  constructor(private Elements: ElementRef, private pickerCtrl: PickerController) 
   {
      
   }
 
   ngOnInit()
   {   
-     
+     this.Columns =  [
+        {
+          name: 'flavor1',
+          align: 'center',
+          options: Massage
+        }
+      ]
+      
       
   } 
 
   ngAfterViewInit() 
   {   
       this.SetVLside();   
-  }
+  }  
 
   HSlideChanged()
   {
@@ -86,18 +90,39 @@ export class ComponentCommonmode implements OnInit
        
   }
 
+  _colChange(selectedOption: PickerColumnOption) 
+  {
+      let selected = this.getSelected();
+      console.log(JSON.stringify(selected));
+  }
+
+  getSelected(): any 
+  {
+        let selected: {[k: string]: any} = {};
+        this.Columns.forEach((col, index) => 
+        {
+            let selectedColumn = col.options[col.selectedIndex];
+            selected[col.name] = {
+                text: selectedColumn ? selectedColumn.text : null,
+                value: selectedColumn ? selectedColumn.value : null,
+                columnIndex: index,
+            };
+        });
+        return selected;
+  }
+
   BodyFixScreen(n: number): Object
   {
       switch(n)
         {
-          case 0: return { fontSize: Math.ceil(window.innerHeight * 0.5) + 'px' }
+          case 0: return { fontSize: Math.ceil(window.innerHeight * 0.35) + 'px' }
           case 1: return { fontSize: Math.ceil(window.innerWidth * 0.1) + 'px' }
         }
       
   }
 
   SelectBody(item: string)
-  {
+  {    
     return this.CurrentBodyValue = item;
   }
 
@@ -109,7 +134,7 @@ export class ComponentCommonmode implements OnInit
   SetVLside()
   {
       let VLS = this.VLSide.nativeElement, AvHeight;      
-      AvHeight = Math.ceil(window.innerHeight * 0.6) / VLS.children.length; 
+      AvHeight = Math.ceil(window.innerHeight * 0.7) / VLS.children.length; 
 
       for (let i = 0; i < VLS.children.length; i++)
       {        
@@ -128,16 +153,17 @@ export class ComponentCommonmode implements OnInit
 
   get HslideH(): Object
   {
-      return { height: Math.ceil(window.innerHeight * 0.08) + 'px' }
+      return { height: '44px' }
   }
 
+  Columns: any;
   BodyValues: Array<string> = BODY;
-  MasValues: Array<string> = Massage;
+  MasValues: Array<Object> = Massage;
   CurrentBodyValue: string = this.BodyValues[0];
-  CurrentMasValue: string = this.MasValues[0];
+  CurrentMasValue: string = Massage[0].text;
   IsHArrowLeftShow: Boolean = false;
   IsHArrowRightShow: Boolean = true;
   VslideOption: Object;
-  VSLHeight: number = Math.ceil(window.innerHeight * 0.6); 
- 
+  VSLHeight: number = Math.ceil(window.innerHeight * 0.7); 
+  
 }
