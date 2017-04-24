@@ -1,13 +1,20 @@
-<!--<ion-header no-shadow no-border>
-  <ion-toolbar transparent style="border-bottom: 1px solid rgba(255, 255, 255, 0.1)">
-    <ion-title text-center><span [ngClass] = "app.SkinColor">{{ScriptFile.Name_LangId|translate}}</span></ion-title>
+<ion-header no-shadow no-border>
+  <ion-toolbar transparent>
+    <ion-title text-center>
+        <span [ngClass] = "app.SkinColor">{{ScriptFile.Name_LangId|translate}}</span>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content no-scroll padding [ngClass]="app.Skin('running')">
-  <comp-progressbar [Min]="0" [Max]="60" [Progress]="Intensity" (OnValueChanged)="AdjustIntensity($event)"></comp-progressbar>
+    <ng-template [ngIf]="! Finish">
+    <ion-row align-items-center [ngStyle]="CanvasClientHeight">
+        <ion-col col-10 offset-1>
+            <comp-progressbar [Min]="0" [Max]="60" [Progress]="Intensity" (OnValueChanged)="AdjustIntensity($event)"></comp-progressbar>
+        </ion-col>
+    </ion-row>
 
-  <div text-light f-48 text-center pull-bottom [ngStyle]="{'width':'100%','bottom':'88px'}">
+  <div text-light f-48 text-center pull-bottom [ngStyle]="{'width':'100%','bottom':'60px'}">
     <ion-list transparent no-margin no-padding>
       <ion-item no-lines no-margin no-padding>
         <ion-range min="0" max="100" [ngModel]="Ticking / ScriptFile.Duration * 100" color="secondary" disabled progress-bar>
@@ -17,28 +24,31 @@
       </ion-item>
     </ion-list>
   </div>
+  </ng-template>
+  <ng-template [ngIf]="Finish">
+  <div v-m style="height:100%;">
+    <div center [ngClass] = "app.SkinColor">
+        <h2 text-center>{{'hint.congratulations'|translate}}</h2>
+        <h3 padding text-center>{{'running_page.finish'|translate}}</h3>
+        <p text-center><ion-icon app-icon text-light style="font-size:46vw">&#xe938;</ion-icon></p>
+    </div>
+  </div>
+  </ng-template>
 </ion-content>
-<ion-footer no-border>
-  <ion-row style="margin-top: -88px">
-      <ion-col text-center>
-          <button ion-fab inline-block mini text-center color="light" (click)="nav.pop()" tappable>
-            <ion-icon app-icon>&#xe936;</ion-icon>
-          </button>
-      </ion-col>
-      <ion-col text-center>
-          <button ion-fab inline-block large round text-uppercase color="light" (click)="Shutdown()" tappable>
-            <ion-icon style="font-size: 36px !important;">&#xf359;</ion-icon>
-          </button>
-      </ion-col>
-      <ion-col text-center>
-          <button ion-fab inline-block mini text-center color="light" tappable>
-            <ion-icon app-icon>&#xe937;</ion-icon>
-          </button>
-      </ion-col>
-  </ion-row>
-</ion-footer>-->
+<ion-footer no-border no-shadow>
+    <ion-toolbar transparent visible>
+        <ion-row style="margin-top:-50px">
+            <ion-col text-center>
+                <button ion-fab (click)="Shutdown()" trans-shadow style="display:inline-block; font-size: 0.8rem; width:66px; height:66px"  tappable>
+                    <ion-icon *ngIf="! Finish">&#xf359;</ion-icon>
+                    <ion-icon app-icon *ngIf="Finish">&#xe936;</ion-icon>
+                </button>
+            </ion-col>
+        </ion-row>
+    </ion-toolbar>
+</ion-footer>
 
-<ion-header no-shadow no-border>
+<!--<ion-header no-shadow no-border>
   <ion-toolbar transparent>
     <ion-title text-center><span [ngClass] = "app.SkinColor">{{ScriptFile.Name_LangId|translate}}</span></ion-title>
   </ion-toolbar>
@@ -104,4 +114,4 @@
             </ion-col>
         </ion-row>
     </ion-toolbar>
-</ion-footer>
+</ion-footer>-->
