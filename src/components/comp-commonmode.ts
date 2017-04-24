@@ -27,7 +27,7 @@ const Massage = [{ text: '酸痛缓解' }, { text: '疲劳缓解' }, { text: '�
             <ion-row margin-top padding-top>                
                 <ion-col margin-top>
                     <ion-icon app-icon translateDown absolute style="left:48%;font-size:1rem">&#xe93c;</ion-icon>                   
-                    <div class="picker-ios" picker-fix margin-top>
+                    <div class="picker-ios" picker-fix margin-top margin-horizontal>
                         <div class="picker-columns" [ngStyle]="SetStyle(2)">
                             <div class="picker-above-highlight"></div>
                             <div #pickercolumns *ngFor="let c of Columns" [col]="c" class="picker-col" (ionChange)="ColChange($event)"></div>
