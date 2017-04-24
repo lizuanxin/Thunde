@@ -24,7 +24,7 @@ const Massage = [{ text: '酸痛缓解' }, { text: '疲劳缓解' }, { text: '�
                 <ion-col col-2 text-center><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe943;</ion-icon></ion-col>
                 <ion-col col-2 text-center><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe95a;</ion-icon></ion-col>
             </ion-row>        
-            <ion-row margin-top>                
+            <ion-row margin-top padding-top>                
                 <ion-col>
                     <ion-icon app-icon translateDown absolute style="left:48%;font-size:1rem">&#xe93c;</ion-icon>                   
                     <div class="picker-ios" picker-fix>
