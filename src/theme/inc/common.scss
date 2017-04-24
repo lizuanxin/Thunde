@@ -180,6 +180,11 @@ button{
 }
 
 [picker-fix]{
+    background: #c2e59c; 
+    background: -webkit-radial-gradient(#ffc371, rgba(255,255,255,.3)); 
+    background: radial-gradient( #ffc371, rgba(255,255,255,.3));
+    border:solid 3px rgba(255,255,255,.3);
+    border-radius:50%;
     .picker-columns{        
         .picker-above-highlight,.picker-below-highlight{
             background:transparent;
@@ -189,9 +194,9 @@ button{
             top:40px;
             .picker-opt{
                 font-size:16px;
-                color:#fdedd4;
+                color:rgba(255,255,255,.3);
                 &.picker-opt-selected{
-                    color:#333;
+                    color:white;
                 }                
             }
         }
