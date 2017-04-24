@@ -83,6 +83,10 @@ export class HomePage implements OnInit, OnDestroy
             this.Content.OnSelectionFile.subscribe(file => this.SelectFile(file));
 
         }
+        else
+        {
+            
+        }
         this.SelectedCategory = Category;        
         this.Asset.FileList(Category.Id)
             .then(List =>

@@ -192,14 +192,7 @@ button{
                 color:#fdedd4;
                 &.picker-opt-selected{
                     color:#333;
-                }
-                @for $i from 1 through 10 {
-                        &:nth-child(#{$i}){
-                            transform: rotateX(-($i - 1)*21.16+deg) translate3d(0px, 0px, 90px);
-                        }
-                   
-                }
-                
+                }                
             }
         }
     }
