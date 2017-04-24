@@ -16,11 +16,15 @@ const Massage = [{ text: '酸痛缓解' }, { text: '疲劳缓解' }, { text: '�
                 </ion-col>
             </ion-row>
         </ion-col>
-        <ion-col col-7 text-center align-self-top>             
+        <ion-col col-9 text-center align-self-top>             
             <ion-slides [ngStyle]="SetStyle(0)">
                 <ion-slide><ion-icon app-icon [ngStyle]="SetStyle(1)">&#xe943;</ion-icon></ion-slide>
-            </ion-slides>           
-            <ion-row margin-top padding-top>
+            </ion-slides>
+            <ion-row RSideTop margin-top justify-content-end>
+                <ion-col col-2 text-center><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe943;</ion-icon></ion-col>
+                <ion-col col-2 text-center><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe95a;</ion-icon></ion-col>
+            </ion-row>        
+            <ion-row margin-top>                
                 <ion-col>
                     <ion-icon app-icon translateDown absolute style="left:48%;font-size:1rem">&#xe93c;</ion-icon>                   
                     <div class="picker-ios" picker-fix>
@@ -32,16 +36,7 @@ const Massage = [{ text: '酸痛缓解' }, { text: '疲劳缓解' }, { text: '�
                     </div>
                 </ion-col>
             </ion-row>
-            <button ion-fab absolute style="bottom:10%;right:-15%;">
-                 <ion-icon>&#xf488;</ion-icon>
-            </button>
-        </ion-col>
-        <ion-col col-2 align-self-start no-padding>
-            <ion-row RSideTop>
-                <ion-col col-12 text-center><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe943;</ion-icon></ion-col>
-                <ion-col col-12 text-center><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe95a;</ion-icon></ion-col>
-            </ion-row>
-        </ion-col>
+        </ion-col>        
     </ion-row> 
 
   `,
@@ -70,7 +65,7 @@ export class ComponentCommonmode implements OnInit
         {
             name: 'Mas',
             align: 'center',
-            selectedIndex: 2,
+            selectedIndex: 1,
             options: Massage
         }];  
 
@@ -155,7 +150,7 @@ export class ComponentCommonmode implements OnInit
     {
         case 0: return { marginTop:'-5px', height: Math.ceil(window.innerHeight * 0.4) + 'px',backgroundColor:'rgba(255,255,255,.2)',borderRadius:'10px' }
         case 1: return { fontSize: Math.ceil(window.innerWidth * 0.45) + 'px' }
-        case 2: return { height: Math.ceil(window.innerHeight * 0.25) + 'px' }
+        case 2: return { height: '100px' }
         case 3: return { fontSize: Math.ceil(window.innerWidth * 0.1) + 'px' }
     }
   }
