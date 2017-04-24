@@ -19,7 +19,6 @@ import {FiledetailsPage} from '../pages/filedetails/filedetails';
 import {DemoPage} from '../pages/demo/demo';
 import {DemoModeRunningPage} from '../pages/demo/demo_mode_running';
 import * as Directives from '../components/components';
-import { MultiPickerModule } from 'ion-multi-picker';
 
 let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
     //iconMode: 'ios',
