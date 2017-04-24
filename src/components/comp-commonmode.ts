@@ -83,12 +83,11 @@ export class ComponentCommonmode implements OnInit
 
         if (isPresent(inputOpt)) {
             if (isString(inputOpt) || isNumber(inputOpt)) {
-            opt.text = inputOpt.toString();
-            opt.value = inputOpt;
-
+                opt.text = inputOpt.toString();
+                opt.value = inputOpt;
             } else {
-            opt.text = isPresent(inputOpt.text) ? inputOpt.text : inputOpt.value;
-            opt.value = isPresent(inputOpt.value) ? inputOpt.value : inputOpt.text;
+                opt.text = isPresent(inputOpt.text) ? inputOpt.text : inputOpt.value;
+                opt.value = isPresent(inputOpt.value) ? inputOpt.value : inputOpt.text;
             }
         }
 
