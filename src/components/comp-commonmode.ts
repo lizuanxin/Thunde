@@ -20,14 +20,14 @@ const Massage = [{ text: '酸痛缓解' }, { text: '疲劳缓解' }, { text: '�
             <ion-slides [ngStyle]="SetStyle(0)">
                 <ion-slide><ion-icon app-icon [ngStyle]="SetStyle(1)">&#xe943;</ion-icon></ion-slide>
             </ion-slides>
-            <ion-row RSideTop margin-top justify-content-end>
+            <ion-row RSideTop justify-content-end>
                 <ion-col col-2 text-center><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe943;</ion-icon></ion-col>
                 <ion-col col-2 text-center><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe95a;</ion-icon></ion-col>
             </ion-row>        
             <ion-row margin-top padding-top>                
-                <ion-col>
+                <ion-col margin-top>
                     <ion-icon app-icon translateDown absolute style="left:48%;font-size:1rem">&#xe93c;</ion-icon>                   
-                    <div class="picker-ios" picker-fix>
+                    <div class="picker-ios" picker-fix margin-top>
                         <div class="picker-columns" [ngStyle]="SetStyle(2)">
                             <div class="picker-above-highlight"></div>
                             <div #pickercolumns *ngFor="let c of Columns" [col]="c" class="picker-col" (ionChange)="ColChange($event)"></div>
@@ -150,7 +150,7 @@ export class ComponentCommonmode implements OnInit
         case 0: return { marginTop:'-5px', height: Math.ceil(window.innerHeight * 0.4) + 'px',backgroundColor:'rgba(255,255,255,.2)',borderRadius:'10px' }
         case 1: return { fontSize: Math.ceil(window.innerWidth * 0.45) + 'px' }
         case 2: return { height: '100px' }
-        case 3: return { fontSize: Math.ceil(window.innerWidth * 0.1) + 'px' }
+        case 3: return { fontSize: Math.ceil(window.innerWidth * 0.08) + 'px' }
     }
   }
 
