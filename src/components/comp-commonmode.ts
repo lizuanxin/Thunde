@@ -68,20 +68,17 @@ export class ComponentCommonmode implements OnInit
 
  @Input()
  set isDisplay(on: boolean)
- {
-     console.log('Input....'+on);
+ {     
      if (on)        
         setTimeout(() => 
         {            
-            this.refresh();
-            
+            this.refresh();            
         },10)
  }
 
   ngAfterViewInit() 
   {   
       this.SetVLside();   
-      this.refresh();
   } 
 
   refresh() 
