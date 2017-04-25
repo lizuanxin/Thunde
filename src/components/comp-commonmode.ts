@@ -27,7 +27,7 @@ const Massage = [{ text: '酸痛缓解' }, { text: '疲劳缓解' }, { text: '�
                 <ion-col col-2 text-center><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe95a;</ion-icon></ion-col>
             </ion-row>        
             <ion-row margin-top>                
-                <ion-col col-6 offset-3 margin-top>                                    
+                <ion-col col-6 offset-3>                                    
                     <div class="picker-ios" picker-fix>
                         <div class="picker-columns" [ngStyle]="SetStyle(2)">
                             <div class="picker-above-highlight"></div>
@@ -114,7 +114,7 @@ export class ComponentCommonmode implements OnInit
     console.log("fuck");      
     this._cols.forEach(column => 
     {
-        let perClientH = column.colHeight / 2;
+        let perClientH = column.colHeight / 3;
         for (let i = 0; i < column.colEle.nativeElement.children.length; i++)
         {
             column.colEle.nativeElement.children[i].style.height = column.colEle.nativeElement.children[i].style.lineHeight = perClientH + 'px';            
