@@ -7,7 +7,6 @@ import {const_data, TApplication, TAssetService, TCategory, TScriptFile, TDistri
 import {DemoPage} from '../demo/demo';
 import {TouPage} from '../tou/tou';
 import {GoPage} from '../go/go';
-import {RunningPage} from '../running/running'
 
 const SHOWING_ITEM_COUNT = 6;
 
@@ -21,7 +20,7 @@ export class HomePage implements OnInit, OnDestroy
 
     ngOnInit(): void
     {
-        
+
         this.Categories = this.Asset.Categories;
 
         if (! this.app.AcceptedTerms)
@@ -67,11 +66,11 @@ export class HomePage implements OnInit, OnDestroy
     ionViewDidEnter()
     {
 
-        if (!TypeInfo.Assigned(this.SelectedCategory))                             
-            this.SelectCategory(this.Categories[0]);        
-        else                   
-            this.Content.Paint();        
-            
+        if (!TypeInfo.Assigned(this.SelectedCategory))
+            this.SelectCategory(this.Categories[0]);
+        else
+            this.Content.Paint();
+
     }
 
     SelectCategory(Category: TCategory)
@@ -85,30 +84,30 @@ export class HomePage implements OnInit, OnDestroy
         }
         else
         {
-            
+
         }
-        this.SelectedCategory = Category;        
+        this.SelectedCategory = Category;
         this.Asset.FileList(Category.Id)
             .then(List =>
-            {                
+            {
                 console.log(Category.Id)
                 switch (Category.Id)
                 {
                 case const_data.Category.therapy.Id:
-                    this.IsCanvas = true;                   
+                    this.IsCanvas = true;
                     this.app.SetSkin(this.app.Skins[1]);
                     break;
-                case const_data.Category.fat_burning.Id: 
-                    this.IsCanvas = true;                   
+                case const_data.Category.fat_burning.Id:
+                    this.IsCanvas = true;
                     this.app.SetSkin(this.app.Skins[3]);
                     break;
-                case const_data.Category.muscle_training.Id: 
-                    this.IsCanvas = true;                    
+                case const_data.Category.muscle_training.Id:
+                    this.IsCanvas = true;
                     this.app.SetSkin(this.app.Skins[2]);
                     break;
                 case const_data.Category.relax.Id:
-                    this.IsCanvas = false;                     
-                    this.app.SetSkin(this.app.Skins[0]);                   
+                    this.IsCanvas = false;
+                    this.app.SetSkin(this.app.Skins[0]);
                     break;
                 }
 
@@ -121,7 +120,7 @@ export class HomePage implements OnInit, OnDestroy
                 this.Content.NewFileList(List);
 
                 this.ionViewDidEnter();
-                
+
             })
             .catch(err => console.log(err));
     }
@@ -147,7 +146,7 @@ export class HomePage implements OnInit, OnDestroy
     SelectFile(ScriptFile: TScriptFile)
     {
         this.Asset.FileDesc(ScriptFile)
-            .then(() => this.nav.push(RunningPage, { Category: this.SelectedCategory, ScriptFile: ScriptFile}));
+            .then(() => this.nav.push(GoPage, { Category: this.SelectedCategory, ScriptFile: ScriptFile}));
     }
 
 
