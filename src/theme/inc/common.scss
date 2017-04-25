@@ -203,3 +203,19 @@ button{
     }
 }
 
+section{
+    &[Flip-x]{
+        position: relative;
+        transition: 1s;
+        transform-style: preserve-3d;        
+        transform-origin: center center;
+
+        &.Filped{
+            animation: FlipY 1s infinite linear;
+            -webkit-animation: FlipY 1s infinite;
+            animation-fill-mode: forwards;
+            animation-iteration-count: 1;
+        }
+    }
+}
+
