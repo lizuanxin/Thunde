@@ -16,11 +16,13 @@ const Massage = [{ text: '酸痛缓解' }, { text: '疲劳缓解' }, { text: '�
                 </ion-col>
             </ion-row>
         </ion-col>
-        <ion-col col-9 text-center align-self-top>             
-            <ion-slides [ngStyle]="SetStyle(0)">
-                <ion-slide><ion-icon app-icon [ngStyle]="SetStyle(1)">&#xe943;</ion-icon></ion-slide>
-            </ion-slides>
-            <ion-row RSideTop justify-content-end>
+        <ion-col col-9 text-center align-self-top> 
+            <section Flip-x [class.Filped]="ISFlip">            
+                <ion-slides [ngStyle]="SetStyle(0)">
+                    <ion-slide><ion-icon app-icon [ngStyle]="SetStyle(1)">&#xe943;</ion-icon></ion-slide>
+                </ion-slides>
+            </section>
+            <ion-row RSideTop justify-content-end [class.slideIn]="ISFlip">
                 <ion-col col-2 text-center><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe943;</ion-icon></ion-col>
                 <ion-col col-2 text-center><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe95a;</ion-icon></ion-col>
             </ion-row>        
@@ -139,8 +141,9 @@ export class ComponentCommonmode implements OnInit
   }
 
   SelectBody(item: string)
-  {    
-    return this.CurrentBodyValue = item;
+  { 
+      if (this.CurrentBodyValue === item) return; 
+      return this.CurrentBodyValue = item, this.ToFlip();
   }
 
   SetStyle(n: number): Object
@@ -170,6 +173,14 @@ export class ComponentCommonmode implements OnInit
       } 
   }
 
+  ToFlip()
+  {
+      if (!this.ISFlip)
+          this.ISFlip = true;
+      setTimeout(()=> this.ISFlip = false,1000);
+
+  }
+
   get VslideH(): Object
   {
       return { height: this.VSLHeight + 'px' }
@@ -189,6 +200,7 @@ export class ComponentCommonmode implements OnInit
   IsHArrowRightShow: Boolean = true;
   VslideOption: Object;
   VSLHeight: number = Math.ceil(window.innerHeight * 0.7); 
+  ISFlip: Boolean = false;
   
 }
 
