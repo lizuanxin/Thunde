@@ -142,11 +142,11 @@
 @keyframes slideIn {
     0% {
         opacity: 0;
-        -webkit-transform:translateY(20px) rotateY(360deg);
+        -webkit-transform:translateX(-100px);
     }
     100% {
         opacity: 1;
-        -webkit-transform:translateY(0) rotateY(0deg);
+        -webkit-transform:translateX(0);
     }
 }
 

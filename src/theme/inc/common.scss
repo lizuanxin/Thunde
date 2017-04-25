@@ -14,39 +14,6 @@
         }
     }
 }
-[orientate],
-.orientate {
-    [area],
-    .area {
-        position: relative;
-        [point],
-        .point {
-            position: absolute;
-            width: 5vw;
-            height: 5vw;
-            border-radius: 5vw;
-            @include gradient-radial(hsla(0, 100%, 50%, 1), hsla(0, 50%, 50%, 1));
-        }
-        [aims],
-        .aims {
-            position: absolute;
-            &[round],
-            .round {
-                width: 9vw;
-                height: 9vw;
-                border-radius: 9vw;
-                @include gradient-radial(hsla(0, 50%, 50%, 1), hsla(0, 50%, 50%, 0));
-            }
-            &[oval],
-            .oval {
-                width: 9vw;
-                height: 16vw;
-                border-radius: 9vw;
-                @include gradient-radial(hsla(0, 50%, 50%, 1), hsla(0, 50%, 50%, 0));
-            }
-        }
-    }
-}
 
 [content-footer] {
     width: 100%;
@@ -180,10 +147,16 @@ button{
 }
 
 [picker-fix]{
-    @include gradient-radial(#ffc371,rgba(255,255,255,1));
+    @include gradient-radial(#fbac23,rgba(255,255,255,.7),rgba(255,255,255,.5));
     box-shadow: 0 -5px 50px rgba(255,255,255,1);
+    width:100%;    
+    padding-top:50%;
+    padding-bottom:50%;
+    height:0;
+    line-height:0;  
     border-radius:50%;
-    .picker-columns{        
+    .picker-columns{
+        margin-top:-50%;        
         .picker-above-highlight,.picker-below-highlight{
             background:transparent;
             border-color:transparent;
