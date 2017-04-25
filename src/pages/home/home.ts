@@ -41,8 +41,7 @@ export class HomePage implements OnInit, OnDestroy
 
     ionViewDidEnter()
     {
-        this.app.SetSkin(this.app.Skins[2]);
-
+        //this.app.SetSkin(this.app.Skins[2]);
         if (! TypeInfo.Assigned(this.SelectedCategory))
             this.SelectCategory(this.Categories[0]);
     }
