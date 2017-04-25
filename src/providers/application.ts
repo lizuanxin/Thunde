@@ -66,6 +66,16 @@ export class TApplication extends TAppController
             .catch(err => { })
     }
 
+    DisableHardwareBackButton()
+    {
+        this.HardwareBackButtonDisabled = true;
+    }
+
+    EnableHardwareBackButton()
+    {
+        this.HardwareBackButtonDisabled = false;
+    }
+
     IsSupportedOTG(): Promise<boolean>
     {
         if (this.IsIos)
@@ -87,16 +97,6 @@ export class TApplication extends TAppController
             Storage.Set('accepted terms', 'yes')
                 .then(() => TApplication.AcceptedTerms = true);
         }
-    }
-
-    DisableHardwareBackButton()
-    {
-        this.HardwareBackButtonDisabled = true;
-    }
-
-    EnableHardwareBackButton()
-    {
-        this.HardwareBackButtonDisabled = false;
     }
 
     ShowLoading(Msg?: string): Promise<any>

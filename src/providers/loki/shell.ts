@@ -123,7 +123,7 @@ export class TShell extends TAbstractShell
 
     static StartScan(): Subject<Array<BLE.IScanDiscovery>>
     {
-        // BLE.TGatt.BrowserFakeDevice = true;
+        BLE.TGatt.BrowserFakeDevice = true;
         return BLE.TGattScaner.Start([], this.ScanFilter, BLE_SCAN_TIMEOUT);
     }
 

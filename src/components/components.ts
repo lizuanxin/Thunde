@@ -1,2 +1,3 @@
-export * from '../components/IntensityDial';
-export * from '../components/comp-commonmode';
+export * from './IntensityDial';
+export * from './FileListDial';
+export * from './comp-commonmode';

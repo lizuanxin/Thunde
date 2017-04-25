@@ -16,6 +16,7 @@
       </ion-list>
   </ion-content>
 </ion-menu>
+
 <ion-header no-shadow no-border>
   <ion-toolbar transparent [ngClass]="PlatformShowWhen">
     <ion-buttons left>
@@ -33,16 +34,16 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content no-scroll #content [ngClass]="app.Skin('home')" color="light">  
 
-      <comp-commonmode [isDisplay]="!IsCanvas" *ngIf="!IsCanvas"></comp-commonmode>      
-      <canvas *ngIf="IsCanvas" style="width:100%;" height=360 id="content_canvas" [ngStyle]="{'position':'absolute'}" tappable></canvas>      
-  
+<ion-content no-scroll #content [ngClass]="app.Skin('home')" color="light">
+    <comp-commonmode [isDisplay]="true" *ngIf="PageIndex===0"></comp-commonmode>
+    <filelist-dial [Category]="SelectedCategory" *ngIf="PageIndex!==0"></filelist-dial>
 </ion-content>
+
 <ion-footer no-shadow no-border>
   <ion-toolbar [ngClass]="app.Skin('footer')" no-padding>
     <ion-row>
-      <ion-col text-center [ngClass]="StateCategory(Category)" *ngFor="let Category of Categories" (click)="SelectCategory(Category)" tappable>
+      <ion-col text-center [class.state]="Category===SelectedCategory" *ngFor="let Category of Categories" (click)="SelectCategory(Category)" tappable>
         <button ion-button icon-only block clear no-margin [ngClass]="app.SkinColor" [ngStyle]="{'height':'2.2em'}">
           <ion-icon app-icon>{{Category.IconChar}}</ion-icon>
         </button>

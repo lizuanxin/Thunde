@@ -10,7 +10,7 @@
     <ng-template [ngIf]="! Finish">
     <ion-row align-items-center [ngStyle]="CanvasClientHeight">
         <ion-col col-10 offset-1>
-            <intensity-dial [Min]="0" [Max]="60" [Progress]="Intensity" (OnValueChanged)="AdjustIntensity($event)"></intensity-dial>
+            <intensity-dial [Value]="Intensity" (OnValueChanged)="AdjustIntensity($event)"></intensity-dial>
         </ion-col>
     </ion-row>
 

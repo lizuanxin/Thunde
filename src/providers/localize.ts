@@ -106,10 +106,9 @@ export let translate_en =
 
     category:
     {
-        therapy: 'Therapy',
+        relax: 'Relax',
         fat_burning: 'Fat-Burning',
         muscle_training: 'Muscle Training',
-        relax: 'Relax',
     },
 
     scriptfile:

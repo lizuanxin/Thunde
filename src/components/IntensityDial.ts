@@ -1,4 +1,5 @@
 import {Component, OnInit, Input, Output, EventEmitter, ElementRef} from '@angular/core'
+import {TypeInfo} from "../UltraCreation/Core/TypeInfo";
 
 @Component({selector: 'intensity-dial', template: '<canvas style="width:100%" tappable></canvas>'})
 export class IntensityDial implements OnInit
@@ -6,7 +7,7 @@ export class IntensityDial implements OnInit
     constructor(private Elements: ElementRef)
     {
         this.Image = new Image();
-        this.Image.src = "assets/img/bg_progressbar.png";
+        this.Image.src = "assets/img/bg_dial.png";
     }
 
     ngOnInit()
@@ -23,25 +24,24 @@ export class IntensityDial implements OnInit
         this.Canvas.width  = width;
         this.Canvas.height = height;
 
-        this.CenterX = width/2;
-        this.CenterY = height/2;
+        this.CenterX = width / 2;
+        this.CenterY = height / 2;
         this.Radius = width / 2.6;
 
         this.Ctx = this.Canvas.getContext('2d');
-        this.ViewInited = true;
 
-        setTimeout(() => this.Paint(this.CurrrentProgress), 0);
+        setTimeout(() => this.Paint(this._Value), 0);
     }
 
     private Paint(Progress: number)
     {
-        if (! this.ViewInited)
+        if (! TypeInfo.Assigned(this.Ctx))
             return;
 
         this.Ctx.clearRect(0, 0, this.Canvas.width, this.Canvas.height);
         let width = this.Canvas.width;
 
-        let anglePiece = (this.EndAngle - this.StartAngle)/this.MaxProgress;
+        let anglePiece = (this.EndAngle - this.StartAngle)/this._Max;
 
         this.DrawBackground(this.Image, width, width)
             .then(() =>
@@ -179,7 +179,7 @@ export class IntensityDial implements OnInit
         this.Ctx.save();
         this.Ctx.beginPath();
         this.Ctx.translate(option.x + Math.cos(option.angle) * option.radius,
-                      option.y + Math.sin(option.angle) * option.radius);
+            option.y + Math.sin(option.angle) * option.radius);
         this.Ctx.rotate(Math.PI/2 + option.angle);
         this.Ctx.fillText(value, 0, 0);
         this.Ctx.restore();
@@ -201,21 +201,18 @@ export class IntensityDial implements OnInit
             return;
 
         let t = ev.targetTouches[0];
-        let currentX = t.clientX * window.devicePixelRatio;
-        let currentY = t.clientY * window.devicePixelRatio;
+        let X = t.clientX * window.devicePixelRatio;
+        let Y = t.clientY * window.devicePixelRatio;
 
         if (ev.type === 'touchstart')
-            this.HandlerEvent(currentX, currentY);
-    }
+        {
+            let clickResult = this.ArcInPath(X, Y);
 
-    private HandlerEvent(x: number, y: number)
-    {
-        let clickResult = this.ArcInPath(x, y);
-
-        if (clickResult.right)
-            this.OnValueChanged.emit(1);
-        else if (clickResult.left)
-            this.OnValueChanged.emit(-1);
+            if (clickResult.right)
+                this.OnValueChanged.emit(1);
+            else if (clickResult.left)
+                this.OnValueChanged.emit(-1);
+        }
     }
 
     private ArcInPath(x: number, y: number)
@@ -252,43 +249,42 @@ export class IntensityDial implements OnInit
     @Input()
     set Min(min: number)
     {
-        this.MinProgress = min;
+        this._Min = min;
     }
 
     @Input()
     set Max(max: number)
     {
-        this.MaxProgress = max;
+        this._Max = max;
     }
 
     @Input()
-    set Progress(Progress: number)
+    set Value(v: number)
     {
-        if (this.CurrrentProgress === Progress)
+        if (this._Value === v)
             return;
         else
-            this.CurrrentProgress = Progress; //界面未初始化好 先保存传进来的值
+            this._Value = v;
 
-        if (this.MinProgress <= Math.trunc(Progress) && Math.trunc(Progress) <= this.MaxProgress)
-            this.Paint(this.CurrrentProgress);
+        if (this._Min <= Math.trunc(v) && Math.trunc(v) <= this._Max)
+            this.Paint(this._Value);
     }
 
-    @Output() OnValueChanged: EventEmitter<any> = new EventEmitter();
+    @Output() OnValueChanged = new EventEmitter<number>(true);
 
-    private MinProgress: number = 0;
-    private MaxProgress: number = 100;
+    private Ctx: CanvasRenderingContext2D;
+    private Canvas: HTMLCanvasElement;
+    private Image: HTMLImageElement;
 
-    private ViewInited: boolean = false;
+    private _Min: number = 0;
+    private _Max: number = 60;
+    private _Value: number = 0;
 
-    private CurrrentProgress: number = 0;
     private StartAngle = 0.8 * Math.PI;
     private EndAngle = 2.2 * Math.PI;
     private Radius: number;
     private CenterX: number;
     private CenterY: number;
-    private Ctx: CanvasRenderingContext2D;
-    private Canvas: HTMLCanvasElement;
-    private Image: HTMLImageElement;
 }
 
 interface ICanvasDrawOption
