@@ -175,7 +175,7 @@ export class ComponentCommonmode implements OnInit
   ToFlip()
   {
       if (!this.ISFlip) this.ISFlip = true;
-      setTimeout(()=> this.ISFlip = false,1000);
+      setTimeout(()=> this.ISFlip = false,500);
 
   }
 
