@@ -231,8 +231,8 @@
 }
 
 .slideIn{
-    animation: slideIn 1s infinite linear;
-    -webkit-animation: slideIn 1s infinite linear;
+    animation: slideIn .5s infinite linear;
+    -webkit-animation: slideIn .5s infinite linear;
     animation-fill-mode: forwards;
 }
 
