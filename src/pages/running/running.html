@@ -10,7 +10,7 @@
     <ng-template [ngIf]="! Finish">
     <ion-row align-items-center [ngStyle]="CanvasClientHeight">
         <ion-col col-10 offset-1>
-            <comp-progressbar [Min]="0" [Max]="60" [Progress]="Intensity" (OnValueChanged)="AdjustIntensity($event)"></comp-progressbar>
+            <intensity-dial [Min]="0" [Max]="60" [Progress]="Intensity" (OnValueChanged)="AdjustIntensity($event)"></intensity-dial>
         </ion-col>
     </ion-row>
 
@@ -47,71 +47,3 @@
         </ion-row>
     </ion-toolbar>
 </ion-footer>
-
-<!--<ion-header no-shadow no-border>
-  <ion-toolbar transparent>
-    <ion-title text-center><span [ngClass] = "app.SkinColor">{{ScriptFile.Name_LangId|translate}}</span></ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content no-scroll padding [ngClass]="app.Skin('running')">
-  <ng-template [ngIf]="! Finish">
-  <div text-light f-48 text-center>{{TickingDownHint}}
-    <ion-list transparent no-margin>
-      <ion-item no-lines>
-        <ion-range min="0" max="100" [ngModel]="Ticking / ScriptFile.Duration * 100" color="secondary" disabled progress-bar>
-          <ion-label range-right [ngClass] = "app.SkinColor" [ngStyle]="{'margin':'0 0 0 5px'}">{{TotalMinute}}</ion-label>
-        </ion-range>
-      </ion-item>
-    </ion-list>
-  </div>
-
-  <ion-row id = "pool" [ngStyle]="{'margin-top':ComputeScreen()}">
-    <ion-col no-padding>
-       <div id = "box">
-         <div id = "point" class="point" [ngStyle] = "{'-webkit-transform':PointRotate()}"></div>
-         <div id = "textVal" class="text" f-48 [ngClass] = "app.SkinColor">
-              {{Intensity}}
-              <div class="bg-value" [ngStyle] = "{'animation-duration':Strength}"></div>
-          </div>
-          <div id="controlBtn" class="controlBtn">
-            <ion-row>
-              <ion-col width-33 text-center padding>
-                <button ion-button icon-only outline text-uppercase [ngClass] = "app.SkinBorderColor" (click)="AdjustIntensity(-1)" tappable>
-                    <ion-icon>&#xf368;</ion-icon>
-                </button>
-              </ion-col>
-              <ion-col width-33></ion-col>
-              <ion-col width-33 text-center padding>
-                <button ion-button icon-only outline text-uppercase [ngClass] = "app.SkinBorderColor" (click)="AdjustIntensity(1)" tappable>
-                    <ion-icon>&#xf273;</ion-icon>
-              </button>
-              </ion-col>
-            </ion-row>
-          </div>
-        </div>
-    </ion-col>
-  </ion-row>
-  </ng-template>
-  <ng-template [ngIf]="Finish">
-  <div v-m style="height:100%;">
-    <div center [ngClass] = "app.SkinColor">
-        <h2 text-center>{{'hint.congratulations'|translate}}</h2>
-        <h3 padding text-center>{{'running_page.finish'|translate}}</h3>
-        <p text-center><ion-icon app-icon text-light style="font-size:46vw">&#xe938;</ion-icon></p>
-    </div>
-  </div>
-  </ng-template>
-</ion-content>
-<ion-footer no-border no-shadow>
-    <ion-toolbar transparent visible>
-        <ion-row style="margin-top:-50px">
-            <ion-col text-center>
-                <button ion-fab (click)="Shutdown()" trans-shadow style="display:inline-block; font-size: 0.45rem; width:66px; height:66px"  tappable>
-                    <ion-icon *ngIf="! Finish">&#xf359;</ion-icon>
-                    <ion-icon app-icon *ngIf="Finish">&#xe936;</ion-icon>
-                </button>
-            </ion-col>
-        </ion-row>
-    </ion-toolbar>
-</ion-footer>-->

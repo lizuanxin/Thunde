@@ -1,2 +1,2 @@
-export * from '../components/comp-progressbar';
+export * from '../components/IntensityDial';
 export * from '../components/comp-commonmode';

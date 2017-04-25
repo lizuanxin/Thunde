@@ -1,7 +1,7 @@
 import {Component, OnInit, Input, Output, EventEmitter, ElementRef} from '@angular/core'
 
-@Component({selector: 'comp-progressbar', template: '<canvas style="width:100%" tappable></canvas>'})
-export class ComponentProgressbar implements OnInit
+@Component({selector: 'intensity-dial', template: '<canvas style="width:100%" tappable></canvas>'})
+export class IntensityDial implements OnInit
 {
     constructor(private Elements: ElementRef)
     {
@@ -243,18 +243,6 @@ export class ComponentProgressbar implements OnInit
 
         return {left: leftButtonClicked, right: rightButtonClicked};
     }
-
-    // private SetFont(size: number = 20, bold: boolean = false): string
-    // {
-    //     let Font = null;
-
-    //     if (bold)
-    //         Font = new UITypes.TFont('brandontext_normal', size, UITypes.TFontStyle.Normal, UITypes.TFontWeight.Bold);
-    //     else
-    //         Font = new UITypes.TFont('arial', size, UITypes.TFontStyle.Normal);
-
-    //     return Font.toString();
-    // }
 
     private SetFontSize(size: number, iconFont: boolean = false): string
     {

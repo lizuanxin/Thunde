@@ -46,7 +46,7 @@ export class HomePage implements OnInit, OnDestroy
 
     ionViewWillEnter()
     {
-        if (TypeInfo.Assigned(this.SelectedCategory) && this.SelectedCategory.Id !== const_data.Category.therapy.Id)
+        if (TypeInfo.Assigned(this.SelectedCategory))
         {
             switch (this.SelectedCategory.Id)
             {
@@ -93,10 +93,6 @@ export class HomePage implements OnInit, OnDestroy
                 console.log(Category.Id)
                 switch (Category.Id)
                 {
-                case const_data.Category.therapy.Id:
-                    this.IsCanvas = true;
-                    this.app.SetSkin(this.app.Skins[1]);
-                    break;
                 case const_data.Category.fat_burning.Id:
                     this.IsCanvas = true;
                     this.app.SetSkin(this.app.Skins[3]);

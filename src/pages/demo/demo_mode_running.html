@@ -14,7 +14,7 @@
       <div pull-bottom [ngStyle]="{width:'100%',bottom:'20px'}">
         <ion-row [ngStyle]="{marginBottom:'-15px'}">
             <ion-col col-8 offset-2 [ngStyle]="{marginTop:0,padding:0}">
-                <comp-progressbar [Min]="0" [Max]="60" [Progress]="Intensity" (OnValueChanged)="AdjustIntensity($event)"></comp-progressbar>
+                <intensity-dial [Min]="0" [Max]="60" [Progress]="Intensity" (OnValueChanged)="AdjustIntensity($event)"></intensity-dial>
             </ion-col>
         </ion-row>
         <ion-row [ngStyle]="{position:'relative',zIndex:100}" no-padding no-margin>
