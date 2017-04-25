@@ -26,9 +26,9 @@ const Massage = [{ text: '酸痛缓解' }, { text: '疲劳缓解' }, { text: '�
                 <ion-col col-2 text-center><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe943;</ion-icon></ion-col>
                 <ion-col col-2 text-center><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe95a;</ion-icon></ion-col>
             </ion-row>        
-            <ion-row>                
-                <ion-col col-8 offset-2 margin-top>                                    
-                    <div class="picker-ios" picker-fix margin-top margin-horizontal padding-horizontal>
+            <ion-row margin-top>                
+                <ion-col col-6 offset-3 margin-top>                                    
+                    <div class="picker-ios" picker-fix>
                         <div class="picker-columns" [ngStyle]="SetStyle(2)">
                             <div class="picker-above-highlight"></div>
                             <div *ngFor="let c of Columns" [col]="c" class="picker-col" (ionChange)="ColChange($event)"></div>
@@ -149,7 +149,7 @@ export class ComponentCommonmode implements OnInit
   {
     switch(n)
     {
-        case 0: return { height: Math.ceil(window.innerHeight * 0.4) + 'px',backgroundColor:'rgba(255,255,255,.2)',borderRadius:'10px' }
+        case 0: return { height: Math.ceil(window.innerHeight * 0.38) + 'px',backgroundColor:'rgba(255,255,255,.2)',borderRadius:'15px' }
         case 1: return { fontSize: Math.ceil(window.innerWidth * 0.45) + 'px' }
         case 2: return { height: '150px' }
         case 3: return { fontSize: Math.ceil(window.innerWidth * 0.08) + 'px' }
