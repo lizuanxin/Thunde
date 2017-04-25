@@ -26,13 +26,12 @@ const Massage = [{ text: '酸痛缓解' }, { text: '疲劳缓解' }, { text: '�
                 <ion-col col-2 text-center><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe943;</ion-icon></ion-col>
                 <ion-col col-2 text-center><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe95a;</ion-icon></ion-col>
             </ion-row>        
-            <ion-row margin-top padding-top>                
-                <ion-col margin-top>
-                    <ion-icon app-icon translateDown absolute style="left:48%;font-size:1rem">&#xe93c;</ion-icon>                   
-                    <div class="picker-ios" picker-fix margin-top margin-horizontal>
+            <ion-row>                
+                <ion-col col-8 offset-2 margin-top>                                    
+                    <div class="picker-ios" picker-fix margin-top margin-horizontal padding-horizontal>
                         <div class="picker-columns" [ngStyle]="SetStyle(2)">
                             <div class="picker-above-highlight"></div>
-                            <div #pickercolumns *ngFor="let c of Columns" [col]="c" class="picker-col" (ionChange)="ColChange($event)"></div>
+                            <div *ngFor="let c of Columns" [col]="c" class="picker-col" (ionChange)="ColChange($event)"></div>
                             <div class="picker-below-highlight"></div>
                         </div>
                     </div>
@@ -115,7 +114,7 @@ export class ComponentCommonmode implements OnInit
     console.log("fuck");      
     this._cols.forEach(column => 
     {
-        let perClientH = column.colHeight / column.colEle.nativeElement.children.length;
+        let perClientH = column.colHeight / 2;
         for (let i = 0; i < column.colEle.nativeElement.children.length; i++)
         {
             column.colEle.nativeElement.children[i].style.height = column.colEle.nativeElement.children[i].style.lineHeight = perClientH + 'px';            
@@ -150,9 +149,9 @@ export class ComponentCommonmode implements OnInit
   {
     switch(n)
     {
-        case 0: return { marginTop:'-5px', height: Math.ceil(window.innerHeight * 0.4) + 'px',backgroundColor:'rgba(255,255,255,.2)',borderRadius:'10px' }
+        case 0: return { height: Math.ceil(window.innerHeight * 0.4) + 'px',backgroundColor:'rgba(255,255,255,.2)',borderRadius:'10px' }
         case 1: return { fontSize: Math.ceil(window.innerWidth * 0.45) + 'px' }
-        case 2: return { height: '100px' }
+        case 2: return { height: '150px' }
         case 3: return { fontSize: Math.ceil(window.innerWidth * 0.08) + 'px' }
     }
   }
@@ -175,8 +174,7 @@ export class ComponentCommonmode implements OnInit
 
   ToFlip()
   {
-      if (!this.ISFlip)
-          this.ISFlip = true;
+      if (!this.ISFlip) this.ISFlip = true;
       setTimeout(()=> this.ISFlip = false,1000);
 
   }
@@ -184,11 +182,6 @@ export class ComponentCommonmode implements OnInit
   get VslideH(): Object
   {
       return { height: this.VSLHeight + 'px' }
-  }
-
-  get HslideH(): Object
-  {
-      return { height: '44px' }
   }
 
   Columns: any;
