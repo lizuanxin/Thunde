@@ -6,7 +6,7 @@ import * as Svc from '../providers';
 @Component({selector: 'filelist-card', template: `
     <ion-card card-list-default *ngFor="let c of FileList">
         <ion-card-content>
-            <h2><ion-icon name="cart" item-left></ion-icon></h2>
+            <h2><ion-icon app-icon>&#xe93e;</ion-icon></h2>
             <ion-card-title>
                 {{c.Name}}
             </ion-card-title>            
