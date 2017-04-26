@@ -2,7 +2,7 @@ import {Component, AfterViewInit, OnDestroy} from '@angular/core';
 import {NavController, NavParams, ViewController} from 'ionic-angular';
 
 import {PowerManagement} from '../../UltraCreation/Native/PowerManagement'
-import {TApplication, Loki} from '../services';
+import {TApplication, Loki} from '../../providers';
 
 @Component({
     selector: 'ota-update',

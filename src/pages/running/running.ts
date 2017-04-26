@@ -5,7 +5,7 @@ import 'rxjs/add/operator/toPromise';
 
 import {PowerManagement} from '../../UltraCreation/Native/PowerManagement'
 
-import {TApplication, TDistributeService, TScriptFile, TAssetService, Loki} from '../services';
+import {TApplication, TDistributeService, TScriptFile, TAssetService, Loki} from '../../providers';
 
 @Component({selector: 'page-running', templateUrl: 'running.html'})
 export class RunningPage implements OnInit, OnDestroy, AfterViewInit

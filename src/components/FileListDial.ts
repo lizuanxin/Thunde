@@ -2,7 +2,7 @@ import {Component, OnInit, OnDestroy, Input, Output, EventEmitter, ElementRef} f
 
 import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
 import {UITypes} from '../UltraCreation/Graphic';
-import {TApplication, TAssetService, TCategory, TScriptFile} from '../pages/services';
+import {TApplication, TAssetService, TCategory, TScriptFile} from '../providers';
 
 const SHOWING_ITEM_COUNT = 6;
 

@@ -3,10 +3,6 @@ import {BrowserModule} from '@angular/platform-browser';
 import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular';
 import {TranslateModule} from "../UltraCreation/ng-ion/translate";
 
-import {TApplication} from "../providers/application";
-import {TAssetService} from '../providers/asset';
-import {TDistributeService} from '../providers/distribute'
-
 import {MyApp} from './app.component';
 
 import {TouPage} from '../pages/tou/tou';
@@ -17,7 +13,9 @@ import {OtaUpdatePage} from '../pages/ota_update/ota_update';
 
 import {DemoPage} from '../pages/demo/demo';
 import {DemoModeRunningPage} from '../pages/demo/demo_mode_running';
-import * as Cmp from '../components/components';
+
+import * as Cmp from '../components';
+import * as Svc from '../providers'
 
 let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
     //iconMode: 'ios',
@@ -57,7 +55,7 @@ let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
 
     providers: [
         {provide: ErrorHandler, useClass: IonicErrorHandler},
-        TApplication, TAssetService, TDistributeService,
+        Svc.TApplication, Svc.TAssetService, Svc.TDistributeService,
     ],
 })
 export class AppModule {}

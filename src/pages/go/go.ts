@@ -4,7 +4,7 @@ import {Platform, NavController, ViewController, NavParams, ModalController, Con
 
 import {TypeInfo, EAbort} from '../../UltraCreation/Core';
 
-import {BLE, Loki, TApplication, TDistributeService, TCategory, TScriptFile} from '../services';
+import {BLE, Loki, TApplication, TDistributeService, TCategory, TScriptFile} from '../../providers';
 import {RunningPage} from '../running/running';
 import {OtaUpdatePage} from '../ota_update/ota_update';
 
@@ -69,26 +69,26 @@ export class GoPage implements OnInit, OnDestroy
                 let ELE = <HTMLElement>document.getElementById(targetId);
                 this.Point = ELE.getBoundingClientRect();
                 this.ShowBox = ELE.cloneNode(true);
-                this.InitPosition();         
-                this.enlarge.nativeElement.appendChild(this.ShowBox);                
-                this.enlarge.nativeElement.addEventListener("click", this.CloseDesc.bind(this));              
+                this.InitPosition();
+                this.enlarge.nativeElement.appendChild(this.ShowBox);
+                this.enlarge.nativeElement.addEventListener("click", this.CloseDesc.bind(this));
 
-                setTimeout(() => 
-                {                    
+                setTimeout(() =>
+                {
                     if (this.Point.left < this.Point.width)
                     {
-                        this.enlarge.nativeElement.style.transformOrigin = 'left 100%';                        
+                        this.enlarge.nativeElement.style.transformOrigin = 'left 100%';
                         this.enlarge.nativeElement.style.left = '25px';
-                        
+
                     }
                     else
                     {
                         this.enlarge.nativeElement.style.transformOrigin = '100% 100%';
-                        this.enlarge.nativeElement.style.right = '25px';                        
+                        this.enlarge.nativeElement.style.right = '25px';
                     }
                     this.enlarge.nativeElement.style.top = '42vh';
                     this.enlarge.nativeElement.style.transform = 'scale(2)';
-                    
+
                 }, 100);
             }
         }
@@ -110,11 +110,11 @@ export class GoPage implements OnInit, OnDestroy
     }
 
     CloseDesc()
-    {        
+    {
         this.InitPosition();
         setTimeout(() => this.IsShowDescIcon = false, 600);
         setTimeout(() =>
-        {           
+        {
             if (this.enlarge.nativeElement.childNodes.length === 0) return;
             this.enlarge.nativeElement.removeAttribute('style');
             this.enlarge.nativeElement.removeChild(this.ShowBox);

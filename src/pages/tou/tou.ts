@@ -1,7 +1,7 @@
 import {Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
 import {NavController} from 'ionic-angular';
 
-import {TApplication, TAssetService} from '../services';
+import {TApplication, TAssetService} from '../../providers';
 import {DemoPage} from '../demo/demo';
 
 @Component({selector: 'page-tou', templateUrl: 'tou.html'})

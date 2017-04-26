@@ -2,7 +2,7 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {NavController, MenuController, Platform} from 'ionic-angular';
 import {TypeInfo} from '../../UltraCreation/Core'
 
-import {const_data, TApplication, TAssetService, TCategory, TScriptFile} from '../services';
+import {const_data, TApplication, TAssetService, TCategory, TScriptFile} from '../../providers';
 import {DemoPage} from '../demo/demo';
 import {TouPage} from '../tou/tou';
 import {GoPage} from '../go/go';

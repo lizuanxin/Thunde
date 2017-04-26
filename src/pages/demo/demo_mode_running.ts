@@ -3,12 +3,12 @@ import {NavController, NavParams, ViewController} from 'ionic-angular';
 
 import {Subscription} from 'rxjs/rx'
 
-import {Loki, TApplication, TAssetService} from '../services';
+import {Loki, TApplication, TAssetService} from '../../providers';
 import {TUtf8Encoding} from '../../UltraCreation/Encoding';
 import {TypeInfo} from '../../UltraCreation/Core';
 import {THashMd5} from '../../UltraCreation/Hash';
 
-import {const_data} from '../services';
+import {const_data} from '../../providers';
 
 const DEMO_MODES: string[] = ["FRICTION", "KNEADING", "PRESSURE"];
 const DEMO_MODES_TIMES: number[] = [45, 70, 80];

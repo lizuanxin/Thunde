@@ -4,7 +4,7 @@ import {NavController, NavParams} from 'ionic-angular';
 import {Subscription} from 'rxjs/Rx'
 import {TypeInfo} from '../../UltraCreation/Core';
 
-import {BLE, Loki, TApplication} from '../services';
+import {BLE, Loki, TApplication} from '../../providers';
 import {DemoModeRunningPage} from '../demo/demo_mode_running';
 
 const ID = {'tips1':0, 'tips2':1, 'tips3':2, 'electrode':3, 'power':4, 'switch':5, 'strength':6,
