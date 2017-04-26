@@ -111,26 +111,24 @@ ion-row{
 
     &[RSideTop]{
         width:100%;
-        top:0;
+        top:5px;
+        right:5px;
         z-index:1;
         position:absolute;
         ion-col{
-            background-color:rgba(255,255,255,.1); 
+            background-color:rgba(255,255,255,.3); 
             border-radius:5px;            
-            margin-right:8px;
-            border:solid 1px rgba(255,255,255,.7);
+            margin-right:5px;
             &:last-child(){
                 margin-right:18px;
+            }
+            div{
+                padding-top:50%;
+                padding-bottom:50%;
+                height:0;
+                line-height:0;
             }
         }
     }
 
-    ion-col{
-        &[col-has-slides]{
-            overflow:hidden;
-            .swiper-container{
-                overflow:visible;
-            }
-        }
-    }
 }

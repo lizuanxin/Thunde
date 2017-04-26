@@ -139,14 +139,14 @@
     }
 }
 
-@keyframes slideIn {
+@keyframes enlarge {
     0% {
         opacity: 0;
-        -webkit-transform:scale(.5) translateX(-100px);
+        -webkit-transform:scale(.1);
     }
     100% {
         opacity: 1;
-        -webkit-transform:scale(1) translateX(0);
+        -webkit-transform:scale(1);
     }
 }
 
@@ -230,9 +230,9 @@
     animation-fill-mode: forwards;
 }
 
-.slideIn{
-    animation: slideIn .5s infinite linear;
-    -webkit-animation: slideIn .5s infinite linear;
+.enlarge{
+    animation: enlarge .5s infinite linear;
+    -webkit-animation: enlarge .5s infinite linear;
     animation-fill-mode: forwards;
 }
 
