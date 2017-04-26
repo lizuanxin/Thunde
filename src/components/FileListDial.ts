@@ -2,14 +2,15 @@ import {Component, OnInit, OnDestroy, Input, Output, EventEmitter, ElementRef} f
 
 import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
 import {UITypes} from '../UltraCreation/Graphic';
-import {TApplication, TAssetService, TCategory, TScriptFile} from '../providers';
+import * as Svc from '../providers';
 
 const SHOWING_ITEM_COUNT = 6;
 
 @Component({selector: 'filelist-dial', template: '<canvas style="width:100%" tappable></canvas>'})
 export class FileListDial implements OnInit, OnDestroy
 {
-    constructor(private Elements: ElementRef, private app: TApplication, private Asset: TAssetService)
+    constructor(private Elements: ElementRef,
+        private app: Svc.TApplication, private Asset: Svc.TAssetService)
     {
     }
 
@@ -25,7 +26,7 @@ export class FileListDial implements OnInit, OnDestroy
         this.Content = null;
     }
 
-    @Input() set Category(v: TCategory)
+    @Input() set Category(v: Svc.TCategory)
     {
         if (! TypeInfo.Assigned(v))
             return;
@@ -47,7 +48,7 @@ export class FileListDial implements OnInit, OnDestroy
 
 class TContentCanvas
 {
-    constructor(private Canvas: HTMLCanvasElement, private app: TApplication)
+    constructor(private Canvas: HTMLCanvasElement, private app: Svc.TApplication)
     {
         Canvas.addEventListener("touchstart", this.TouchHandler.bind(this));
         Canvas.addEventListener("touchmove", this.TouchHandler.bind(this));
@@ -96,7 +97,7 @@ class TContentCanvas
         this.Ctx.fillStyle = Value;
     }
 
-    NewFileList(FileList: Array<TScriptFile>)
+    NewFileList(FileList: Array<Svc.TScriptFile>)
     {
         this.ScrollingY = 0;
         this.ScrollMaxY = (FileList.length - SHOWING_ITEM_COUNT) * this.ItemHeight + this.ItemHeight / 5;
@@ -304,7 +305,7 @@ class TContentCanvas
     FileDescFont = new UITypes.TFont('brandontext_normal', 8, UITypes.TFontStyle.Italic);
     MinuteFont = new UITypes.TFont('brandontext_normal', 8);
 
-    OnSelectionFile = new EventEmitter<TScriptFile>();
+    OnSelectionFile = new EventEmitter<Svc.TScriptFile>();
 
     private Ctx: CanvasRenderingContext2D;
 
@@ -315,7 +316,7 @@ class TContentCanvas
     private ItemHeight;
     private DisplayHeight;
 
-    private FileList: Array<TScriptFile> = [];
+    private FileList: Array<Svc.TScriptFile> = [];
     private ScrollingY = 0;
     private ScrollMaxY = 0;
 

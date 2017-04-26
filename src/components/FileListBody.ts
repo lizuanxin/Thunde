@@ -1,8 +1,8 @@
 import {Component, OnInit, Input, Output, AfterViewInit, EventEmitter, ViewChild, ViewChildren, ElementRef, QueryList} from '@angular/core';
-import {Slides, PickerColumnCmp, PickerColumnOption } from 'ionic-angular';
+import {Slides, PickerColumnCmp, PickerColumnOption} from 'ionic-angular';
 import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
 
-import {TScriptFile} from '../providers'
+import * as Svc from '../providers'
 
 const BODY = ['&#xe93d;', '&#xe93e;', '&#xe93f;', '&#xe940;', '&#xe941;', '&#xe942;'];
 const Massage = [{ text: '酸痛缓解' }, { text: '疲劳缓解' }, { text: '快速镇痛' }, { text: '搓揉' }, { text: '按压' }, { text: '肌肉放松' }];
@@ -203,4 +203,6 @@ export class FileListBody implements OnInit, AfterViewInit
     VslideOption: Object;
     VSLHeight: number = Math.ceil(window.innerHeight * 0.7);
     ISFlip: Boolean = false;
+
+    @Output() OnSelectionFile = new EventEmitter<Svc.TScriptFile>();
 }

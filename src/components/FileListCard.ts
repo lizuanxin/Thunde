@@ -1,12 +1,12 @@
 import {Component, OnInit, OnDestroy, Input, Output, EventEmitter, ElementRef} from '@angular/core'
 
 import {TypeInfo} from "../UltraCreation/Core/TypeInfo";
-import {TApplication, TAssetService, TCategory, TScriptFile} from '../providers';
+import * as Svc from '../providers';
 
 @Component({selector: 'filelist-card', template: '<canvas style="width:100%" tappable></canvas>'})
 export class FileListCard implements OnInit, OnDestroy
 {
-    constructor(private Elements: ElementRef, private app: TApplication, private Asset: TAssetService)
+    constructor(private Elements: ElementRef, private app: Svc.TApplication, private Asset: Svc.TAssetService)
     {
     }
 
@@ -18,7 +18,7 @@ export class FileListCard implements OnInit, OnDestroy
     {
     }
 
-    @Input() set Category(v: TCategory)
+    @Input() set Category(v: Svc.TCategory)
     {
         if (! TypeInfo.Assigned(v))
             return;
@@ -32,7 +32,7 @@ export class FileListCard implements OnInit, OnDestroy
             .catch(err => console.log(err));
     }
 
-    @Output() OnSelectionFile = new EventEmitter<TScriptFile>();
+    @Output() OnSelectionFile = new EventEmitter<Svc.TScriptFile>();
 
-    private FileList: Array<TScriptFile>;
+    private FileList: Array<Svc.TScriptFile>;
 }
