@@ -37,7 +37,8 @@
 
 <ion-content no-scroll #content [ngClass]="app.Skin('home')" color="light">
     <filelist-body *ngIf="PageIndex===0"></filelist-body>
-    <filelist-dial [Category]="SelectedCategory" *ngIf="PageIndex!==0"></filelist-dial>
+    <filelist-card *ngIf="PageIndex===1" [Category]="SelectedCategory" ></filelist-card>
+    <filelist-dial *ngIf="PageIndex===2" [Category]="SelectedCategory" ></filelist-dial>
 </ion-content>
 
 <ion-footer no-shadow no-border>
