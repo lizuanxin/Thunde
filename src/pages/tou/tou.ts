@@ -1,13 +1,13 @@
 import {Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
 import {NavController} from 'ionic-angular';
 
-import {TApplication, TAssetService} from '../../providers';
-import {DemoPage} from '../demo/demo';
+import * as Svc from '../../providers';
+import * as View from '../demo/demo';
 
 @Component({selector: 'page-tou', templateUrl: 'tou.html'})
 export class TouPage implements OnInit, OnDestroy, AfterViewInit
 {
-    constructor(public nav: NavController, public app: TApplication, private AssetSvc: TAssetService)
+    constructor(public nav: NavController, public app: Svc.TApplication, private AssetSvc: Svc.TAssetService)
     {
     }
 
@@ -38,7 +38,7 @@ export class TouPage implements OnInit, OnDestroy, AfterViewInit
             .then(() =>
             {
                 if (this.IsFirstTime)
-                    this.nav.push(DemoPage);
+                    this.nav.push(View.DemoPage);
             });
     }
 

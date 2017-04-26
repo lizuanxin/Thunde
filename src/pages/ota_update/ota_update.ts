@@ -2,7 +2,7 @@ import {Component, AfterViewInit, OnDestroy} from '@angular/core';
 import {NavController, NavParams, ViewController} from 'ionic-angular';
 
 import {PowerManagement} from '../../UltraCreation/Native/PowerManagement'
-import {TApplication, Loki} from '../../providers';
+import * as Svc from '../../providers';
 
 @Component({
     selector: 'ota-update',
@@ -34,7 +34,7 @@ import {TApplication, Loki} from '../../providers';
 })
 export class OtaUpdatePage implements AfterViewInit, OnDestroy
 {
-    constructor(private app: TApplication, private nav: NavController, private navParams: NavParams, private view: ViewController)
+    constructor(private app: Svc.TApplication, private nav: NavController, private navParams: NavParams, private view: ViewController)
     {
         this.Shell = navParams.get('Shell')
         this.Firmware = navParams.get('Firmware');
@@ -69,12 +69,12 @@ export class OtaUpdatePage implements AfterViewInit, OnDestroy
             .then(() => this.nav.pop())
             .catch(err =>
             {
-                if (err instanceof Loki.EUSBRestarting)
+                if (err instanceof Svc.Loki.EUSBRestarting)
                 {
                     setTimeout(() =>
                     {
-                        Loki.TShell.StartOTG();
-                        this.Shell = Loki.TShell.Get('USB');
+                        Svc.Loki.TShell.StartOTG();
+                        this.Shell = Svc.Loki.TShell.Get('USB');
                     }, 1500);
 
                     setTimeout(() => this.Start(), 3000);
@@ -91,6 +91,6 @@ export class OtaUpdatePage implements AfterViewInit, OnDestroy
 
     Percent: number = 0;
 
-    private Shell: Loki.TShell;
+    private Shell: Svc.Loki.TShell;
     private Firmware: ArrayBuffer;
 }

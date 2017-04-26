@@ -3,12 +3,11 @@ import {NavController, NavParams, ViewController} from 'ionic-angular';
 
 import {Subscription} from 'rxjs/rx'
 
-import {Loki, TApplication, TAssetService} from '../../providers';
 import {TUtf8Encoding} from '../../UltraCreation/Encoding';
 import {TypeInfo} from '../../UltraCreation/Core';
 import {THashMd5} from '../../UltraCreation/Hash';
 
-import {const_data} from '../../providers';
+import * as Svc from '../../providers';
 
 const DEMO_MODES: string[] = ["FRICTION", "KNEADING", "PRESSURE"];
 const DEMO_MODES_TIMES: number[] = [45, 70, 80];
@@ -17,12 +16,12 @@ const DEMO_MODES_TIMES: number[] = [45, 70, 80];
 export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 {
     constructor(public nav: NavController, private navParams: NavParams, private view: ViewController,
-        public app: TApplication, private AssetSvc:TAssetService)
+        public app: Svc.TApplication, private Asset: Svc.TAssetService)
     {
         this.SetModeInfo(DEMO_MODES[this.CurrentRunningIndex]);
 
         let DeviceId = navParams.get('DeviceId');
-        this.Shell = Loki.TShell.Get(DeviceId);
+        this.Shell = Svc.Loki.TShell.Get(DeviceId);
     }
 
     ngOnInit()
@@ -32,32 +31,32 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
             {
                 switch(Notify)
                 {
-                case Loki.TShellNotify.Shutdown:
+                case Svc.Loki.TShellNotify.Shutdown:
                     this.Close('shutdown');
                     break;
-                case Loki.TShellNotify.Disconnected:
+                case Svc.Loki.TShellNotify.Disconnected:
                     this.Close('disconnected');
                     break;
-                case Loki.TShellNotify.LowBattery:
+                case Svc.Loki.TShellNotify.LowBattery:
                     this.Close('low_battery');
                     break;
-                case Loki.TShellNotify.HardwareError:
+                case Svc.Loki.TShellNotify.HardwareError:
                     this.Close('hardware_error');
                     break;
 
-                case Loki.TShellNotify.NoLoad:
+                case Svc.Loki.TShellNotify.NoLoad:
                     this.Close('no_load');
                     break;
 
-                case Loki.TShellNotify.Stopped:
+                case Svc.Loki.TShellNotify.Stopped:
                     this.Close('');
                     break;
 
-                case Loki.TShellNotify.Intensity:
+                case Svc.Loki.TShellNotify.Intensity:
                     this.Intensity = this.Shell.Intensity;
                     break;
 
-                case Loki.TShellNotify.Ticking:
+                case Svc.Loki.TShellNotify.Ticking:
                     this.Ticking = this.Shell.Ticking;
                     console.log("Ticking:" + this.Ticking);
 
@@ -140,7 +139,7 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     ReadLocalFile(FileName: string): Uint8Array
     {
-        let Content = const_data.DemoModes[FileName];
+        let Content = Svc.const_data.DemoModes[FileName];
         return TUtf8Encoding.Instance.Encode(Content);
     }
 
@@ -313,6 +312,6 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
     ModeSuggestion: string;
 
     private Adjusting: Promise<any> = null;
-    private Shell: Loki.TShell;
+    private Shell: Svc.Loki.TShell;
     private ShellNotifySubscription: Subscription;
 }

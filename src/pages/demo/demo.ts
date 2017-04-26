@@ -4,8 +4,8 @@ import {NavController, NavParams} from 'ionic-angular';
 import {Subscription} from 'rxjs/Rx'
 import {TypeInfo} from '../../UltraCreation/Core';
 
-import {BLE, Loki, TApplication} from '../../providers';
-import {DemoModeRunningPage} from '../demo/demo_mode_running';
+import * as Svc from '../../providers';
+import * as View from '../demo/demo_mode_running';
 
 const ID = {'tips1':0, 'tips2':1, 'tips3':2, 'electrode':3, 'power':4, 'switch':5, 'strength':6,
     'line1':7, 'line2':8, 'line3':9, 'num1':10, 'num2':11, 'num3':12, 'num4':13,
@@ -14,7 +14,7 @@ const ID = {'tips1':0, 'tips2':1, 'tips3':2, 'electrode':3, 'power':4, 'switch':
 @Component({selector: 'page-demo', templateUrl: 'demo.html'})
 export class DemoPage implements OnDestroy, AfterViewInit
 {
-    constructor(public app: TApplication, public nav: NavController, private navParams: NavParams)
+    constructor(public nav: NavController, private navParams: NavParams, public app: Svc.TApplication)
     {
     }
 
@@ -25,10 +25,10 @@ export class DemoPage implements OnDestroy, AfterViewInit
 
     ngAfterViewInit()
     {
-        if (! Loki.TShell.IsUsbPlugin)
+        if (! Svc.Loki.TShell.IsUsbPlugin)
         {
             if (this.app.IsAndroid)
-                BLE.Enable().then(() => this.StartScan())
+                Svc.BLE.Enable().then(() => this.StartScan())
             else
                 this.StartScan();
         }
@@ -41,12 +41,12 @@ export class DemoPage implements OnDestroy, AfterViewInit
         if (TypeInfo.Assigned(this.ScanSubscription))
             this.ScanSubscription.unsubscribe();
 
-        Loki.TShell.StopScan().catch(err => console.log(err.message));
+        Svc.Loki.TShell.StopScan().catch(err => console.log(err.message));
     }
 
     private StartScan()
     {
-        this.ScanSubscription = Loki.TShell.StartScan()
+        this.ScanSubscription = Svc.Loki.TShell.StartScan()
             .subscribe((next) => this.DeviceList = next,
             (err) => console.error(err),
             () =>
@@ -56,7 +56,7 @@ export class DemoPage implements OnDestroy, AfterViewInit
             });
     }
 
-    SelectionDevice(Device: BLE.IScanDiscovery)
+    SelectionDevice(Device: Svc.BLE.IScanDiscovery)
     {
         this.Start(Device.id);
     }
@@ -74,14 +74,14 @@ export class DemoPage implements OnDestroy, AfterViewInit
 
         this.app.ShowLoading().then(loading =>
         {
-            let Shell = Loki.TShell.Get(DeviceId);
+            let Shell = Svc.Loki.TShell.Get(DeviceId);
 
             let StopScan: Promise<void> = Promise.resolve();
-            if (!Loki.TShell.IsUsbPlugin)
-                StopScan = BLE.TGatt.StopScan();
+            if (! Svc.Loki.TShell.IsUsbPlugin)
+                StopScan = Svc.BLE.TGatt.StopScan();
 
             StopScan.then(() => Shell.Connect())
-                .then(() => this.nav.push(DemoModeRunningPage, params))
+                .then(() => this.nav.push(View.DemoModeRunningPage, params))
                 .catch(err =>
                 {
                     loading.dismiss()
@@ -95,7 +95,7 @@ export class DemoPage implements OnDestroy, AfterViewInit
         if (this.DeviceListEmpty)
             return;
 
-        if (!Loki.TShell.IsUsbPlugin)
+        if (! Svc.Loki.TShell.IsUsbPlugin)
         {
             if (this.DeviceList.length === 1)
                 this.Start(this.DeviceList[0].id);
@@ -266,8 +266,8 @@ export class DemoPage implements OnDestroy, AfterViewInit
     @ViewChild('animatedef') animatedef: ElementRef;
 
     IsShowingDeviceList: boolean = false;
-    DeviceListEmpty: boolean =  false;
-    DeviceList: Array<BLE.IScanDiscovery> = [];
+    DeviceListEmpty: boolean = false;
+    DeviceList: Array<Svc.BLE.IScanDiscovery> = [];
 
     private ScanSubscription: Subscription;
 }

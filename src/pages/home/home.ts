@@ -2,16 +2,14 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {NavController, MenuController, Platform} from 'ionic-angular';
 import {TypeInfo} from '../../UltraCreation/Core'
 
-import {const_data, TApplication, TAssetService, TCategory, TScriptFile} from '../../providers';
-import {DemoPage} from '../demo/demo';
-import {TouPage} from '../tou/tou';
-import {GoPage} from '../go/go';
+import * as View from '..'
+import * as Svc from '../../providers';
 
 @Component({selector: 'page-home', templateUrl: 'home.html'})
 export class HomePage implements OnInit, OnDestroy
 {
-    constructor( private platform: Platform, private app: TApplication, public nav: NavController, private MenuCtrl: MenuController,
-        private Asset: TAssetService)
+    constructor( private platform: Platform, public nav: NavController, private MenuCtrl: MenuController,
+        private app: Svc.TApplication, private Asset: Svc.TAssetService)
     {
     }
 
@@ -46,7 +44,7 @@ export class HomePage implements OnInit, OnDestroy
             this.SelectCategory(this.Categories[0]);
     }
 
-    SelectCategory(Category: TCategory)
+    SelectCategory(Category: Svc.TCategory)
     {
         this.SelectedCategory = Category;
     }
@@ -54,34 +52,34 @@ export class HomePage implements OnInit, OnDestroy
     ShowDemo()
     {
         this.MenuCtrl.close()
-            .then(() => this.nav.push(DemoPage))
+            .then(() => this.nav.push(View.DemoPage))
     }
 
     ShowTOU()
     {
         return this.MenuCtrl.close()
-            .then(() => this.nav.push(TouPage));
+            .then(() => this.nav.push(View.TouPage));
     }
 
-    SelectFile(ScriptFile: TScriptFile)
+    SelectFile(ScriptFile: Svc.TScriptFile)
     {
         this.Asset.FileDesc(ScriptFile)
-            .then(() => this.nav.push(GoPage, {Category: this.SelectedCategory, ScriptFile: ScriptFile}));
+            .then(() => this.nav.push(View.GoPage, {Category: this.SelectedCategory, ScriptFile: ScriptFile}));
     }
 
     get PageIndex(): number
     {
         switch(this.SelectedCategory.Id)
         {
-        case const_data.Category.relax.Id:
+        case Svc.const_data.Category.relax.Id:
             return 0;
-        case const_data.Category.muscle_training.Id:
+        case Svc.const_data.Category.muscle_training.Id:
             return 1;
-        case const_data.Category.fat_burning.Id:
+        case Svc.const_data.Category.fat_burning.Id:
             return 2;
         }
     }
 
-    Categories: Array<TCategory>;
-    SelectedCategory: TCategory;
+    Categories: Array<Svc.TCategory>;
+    SelectedCategory: Svc.TCategory;
 }
