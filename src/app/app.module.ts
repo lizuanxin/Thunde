@@ -46,7 +46,7 @@ let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
         MyApp,
         HomePage, TouPage, GoPage, RunningPage, OtaUpdatePage,
         DemoPage, DemoModeRunningPage,
-        Cmp.IntensityDial, Cmp.FileListDial, Cmp.ComponentCommonmode
+        Cmp.IntensityDial, Cmp.FileListDial, Cmp.FileListBody
     ],
 
     entryComponents: [

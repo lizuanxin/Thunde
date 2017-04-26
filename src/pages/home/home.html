@@ -36,7 +36,7 @@
 </ion-header>
 
 <ion-content no-scroll #content [ngClass]="app.Skin('home')" color="light">
-    <comp-commonmode [isDisplay]="true" *ngIf="PageIndex===0"></comp-commonmode>
+    <filelist-body [isDisplay]="true" *ngIf="PageIndex===0"></filelist-body>
     <filelist-dial [Category]="SelectedCategory" *ngIf="PageIndex!==0"></filelist-dial>
 </ion-content>
 
