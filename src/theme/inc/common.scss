@@ -196,3 +196,15 @@ section{
     }
 }
 
+ion-card{
+    &[card-list-default]{
+        border-radius:10px;
+        background:rgba(255,255,255,.7);
+        ion-card-content{
+            h2{
+                text-align:center;
+                font-size:5rem;
+            }
+        }
+    }
+}
