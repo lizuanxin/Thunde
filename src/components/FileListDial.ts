@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Input, Output, EventEmitter, ElementRef} from '@angular/core'
+import {Component, OnInit, OnDestroy, AfterViewInit, Input, Output, EventEmitter, ElementRef} from '@angular/core'
 
 import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
 import {UITypes} from '../UltraCreation/Graphic';
@@ -8,17 +8,16 @@ import * as Svc from '../providers';
 const SHOWING_ITEM_COUNT = 6;
 
 @Component({selector: 'filelist-dial', template: '<canvas style="width:100%" tappable></canvas>'})
-export class FileListDial implements OnInit, OnDestroy
+export class FileListDial implements OnInit, OnDestroy, AfterViewInit
 {
-    constructor(private Elements: ElementRef,
-        private app: Svc.TApplication, private Asset: Svc.TAssetService)
+    constructor(private Elements: ElementRef, private app: Svc.TApplication)
     {
     }
 
     ngOnInit()
     {
         let Canvas = this.Elements.nativeElement.children[0] as HTMLCanvasElement;
-        this.Content = new TContentCanvas(Canvas, this.app);
+        this.Content = new TContentCanvas(Canvas, this.app, this.OnSelectionFile);
     }
 
     ngOnDestroy(): void
@@ -27,20 +26,13 @@ export class FileListDial implements OnInit, OnDestroy
         this.Content = null;
     }
 
-    @Input() set Category(v: Svc.TCategory)
+    ngAfterViewInit()
     {
-        if (! TypeInfo.Assigned(v))
-            return;
-
-        this.Asset.FileList(v.Id)
-            .then(List => this.Content.NewFileList(List))
-            .catch(err => console.log(err));
+        this.Content.NewFileList(this.FileList);
     }
 
-    @Output() get OnSelectionFile()
-    {
-        return this.Content.OnSelectionFile;
-    }
+    @Input() FileList: Svc.TScriptFileList
+    @Output() OnSelectionFile = new EventEmitter<Svc.TScriptFile>();
 
     private Content: TContentCanvas;
 }
@@ -49,7 +41,8 @@ export class FileListDial implements OnInit, OnDestroy
 
 class TContentCanvas
 {
-    constructor(private Canvas: HTMLCanvasElement, private app: Svc.TApplication)
+    constructor(private Canvas: HTMLCanvasElement, private app: Svc.TApplication,
+        private OnSelectionFile: EventEmitter<Svc.TScriptFile>)
     {
         Canvas.addEventListener("touchstart", this.TouchHandler.bind(this));
         Canvas.addEventListener("touchmove", this.TouchHandler.bind(this));
@@ -98,8 +91,11 @@ class TContentCanvas
         this.Ctx.fillStyle = Value;
     }
 
-    NewFileList(FileList: Array<Svc.TScriptFile>)
+    NewFileList(FileList: Svc.TScriptFileList)
     {
+        if (FileList === this.FileList)
+            return;
+
         this.ScrollingY = 0;
         this.ScrollMaxY = (FileList.length - SHOWING_ITEM_COUNT) * this.ItemHeight + this.ItemHeight / 5;
 
@@ -306,8 +302,6 @@ class TContentCanvas
     FileDescFont = new UITypes.TFont('brandontext_normal', 8, UITypes.TFontStyle.Italic);
     MinuteFont = new UITypes.TFont('brandontext_normal', 8);
 
-    OnSelectionFile = new EventEmitter<Svc.TScriptFile>();
-
     private Ctx: CanvasRenderingContext2D;
 
     private Padding;
@@ -317,7 +311,7 @@ class TContentCanvas
     private ItemHeight;
     private DisplayHeight;
 
-    private FileList: Array<Svc.TScriptFile> = [];
+    private FileList: Svc.TScriptFileList = [];
     private ScrollingY = 0;
     private ScrollMaxY = 0;
 

@@ -15,8 +15,10 @@ export class HomePage implements OnInit, OnDestroy
 
     ngOnInit(): void
     {
-        this.Categories = this.Asset.Categories;
-        this.SelectedCategory = this.Categories[0];
+        this.Tabs.push({Index: 0, Category: Svc.const_data.Category.relax})
+        this.Tabs.push({Index: 1, Category: Svc.const_data.Category.muscle_training})
+        this.Tabs.push({Index: 2, Category: Svc.const_data.Category.fat_burning})
+        this.ActiveTab = this.Tabs[0];
 
         if (! this.app.AcceptedTerms)
         {
@@ -37,18 +39,6 @@ export class HomePage implements OnInit, OnDestroy
     {
     }
 
-    ionViewDidEnter()
-    {
-        //this.app.SetSkin(this.app.Skins[2]);
-        if (! TypeInfo.Assigned(this.SelectedCategory))
-            this.SelectCategory(this.Categories[0]);
-    }
-
-    SelectCategory(Category: Svc.TCategory)
-    {
-        this.SelectedCategory = Category;
-    }
-
     ShowDemo()
     {
         this.MenuCtrl.close()
@@ -61,25 +51,40 @@ export class HomePage implements OnInit, OnDestroy
             .then(() => this.nav.push(View.TouPage));
     }
 
-    SelectFile(ScriptFile: Svc.TScriptFile)
+    SelectTab(Tab: ITabItem): void
     {
-        this.Asset.FileDesc(ScriptFile)
-            .then(() => this.nav.push(View.GoPage, {Category: this.SelectedCategory, ScriptFile: ScriptFile}));
-    }
-
-    get PageIndex(): number
-    {
-        switch(this.SelectedCategory.Id)
+        if (! TypeInfo.Assigned(Tab.FileList))
         {
-        case Svc.const_data.Category.relax.Id:
-            return 0;
-        case Svc.const_data.Category.muscle_training.Id:
-            return 1;
-        case Svc.const_data.Category.fat_burning.Id:
-            return 2;
+            this.Asset.FileList(Tab.Category.Id)
+                .then(List => Tab.FileList = List)
+                .then(() => this.ActiveTab = Tab)
+                .catch(err => console.log(err));
+        }
+        else
+        {
+            this.ActiveTab = Tab;
+            console.log(this.ActiveTab);
+
         }
     }
 
-    Categories: Array<Svc.TCategory>;
-    SelectedCategory: Svc.TCategory;
+    SelectFile(ScriptFile: Svc.TScriptFile)
+    {
+        console.log(ScriptFile);
+
+        /*
+        this.Asset.FileDesc(ScriptFile)
+            .then(() => this.nav.push(View.GoPage, {Category: this.SelectedCategory, ScriptFile: ScriptFile}));
+        */
+    }
+
+    private Tabs: Array<ITabItem> = [];
+    private ActiveTab: ITabItem;
+}
+
+interface ITabItem
+{
+    Index: number;
+    Category: Svc.ICategory;
+    FileList?: Svc.TScriptFileList;
 }

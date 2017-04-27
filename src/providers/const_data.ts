@@ -1,4 +1,5 @@
 import {inplace_files} from './inplace_files'
+import * as Intf from './intf'
 
 export namespace const_data
 {
@@ -7,27 +8,12 @@ export namespace const_data
     export const Anonymous =
         {Id: '{00000000-0000-4000-0000-000000000000}', Name: 'anonymous', Email: ''};
 
-    export interface IMode
-    {
-        Id: string;
-        Name: string;
-        Desc?: string;
-        Icon?: number;
-    }
     // do not use this: dummy for bluetens
-    export const Modes: Array<IMode> =
+    export const Modes: Array<Intf.IMode> =
     [
     ]
 
-    export interface IBodyPart
-    {
-        Id: string;
-        Name: string;
-        Desc?: string;
-        Icon?: number;
-    }
-
-    export const BodyParts: Array<IBodyPart> =
+    export const BodyParts: Array<Intf.IBodyPart> =
     [
         {Id: '{00000000-0000-4000-2000-000000000001}', Name: 'upper_back',
             Icon: 0xE91F, Desc: JSON.stringify([0xE914])},
@@ -95,15 +81,7 @@ export namespace const_data
         fat: [Body.abdomen, Body.buttock, Body.thigh, Body.upper_arm]
     }
 
-    interface ICategory
-    {
-        Id: string;
-        Name: string;
-        Desc?: string;
-        Icon?: number;
-    }
-
-    export const Categories: Array<ICategory> =
+    export const Categories: Array<Intf.ICategory> =
     [
         {Id: '{00000000-0000-4000-3000-000000000001}', Icon: 0xe917, Name: 'relax'},
         {Id: '{00000000-0000-4000-3000-000000000002}', Icon: 0xe91e, Name: 'muscle_training'},
@@ -117,32 +95,19 @@ export namespace const_data
         fat_burning: Categories[2],
     }
 
-    export interface IScriptFile
-    {
-        Id: string;
-        Author: string;
-
-        Category_Id: string;
-        Mode_Id: string;
-        BodyParts: Array<IBodyPart>;
-
-        Name: string;
-        Content: string;
-    };
-
-    export const ScriptFile: Array<IScriptFile> =
+    export const ScriptFile: Array<Intf.IScriptFile> =
     [
         {Id: '{00000000-0000-4000-4000-000000000001}', Author: 'UltraCreation Team',
             Category_Id: Category.relax.Id, Mode_Id: null, Name: 'sore',
-            BodyParts: new Array<IBodyPart>().concat(BodyCategory.back, Body.upper_arm),
+            BodyParts: new Array<Intf.IBodyPart>().concat(BodyCategory.back, Body.upper_arm),
             Content: inplace_files.file3_sore_therpy},
         {Id: '{00000000-0000-4000-4000-000000000002}', Author: 'UltraCreation Team',
             Category_Id: Category.relax.Id, Mode_Id: null, Name: 'pain',
-            BodyParts: new Array<IBodyPart>().concat(BodyCategory.back, Body.upper_arm),
+            BodyParts: new Array<Intf.IBodyPart>().concat(BodyCategory.back, Body.upper_arm),
             Content: inplace_files.file11_pain_treatment},
         {Id: '{00000000-0000-4000-4000-000000000010}', Author: 'UltraCreation Team',
             Category_Id: Category.relax.Id, Mode_Id: null, Name: 'han',
-            BodyParts: new Array<IBodyPart>().concat(BodyCategory.back, BodyCategory.joint),
+            BodyParts: new Array<Intf.IBodyPart>().concat(BodyCategory.back, BodyCategory.joint),
             Content: 'V1D16{R12c|F64P32C12c|R6Pc8F2C1}'},
         {Id: '{00000000-0000-4000-4000-000000000003}', Author: 'UltraCreation Team',
             Category_Id: Category.relax.Id,  Mode_Id: null, Name: 'knock',
@@ -150,15 +115,15 @@ export namespace const_data
             Content: inplace_files.file1_knock},
         {Id: '{00000000-0000-4000-4000-000000000004}', Author: 'UltraCreation Team',
             Category_Id: Category.relax.Id, Mode_Id: null, Name: 'press',
-            BodyParts: new Array<IBodyPart>().concat(BodyCategory.back, BodyCategory.forelimb, BodyCategory.lowerlimb, Body.foot),
+            BodyParts: new Array<Intf.IBodyPart>().concat(BodyCategory.back, BodyCategory.forelimb, BodyCategory.lowerlimb, Body.foot),
             Content: inplace_files.file4_press},
         {Id: '{00000000-0000-4000-4000-000000000005}', Author: 'UltraCreation Team',
             Category_Id: Category.relax.Id, Mode_Id: null, Name: 'twist',
-            BodyParts: new Array<IBodyPart>().concat(BodyCategory.back, BodyCategory.forelimb, BodyCategory.lowerlimb, Body.foot),
+            BodyParts: new Array<Intf.IBodyPart>().concat(BodyCategory.back, BodyCategory.forelimb, BodyCategory.lowerlimb, Body.foot),
             Content: inplace_files.file5_twist},
         {Id: '{00000000-0000-4000-4000-000000000006}', Author: 'UltraCreation Team',
             Category_Id: Category.relax.Id, Mode_Id: null, Name: 'soft',
-            BodyParts: new Array<IBodyPart>().concat(BodyCategory.back, BodyCategory.forelimb, BodyCategory.lowerlimb, Body.foot),
+            BodyParts: new Array<Intf.IBodyPart>().concat(BodyCategory.back, BodyCategory.forelimb, BodyCategory.lowerlimb, Body.foot),
             Content: inplace_files.file9_soft_knead},
         {Id: '{00000000-0000-4000-4000-000000000007}', Author: 'UltraCreation Team',
             Category_Id: Category.relax.Id, Mode_Id: null, Name: 'joint',

@@ -36,20 +36,26 @@
 </ion-header>
 
 <ion-content no-scroll #content [ngClass]="app.Skin('home')" color="light">
-    <filelist-body *ngIf="PageIndex===0"></filelist-body>
-    <filelist-card *ngIf="PageIndex===1" [Category]="SelectedCategory" ></filelist-card>
-    <filelist-dial *ngIf="PageIndex===2" [Category]="SelectedCategory" ></filelist-dial>
+    <filelist-body *ngIf="ActiveTab.Index===0"></filelist-body>
+    <filelist-card *ngIf="ActiveTab.Index===1" [FileList]="ActiveTab.FileList" (OnSelectionFile)="SelectFile($event)"></filelist-card>
+    <filelist-dial *ngIf="ActiveTab.Index===2" [FileList]="ActiveTab.FileList" (OnSelectionFile)="SelectFile($event)"></filelist-dial>
 </ion-content>
 
 <ion-footer no-shadow no-border>
   <ion-toolbar [ngClass]="app.Skin('footer')" no-padding>
     <ion-row>
-      <ion-col text-center [class.state]="Category===SelectedCategory" *ngFor="let Category of Categories" (click)="SelectCategory(Category)" tappable>
+      <ion-col text-center [class.state]="tab.Index===ActiveTab.Index" *ngFor="let tab of Tabs" (click)="SelectTab(tab)" tappable>
+        <button ion-button icon-only block clear no-margin [ngClass]="app.SkinColor" [ngStyle]="{'height':'2.2em'}">
+          <ion-icon app-icon>{{app.IconFont(tab.Category.Icon)}}</ion-icon>
+        </button>
+       <span text-nowrap f-12 [ngClass]="app.SkinColor">{{'category.'+tab.Category.Name|translate}}</span>
+      </ion-col>
+      <!--<ion-col text-center [class.state]="Category===SelectedCategory" *ngFor="let Category of Categories" (click)="SelectCategory(Category)" tappable>
         <button ion-button icon-only block clear no-margin [ngClass]="app.SkinColor" [ngStyle]="{'height':'2.2em'}">
           <ion-icon app-icon>{{Category.IconChar}}</ion-icon>
         </button>
        <span text-nowrap f-12 [ngClass]="app.SkinColor">{{Category.Name_LangId|translate}}</span>
-      </ion-col>
+      </ion-col>-->
     </ion-row>
   </ion-toolbar>
 </ion-footer>

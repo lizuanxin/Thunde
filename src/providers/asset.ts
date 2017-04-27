@@ -3,7 +3,9 @@ import {Injectable}  from '@angular/core';
 import {TypeInfo, IPersistable, TPersistable, TPersistPropRule, TGuid, HexConv} from '../UltraCreation/Core'
 import {TBase64Encoding} from '../UltraCreation/Encoding'
 import {TSqlQuery, TSqliteStorage} from '../UltraCreation/Storage';
+import * as Intf from './intf'
 import {const_data} from './const_data'
+
 import * as Loki from './loki/file';
 
 module Queries
@@ -61,7 +63,7 @@ export class TAssetService
         return (this.constructor as typeof TAssetService)._Categories;
     }
 
-    get BodyParts(): Array<const_data.IBodyPart>    // for the debug
+    get BodyParts(): Array<Intf.IBodyPart>    // for the debug
     {
         return const_data.BodyParts;
     }
@@ -172,10 +174,10 @@ export class TAssetService
                     return this.Storage.ExecQuery(new TSqlQuery(Queries.GetBodyUsage, [ScriptFile.Id]))
                         .then(DataSet =>
                         {
-                            let BodyParts = new Array<TBody>();
+                            let BodyParts = new Array<TBodyPart>();
                             while (! DataSet.Eof)
                             {
-                                let body = new TBody();
+                                let body = new TBodyPart();
                                 body.Assign(DataSet.Curr);
                                 BodyParts.push(body);
 
@@ -251,19 +253,11 @@ export class TAsset extends TPersistable implements IAsset
 
 /*　TBody */
 
-export class TBody extends TAsset
+export class TBodyPart extends TAsset implements Intf.IBodyPart
 {
     constructor()
     {
         super('Body');
-    }
-
-    get IconChar(): string
-    {
-        if (TypeInfo.Assigned(this.Icon))
-            return String.fromCharCode(this.Icon);
-        else
-            return '';
     }
 
     get DescIconString(): string
@@ -292,7 +286,7 @@ export class TBody extends TAsset
 
 /* TCategory */
 
-export class TCategory extends TAsset
+export class TCategory extends TAsset implements Intf.ICategory
 {
     constructor()
     {
@@ -306,21 +300,15 @@ export class TCategory extends TAsset
         PropRules.push(new TPersistPropRule('Category', ['Icon']))
     }
 
-    get IconChar(): string
-    {
-        if (TypeInfo.Assigned(this.Icon))
-            return String.fromCharCode(this.Icon);
-        else
-            return '';
-    }
-
     Icon: number = null;
     Files: Array<TScriptFile> = [];
 }
 
 /* TScriptFile */
 
-export class TScriptFile extends TAsset
+export type TScriptFileList = Array<TScriptFile>;
+
+export class TScriptFile extends TAsset implements Intf.IScriptFile
 {
     constructor()
     {
@@ -336,8 +324,6 @@ export class TScriptFile extends TAsset
 
     Category_Id: string = null;
     Mode_Id: string = null;
-    // @do not use this: dummy for bluetens
-    Body_Id: string = null;
 
     Content: string = null;
     Md5: string = null;
@@ -346,7 +332,7 @@ export class TScriptFile extends TAsset
     Professional: boolean = null;
 
     Details: Array<TScriptFileDesc> = [];
-    BodyParts: Array<TBody> = [];
+    BodyParts: Array<TBodyPart> = [];
 
     get Md5Name(): string
     {
@@ -377,5 +363,5 @@ export class TScriptFileDesc extends TAsset
     Idx: number = null;
     Professional: boolean = null;
 
-    BodyParts: Array<const_data.IBodyPart> = [];
+    BodyParts: Array<Intf.IBodyPart> = [];
 }

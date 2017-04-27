@@ -177,7 +177,6 @@ export class FileListBody implements OnInit, AfterViewInit
             VLS.children[i].style.fontSize = '10vw';
             if (i < VLS.children.length - 1)
                 VLS.children[i].style.marginRight = '1px';
-
         }
     }
 
