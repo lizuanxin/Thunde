@@ -4,32 +4,36 @@ import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
 
 import * as Svc from '../providers'
 
-const BODY = ['&#xe93d;', '&#xe93e;', '&#xe93f;', '&#xe940;', '&#xe941;', '&#xe942;'];
+const BODY = ['&#xe93d;', '&#xe93e;', '&#xe93f;', '&#xe940;', '&#xe941;'];
 const Massage = [{ text: '酸痛缓解' }, { text: '疲劳缓解' }, { text: '快速镇痛' }, { text: '搓揉' }, { text: '按压' }, { text: '肌肉放松' }];
 
 @Component({
   selector: 'filelist-body',
   template: `
     <ion-row [ngStyle]="VslideH" margin-top margin-bottom>
-        <ion-col col-3 no-padding>
-            <ion-row no-padding VSideLeft #VLeftSide>
-                <ion-col offset-2 col-8 no-padding text-center [class.active]="CurrentBodyValue === item" *ngFor="let item of BodyValues" (click)="SelectBody(item)" tappable>
-                    <span app-icon [innerHTML]="item"></span>
-                    <ion-icon *ngIf = "CurrentBodyValue === item">&#xf488;</ion-icon>
-                </ion-col>
-            </ion-row>
-        </ion-col>
-        <ion-col col-9 text-center align-self-top>
+
+        <ion-col col-12 no-padding>
             <section Flip-x [class.Filped]="ISFlip">
                 <ion-slides [ngStyle]="SetStyle(0)">
                     <ion-slide><ion-icon app-icon [ngStyle]="SetStyle(1)">&#xe943;</ion-icon></ion-slide>
                 </ion-slides>
             </section>
             <ion-row RSideTop justify-content-end [class.slideIn]="ISFlip">
-                <ion-col col-2 text-center><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe943;</ion-icon></ion-col>
-                <ion-col col-2 text-center><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe95a;</ion-icon></ion-col>
+                <ion-col col-2 text-center [class.enlarge]="ISFlip"><div><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe943;</ion-icon></div></ion-col>
+                <ion-col col-2 text-center [class.enlarge]="ISFlip"><div><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe95a;</ion-icon></div></ion-col>
             </ion-row>
-            <ion-row margin-top>
+        </ion-col>
+
+        <ion-col col-12 no-padding>
+            <ion-row VSideLeft #VLeftSide nowrap>
+                <ion-col no-padding text-center [class.active]="CurrentBodyValue === item" *ngFor="let item of BodyValues" (click)="SelectBody(item)" tappable>
+                    <span app-icon [innerHTML]="item"></span>                    
+                </ion-col>
+            </ion-row>
+        </ion-col>
+
+        <ion-col col-10 offset-1 text-center margin-top>
+            <ion-row>
                 <ion-col col-6 offset-3>
                     <div class="picker-ios" picker-fix>
                         <div class="picker-columns" [ngStyle]="SetStyle(2)">
@@ -155,7 +159,7 @@ export class FileListBody implements OnInit, AfterViewInit
     {
         switch(n)
         {
-            case 0: return { height: Math.ceil(window.innerHeight * 0.38) + 'px',backgroundColor:'rgba(255,255,255,.2)',borderRadius:'15px' }
+            case 0: return { height: Math.ceil(window.innerHeight * 0.38) + 'px',backgroundColor:'rgba(0,0,0,.1)' }
             case 1: return { fontSize: Math.ceil(window.innerWidth * 0.45) + 'px' }
             case 2: return { height: '150px' }
             case 3: return { fontSize: Math.ceil(window.innerWidth * 0.08) + 'px' }
@@ -165,15 +169,14 @@ export class FileListBody implements OnInit, AfterViewInit
     SetVLside()
     {
         let VLS = this.VLSide.nativeElement, AvHeight;
-        AvHeight = Math.ceil(window.innerHeight * 0.7) / VLS.children.length;
-        VLS.parentElement.style.backgroundColor = 'rgba(255,255,255,.2)';
-        VLS.parentElement.style.borderRadius = '10px';
+        AvHeight = Math.ceil(window.innerHeight * 0.5) / VLS.children.length;
+        VLS.parentElement.style.marginBottom = '5px';
         for (let i = 0; i < VLS.children.length; i++)
         {
             VLS.children[i].style.height = VLS.children[i].style.lineHeight = AvHeight + 'px';
             VLS.children[i].style.fontSize = '10vw';
             if (i < VLS.children.length - 1)
-                VLS.children[i].style.borderBottom = 'solid 1px rgba(255,255,255,.5)';
+                VLS.children[i].style.marginRight = '1px';
 
         }
     }
