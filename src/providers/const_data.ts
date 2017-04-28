@@ -13,6 +13,19 @@ export namespace const_data
     [
     ]
 
+    /*
+        back: [Body.upper_back, Body.back, Body.lower_back, Body.shoulder],
+
+        forelimb: [Body.forearm, Body.upper_arm],
+        lowerlimb: [Body.calf, Body.thigh],
+        joint: [Body.ankle, Body.elbow, Body.knee, Body.wrist],
+
+        abdomen: [Body.abdomen],
+        buttock: [Body.buttock],
+
+        foot: [Body.foot],
+        fat: [Body.abdomen, Body.buttock, Body.thigh, Body.upper_arm]
+    */
     export const BodyParts: Array<Intf.IBodyPart> =
     [
         {Id: '{00000000-0000-4000-2000-000000000001}', Name: 'upper_back',
@@ -66,9 +79,10 @@ export namespace const_data
         foot: BodyParts[14],
     }
 
-    export const BodyCategory =
+    const BodyCategory =
     {
         back: [Body.upper_back, Body.back, Body.lower_back, Body.shoulder],
+
         forelimb: [Body.forearm, Body.upper_arm],
         lowerlimb: [Body.calf, Body.thigh],
         joint: [Body.ankle, Body.elbow, Body.knee, Body.wrist],
@@ -77,7 +91,6 @@ export namespace const_data
         buttock: [Body.buttock],
 
         foot: [Body.foot],
-
         fat: [Body.abdomen, Body.buttock, Body.thigh, Body.upper_arm]
     }
 

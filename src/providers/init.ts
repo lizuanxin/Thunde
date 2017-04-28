@@ -10,7 +10,7 @@ export namespace Initialization
 {
     export function Execute(): Promise<void>
     {
-        const db_version = '18';
+        const db_version = '19';
         let Storage = new TSqliteStorage(const_data.DatabaseName);
 
         return Storage.ExecSQL('SELECT name FROM sqlite_master WHERE type="table" AND name="Asset"')
@@ -114,10 +114,16 @@ export namespace Initialization
         let queries = [];
         for (let iter of const_data.ScriptFile)
         {
+            let Icon: any;
+            if (TypeInfo.Assigned(iter.Icon))
+                Icon = iter.Icon
+            else
+                Icon = null;
+
             // Id, ObjectName, Name, Desc, ExtraProp
             queries.push(new TSqlQuery(InsertAsset, [iter.Id, 'ScriptFile', iter.Name, iter.Name + '_desc', null]));
             // Id, Category_Id, Mode_Id, Body_Id, Author, Content
-            queries.push(new TSqlQuery(InsertScriptFile, [iter.Id, iter.Category_Id, iter.Mode_Id, iter.Author, iter.Content]));
+            queries.push(new TSqlQuery(InsertScriptFile, [iter.Id, Icon, iter.Category_Id, iter.Mode_Id, iter.Author, iter.Content]));
 
             if (iter.BodyParts.length === 0)
             {
@@ -208,6 +214,7 @@ Profile ER Diagram
             'Id VARCHAR(38) NOT NULL PRIMARY KEY,' +
             'Category_Id VARCHAR(38) NOT NULL,' +
             'Mode_Id VARCHAR(38),' +
+            'Icon INT,' +
             'Author VARCHAR(100),' +
             'Duration INT,' +
             'Md5 CHAR(32),' +
@@ -260,7 +267,7 @@ Profile ER Diagram
     const InsertBody = 'INSERT OR REPLACE INTO Body(Id, Icon) VALUES(?,?)';
     const InsertMode = 'INSERT OR REPLACE INTO Mode(Id, Icon) VALUES(?,?)';
     const InsertCategory = 'INSERT OR REPLACE INTO Category(Id, Icon) VALUES(?, ?)';
-    const InsertScriptFile = 'INSERT OR REPLACE INTO ScriptFile(Id, Category_Id, Mode_Id, Author, Content) VALUES(?,?,?,?,?)';
+    const InsertScriptFile = 'INSERT OR REPLACE INTO ScriptFile(Id, Icon, Category_Id, Mode_Id, Author, Content) VALUES(?,?,?,?,?,?)';
     const InsertScriptFile_Body = 'INSERT OR REPLACE INTO ScriptFile_Body(ScriptFile_Id, Body_Id) VALUES(?, ?)'
 }
 

@@ -15,10 +15,10 @@ export class HomePage implements OnInit, OnDestroy
 
     ngOnInit(): void
     {
-        this.Tabs.push({Index: 0, Category: Svc.const_data.Category.relax})
-        this.Tabs.push({Index: 1, Category: Svc.const_data.Category.muscle_training})
-        this.Tabs.push({Index: 2, Category: Svc.const_data.Category.fat_burning})
-        this.ActiveTab = this.Tabs[0];
+        this.Tabs.push({Index: 0, Category: Svc.const_data.Category.relax});
+        this.Tabs.push({Index: 1, Category: Svc.const_data.Category.muscle_training});
+        this.Tabs.push({Index: 2, Category: Svc.const_data.Category.fat_burning});
+        this.SelectTab(this.Tabs[0]);
 
         if (! this.app.AcceptedTerms)
         {
@@ -53,19 +53,14 @@ export class HomePage implements OnInit, OnDestroy
 
     SelectTab(Tab: ITabItem): void
     {
+        this.ActiveTab = Tab;
+
         if (! TypeInfo.Assigned(Tab.FileList))
         {
             this.Asset.FileList(Tab.Category.Id)
                 .then(List => Tab.FileList = List)
-                .then(() => this.ActiveTab = Tab)
                 .catch(err => console.log(err));
-        }
-        else
-        {
-            this.ActiveTab = Tab;
-            console.log(this.ActiveTab);
-
-        }
+        };
     }
 
     SelectFile(ScriptFile: Svc.TScriptFile)

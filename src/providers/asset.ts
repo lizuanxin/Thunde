@@ -260,6 +260,7 @@ export class TBodyPart extends TAsset implements Intf.IBodyPart
         super('Body');
     }
 
+    /*
     get DescIconString(): string
     {
         let Icons = JSON.parse(this.Desc) as Array<number>;
@@ -280,6 +281,7 @@ export class TBodyPart extends TAsset implements Intf.IBodyPart
             RetVal.push(String.fromCharCode(Icons[i]));
         return RetVal;
     }
+    */
 
     Icon: number = null;
 }
@@ -322,6 +324,12 @@ export class TScriptFile extends TAsset implements Intf.IScriptFile
         PropRules.push(new TPersistPropRule('ScriptFile', ['Category_Id', 'Mode_Id', 'Content', 'Md5', 'Duration', 'Author']))
     }
 
+    get Md5Name(): string
+    {
+        return TBase64Encoding.Instance.EncodeToString(HexConv.HexToBin(this.Md5));
+    }
+
+    Icon: number = null;
     Category_Id: string = null;
     Mode_Id: string = null;
 
@@ -333,14 +341,6 @@ export class TScriptFile extends TAsset implements Intf.IScriptFile
 
     Details: Array<TScriptFileDesc> = [];
     BodyParts: Array<TBodyPart> = [];
-
-    get Md5Name(): string
-    {
-        let x = TBase64Encoding.Instance.EncodeToString(HexConv.HexToBin(this.Md5));
-        console.log(TBase64Encoding.Instance.Decode(x));
-
-        return x;
-    }
 }
 
 /* TScriptFileDesc */

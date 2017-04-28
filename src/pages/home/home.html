@@ -36,7 +36,7 @@
 </ion-header>
 
 <ion-content no-scroll #content class="D-blue" color="light">
-    <filelist-body *ngIf="ActiveTab.Index===0"></filelist-body>
+    <filelist-body *ngIf="ActiveTab.Index===0" [FileList]="ActiveTab.FileList" (OnSelectionFile)="SelectFile($event)"></filelist-body>
     <filelist-card *ngIf="ActiveTab.Index===1" [FileList]="ActiveTab.FileList" (OnSelectionFile)="SelectFile($event)"></filelist-card>
     <filelist-dial *ngIf="ActiveTab.Index===2" [FileList]="ActiveTab.FileList" (OnSelectionFile)="SelectFile($event)"></filelist-dial>
 </ion-content>

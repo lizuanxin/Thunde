@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, Output, AfterViewInit, EventEmitter, ViewChild, ViewChildren, ElementRef, QueryList} from '@angular/core';
-import {Slides, PickerColumnCmp, PickerColumnOption} from 'ionic-angular';
+import {PickerColumnCmp, PickerColumnOption} from 'ionic-angular';
 import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
 
 import * as Svc from '../providers'
@@ -28,7 +28,7 @@ const Massage = [{ text: '酸痛缓解' }, { text: '疲劳缓解' }, { text: '�
         <ion-col col-10 offset-1 no-padding>
             <ion-row VSideLeft nowrap>
                 <ion-col no-padding text-center [class.active]="CurrentBodyValue === item" *ngFor="let item of BodyValues" (click)="SelectBody(item)" tappable>
-                    <button><span app-icon [innerHTML]="item"></span></button>                   
+                    <button><span app-icon [innerHTML]="item"></span></button>
                 </ion-col>
             </ion-row>
         </ion-col>
@@ -49,7 +49,6 @@ const Massage = [{ text: '酸痛缓解' }, { text: '疲劳缓解' }, { text: '�
     </ion-row>
   `,
 })
-
 export class FileListBody implements OnInit, AfterViewInit
 {
     constructor(private Elements: ElementRef)
@@ -59,12 +58,15 @@ export class FileListBody implements OnInit, AfterViewInit
 
     ngOnInit()
     {
-
     }
 
     ngAfterViewInit()
     {
-        
+    }
+
+    get FilterFiles(): Svc.TScriptFileList
+    {
+        return this.FileList;
     }
 
     @Input()
@@ -112,11 +114,6 @@ export class FileListBody implements OnInit, AfterViewInit
         {
             this.Columns = [];
         }
-    }
-
-    async foo()
-    {
-
     }
 
     refresh()
@@ -207,5 +204,6 @@ export class FileListBody implements OnInit, AfterViewInit
     VSLHeight: number = Math.ceil(window.innerHeight * 0.7);
     ISFlip: Boolean = false;
 
+    @Input() FileList: Svc.TScriptFileList;
     @Output() OnSelectionFile = new EventEmitter<Svc.TScriptFile>();
 }
