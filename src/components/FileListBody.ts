@@ -10,7 +10,7 @@ const Massage = [{ text: '酸痛缓解' }, { text: '疲劳缓解' }, { text: '�
 @Component({
   selector: 'filelist-body',
   template: `
-    <ion-row [ngStyle]="VslideH" margin-top margin-bottom>
+    <ion-row [ngStyle]="VslideH" margin-top>
 
         <ion-col col-12 no-padding>
             <section Flip-x [class.Filped]="ISFlip">
@@ -34,8 +34,8 @@ const Massage = [{ text: '酸痛缓解' }, { text: '疲劳缓解' }, { text: '�
         </ion-col>
 
         <ion-col col-12 no-padding text-center margin-top>
-            <ion-row>
-                <ion-col no-padding>
+            <ion-row swise>
+                <ion-col no-padding margin-top padding-top>
                     <div class="picker-ios" picker-fix>
                         <div class="picker-columns" [ngStyle]="SetStyle(2)">
                             <div class="picker-above-highlight"></div>
