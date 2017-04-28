@@ -20,8 +20,8 @@ const Massage = [{ text: '酸痛缓解' }, { text: '疲劳缓解' }, { text: '�
                 </ion-slides>
             </section>
             <ion-row RSideTop justify-content-end [class.slideIn]="ISFlip">
-                <ion-col col-2 text-center><div><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe943;</ion-icon></div></ion-col>
-                <ion-col col-2 text-center><div><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe95a;</ion-icon></div></ion-col>
+                <ion-col col-2 text-center><div><ion-icon app-icon>&#xe943;</ion-icon></div></ion-col>
+                <ion-col col-2 text-center><div><ion-icon app-icon>&#xe95a;</ion-icon></div></ion-col>
             </ion-row>
         </ion-col>
 
@@ -212,7 +212,7 @@ export class FileListBody implements OnInit, AfterViewInit
             case 0: return { height: Math.ceil(window.innerHeight * 0.38) + 'px' }
             case 1: return { fontSize: Math.ceil(window.innerWidth * 0.45) + 'px' }
             case 2: return { height: '150px' }
-            case 3: return { fontSize: Math.ceil(window.innerWidth * 0.08) + 'px' }
+            case 3: return { fontSize: Math.ceil(window.innerWidth * 0.06) + 'px' }
         }
     }
 
