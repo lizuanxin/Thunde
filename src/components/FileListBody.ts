@@ -14,20 +14,21 @@ const Massage = [{ text: '酸痛缓解' }, { text: '疲劳缓解' }, { text: '�
 
         <ion-col col-12 no-padding>
             <section Flip-x [class.Filped]="ISFlip">
-                <ion-slides [ngStyle]="SetStyle(0)">
+                <ion-slides effect="flip" [ngStyle]="SetStyle(0)">
+                    <ion-slide><ion-icon app-icon [ngStyle]="SetStyle(1)">&#xe943;</ion-icon></ion-slide>
                     <ion-slide><ion-icon app-icon [ngStyle]="SetStyle(1)">&#xe943;</ion-icon></ion-slide>
                 </ion-slides>
             </section>
             <ion-row RSideTop justify-content-end [class.slideIn]="ISFlip">
-                <ion-col col-2 text-center [class.enlarge]="ISFlip"><div><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe943;</ion-icon></div></ion-col>
-                <ion-col col-2 text-center [class.enlarge]="ISFlip"><div><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe95a;</ion-icon></div></ion-col>
+                <ion-col col-2 text-center><div><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe943;</ion-icon></div></ion-col>
+                <ion-col col-2 text-center><div><ion-icon app-icon [ngStyle]="SetStyle(3)">&#xe95a;</ion-icon></div></ion-col>
             </ion-row>
         </ion-col>
 
-        <ion-col col-12 no-padding>
-            <ion-row VSideLeft #VLeftSide nowrap>
+        <ion-col col-10 offset-1 no-padding>
+            <ion-row VSideLeft nowrap>
                 <ion-col no-padding text-center [class.active]="CurrentBodyValue === item" *ngFor="let item of BodyValues" (click)="SelectBody(item)" tappable>
-                    <span app-icon [innerHTML]="item"></span>                    
+                    <button><span app-icon [innerHTML]="item"></span></button>                   
                 </ion-col>
             </ion-row>
         </ion-col>
@@ -63,7 +64,7 @@ export class FileListBody implements OnInit, AfterViewInit
 
     ngAfterViewInit()
     {
-        this.SetVLside();
+        
     }
 
     @Input()
@@ -159,7 +160,7 @@ export class FileListBody implements OnInit, AfterViewInit
     {
         switch(n)
         {
-            case 0: return { height: Math.ceil(window.innerHeight * 0.38) + 'px',backgroundColor:'rgba(0,0,0,.1)' }
+            case 0: return { height: Math.ceil(window.innerHeight * 0.38) + 'px' }
             case 1: return { fontSize: Math.ceil(window.innerWidth * 0.45) + 'px' }
             case 2: return { height: '150px' }
             case 3: return { fontSize: Math.ceil(window.innerWidth * 0.08) + 'px' }

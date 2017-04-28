@@ -9,6 +9,7 @@ body,
 }
 
 * {
+    @include DominantColor();
     @include FontGeneration();
     [relative],.relative{
         position:relative;

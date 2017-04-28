@@ -1,3 +1,12 @@
+@mixin DominantColor() {
+    .D-blue {
+        background-image: -webkit-linear-gradient(top, color($DominantColor, D-blue, base) , color($DominantLightColor, D-blue, base));
+        filelist-body{
+            color:color($colors,light,base);
+        }
+    }
+}
+
 @mixin background-list($list) {
     -webkit-transition: all .2s ease .1s;
     -moz-transition: all .2s ease .1s;
@@ -91,12 +100,15 @@
     }
 }
 
-@mixin gradient-radial($color, $lightColor, $darkColor) {
-    background-image:radial-gradient(circle at 25% 35%, $lightColor, $color, $darkColor);
+@mixin gradient-radial($color,
+$lightColor,
+$darkColor) {
+    background-image: radial-gradient(circle at 25% 35%, $lightColor, $color, $darkColor);
     background-repeat: no-repeat;
 }
 
-@mixin square($outlineStyle,$outlinewidth) {
+@mixin square($outlineStyle,
+$outlinewidth) {
     position: relative;
     width: 100%;
     height: 0;
@@ -165,10 +177,9 @@
             @if $way==fadeIn {
                 opacity: 1;
             }
-            @else if $way==fadeOut or $way==fadeInOut{
+            @else if $way==fadeOut or $way==fadeInOut {
                 opacity: 0;
             }
         }
     }
 }
-

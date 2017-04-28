@@ -65,29 +65,51 @@ ion-row{
 
     &[VSideLeft]{
         ion-col{
-            background-color:rgba(0,0,0,.05);
-            &.active{
-                -webkit-transition: all .2s ease .1s;
-                -moz-transition: all .2s ease .1s;
-                transition: all .2s ease .1s;
-                color:white;
-                background-color:rgba(0,0,0,.5);                
-                span{
-                    display: inline-block;
-                    -webkit-transform: scale(1.2);
+            &.active{                
+                background:url(../assets/img/bg_btn_home.png)  center center no-repeat;
+                background-size:contain;
+                button{
+                    color:color($DominantColor,D-blue,base);
+                    background-color:color($colors,light,base); 
                 }
-                ion-icon{
-                    -webkit-transform:rotate(180deg);
-                    color:#e02f5b;
-                }                
-            }
-           ion-icon{
-               position:absolute;
-               right:-15px;
-               font-size:2rem;
-               color:#FFFFFF;
 
-           } 
+            }
+            button{
+                margin:12% auto;
+                display: block;
+                width:76%;
+                padding-top:38%;
+                padding-bottom:38%;
+                height:0;
+                line-height:0;
+                border-radius:50%;
+                background-color:transparent;
+                font-size:8vw;
+                color:color($colors,light,base);
+                border:solid 1px color($colors,light,base);                
+            }            
+            // &.active{
+            //     -webkit-transition: all .2s ease .1s;
+            //     -moz-transition: all .2s ease .1s;
+            //     transition: all .2s ease .1s;
+            //     color:white;
+            //     background-color:rgba(0,0,0,.5);                
+            //     span{
+            //         display: inline-block;
+            //         -webkit-transform: scale(1.2);
+            //     }
+            //     ion-icon{
+            //         -webkit-transform:rotate(180deg);
+            //         color:#e02f5b;
+            //     }                
+            // }
+        //    ion-icon{
+        //        position:absolute;
+        //        right:-15px;
+        //        font-size:2rem;
+        //        color:#FFFFFF;
+
+        //    } 
         }
     }
 
