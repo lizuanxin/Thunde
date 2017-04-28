@@ -66,8 +66,8 @@ ion-row{
     &[VSideLeft]{
         ion-col{
             &.active{                
-                background:url(../assets/img/bg_btn_home.png)  center center no-repeat;
-                background-size:contain;
+                // background:url(../assets/img/bg_btn_home.png)  center center no-repeat;
+                // background-size:contain;
                 button{
                     color:color($DominantColor,D-blue,base);
                     background-color:color($colors,light,base); 

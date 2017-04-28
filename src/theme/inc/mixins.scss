@@ -1,6 +1,6 @@
 @mixin DominantColor() {
     .D-blue {
-        background-image: -webkit-linear-gradient(top, color($DominantColor, D-blue, base) , color($DominantLightColor, D-blue, base));
+        background: url(../assets/img/bg_home.png) no-repeat left top;
         filelist-body{
             color:color($colors,light,base);
         }

@@ -14,7 +14,7 @@ const Massage = [{ text: '酸痛缓解' }, { text: '疲劳缓解' }, { text: '�
 
         <ion-col col-12 no-padding>
             <section Flip-x [class.Filped]="ISFlip">
-                <ion-slides effect="flip" [ngStyle]="SetStyle(0)">
+                <ion-slides [ngStyle]="SetStyle(0)">
                     <ion-slide><ion-icon app-icon [ngStyle]="SetStyle(1)">&#xe943;</ion-icon></ion-slide>
                     <ion-slide><ion-icon app-icon [ngStyle]="SetStyle(1)">&#xe943;</ion-icon></ion-slide>
                 </ion-slides>
@@ -33,9 +33,9 @@ const Massage = [{ text: '酸痛缓解' }, { text: '疲劳缓解' }, { text: '�
             </ion-row>
         </ion-col>
 
-        <ion-col col-10 offset-1 text-center margin-top>
+        <ion-col col-12 no-padding text-center margin-top>
             <ion-row>
-                <ion-col col-6 offset-3>
+                <ion-col no-padding>
                     <div class="picker-ios" picker-fix>
                         <div class="picker-columns" [ngStyle]="SetStyle(2)">
                             <div class="picker-above-highlight"></div>
@@ -62,11 +62,63 @@ export class FileListBody implements OnInit, AfterViewInit
 
     ngAfterViewInit()
     {
+        
+        if (this.FilterFiles)
+        {
+            let files =[];
+            
+            for (let i = 0; i < this.FilterFiles.length; i++)
+            {
+                files.push({ text: this.FilterFiles[i].Name })
+            }  
+            
+        }
+        
+        
     }
 
     get FilterFiles(): Svc.TScriptFileList
     {
         return this.FileList;
+    }
+
+    loadColumns(files)
+    {
+        this.Columns = [
+            {
+                name: 'Mas',
+                align: 'center',
+                selectedIndex: 1,
+                options: Massage
+            }];
+
+            this.Columns = this.Columns.map(column => {
+            if (! TypeInfo.Assigned(column.options)) {
+                column.options = [];
+            }
+            column.selectedIndex = column.selectedIndex || 0;
+            column.options = column.options.map(inputOpt => {
+            let opt: PickerColumnOption = {
+                text: '',
+                value: '',
+                disabled: inputOpt.disabled,
+            };
+
+            if (TypeInfo.Assigned(inputOpt)) {
+                if (TypeInfo.IsString(inputOpt) || TypeInfo.IsNumber(inputOpt)) {
+                    opt.text = inputOpt.toString();
+                    opt.value = inputOpt;
+                } else {
+                    opt.text = TypeInfo.Assigned(inputOpt.text) ? inputOpt.text : inputOpt.value;
+                    opt.value = TypeInfo.Assigned(inputOpt.value) ? inputOpt.value : inputOpt.text;
+                }
+            }
+
+            return opt;
+            });
+            return column;
+        });
+            setTimeout(() => this.refresh(), 50);
     }
 
     @Input()

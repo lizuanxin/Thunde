@@ -18,19 +18,19 @@
 </ion-menu>
 
 <ion-header no-shadow no-border>
-  <ion-toolbar transparent [ngClass]="PlatformShowWhen">
+  <ion-toolbar transparent  [ngClass]="PlatformShowWhen">
     <ion-buttons left>
-      <button ion-button icon-only [ngStyle]="{'margin':'0 6px','padding':'0 2px','min-width':'44px'}" tappable>
+      <button ion-button icon-only color="light" [ngStyle]="{'margin':'0 6px','padding':'0 2px','min-width':'44px'}" tappable>
           <ion-icon [ngClass]="app.SkinColor" app-icon>&#xe908;</ion-icon>
       </button>
     </ion-buttons>
     <ion-buttons right>
-      <button ion-button menuToggle>
+      <button ion-button color="light" menuToggle>
           <ion-icon [ngClass]="app.SkinColor" app-icon>&#xe906;</ion-icon>
       </button>
     </ion-buttons>
     <ion-title text-center>
-      <span [ngClass]="app.SkinColor">{{'home_page.title'|translate}}</span>
+      <span ion-text color="light">{{'home_page.title'|translate}}</span>
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -42,10 +42,10 @@
 </ion-content>
 
 <ion-footer no-shadow no-border>
-  <ion-toolbar [ngClass]="app.Skin('footer')" no-padding>
+  <ion-toolbar transparent no-padding FooterTab-Default>
     <ion-row>
       <ion-col text-center [class.state]="tab.Index===ActiveTab.Index" *ngFor="let tab of Tabs" (click)="SelectTab(tab)" tappable>
-        <button ion-button icon-only block clear no-margin [ngClass]="app.SkinColor" [ngStyle]="{'height':'2.2em'}">
+        <button ion-button icon-only block clear no-margin [ngStyle]="{'height':'2.2em'}">
           <ion-icon app-icon>{{app.IconFont(tab.Category.Icon)}}</ion-icon>
         </button>
        <span text-nowrap f-12 [ngClass]="app.SkinColor">{{'category.'+tab.Category.Name|translate}}</span>

@@ -25,6 +25,23 @@ ion-toolbar {
         overflow: visible;
         contain: none;
     }
+
+    &[FooterTab-Default]{
+        ion-row{
+            ion-col{                
+                &.state{
+                    color:color($colors,light,base);
+                    background-color:#9dd0e5;
+                    button{
+                        color:color($colors,light,base);
+                    }
+                }
+                button{
+                    color:#333;
+                }
+            }
+        }
+    }
    
 }
 
