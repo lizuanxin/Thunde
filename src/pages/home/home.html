@@ -45,7 +45,7 @@
   <ion-toolbar transparent no-padding FooterTab-Default>
     <ion-row>
       <ion-col text-center [class.state]="tab.Index===ActiveTab.Index" *ngFor="let tab of Tabs" (click)="SelectTab(tab)" tappable>
-        <button ion-button icon-only block clear no-margin [ngStyle]="{'height':'2.2em'}">
+        <button>
           <ion-icon app-icon>{{app.IconFont(tab.Category.Icon)}}</ion-icon>
         </button>
        <span text-nowrap f-12 [ngClass]="app.SkinColor">{{'category.'+tab.Category.Name|translate}}</span>
