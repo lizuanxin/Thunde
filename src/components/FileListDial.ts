@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, AfterViewInit, Input, Output, EventEmitter, ElementRef} from '@angular/core'
+import {Component, OnInit, OnDestroy, DoCheck, Input, Output, EventEmitter, ElementRef} from '@angular/core'
 
 import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
 import {UITypes} from '../UltraCreation/Graphic';
@@ -8,7 +8,7 @@ import * as Svc from '../providers';
 const SHOWING_ITEM_COUNT = 6;
 
 @Component({selector: 'filelist-dial', template: '<canvas style="width:100%" tappable></canvas>'})
-export class FileListDial implements OnInit, OnDestroy, AfterViewInit
+export class FileListDial implements OnInit, OnDestroy, DoCheck
 {
     constructor(private Elements: ElementRef, private app: Svc.TApplication)
     {
@@ -26,9 +26,10 @@ export class FileListDial implements OnInit, OnDestroy, AfterViewInit
         this.Content = null;
     }
 
-    ngAfterViewInit()
+    ngDoCheck()
     {
-        this.Content.NewFileList(this.FileList);
+        if (TypeInfo.Assigned(this.FileList))
+            this.Content.NewFileList(this.FileList);
     }
 
     @Input() FileList: Svc.TScriptFileList

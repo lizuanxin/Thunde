@@ -59,6 +59,7 @@ export class HomePage implements OnInit, OnDestroy
         {
             this.Asset.FileList(Tab.Category.Id)
                 .then(List => Tab.FileList = List)
+                .then(() => this.ActiveTab = Tab)
                 .catch(err => console.log(err));
         };
     }

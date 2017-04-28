@@ -211,7 +211,7 @@ export class TShell extends TAbstractShell
             .then(Request => Request.toPromise() as Promise<Array<string>>);
     }
 
-    StartScriptFile(FileName: string): Promise<string>
+    StartScriptFile(FileName: string): Promise<void>
     {
         return this.Execute('>ssta ' + FileName, REQUEST_TIMEOUT, Line => this.IsStatusRetVal(Line))
             .then(() => setTimeout(() => this.IntensityRequest().catch(err => {}), 300))

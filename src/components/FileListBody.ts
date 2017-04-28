@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, AfterViewInit, EventEmitter, ViewChild, ViewChildren, ElementRef, QueryList} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, ViewChild, ViewChildren, ElementRef, QueryList} from '@angular/core';
 import {PickerColumnCmp, PickerColumnOption} from 'ionic-angular';
 import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
 
@@ -49,7 +49,7 @@ const Massage = [{ text: '酸痛缓解' }, { text: '疲劳缓解' }, { text: '�
     </ion-row>
   `,
 })
-export class FileListBody implements OnInit, AfterViewInit
+export class FileListBody implements OnInit
 {
     constructor(private Elements: ElementRef)
     {
@@ -60,29 +60,27 @@ export class FileListBody implements OnInit, AfterViewInit
     {
     }
 
-    ngAfterViewInit()
+    @Input() set FileList(Value: Svc.TScriptFileList)
     {
-        
-        if (this.FilterFiles)
-        {
-            let files =[];
-            
-            for (let i = 0; i < this.FilterFiles.length; i++)
-            {
-                files.push({ text: this.FilterFiles[i].Name })
-            }  
-            
-        }
-        
-        
+        if (! TypeInfo.Assigned(Value))
+            return;
+        if (Value === this._FileList)
+            return;
+        this._FileList = Value;
+
+        this.Columns = [];
+        for (let i = 0; i < this.FilterFiles.length; i++)
+            this.Columns.push({ text: this.FilterFiles[i].Name })
+
+        this.loadColumns();
     }
 
     get FilterFiles(): Svc.TScriptFileList
     {
-        return this.FileList;
+        return this._FileList;
     }
 
-    loadColumns(files)
+    loadColumns()
     {
         this.Columns = [
             {
@@ -92,80 +90,43 @@ export class FileListBody implements OnInit, AfterViewInit
                 options: Massage
             }];
 
-            this.Columns = this.Columns.map(column => {
-            if (! TypeInfo.Assigned(column.options)) {
-                column.options = [];
-            }
-            column.selectedIndex = column.selectedIndex || 0;
-            column.options = column.options.map(inputOpt => {
-            let opt: PickerColumnOption = {
-                text: '',
-                value: '',
-                disabled: inputOpt.disabled,
-            };
-
-            if (TypeInfo.Assigned(inputOpt)) {
-                if (TypeInfo.IsString(inputOpt) || TypeInfo.IsNumber(inputOpt)) {
-                    opt.text = inputOpt.toString();
-                    opt.value = inputOpt;
-                } else {
-                    opt.text = TypeInfo.Assigned(inputOpt.text) ? inputOpt.text : inputOpt.value;
-                    opt.value = TypeInfo.Assigned(inputOpt.value) ? inputOpt.value : inputOpt.text;
-                }
-            }
-
-            return opt;
-            });
-            return column;
-        });
-            setTimeout(() => this.refresh(), 50);
-    }
-
-    @Input()
-    set isDisplay(on: boolean)
-    {
-        if (on)
+        this.Columns = this.Columns.map(column =>
         {
-            this.Columns = [
+            if (! TypeInfo.Assigned(column.options))
             {
-                name: 'Mas',
-                align: 'center',
-                selectedIndex: 1,
-                options: Massage
-            }];
-
-            this.Columns = this.Columns.map(column => {
-            if (! TypeInfo.Assigned(column.options)) {
                 column.options = [];
             }
             column.selectedIndex = column.selectedIndex || 0;
-            column.options = column.options.map(inputOpt => {
-            let opt: PickerColumnOption = {
-                text: '',
-                value: '',
-                disabled: inputOpt.disabled,
-            };
+            column.options = column.options.map(inputOpt =>
+            {
+                let opt: PickerColumnOption =
+                {
+                    text: '',
+                    value: '',
+                    disabled: inputOpt.disabled,
+                };
 
-            if (TypeInfo.Assigned(inputOpt)) {
-                if (TypeInfo.IsString(inputOpt) || TypeInfo.IsNumber(inputOpt)) {
-                    opt.text = inputOpt.toString();
-                    opt.value = inputOpt;
-                } else {
-                    opt.text = TypeInfo.Assigned(inputOpt.text) ? inputOpt.text : inputOpt.value;
-                    opt.value = TypeInfo.Assigned(inputOpt.value) ? inputOpt.value : inputOpt.text;
+                if (TypeInfo.Assigned(inputOpt))
+                {
+                    if (TypeInfo.IsString(inputOpt) || TypeInfo.IsNumber(inputOpt))
+                    {
+                        opt.text = inputOpt.toString();
+                        opt.value = inputOpt;
+                    }
+                    else
+                    {
+                        opt.text = TypeInfo.Assigned(inputOpt.text) ? inputOpt.text : inputOpt.value;
+                        opt.value = TypeInfo.Assigned(inputOpt.value) ? inputOpt.value : inputOpt.text;
+                    }
                 }
-            }
 
-            return opt;
+                return opt;
             });
+
             return column;
         });
-            setTimeout(() => this.refresh(), 50);
-        }
-        else
-        {
-            this.Columns = [];
-        }
+
+        setTimeout(() => this.refresh(), 0);
     }
 
     refresh()
@@ -256,6 +217,12 @@ export class FileListBody implements OnInit, AfterViewInit
     VSLHeight: number = Math.ceil(window.innerHeight * 0.7);
     ISFlip: Boolean = false;
 
-    @Input() FileList: Svc.TScriptFileList;
     @Output() OnSelectionFile = new EventEmitter<Svc.TScriptFile>();
+
+    private _FileList: Svc.TScriptFileList;
+}
+
+interface IColumn
+{
+
 }
