@@ -116,6 +116,11 @@ export class TShell extends TAbstractShell
     }
 
 /** BLE only */
+    static EnableBLE(): Promise<boolean>
+    {
+        return BLE.Enable();
+    }
+
     static get FakeDevice(): boolean
     {
         return BLE.TGatt.BrowserFakeDevice;
@@ -123,7 +128,7 @@ export class TShell extends TAbstractShell
 
     static StartScan(): Subject<Array<BLE.IScanDiscovery>>
     {
-        BLE.TGatt.BrowserFakeDevice = true;
+        // BLE.TGatt.BrowserFakeDevice = true;
         return BLE.TGattScaner.Start([], this.ScanFilter, BLE_SCAN_TIMEOUT);
     }
 
@@ -395,6 +400,7 @@ export class TShell extends TAbstractShell
             .catch(err => console.log(err.message));
     }
 
+    /*
     private BatteryRequest(): Promise<number>
     {
         let strs: string[];
@@ -419,6 +425,7 @@ export class TShell extends TAbstractShell
                 return this._BatteryLevel;
             })
     }
+    */
 
     private IntensityRequest(): Promise<number>
     {
@@ -502,7 +509,7 @@ export class TShell extends TAbstractShell
             return Promise.reject(new EAbort());
 
         return this.StatusRequest()
-            .then(() => this.BatteryRequest())
+            //.then(() => this.BatteryRequest())
             .then(() => this.VersionRequest())
             .then(() =>
             {
@@ -528,9 +535,14 @@ export class TShell extends TAbstractShell
             return;
         }
 
+        this.VersionRequest()
+            .then(() => {})
+            .catch(err => {});
+        /*
         this.BatteryRequest()
             .then(() => {})
             .catch(err => {});
+        */
     }
 
     // @private called from Proxy

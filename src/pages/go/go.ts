@@ -1,10 +1,10 @@
 import {Component, OnInit, OnDestroy, ElementRef, ViewChild} from '@angular/core';
-import {Subscription} from 'rxjs/Rx'
+import {Subscription} from 'rxjs/Subscription'
 import {Platform, NavController, ViewController, NavParams, ModalController, Content} from 'ionic-angular';
 
 import {TypeInfo, EAbort} from '../../UltraCreation/Core';
 
-import {BLE, Loki, TApplication, TDistributeService, TCategory, TScriptFile} from '../../providers';
+import {IScanDiscovery, Loki, TApplication, TDistributeService, TCategory, TScriptFile} from '../../providers';
 import {RunningPage} from '../running/running';
 import {OtaUpdatePage} from '../ota_update/ota_update';
 
@@ -27,10 +27,10 @@ export class GoPage implements OnInit, OnDestroy
 
     ngOnInit(): void
     {
-        if (!Loki.TShell.IsUsbPlugin)
+        if (! Loki.TShell.IsUsbPlugin)
         {
             if (this.platform.is('android'))
-                BLE.Enable().then(() => this.StartScan())
+                Loki.TShell.EnableBLE().then(() => this.StartScan())
             else
                 this.StartScan();
         }
@@ -162,7 +162,7 @@ export class GoPage implements OnInit, OnDestroy
         return RetVal;
     }
 
-    SelectionDevice(Device: BLE.IScanDiscovery)
+    SelectionDevice(Device: IScanDiscovery)
     {
         this.Start(Device.id);
     }
@@ -198,7 +198,7 @@ export class GoPage implements OnInit, OnDestroy
             if (Loki.TShell.IsUsbPlugin)
                 StopScan = Promise.resolve();
             else
-                StopScan = BLE.TGatt.StopScan();
+                StopScan = Loki.TShell.StopScan();
 
             StopScan.then(() => Shell.Connect())
                 .then(() => this.Distribute.ReadFirmware(Shell.Version))
@@ -224,7 +224,7 @@ export class GoPage implements OnInit, OnDestroy
     Category: TCategory;
     ScriptFile: TScriptFile;
 
-    DeviceList: Array<BLE.IScanDiscovery> = [];
+    DeviceList: Array<IScanDiscovery> = [];
     IsShowingDeviceList: boolean = false;
     IsShowDescIcon: boolean = false;
     IsShowFileDetail: boolean = false;

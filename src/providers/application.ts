@@ -18,9 +18,9 @@ export class TApplication extends TAppController
         this.AddLanguage('zh', translate_zh);
         this.AddLanguage('en', translate_en);
 
-        console.log(navigator.language);
+        /*
         let codes = navigator.language.split('-');
-        this.Language = codes[0];
+        this.Language = codes[0]; */
 
         console.log('TApplication construct');
 

@@ -28,7 +28,7 @@ export class DemoPage implements OnDestroy, AfterViewInit
         if (! Svc.Loki.TShell.IsUsbPlugin)
         {
             if (this.app.IsAndroid)
-                Svc.BLE.Enable().then(() => this.StartScan())
+                Svc.Loki.TShell.EnableBLE().then(() => this.StartScan())
             else
                 this.StartScan();
         }
@@ -56,7 +56,7 @@ export class DemoPage implements OnDestroy, AfterViewInit
             });
     }
 
-    SelectionDevice(Device: Svc.BLE.IScanDiscovery)
+    SelectionDevice(Device: Svc.IScanDiscovery)
     {
         this.Start(Device.id);
     }
@@ -78,7 +78,7 @@ export class DemoPage implements OnDestroy, AfterViewInit
 
             let StopScan: Promise<void> = Promise.resolve();
             if (! Svc.Loki.TShell.IsUsbPlugin)
-                StopScan = Svc.BLE.TGatt.StopScan();
+                StopScan = Svc.Loki.TShell.StopScan();
 
             StopScan.then(() => Shell.Connect())
                 .then(() => this.nav.push(View.DemoModeRunningPage, params))
@@ -92,24 +92,14 @@ export class DemoPage implements OnDestroy, AfterViewInit
 
     Go()
     {
-        if (this.DeviceListEmpty)
-            return;
+        console.log('go');
 
         if (! Svc.Loki.TShell.IsUsbPlugin)
         {
             if (this.DeviceList.length === 1)
                 this.Start(this.DeviceList[0].id);
             else
-            {
-                if (this.DeviceList.length > 0)
-                    this.IsShowingDeviceList = true;
-                else
-                {
-                    this.IsShowingDeviceList = false;
-                    this.DeviceListEmpty = true;
-                    setTimeout(() => this.DeviceListEmpty = false, 3000);
-                }
-            }
+                this.IsShowingDeviceList = true;
         }
         else
             this.Start('USB');
@@ -122,23 +112,23 @@ export class DemoPage implements OnDestroy, AfterViewInit
             width = window.innerWidth,
             height = width * 1.5,
             colorYellow = "#f4e827", colorLight = "#FFFFFF", colorLightOpacity = 'rgba(255,255,255,.5)';
-        ele.children[ID.tips1].setAttribute("style",  "width: " + width * 0.14 + "px; height: " + width * 0.14 + "px; left: " + width * 0.39 + "px; top:" + height * 0.15 + "px");
-        ele.children[ID.tips2].setAttribute("style",  "width: " + width * 0.05 + "px; height: " + width * 0.05 + "px; left: " + width * 0.83 + "px; top:" + height * 0.455 + "px");
-        ele.children[ID.tips3].setAttribute("style",  "width: " + width * 0.14 + "px; height: " + width * 0.14 + "px; left: " + width * 0.62 + "px; top:" + height * 0.76 + "px");
-        ele.children[ID.electrode].setAttribute("style",  "font-size: 1.6rem; color: " + colorYellow + ";left: " + width * 0.62 + "px; top: " + height * 0.16 + "px");
-        ele.children[ID.power].setAttribute("style",  "transform:translateY(0); transform-origin: center bottom; font-size: 1.2rem; line-height:1.4rem; color: " + colorYellow + "; left: " + width * 0.85 + "px; top: " + height * 0.35 + "px;");
-        ele.children[ID.switch].setAttribute("style",  "font-size: 1.6rem; color: " + colorYellow + ";left: " + width * 0.18 + "px; top: " + height * 0.5 + "px");
-        ele.children[ID.strength].setAttribute("style",  "font-size: 1.6rem; color: " + colorYellow + ";left: " + width * 0.18 + "px; top: " + height * 0.82 + "px");
-        ele.children[ID.line1].setAttribute("style",  "z-index:0; transform-origin: left center;transform:scale(.5); font-size: 50vw; color: " + colorYellow + ";left: " + width * 0.5 + "px; top: " + -height * 0.08 + "px");
-        ele.children[ID.line2].setAttribute("style",  "z-index:0; transform-origin: right bottom; font-size: 50vw; color: " + colorYellow + ";left: " + width * 0.12 + "px; top: " + height * 0.38 + "px");
-        ele.children[ID.line3].setAttribute("style",  "z-index:0; transform-origin: right center; font-size: " + width * 0.68 + "px; color: " + colorYellow + ";left: " + width * 0.12 + "px; top: " + height * 0.50 + "px");
-        ele.children[ID.num1].setAttribute("style", "font-size: 2.8rem; color: " + colorYellow + ";left: " + width * 0.88 + "px; top: " + height * 0.06 + "px");
-        ele.children[ID.num2].setAttribute("style", "font-size: 2.8rem; color: " + colorYellow + ";left: " + width * 0.88 + "px; top: " + height * 0.5 + "px");
-        ele.children[ID.num3].setAttribute("style", "font-size: 2.8rem; color: " + colorYellow + ";left: " + -width * 0.04 + "px; top: " + height * 0.55 + "px");
-        ele.children[ID.num4].setAttribute("style", "font-size: 2.8rem; color: " + colorYellow + ";left: " + -width * 0.04 + "px; top: " + height * 0.87 + "px");
-        ele.children[ID.arrowPoint].setAttribute("style", "transform: rotate(-170deg); font-size: 1rem; color: " + colorLightOpacity + ";left: " + width * 0.74 + "px; top: " + height * 0.6 + "px");
-        ele.children[ID.key].setAttribute("style", "font-size: " + width * 0.5 + "px; color: " + colorLight + "; left: " + width * 0.36 + "px; top: " + height * 0.5 + "px");
-        ele.children[ID.body].setAttribute("style", "font-size:" + width * 0.67 + "px; color: " + colorLight + "; top:"  + -height * 0.07 + "px; ");
+            ele.children[ID.tips1].setAttribute("style",  "width: " + width * 0.14 + "px; height: " + width * 0.14 + "px; left: " + width * 0.39 + "px; top:" + height * 0.15 + "px");
+            ele.children[ID.tips2].setAttribute("style",  "width: " + width * 0.05 + "px; height: " + width * 0.05 + "px; left: " + width * 0.83 + "px; top:" + height * 0.455 + "px");
+            ele.children[ID.tips3].setAttribute("style",  "width: " + width * 0.14 + "px; height: " + width * 0.14 + "px; left: " + width * 0.62 + "px; top:" + height * 0.76 + "px");
+            ele.children[ID.electrode].setAttribute("style",  "font-size: 1.6rem; color: " + colorYellow + ";left: " + width * 0.62 + "px; top: " + height * 0.16 + "px");
+            ele.children[ID.power].setAttribute("style",  "transform:translateY(0); transform-origin: center bottom; font-size: 1.2rem; line-height:1.4rem; color: " + colorYellow + "; left: " + width * 0.85 + "px; top: " + height * 0.35 + "px;");
+            ele.children[ID.switch].setAttribute("style",  "font-size: 1.6rem; color: " + colorYellow + ";left: " + width * 0.18 + "px; top: " + height * 0.5 + "px");
+            ele.children[ID.strength].setAttribute("style",  "font-size: 1.6rem; color: " + colorYellow + ";left: " + width * 0.18 + "px; top: " + height * 0.82 + "px");
+            ele.children[ID.line1].setAttribute("style",  "z-index:0; transform-origin: left center;transform:scale(.5); font-size: 50vw; color: " + colorYellow + ";left: " + width * 0.5 + "px; top: " + -height * 0.08 + "px");
+            ele.children[ID.line2].setAttribute("style",  "z-index:0; transform-origin: right bottom; font-size: 50vw; color: " + colorYellow + ";left: " + width * 0.12 + "px; top: " + height * 0.38 + "px");
+            ele.children[ID.line3].setAttribute("style",  "z-index:0; transform-origin: right center; font-size: " + width * 0.68 + "px; color: " + colorYellow + ";left: " + width * 0.12 + "px; top: " + height * 0.50 + "px");
+            ele.children[ID.num1].setAttribute("style", "font-size: 2.8rem; color: " + colorYellow + ";left: " + width * 0.88 + "px; top: " + height * 0.06 + "px");
+            ele.children[ID.num2].setAttribute("style", "font-size: 2.8rem; color: " + colorYellow + ";left: " + width * 0.88 + "px; top: " + height * 0.5 + "px");
+            ele.children[ID.num3].setAttribute("style", "font-size: 2.8rem; color: " + colorYellow + ";left: " + -width * 0.04 + "px; top: " + height * 0.55 + "px");
+            ele.children[ID.num4].setAttribute("style", "font-size: 2.8rem; color: " + colorYellow + ";left: " + -width * 0.04 + "px; top: " + height * 0.87 + "px");
+            ele.children[ID.arrowPoint].setAttribute("style", "transform: rotate(-170deg); font-size: 1rem; color: " + colorLightOpacity + ";left: " + width * 0.74 + "px; top: " + height * 0.6 + "px");
+            ele.children[ID.key].setAttribute("style", "font-size: " + width * 0.5 + "px; color: " + colorLight + "; left: " + width * 0.36 + "px; top: " + height * 0.5 + "px");
+            ele.children[ID.body].setAttribute("style", "font-size:" + width * 0.67 + "px; color: " + colorLight + "; top:"  + -height * 0.07 + "px; ");
 
         this.ready.nativeElement.setAttribute("style", "z-index: 0; position:absolute; left:0; right:0; bottom:20px; opacity: 0;");
     }
@@ -266,8 +256,7 @@ export class DemoPage implements OnDestroy, AfterViewInit
     @ViewChild('animatedef') animatedef: ElementRef;
 
     IsShowingDeviceList: boolean = false;
-    DeviceListEmpty: boolean = false;
-    DeviceList: Array<Svc.BLE.IScanDiscovery> = [];
+    DeviceList: Array<Svc.IScanDiscovery> = [];
 
     private ScanSubscription: Subscription;
 }

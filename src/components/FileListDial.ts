@@ -17,7 +17,7 @@ export class FileListDial implements OnInit, OnDestroy, DoCheck
     ngOnInit()
     {
         let Canvas = this.Elements.nativeElement.children[0] as HTMLCanvasElement;
-        this.Content = new TContentCanvas(Canvas, this.app, this.OnSelectionFile);
+        this.Content = new TContentCanvas(Canvas, this.app, this.OnSelection);
     }
 
     ngOnDestroy(): void
@@ -33,7 +33,7 @@ export class FileListDial implements OnInit, OnDestroy, DoCheck
     }
 
     @Input() FileList: Svc.TScriptFileList
-    @Output() OnSelectionFile = new EventEmitter<Svc.TScriptFile>();
+    @Output() OnSelection = new EventEmitter<Svc.TScriptFile>();
 
     private Content: TContentCanvas;
 }
@@ -43,7 +43,7 @@ export class FileListDial implements OnInit, OnDestroy, DoCheck
 class TContentCanvas
 {
     constructor(private Canvas: HTMLCanvasElement, private app: Svc.TApplication,
-        private OnSelectionFile: EventEmitter<Svc.TScriptFile>)
+        private OnSelection: EventEmitter<Svc.TScriptFile>)
     {
         Canvas.addEventListener("touchstart", this.TouchHandler.bind(this));
         Canvas.addEventListener("touchmove", this.TouchHandler.bind(this));
@@ -79,7 +79,7 @@ class TContentCanvas
 
     Disponse()
     {
-        this.OnSelectionFile.unsubscribe();
+        this.OnSelection.unsubscribe();
     }
 
     get Color(): string
@@ -246,7 +246,7 @@ class TContentCanvas
 
         let Idx = Math.trunc((Offset - this.ScrollingY - this.Padding) / this.ItemHeight);
         if (Idx >= 0 && Idx < this.FileList.length)
-            this.OnSelectionFile.emit(this.FileList[Idx]);
+            this.OnSelection.emit(this.FileList[Idx]);
     }
 
     /**

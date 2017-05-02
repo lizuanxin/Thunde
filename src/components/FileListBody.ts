@@ -4,38 +4,7 @@ import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
 
 import * as Svc from '../providers'
 
-@Component({
-  selector: 'filelist-body',
-  template: `
-    <ion-row [ngStyle]="VslideH" margin-top>
-        <ion-col col-12 no-padding>
-            <section Flip-x [class.Filped]="ISFlip">
-                <ion-slides [ngStyle]="SetStyle(0)" (ionSlideDidChange)="SlideChanged()">
-                    <ion-slide *ngFor="let i of SelectedBody.UsageIcons">
-                        <ion-icon app-icon [ngStyle]="SetStyle(1)">{{app.IconFont(i)}}</ion-icon>
-                    </ion-slide>
-                </ion-slides>
-            </section>
-            <ion-row RSideTop justify-content-end [class.slideIn]="ISFlip">
-                <ion-col *ngFor="let i of SelectedBody.UsageIcons" col-2 text-center>
-                    <div><ion-icon app-icon>{{app.IconFont(i)}}</ion-icon></div>
-                </ion-col>
-            </ion-row>
-        </ion-col>
-
-        <ion-col col-10 offset-1 no-padding>
-            <ion-row VSideLeft nowrap>
-                <ion-col no-padding text-center [class.active]="SelectedBody===b" *ngFor="let b of BodyCategories" (click)="SelectBody(b)" tappable>
-                    <button><span app-icon [innerHTML]="app.IconFont(b.Icon)"></span></button>
-                </ion-col>
-            </ion-row>
-        </ion-col>
-
-        <ion-col col-12 no-padding text-center margin-top>
-            <li *ngFor="let f of FilterFiles">{{'scriptfile.'+f.Name|translate}}</li>
-        </ion-col>
-    </ion-row>`,
-})
+@Component({selector: 'filelist-body', templateUrl: `FileListBody.html`})
 export class FileListBody implements OnInit
 {
     constructor(private Elements: ElementRef, private app: Svc.TApplication)
@@ -68,17 +37,19 @@ export class FileListBody implements OnInit
         this._FileList = Value;
     }
 
-    @Output() OnSelectionFile = new EventEmitter<Svc.TScriptFile>();
+    @Output() OnSelection = new EventEmitter<Svc.TScriptFile>();
 
     SelectBody(b: TBodyCategory)
     {
         this.SelectedBody = b;
         this.SelectedFileList = [];
+
+        //this.Slides.slideTo(0, 0);
     }
 
-    SlideChanged()
+    UsageSlideChanged()
     {
-        if (this.Slides.getActiveIndex() < this.SelectedBody.UsageIcons.length)
+        //if (this.Slides.getActiveIndex() < this.SelectedBody.UsageIcons.length)
             this.SelectedFileList = [];
     }
 
@@ -110,6 +81,11 @@ export class FileListBody implements OnInit
         return this.SelectedFileList;
     }
 
+    FileSlideChanged()
+    {
+
+    }
+
     SetStyle(n: number): Object
     {
         switch(n)
@@ -122,6 +98,7 @@ export class FileListBody implements OnInit
     }
 
     @ViewChild(Slides) private Slides: Slides;
+
     BodyCategories = new Array<TBodyCategory>();
     SelectedBody: TBodyCategory;
     SelectedFileList: Svc.TScriptFileList = [];
@@ -149,8 +126,6 @@ class TBodyCategory
             }
             else
             {
-                console.log(arg);
-
                 this.BodyParts.push(arg as Svc.IBodyPart);
 
                 for (let icon of JSON.parse((arg as Svc.IBodyPart).Desc))

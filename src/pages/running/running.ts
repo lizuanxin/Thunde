@@ -4,7 +4,6 @@ import {Subscription} from 'rxjs/Subscription'
 import 'rxjs/add/operator/toPromise';
 
 import {PowerManagement} from '../../UltraCreation/Native/PowerManagement'
-
 import * as Svc from '../../providers';
 
 @Component({selector: 'page-running', templateUrl: 'running.html'})

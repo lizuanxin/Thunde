@@ -3,10 +3,10 @@ import * as Svc from '../providers';
 
 @Component({selector: 'filelist-card', template: `
     <ion-card card-list-default *ngFor="let f of FileList">
-        <ion-card-content (click)="OnSelectionFile.emit(f)" tappable>
+        <ion-card-content (click)="OnSelection.emit(f)" tappable>
             <h2><ion-icon app-icon>&#xe93e;</ion-icon></h2>
             <ion-card-title>
-                {{'scriptfile.'+f.Name|translate}}
+                {{f.Name_LangId|translate}}
             </ion-card-title>
         </ion-card-content>
     </ion-card>
@@ -18,5 +18,5 @@ export class FileListCard
     }
 
     @Input() FileList: Svc.TScriptFileList;
-    @Output() OnSelectionFile = new EventEmitter<Svc.TScriptFile>();
+    @Output() OnSelection = new EventEmitter<Svc.TScriptFile>();
 }

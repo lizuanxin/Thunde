@@ -34,7 +34,7 @@ let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
 
     declarations: [
         MyApp,
-        Cmp.IntensityDial, Cmp.FileListDial, Cmp.FileListBody, Cmp.FileListCard,
+        Cmp.Profile, Cmp.IntensityDial, Cmp.ScanDevice, Cmp.FileListDial, Cmp.FileListBody, Cmp.FileListCard,
         View.HomePage, View.TouPage, View.GoPage, View.RunningPage, View.OtaUpdatePage,
         View.DemoPage, View.DemoModeRunningPage,
     ],

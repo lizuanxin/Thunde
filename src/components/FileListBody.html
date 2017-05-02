@@ -1,0 +1,35 @@
+<ion-row [ngStyle]="VslideH" margin-top>
+    <ion-col col-12 no-padding>
+        <section Flip-x [class.Filped]="ISFlip">
+            <ion-slides [ngStyle]="SetStyle(0)" (ionSlideDidChange)="UsageSlideChanged()">
+                <ion-slide *ngFor="let i of SelectedBody.UsageIcons">
+                    <ion-icon app-icon [ngStyle]="SetStyle(1)">{{app.IconFont(i)}}</ion-icon>
+                </ion-slide>
+            </ion-slides>
+        </section>
+        <ion-row RSideTop justify-content-end [class.slideIn]="ISFlip">
+            <ion-col *ngFor="let i of SelectedBody.UsageIcons" col-2 text-center>
+                <div><ion-icon app-icon>{{app.IconFont(i)}}</ion-icon></div>
+            </ion-col>
+        </ion-row>
+    </ion-col>
+
+    <ion-col col-10 offset-1 no-padding>
+        <ion-row VSideLeft nowrap>
+            <ion-col no-padding text-center [class.active]="SelectedBody===b" *ngFor="let b of BodyCategories" (click)="SelectBody(b)" tappable>
+                <button><b><span app-icon [innerHTML]="+app.IconFont(b.Icon)"></span></b></button>
+            </ion-col>
+        </ion-row>
+    </ion-col>
+
+    <ion-col col-12 no-padding text-center margin-top>
+        <!--
+        <ion-slides (ionSlideDidChange)="FileSlideChanged()">
+            <ion-slide *ngFor="let f of FilterFiles" (click)="OnSelection.next(f)" tappable>
+                {{f.Name_LangId|translate}}
+            </ion-slide>
+        </ion-slides>
+        -->
+        <li *ngFor="let f of FilterFiles" (click)="OnSelection.next(f)" tappable>{{f.Name_LangId|translate}}</li>
+    </ion-col>
+</ion-row>

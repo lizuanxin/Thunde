@@ -45,8 +45,16 @@ export let translate_en =
     home_page:
     {
         title: 'Thunderbolt',
-        menu_tou: 'Terms of Use',
-        menu_demo_mode: 'Quick Start',
+    },
+
+    profile_page:
+    {
+        title: 'Profile',
+        faq: 'Frequently asked Questions',
+        tou: 'Terms of Use',
+        check_otg: 'USB On-The-Go',
+        demo: 'Quick Start',
+        appearance: 'Appearance',
     },
 
     demo_mode_play_page:
@@ -55,7 +63,7 @@ export let translate_en =
         phone_power: 'O<br/>T<br/>G<br/>',
         switch: 'Mode Switch /<br/>Hold down to Turn Off',
         strength: 'Intensity Control',
-        skip:'Skip',
+        skip: 'Skip',
 
         friction_info: 'You will feel a friction effect, a tingling sensation. By sending a very fast signal to your brain, we will block the transmission of the "pain message" alleviating your pain rapidly.',
         kneading_info: 'Such stimulation kneads and deeply relaxes your muscles. We use this effect to relax your muscles and promptly relieve tension.',
@@ -78,11 +86,6 @@ export let translate_en =
     running_page:
     {
         finish: 'see you soon'
-    },
-
-    skin_page:
-    {
-        title: 'Appearance',
     },
 
     body:
@@ -117,6 +120,17 @@ export let translate_en =
         sore: 'Sore Therpy',
         pain: 'Pain Treatment',
         han: 'Hans Treatment',
+    /* relax */
+        knock: 'Knock',
+        press: 'Press',
+        twist: 'Twist',
+        knead: 'Knead',
+        joint: 'Joint',
+        shoudler: 'Shoudler',
+        upperarm: 'Upperarm',
+        waist: 'Waist',
+        soles: 'Soles',
+        leg: 'Leg',
 
     /* fat-burning */
         fb_a: 'Burning A',
@@ -131,17 +145,6 @@ export let translate_en =
         dumbbell: 'Dumbbell',
         push_ups: 'Push-ups',
         sit_ups: 'Sit-ups',
-    /* relax */
-        knock: 'Knock',
-        press: 'Press',
-        twist: 'Twist',
-        knead: 'Knead',
-        joint: 'Joint',
-        shoudler: 'Shoudler',
-        upperarm: 'Upperarm',
-        waist: 'Waist',
-        soles: 'Soles',
-        leg: 'Leg',
     },
 
     tou_page:
@@ -224,8 +227,15 @@ export let translate_zh =
     home_page:
     {
         title: '小摩线',
-        menu_tou: '使用条款',
-        menu_demo_mode: '快速入门',
+    },
+
+    profile_page:
+    {
+        title: '我的',
+        faq: '常见问题',
+        tou: '使用条款',
+        check_otg: 'OTG 状态',
+        demo: '快速入门',
     },
 
     go_page:
@@ -257,11 +267,6 @@ export let translate_zh =
     running_page:
     {
         finish: '一会见'
-    },
-
-    skin_page:
-    {
-        title: '选择外观',
     },
 
     body:

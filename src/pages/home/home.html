@@ -1,32 +1,8 @@
-<ion-menu [content]="content" type="overlay" side="right" swipeEnabled=false overlay>
-  <ion-content transparent padding-left>
-    <ion-list no-lines transparent list-side>
-        <ion-item-divider margin-bottom no-lines text-light menuToggle  [ngStyle]="{'min-height':app.IsAndroid ? '56px' : null}">
-            <ion-icon app-icon item-left [ngStyle]="{'font-size':app.IsAndroid ? '2.4rem' : null}">&#xe906;</ion-icon>
-            {{'home_page.title'|translate}}
-        </ion-item-divider>
-        <button menuToggle ion-item  text-light detail-none (click)="ShowDemo()" tappable>
-            {{'home_page.menu_demo_mode'|translate}}
-            <ion-note item-right><ion-icon>&#xf3d1;</ion-icon></ion-note>
-        </button>
-        <button menuToggle ion-item  text-light detail-none (click)="ShowTOU()" tappable>
-            {{'home_page.menu_tou'|translate}}
-            <ion-note item-right><ion-icon>&#xf3d1;</ion-icon></ion-note>
-        </button>
-      </ion-list>
-  </ion-content>
-</ion-menu>
-
 <ion-header no-shadow no-border>
   <ion-toolbar transparent  [ngClass]="PlatformShowWhen">
     <ion-buttons left>
       <button ion-button icon-only color="light" [ngStyle]="{'margin':'0 6px','padding':'0 2px','min-width':'44px'}" tappable>
           <ion-icon [ngClass]="app.SkinColor" app-icon>&#xe908;</ion-icon>
-      </button>
-    </ion-buttons>
-    <ion-buttons right>
-      <button ion-button color="light" menuToggle>
-          <ion-icon [ngClass]="app.SkinColor" app-icon>&#xe906;</ion-icon>
       </button>
     </ion-buttons>
     <ion-title text-center>
@@ -35,10 +11,11 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content no-scroll #content class="D-blue" color="light">
-    <filelist-body *ngIf="ActiveTab.Index===0" [FileList]="ActiveTab.FileList" (OnSelectionFile)="SelectFile($event)"></filelist-body>
-    <filelist-card *ngIf="ActiveTab.Index===1" [FileList]="ActiveTab.FileList" (OnSelectionFile)="SelectFile($event)"></filelist-card>
-    <filelist-dial *ngIf="ActiveTab.Index===2" [FileList]="ActiveTab.FileList" (OnSelectionFile)="SelectFile($event)"></filelist-dial>
+<ion-content no-scroll class="D-blue" color="light" [ngSwitch]="ActiveTab.Index">
+    <filelist-body *ngSwitchCase="0" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-body>
+    <filelist-card *ngSwitchCase="1" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-card>
+    <filelist-dial *ngSwitchCase="2" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-dial>
+    <profile *ngSwitchCase="65536" (OnSelection)="ProfileSwitch($event)"></profile>
 </ion-content>
 
 <ion-footer no-shadow no-border>
@@ -46,16 +23,10 @@
     <ion-row>
       <ion-col text-center [class.state]="tab.Index===ActiveTab.Index" *ngFor="let tab of Tabs" (click)="SelectTab(tab)" tappable>
         <button>
-          <ion-icon app-icon>{{app.IconFont(tab.Category.Icon)}}</ion-icon>
+          <ion-icon app-icon>{{app.IconFont(tab.Icon)}}</ion-icon>
         </button>
-       <span text-nowrap f-12 [ngClass]="app.SkinColor">{{'category.'+tab.Category.Name|translate}}</span>
+       <span text-nowrap f-12 [ngClass]="app.SkinColor">{{tab.Name|translate}}</span>
       </ion-col>
-      <!--<ion-col text-center [class.state]="Category===SelectedCategory" *ngFor="let Category of Categories" (click)="SelectCategory(Category)" tappable>
-        <button ion-button icon-only block clear no-margin [ngClass]="app.SkinColor" [ngStyle]="{'height':'2.2em'}">
-          <ion-icon app-icon>{{Category.IconChar}}</ion-icon>
-        </button>
-       <span text-nowrap f-12 [ngClass]="app.SkinColor">{{Category.Name_LangId|translate}}</span>
-      </ion-col>-->
     </ion-row>
   </ion-toolbar>
 </ion-footer>

@@ -26,15 +26,15 @@ export namespace const_data
         {Id: '{00000000-0000-4000-2000-000000000005}', Name: 'upperarm',
             Icon: 0xE903, Desc: JSON.stringify([0xE933, 0xE9A4])},
         {Id: '{00000000-0000-4000-2000-000000000006}', Name: 'elbow',
-            Icon: 0xE90E, Desc: JSON.stringify([0xE970, 0xE989])},
+            Icon: 0xE90E, Desc: JSON.stringify([0xE970])},
         {Id: '{00000000-0000-4000-2000-000000000007}', Name: 'forearm',
             Icon: 0xE910, Desc: JSON.stringify([0xEA13, 0xEA14])},
         {Id: '{00000000-0000-4000-2000-000000000008}', Name: 'wrist',
-            Icon: 0xE920, Desc: JSON.stringify([0xE934, 0xE95b])},
+            Icon: 0xE920, Desc: JSON.stringify([0xE95b])},
         {Id: '{00000000-0000-4000-2000-000000000009}', Name: 'abdomen',
             Icon: 0xE900, Desc: JSON.stringify([0xE959])},
         {Id: '{00000000-0000-4000-2000-00000000000A}', Name: 'buttock',
-            Icon: 0xE905, Desc: JSON.stringify([0xe919,0xe91a])},
+            Icon: 0xE905, Desc: JSON.stringify([0xE91A])},
         {Id: '{00000000-0000-4000-2000-00000000000B}', Name: 'thigh',
             Icon: 0xE91D, Desc: JSON.stringify([0xe915,0xe916])},
         {Id: '{00000000-0000-4000-2000-00000000000C}', Name: 'knee',
@@ -42,7 +42,7 @@ export namespace const_data
         {Id: '{00000000-0000-4000-2000-00000000000D}', Name: 'calf',
             Icon: 0xE906, Desc: JSON.stringify([0xEA3E, 0xEA58])},
         {Id: '{00000000-0000-4000-2000-00000000000E}', Name: 'ankle',
-            Icon: 0xE902, Desc: JSON.stringify([0xE9A5, 0xE9B9])},
+            Icon: 0xE902, Desc: JSON.stringify([0xE9B9])},
         {Id: '{00000000-0000-4000-2000-00000000000F}', Name: 'foot',
             Icon: 0xE90F, Desc: JSON.stringify([0xE9CB, 0xE9DE])},
     ]
@@ -82,6 +82,7 @@ export namespace const_data
         {Id: '{00000000-0000-4000-3000-000000000001}', Icon: 0xe917, Name: 'relax'},
         {Id: '{00000000-0000-4000-3000-000000000002}', Icon: 0xe91e, Name: 'muscle_training'},
         {Id: '{00000000-0000-4000-3000-000000000003}', Icon: 0xe905, Name: 'fat_burning'},
+        {Id: '{00000000-0000-4000-3000-FFFFFFFFFFFF}', Icon: 0xe905, Name: 'recommend'},
     ]
 
     export const Category =
