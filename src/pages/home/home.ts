@@ -69,8 +69,15 @@ export class HomePage implements OnInit, OnDestroy
         console.log(ScriptFile);
 
         /*
-        this.Asset.FileDesc(ScriptFile)
-            .then(() => this.nav.push(View.GoPage, {Category: this.SelectedCategory, ScriptFile: ScriptFile}));
+        if (! Loki.TShell.IsUsbPlugin)
+        {
+            if (this.DeviceList.length === 1)
+                this.Start(this.DeviceList[0].id);
+            else
+                this.IsShowingDeviceList = true;
+        }
+        else
+            this.Start('USB');
         */
     }
 

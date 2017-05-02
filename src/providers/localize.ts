@@ -87,11 +87,11 @@ export let translate_en =
 
     body:
     {
-        upper_back: 'Upper back',
+        neck: 'Neck',
         shoulder: 'Shoulder',
         back: 'Back',
-        lower_back: 'Lower back',
-        upper_arm: 'Upper arm',
+        waist: 'Waist',
+        upperarm: 'Upperarm',
         elbow: 'Elbow',
         forearm: 'Forearm',
         wrist: 'Wrist',
@@ -135,10 +135,10 @@ export let translate_en =
         knock: 'Knock',
         press: 'Press',
         twist: 'Twist',
-        soft: 'Soft',
+        knead: 'Knead',
         joint: 'Joint',
         shoudler: 'Shoudler',
-        upper_arm: 'Upper Arm',
+        upperarm: 'Upperarm',
         waist: 'Waist',
         soles: 'Soles',
         leg: 'Leg',
@@ -266,11 +266,11 @@ export let translate_zh =
 
     body:
     {
-        upper_back: '颈部',
+        neck: '颈部',
         shoulder: '肩部',
         back: '背部',
-        lower_back: '腰部',
-        upper_arm: '上臂',
+        waist: '腰部',
+        upperarm: '上臂',
         elbow: '手肘',
         forearm: '手臂',
         wrist: '手腕',
@@ -293,10 +293,19 @@ export let translate_zh =
 
     scriptfile:
     {
-    /* THRIPY */
         sore: '酸痛治疗',
         pain: '疼痛治疗',
         han: '快速镇痛',
+        knock: '敲打',
+        press: '按压',
+        twist: '拧',
+        knead: '揉',
+        joint: '关节舒展',
+        shoudler: '肩部按摩',
+        upperarm: '上臂按摩',
+        waist: '腰部',
+        soles: '足底',
+        leg: '腿部',
 
     /* fat-burning */
         fb_a: '燃烧脂肪 A',
@@ -311,18 +320,6 @@ export let translate_zh =
         dumbbell: '哑铃',
         push_ups: '俯卧撑',
         sit_ups: '仰卧起坐',
-
-    /* relax */
-        knock: '敲打',
-        press: '按压',
-        twist: '搓揉',
-        soft: '肌肉放松',
-        joint: '关节舒展',
-        shoudler: '肩部按摩',
-        upper_arm: '上臂按摩',
-        waist: '腰部按摩',
-        soles: '足底按摩',
-        leg: '腿部按摩',
     },
 
     tou_page:

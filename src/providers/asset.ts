@@ -3,19 +3,21 @@ import {Injectable}  from '@angular/core';
 import {TypeInfo, IPersistable, TPersistable, TPersistPropRule, TGuid, HexConv} from '../UltraCreation/Core'
 import {TBase64Encoding} from '../UltraCreation/Encoding'
 import {TSqlQuery, TSqliteStorage} from '../UltraCreation/Storage';
-import * as Intf from './intf'
-import {const_data} from './const_data'
 
-import * as Loki from './loki/file';
+import {const_data, IBodyPart, ICategory, IScriptFile, Loki} from '.'
 
 module Queries
 {
     export const GetCategories = 'SELECT Category.*, ObjectName, Name, Desc FROM Asset INNER JOIN Category ON Category.Id = Asset.Id'
     export const GetFileList = `SELECT ScriptFile.*, ObjectName, Asset.Name, Asset.Desc FROM ScriptFile INNER JOIN Asset ON Asset.Id = ScriptFile.Id
         WHERE Category_Id = "?" ORDER BY Asset.Id`;
+    export const GetFileBodyList = `SELECT ScriptFile_Id, Body.* FROM Body INNER JOIN ScriptFile_Body ON ScriptFile_Body.Body_Id = Body.Id
+        ORDER BY ScriptFile_Id`;
+    /*
     export const GetBodyUsage = `SELECT ObjectName, Name, Desc FROM ScriptFile_Body
         INNER JOIN Body ON Body.Id = ScriptFile_Body.Body_Id INNER JOIN Asset BodyAsset ON BodyAsset.Id = Body.Id
         WHERE ScriptFile_Id = "?" ORDER BY Body.Id`;
+    */
     export const GetFileDesc = `SELECT ScriptFileDesc.*, ObjectName, Asset.Name, Asset.Desc FROM ScriptFileDesc INNER JOIN Asset ON Asset.Id = ScriptFileDesc.Id
         WHERE ScriptFile_Id= "?" ORDER BY Idx`
 }
@@ -63,7 +65,7 @@ export class TAssetService
         return (this.constructor as typeof TAssetService)._Categories;
     }
 
-    get BodyParts(): Array<Intf.IBodyPart>    // for the debug
+    get BodyParts(): Array<IBodyPart>    // for the debug
     {
         return const_data.BodyParts;
     }
@@ -98,96 +100,93 @@ export class TAssetService
             return this.Storage.Set(Key, Value);
     }
 
-    FileList(Category_Id: string): Promise<Array<TScriptFile>>
+    async FileList(Category_Id: string): Promise<Array<TScriptFile>>
     {
-        return this.Storage.ExecQuery(new TSqlQuery(Queries.GetFileList, [Category_Id]))
-            .then(DataSet =>
+        let DataSet = await this.Storage.ExecQuery(new TSqlQuery(Queries.GetFileList, [Category_Id]));
+        let FileBodyList = await this.FileBodyList();
+
+        let RetVal = new Array<TScriptFile>();
+
+        while (! DataSet.Eof)
+        {
+            let F = new TScriptFile();
+            RetVal.push(F);
+
+            F.Assign(DataSet.Curr);
+            F.BodyParts = FileBodyList.get(F.Id);
+
+            if ((! TypeInfo.Assigned(F.Duration) || F.Duration === 0) && TypeInfo.Assigned(F.Content))
             {
-                let RetVal = new Array<TScriptFile>();
+                let LokiFile = new Loki.TFile();
+                LokiFile.LoadFrom(F.Content);
 
-                while (! DataSet.Eof)
-                {
-                    let F = new TScriptFile();
-                    F.Assign(DataSet.Curr);
-                    RetVal.push(F);
+                F.Edit();
+                F.Duration = Math.trunc(((LokiFile.TimeEst() / 1000) + 30) / 60) * 60;
+                this.Save(F);
+            }
 
-                    if ((! TypeInfo.Assigned(F.Duration) || F.Duration === 0) && TypeInfo.Assigned(F.Content))
-                    {
-                        let LokiFile = new Loki.TFile();
-                        LokiFile.LoadFrom(F.Content);
+            DataSet.Next();
+        }
 
-                        F.Edit();
-                        F.Duration = Math.trunc(((LokiFile.TimeEst() / 1000) + 30) / 60) * 60;
-                        this.Save(F);
-                    }
-
-                    DataSet.Next();
-                }
-
-                return RetVal;
-            });
+        return RetVal;
     }
 
-    FileDesc(ScriptFile: TScriptFile): Promise<void>
+    private async FileBodyList(): Promise<Map<string, Array<IBodyPart>>>
     {
-        return this.Storage.ExecQuery(new TSqlQuery(Queries.GetFileDesc, [ScriptFile.Id]))
-            .then(DataSet =>
+        if (this._FileBodyList.size === 0)
+        {
+            let DataSet = await this.Storage.ExecQuery(new TSqlQuery(Queries.GetFileBodyList));
+
+            while (! DataSet.Eof)
             {
-                let Details = ScriptFile.Details;
-
-                if (DataSet.RecordCount > 0)
+                let entry = this._FileBodyList.get(DataSet.Curr.ScriptFile_Id);
+                if (! TypeInfo.Assigned(entry))
                 {
-                    while (! DataSet.Eof)
-                    {
-                        let Desc = new TScriptFileDesc();
-                        Desc.Assign(DataSet.Curr)
-                        Details.push(Desc)
-                        DataSet.Next();
-                    }
+                    this._FileBodyList.set(DataSet.Curr.ScriptFile_Id, new Array<IBodyPart>());
+                    entry = this._FileBodyList.get(DataSet.Curr.ScriptFile_Id);
                 }
-                else
-                {
-                    let f = new Loki.TFile();
-                    f.LoadFrom(ScriptFile.Content)
+                entry.push(DataSet.Curr);
 
-                    let Idx = 1;
-                    for (let Snap of f.Snap())
-                    {
-                        let Desc = new TScriptFileDesc();
+                DataSet.Next();
+            }
+        }
+        return this._FileBodyList;
+    }
 
-                        Desc.ScriptFile_Id = ScriptFile.Id;
-                        Desc.Idx = Idx ++;
-                        Desc.Name = Desc.Idx.toString();
-                        Desc.Desc = Snap.Print();
+    async FileDesc(ScriptFile: TScriptFile): Promise<void>
+    {
+        let DataSet = await this.Storage.ExecQuery(new TSqlQuery(Queries.GetFileDesc, [ScriptFile.Id]))
+        let Details = ScriptFile.Details;
 
-                        Details.push(Desc);
-                    }
-
-                    return this.Save(Details)
-                        .catch(err => console.log(err.message));
-                }
-            })
-            .then(() =>
+        if (DataSet.RecordCount > 0)
+        {
+            while (! DataSet.Eof)
             {
-                if (ScriptFile.BodyParts.length === 0)
-                {
-                    return this.Storage.ExecQuery(new TSqlQuery(Queries.GetBodyUsage, [ScriptFile.Id]))
-                        .then(DataSet =>
-                        {
-                            let BodyParts = new Array<TBodyPart>();
-                            while (! DataSet.Eof)
-                            {
-                                let body = new TBodyPart();
-                                body.Assign(DataSet.Curr);
-                                BodyParts.push(body);
+                let Desc = new TScriptFileDesc();
+                Desc.Assign(DataSet.Curr)
+                Details.push(Desc)
+                DataSet.Next();
+            }
+        }
+        else
+        {
+            let f = new Loki.TFile();
+            f.LoadFrom(ScriptFile.Content)
 
-                                DataSet.Next();
-                            }
+            let Idx = 1;
+            for (let Snap of f.Snap())
+            {
+                let Desc = new TScriptFileDesc();
 
-                            ScriptFile.BodyParts = BodyParts;
-                        })
-                }
-            })
+                Desc.ScriptFile_Id = ScriptFile.Id;
+                Desc.Idx = Idx ++;
+                Desc.Name = Desc.Idx.toString();
+                Desc.Desc = Snap.Print();
+
+                await this.Save(Details)
+                Details.push(Desc);
+            }
+        }
     }
 
     private IdGenerator(KeyProps: Array<string>, Obj: IPersistable): Promise<void>
@@ -200,7 +199,9 @@ export class TAssetService
     }
 
     private static _Categories: Array<TCategory> = [];
+
     private Storage: TSqliteStorage;
+    private _FileBodyList = new Map<string, Array<IBodyPart>>();
 }
 
 /* TAsset */
@@ -253,42 +254,19 @@ export class TAsset extends TPersistable implements IAsset
 
 /*　TBody */
 
-export class TBodyPart extends TAsset implements Intf.IBodyPart
+export class TBodyPart extends TAsset implements IBodyPart
 {
     constructor()
     {
         super('Body');
     }
 
-    /*
-    get DescIconString(): string
-    {
-        let Icons = JSON.parse(this.Desc) as Array<number>;
-        let RetVal: string = '';
-
-        for (let i = 0; i < Icons.length; i ++)
-            RetVal += '&#x' + Icons[i].toString(16) + '; ';
-
-        return RetVal;
-    }
-
-    get DescIconChars(): Array<string>
-    {
-        let RetVal = new Array<string>();
-        let Icons = JSON.parse(this.Desc) as Array<number>;
-
-        for (let i = 0; i < Icons.length; i ++)
-            RetVal.push(String.fromCharCode(Icons[i]));
-        return RetVal;
-    }
-    */
-
     Icon: number = null;
 }
 
 /* TCategory */
 
-export class TCategory extends TAsset implements Intf.ICategory
+export class TCategory extends TAsset implements ICategory
 {
     constructor()
     {
@@ -310,7 +288,7 @@ export class TCategory extends TAsset implements Intf.ICategory
 
 export type TScriptFileList = Array<TScriptFile>;
 
-export class TScriptFile extends TAsset implements Intf.IScriptFile
+export class TScriptFile extends TAsset implements IScriptFile
 {
     constructor()
     {
@@ -339,8 +317,8 @@ export class TScriptFile extends TAsset implements Intf.IScriptFile
     Author: string = null;
     Professional: boolean = null;
 
+    BodyParts: Array<IBodyPart> = [];
     Details: Array<TScriptFileDesc> = [];
-    BodyParts: Array<TBodyPart> = [];
 }
 
 /* TScriptFileDesc */
@@ -363,5 +341,5 @@ export class TScriptFileDesc extends TAsset
     Idx: number = null;
     Professional: boolean = null;
 
-    BodyParts: Array<Intf.IBodyPart> = [];
+    BodyParts: Array<IBodyPart> = [];
 }

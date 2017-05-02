@@ -1,5 +1,5 @@
 import {inplace_files} from './inplace_files'
-import * as Intf from './intf'
+import {IMode, IBodyPart, ICategory, IScriptFile} from '.'
 
 export namespace const_data
 {
@@ -9,34 +9,21 @@ export namespace const_data
         {Id: '{00000000-0000-4000-0000-000000000000}', Name: 'anonymous', Email: ''};
 
     // do not use this: dummy for bluetens
-    export const Modes: Array<Intf.IMode> =
+    export const Modes: Array<IMode> =
     [
     ]
 
-    /*
-        back: [Body.upper_back, Body.back, Body.lower_back, Body.shoulder],
-
-        forelimb: [Body.forearm, Body.upper_arm],
-        lowerlimb: [Body.calf, Body.thigh],
-        joint: [Body.ankle, Body.elbow, Body.knee, Body.wrist],
-
-        abdomen: [Body.abdomen],
-        buttock: [Body.buttock],
-
-        foot: [Body.foot],
-        fat: [Body.abdomen, Body.buttock, Body.thigh, Body.upper_arm]
-    */
-    export const BodyParts: Array<Intf.IBodyPart> =
+    export const BodyParts: Array<IBodyPart> =
     [
-        {Id: '{00000000-0000-4000-2000-000000000001}', Name: 'upper_back',
+        {Id: '{00000000-0000-4000-2000-000000000001}', Name: 'neck',
             Icon: 0xE91F, Desc: JSON.stringify([0xE914])},
         {Id: '{00000000-0000-4000-2000-000000000002}', Name: 'shoulder',
             Icon: 0xE91A, Desc: JSON.stringify([0xE932])},
         {Id: '{00000000-0000-4000-2000-000000000003}', Name: 'back',
             Icon: 0xE904, Desc: JSON.stringify([0xE943])},
-        {Id: '{00000000-0000-4000-2000-000000000004}', Name: 'lower_back',
+        {Id: '{00000000-0000-4000-2000-000000000004}', Name: 'waist',
             Icon: 0xE915, Desc: JSON.stringify([0xE9FD])},
-        {Id: '{00000000-0000-4000-2000-000000000005}', Name: 'upper_arm',
+        {Id: '{00000000-0000-4000-2000-000000000005}', Name: 'upperarm',
             Icon: 0xE903, Desc: JSON.stringify([0xE933, 0xE9A4])},
         {Id: '{00000000-0000-4000-2000-000000000006}', Name: 'elbow',
             Icon: 0xE90E, Desc: JSON.stringify([0xE970, 0xE989])},
@@ -62,11 +49,11 @@ export namespace const_data
 
     export const Body =
     {
-        upper_back: BodyParts[0],
+        neck: BodyParts[0],
         shoulder: BodyParts[1],
         back: BodyParts[2],
-        lower_back: BodyParts[3],
-        upper_arm: BodyParts[4],
+        waist: BodyParts[3],
+        upperarm: BodyParts[4],
         elbow: BodyParts[5],
         forearm: BodyParts[6],
         wrist: BodyParts[7],
@@ -79,22 +66,18 @@ export namespace const_data
         foot: BodyParts[14],
     }
 
-    const BodyCategory =
+    export const BodyCategory =
     {
-        back: [Body.upper_back, Body.back, Body.lower_back, Body.shoulder],
-
-        forelimb: [Body.forearm, Body.upper_arm],
+        back: [Body.neck, Body.shoulder, Body.back],
+        forelimb: [Body.upperarm, Body.forearm],
         lowerlimb: [Body.calf, Body.thigh],
         joint: [Body.ankle, Body.elbow, Body.knee, Body.wrist],
 
-        abdomen: [Body.abdomen],
-        buttock: [Body.buttock],
-
-        foot: [Body.foot],
-        fat: [Body.abdomen, Body.buttock, Body.thigh, Body.upper_arm]
+        muscle: [Body.shoulder, Body.back, Body.upperarm, Body.buttock, Body.thigh, Body.calf],
+        fat: [Body.abdomen, Body.buttock, Body.thigh, Body.upperarm]
     }
 
-    export const Categories: Array<Intf.ICategory> =
+    export const Categories: Array<ICategory> =
     [
         {Id: '{00000000-0000-4000-3000-000000000001}', Icon: 0xe917, Name: 'relax'},
         {Id: '{00000000-0000-4000-3000-000000000002}', Icon: 0xe91e, Name: 'muscle_training'},
@@ -108,60 +91,62 @@ export namespace const_data
         fat_burning: Categories[2],
     }
 
-    export const ScriptFile: Array<Intf.IScriptFile> =
+    export const ScriptFile: Array<IScriptFile> =
     [
         {Id: '{00000000-0000-4000-4000-000000000001}', Author: 'UltraCreation Team',
-            Category_Id: Category.relax.Id, Mode_Id: null, Name: 'sore',
-            BodyParts: new Array<Intf.IBodyPart>().concat(BodyCategory.back, Body.upper_arm),
-            Content: inplace_files.file3_sore_therpy},
-        {Id: '{00000000-0000-4000-4000-000000000002}', Author: 'UltraCreation Team',
-            Category_Id: Category.relax.Id, Mode_Id: null, Name: 'pain',
-            BodyParts: new Array<Intf.IBodyPart>().concat(BodyCategory.back, Body.upper_arm),
-            Content: inplace_files.file11_pain_treatment},
-        {Id: '{00000000-0000-4000-4000-000000000010}', Author: 'UltraCreation Team',
-            Category_Id: Category.relax.Id, Mode_Id: null, Name: 'han',
-            BodyParts: new Array<Intf.IBodyPart>().concat(BodyCategory.back, BodyCategory.joint),
-            Content: 'V1D16{R12c|F64P32C12c|R6Pc8F2C1}'},
-        {Id: '{00000000-0000-4000-4000-000000000003}', Author: 'UltraCreation Team',
-            Category_Id: Category.relax.Id,  Mode_Id: null, Name: 'knock',
-            BodyParts: BodyCategory.back,
-            Content: inplace_files.file1_knock},
-        {Id: '{00000000-0000-4000-4000-000000000004}', Author: 'UltraCreation Team',
-            Category_Id: Category.relax.Id, Mode_Id: null, Name: 'press',
-            BodyParts: new Array<Intf.IBodyPart>().concat(BodyCategory.back, BodyCategory.forelimb, BodyCategory.lowerlimb, Body.foot),
-            Content: inplace_files.file4_press},
-        {Id: '{00000000-0000-4000-4000-000000000005}', Author: 'UltraCreation Team',
-            Category_Id: Category.relax.Id, Mode_Id: null, Name: 'twist',
-            BodyParts: new Array<Intf.IBodyPart>().concat(BodyCategory.back, BodyCategory.forelimb, BodyCategory.lowerlimb, Body.foot),
-            Content: inplace_files.file5_twist},
-        {Id: '{00000000-0000-4000-4000-000000000006}', Author: 'UltraCreation Team',
-            Category_Id: Category.relax.Id, Mode_Id: null, Name: 'soft',
-            BodyParts: new Array<Intf.IBodyPart>().concat(BodyCategory.back, BodyCategory.forelimb, BodyCategory.lowerlimb, Body.foot),
-            Content: inplace_files.file9_soft_knead},
-        {Id: '{00000000-0000-4000-4000-000000000007}', Author: 'UltraCreation Team',
             Category_Id: Category.relax.Id, Mode_Id: null, Name: 'joint',
             BodyParts: BodyCategory.joint,
             Content: inplace_files.file6_joint},
-        {Id: '{00000000-0000-4000-4000-000000000008}', Author: 'UltraCreation Team',
+        {Id: '{00000000-0000-4000-4000-000000000002}', Author: 'UltraCreation Team',
             Category_Id: Category.relax.Id, Mode_Id: null, Name: 'shoudler',
             BodyParts: [Body.shoulder],
             Content: inplace_files.file7_shoulder},
-        {Id: '{00000000-0000-4000-4000-000000000009}', Author: 'UltraCreation Team',
-            Category_Id: Category.relax.Id, Mode_Id: null, Name: 'upper_arm',
-            BodyParts: [Body.upper_arm],
-            Content: inplace_files.file10_upper_arm},
-        {Id: '{00000000-0000-4000-4000-00000000000a}', Author: 'UltraCreation Team',
+        {Id: '{00000000-0000-4000-4000-000000000003}', Author: 'UltraCreation Team',
+            Category_Id: Category.relax.Id, Mode_Id: null, Name: 'upperarm',
+            BodyParts: [Body.upperarm],
+            Content: inplace_files.file10_upperarm},
+        {Id: '{00000000-0000-4000-4000-000000000004}', Author: 'UltraCreation Team',
             Category_Id: Category.relax.Id, Mode_Id: null, Name: 'waist',
-            BodyParts: [Body.lower_back],
+            BodyParts: [Body.waist],
             Content: inplace_files.file12_waist},
-        {Id: '{00000000-0000-4000-4000-00000000000b}', Author: 'UltraCreation Team',
+        {Id: '{00000000-0000-4000-4000-000000000005}', Author: 'UltraCreation Team',
             Category_Id: Category.relax.Id, Mode_Id: null, Name: 'leg',
             BodyParts: BodyCategory.lowerlimb,
             Content: inplace_files.file2_leg},
-        {Id: '{00000000-0000-4000-4000-00000000000c}', Author: 'UltraCreation Team',
+        {Id: '{00000000-0000-4000-4000-000000000006}', Author: 'UltraCreation Team',
             Category_Id: Category.relax.Id, Mode_Id: null, Name: 'soles',
             BodyParts: [Body.foot],
             Content: inplace_files.file8_soles},
+
+        {Id: '{00000000-0000-4000-4000-000000000010}', Author: 'UltraCreation Team',
+            Category_Id: Category.relax.Id,  Mode_Id: null, Name: 'knock',
+            BodyParts: BodyCategory.muscle,
+            Content: inplace_files.file1_knock},
+        {Id: '{00000000-0000-4000-4000-000000000011}', Author: 'UltraCreation Team',
+            Category_Id: Category.relax.Id, Mode_Id: null, Name: 'press',
+            BodyParts: new Array<IBodyPart>().concat(BodyCategory.muscle),
+            Content: inplace_files.file4_press},
+        {Id: '{00000000-0000-4000-4000-000000000012}', Author: 'UltraCreation Team',
+            Category_Id: Category.relax.Id, Mode_Id: null, Name: 'twist',
+            BodyParts: new Array<IBodyPart>().concat(BodyCategory.forelimb, BodyCategory.joint, Body.foot),
+            Content: inplace_files.file5_twist},
+        {Id: '{00000000-0000-4000-4000-000000000013}', Author: 'UltraCreation Team',
+            Category_Id: Category.relax.Id, Mode_Id: null, Name: 'knead',
+            BodyParts: new Array<IBodyPart>().concat(BodyCategory.forelimb, BodyCategory.joint, Body.foot),
+            Content: inplace_files.file9_soft_knead},
+
+        {Id: '{00000000-0000-4000-4000-000000000020}', Author: 'UltraCreation Team',
+            Category_Id: Category.relax.Id, Mode_Id: null, Name: 'sore',
+            BodyParts: new Array<IBodyPart>().concat(BodyCategory.back, Body.waist),
+            Content: inplace_files.file3_sore_therpy},
+        {Id: '{00000000-0000-4000-4000-000000000021}', Author: 'UltraCreation Team',
+            Category_Id: Category.relax.Id, Mode_Id: null, Name: 'pain',
+            BodyParts: new Array<IBodyPart>().concat(BodyCategory.muscle, Body.waist),
+            Content: inplace_files.file11_pain_treatment},
+        {Id: '{00000000-0000-4000-4000-000000000022}', Author: 'UltraCreation Team',
+            Category_Id: Category.relax.Id, Mode_Id: null, Name: 'han',
+            BodyParts: new Array<IBodyPart>().concat(BodyCategory.back, BodyCategory.joint, Body.waist, Body.buttock),
+            Content: 'V1D16{R12c|F64P32C12c|R6Pc8F2C1}'},
 
         {Id: '{00000000-0000-4000-4100-000000000001}', Author: 'UltraCreation Team',
             Category_Id: Category.fat_burning.Id, Mode_Id: null, Name: 'fb_a',
@@ -194,11 +179,11 @@ export namespace const_data
 
         {Id: '{00000000-0000-4000-4100-000000004001}', Author: 'UltraCreation Team',
             Category_Id: Category.muscle_training.Id, Mode_Id: null, Name: 'dumbbell',
-            BodyParts: [Body.upper_arm],
+            BodyParts: [Body.upperarm],
             Content: 'V1D16{|R1P96F6C5a}{R4a|R1P12cF6|F7|F8|F9|Fa|Fb|Fc|Fd|Fe|Ff|F10|F11|F12|F13|F14|F15|F16|F17|F18|F19|F1a|F1b|F1c|F1d|F1e|F1f|F20|F21|F22|F23|F24|F25|F26|F27|F28|F29|F2a|F2b|F2c|F2d|F2e|F2f|F30|F31|F32|F33|F34|F35|F36|F37|F38|F39|F3a|F3b|F3c|F3d|F3e|F3f|F40|F41|F42|F43|F44|F45|F46|F47|F48|F49|F4a|R177F4b|R2F4a|R1F45|F40|F3b|F36|F31|F2c|F27|F22|F1d|F18|F13|Fe|F9|R20F4}'},
         {Id: '{00000000-0000-4000-4100-000000004002}', Author: 'UltraCreation Team',
             Category_Id: Category.muscle_training.Id, Mode_Id: null, Name: 'push_ups',
-            BodyParts: [Body.upper_arm],
+            BodyParts: [Body.upperarm],
             Content: 'V1D16{|R1P96I3e8F32C2ee}{Rf0I500|R1P32F32|P35|P38|P3b|P3e|P41|P44|P47|P4a|P4d|P50|P53|P56|P59|P5c|P5f|P62|P65|P68|P6b|P6e|P71|P74|P77|P7a|P7d|P80|P83|P86|P89|P8c|P8f|P92|P95|P96|P93|P90|P8d|P8a|P87|P84|P81|P7e|P7b|P78|P75|P72|P6f|P6c|P69|P66|P63|P60|P5d|P5a|P57|P54|P51|P4e|P4b|P48|P45|P42|P3f|P3c|P39|P36|P33}'},
         {Id: '{00000000-0000-4000-4100-000000004003}', Author: 'UltraCreation Team',
             Category_Id: Category.muscle_training.Id, Mode_Id: null, Name: 'sit_ups',

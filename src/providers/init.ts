@@ -10,9 +10,12 @@ export namespace Initialization
 {
     export function Execute(): Promise<void>
     {
-        const db_version = '19';
+        const db_version = '21';
         let Storage = new TSqliteStorage(const_data.DatabaseName);
 
+        return Storage.ExecSQL(DestroyTableSQL).catch(() => {})
+            .then(() => Storage.ExecSQL(InitTableSQL))
+        /*
         return Storage.ExecSQL('SELECT name FROM sqlite_master WHERE type="table" AND name="Asset"')
             .then(result =>
             {
@@ -38,6 +41,7 @@ export namespace Initialization
 
                 return Init.then(() => Storage.ExecSQL(InitTableSQL));
             })
+            */
             .then(() => Storage.ExecSQL(InitDataSQL))
             .then(() => InitMode(Storage))
             .then(()=> InitBody(Storage))

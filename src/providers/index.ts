@@ -1,4 +1,4 @@
-export * from './Intf'
+export * from './intf'
 export * from './const_data';
 export * from './asset';
 export * from './distribute';
