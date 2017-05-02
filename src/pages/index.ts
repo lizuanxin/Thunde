@@ -8,3 +8,4 @@ export * from './running/running'
 export * from './ota_update/ota_update'
 
 export * from './tou/tou'
+export * from './faq/faq'

@@ -53,7 +53,7 @@ export let translate_en =
         faq: 'Frequently asked Questions',
         tou: 'Terms of Use',
         check_otg: 'USB On-The-Go',
-        demo: 'Quick Start',
+        demo: 'Demo',
         appearance: 'Appearance',
     },
 
@@ -235,7 +235,7 @@ export let translate_zh =
         faq: '常见问题',
         tou: '使用条款',
         check_otg: 'OTG 状态',
-        demo: '快速入门',
+        demo: '基本操作',
     },
 
     go_page:

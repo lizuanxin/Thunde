@@ -78,9 +78,7 @@ export class HomePage implements OnInit, OnDestroy
 
     private ShowFAQ(): Promise<any>
     {
-        console.log('FAQ');
-        return Promise.resolve();
-        // return this.nav.push(View.DemoPage)
+        return this.nav.push(View.FaqPage)
     }
 
     private ShowDemo(): Promise<any>
