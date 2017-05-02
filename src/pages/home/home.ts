@@ -11,6 +11,16 @@ export class HomePage implements OnInit, OnDestroy
     constructor(private nav: NavController, private navParams: NavParams,
         private app: Svc.TApplication, private Asset: Svc.TAssetService, private Distribute: Svc.TDistributeService)
     {
+        this.app.Platform.ready()
+            .then(() =>
+            {
+                if (this.app.IsIos)
+                    Svc.Loki.TShell.LinearTable = '3.3v';
+                else if (this.app.IsAndroid)
+                    Svc.Loki.TShell.LinearTable = '5v';
+
+                console.log(Svc.Loki.TShell.LinearTable);
+            });
     }
 
     ngOnInit(): void
