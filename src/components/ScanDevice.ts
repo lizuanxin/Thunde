@@ -84,6 +84,10 @@ export class ScanDevice implements OnInit, OnDestroy
 
         setTimeout(() =>
         {
+                this.Visible = true;
+                this.app.HideLoading();
+
+            /*
             if (this.DeviceList.length !== 1)
             {
                 this.Visible = true;
@@ -91,6 +95,7 @@ export class ScanDevice implements OnInit, OnDestroy
             }
             else
                 this.SelectionDevice(this.DeviceList[0].id);
+            */
         }, 2000);
     }
 

@@ -1,8 +1,10 @@
 import {NgModule, ErrorHandler} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular';
-import {SwiperModule} from 'angular2-useful-swiper';
 import {TranslateModule} from "../UltraCreation/ng-ion/translate";
+
+import 'swiper';
+import {SwiperModule} from 'angular2-useful-swiper';
 
 import {MyApp} from './app.component';
 

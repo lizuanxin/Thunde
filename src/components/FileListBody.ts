@@ -2,7 +2,6 @@ import {Component, OnInit, ViewChild, Input, Output, EventEmitter, ElementRef} f
 import {Slides} from 'ionic-angular'
 import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
 
-
 import * as Svc from '../providers'
 
 @Component({selector: 'filelist-body', templateUrl: `FileListBody.html`})
@@ -12,16 +11,6 @@ export class FileListBody implements OnInit
     {
 
     }
-
-    config: Object = {
-            pagination: '.swiper-pagination',
-            paginationClickable: true,
-            nextButton: '.swiper-button-next',
-            prevButton: '.swiper-button-prev',
-            loop: true,
-            effect: 'flip',
-            spaceBetween: 30
-    };
 
     ngOnInit()
     {
@@ -113,6 +102,15 @@ export class FileListBody implements OnInit
     BodyCategories = new Array<TBodyCategory>();
     SelectedBody: TBodyCategory;
     SelectedFileList: Svc.TScriptFileList = [];
+
+    SwapConfig = {
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        effect: 'flip',
+        spaceBetween: 30
+    };
 
     private _FileList?: Svc.TScriptFileList;
 }
