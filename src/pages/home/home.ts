@@ -1,5 +1,5 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {Component, ViewChild, OnInit, OnDestroy} from '@angular/core';
+import {NavController, NavParams, Content} from 'ionic-angular';
 
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo'
 import * as View from '..'
@@ -55,6 +55,19 @@ export class HomePage implements OnInit, OnDestroy
     {
     }
 
+    ProfileSwitch(id: string)
+    {
+        switch(id)
+        {
+        case 'faq':
+            return this.ShowFAQ();
+        case 'demo':
+            return this.ShowDemo();
+        case 'tou':
+            this.ShowTOU();
+        }
+    }
+
     SelectTab(Tab: TTabItem): void
     {
         this.ActiveTab = Tab;
@@ -71,18 +84,22 @@ export class HomePage implements OnInit, OnDestroy
     {
         let params = this.navParams.data;
         params.ScriptFile = ScriptFile;
+
+        this.app.ShowLoading()
+            .then(() => this.DeviceScanning = true);
     }
 
-    ProfileSwitch(id: string)
+    DeviceSelection(DeviceId?: string)
     {
-        switch(id)
+        this.DeviceScanning = false;
+
+        if (TypeInfo.Assigned(DeviceId))
         {
-        case 'faq':
-            return this.ShowFAQ();
-        case 'demo':
-            return this.ShowDemo();
-        case 'tou':
-            this.ShowTOU();
+            let params = this.navParams.data;
+            params.DeviceId = DeviceId;
+
+            this.app.ShowLoading()
+                .then(() => this.nav.push(View.RunningPage, params));
         }
     }
 
@@ -101,8 +118,11 @@ export class HomePage implements OnInit, OnDestroy
         return this.nav.push(View.TouPage);
     }
 
+    @ViewChild(Content) Content: Content;
     private Tabs: Array<TTabItem> = [];
     private ActiveTab: TTabItem;
+
+    private DeviceScanning = false;
 }
 
 class TTabItem

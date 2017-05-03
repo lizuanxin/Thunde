@@ -128,7 +128,7 @@ export class TShell extends TAbstractShell
 
     static StartScan(): Subject<Array<BLE.IScanDiscovery>>
     {
-        // BLE.TGatt.BrowserFakeDevice = true;
+        BLE.TGatt.BrowserFakeDevice = true;
         return BLE.TGattScaner.Start([], this.ScanFilter, BLE_SCAN_TIMEOUT);
     }
 
@@ -723,8 +723,7 @@ export class TCatRequest extends TProxyShellRequest
     {
         let Count = FileBuffer.byteLength;
 
-        Proxy.StopOutput()
-            .then(() => Proxy.FileMd5(FileName))
+        Proxy.FileMd5(FileName)
             .then(value =>
             {
                 if (value === Md5)

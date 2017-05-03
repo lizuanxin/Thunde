@@ -189,7 +189,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
             {
                 this.app.HideLoading()
                     .then(() => this.app.ShowHintId(err.message))
-                    .then(() => this.ClosePage());
+                    //.then(() => this.ClosePage());
             });
     }
 
