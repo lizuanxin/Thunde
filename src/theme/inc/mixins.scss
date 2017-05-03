@@ -1,6 +1,7 @@
 @mixin DominantColor() {
     .D-blue {
-        background: url(../assets/img/bg_home.png) no-repeat left top;
+        background: color($DominantColor,D-Default,base) url(../assets/img/bg_home.png) no-repeat left top;
+        background-size:contain;
         filelist-body{
             color:color($colors,light,base);
         }

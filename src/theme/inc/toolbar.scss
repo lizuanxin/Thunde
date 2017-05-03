@@ -13,11 +13,16 @@
 // }
 
 ion-toolbar {
-    @include toolbar-footer($background-list);
+    // @include toolbar-footer($background-list);
     &.toolbar {
         &.o-light {
             .toolbar-background {
                 background: rgba(255, 255, 255, .1)
+            }
+        }
+        &[Header-Default]{
+            .toolbar-background {
+                background-color:rgba(0,0,0,.05);
             }
         }
     }
@@ -25,13 +30,15 @@ ion-toolbar {
         overflow: visible;
         contain: none;
     }
+    
 
     &[FooterTab-Default]{
         ion-row{
             ion-col{
-                color:#333;                
+                color:#333;
+                background-color:rgba(0,96,151,.05);
                 &.state{
-                    background-color:rgba(255,255,255,.5);                   
+                    background-color:color($DominantColor,D-Default,base);                 
                     button{
                         background-color:#23609d;
                         color:color($colors,light,base);
