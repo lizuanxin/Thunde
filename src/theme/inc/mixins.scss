@@ -1,7 +1,17 @@
 @mixin DominantColor() {
 
+    ion-header{
+        &.skin-default{
+            ion-toolbar.toolbar{
+                .toolbar-background{
+                    background:color($DominantColor,D-header,base);
+                }
+            }
+        }
+    }
+
     .skin-default{
-        background-color: color($DominantColor,D-Default,base); 
+        background-color: color($DominantColor,D-Default,base);         
     }
 
     .skin-home{
