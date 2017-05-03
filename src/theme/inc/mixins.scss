@@ -1,10 +1,22 @@
 @mixin DominantColor() {
-    .D-blue {
-        background: color($DominantColor,D-Default,base) url(../assets/img/bg_home.png) no-repeat left top;
-        background-size:contain;
-        filelist-body{
-            color:color($colors,light,base);
+
+    .skin-default{
+        background-color: color($DominantColor,D-Default,base); 
+    }
+
+    .skin-home{
+        background-image:url(../assets/img/bg_home.png);
+        background-repeat:no-repeat;
+        background-position: left top;
+        background-size:contain;  
+        section{
+            &[Flip-x]{
+                color:color($colors,light,base);
+            }
         }
+        [RSideTop]{
+            color:color($colors,light,base);
+        }    
     }
 }
 

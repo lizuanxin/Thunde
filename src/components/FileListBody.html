@@ -1,6 +1,6 @@
 <ion-row [ngStyle]="VslideH" margin-top>
     <ion-col col-12 no-padding>
-        <section Flip-x [class.Filped]="ISFlip">
+        <section Flip-x>
             <swiper [config]="{pagination: '.swiper-pagination', paginationClickable: true,
                 nextButton: '.swiper-button-next', prevButton: '.swiper-button-prev', effect: 'cube'}">
                 <div class="swiper-wrapper" [ngStyle]="SetStyle(0)">
@@ -16,7 +16,7 @@
                 </ion-slide>
             </ion-slides>-->
         </section>
-        <ion-row RSideTop justify-content-end [class.slideIn]="ISFlip">
+        <ion-row RSideTop justify-content-end>
             <ion-col *ngFor="let i of SelectedBody.UsageIcons" col-2 text-center>
                 <div><ion-icon app-icon>{{app.IconFont(i)}}</ion-icon></div>
             </ion-col>

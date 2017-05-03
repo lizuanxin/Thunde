@@ -116,7 +116,10 @@ export class TApplication extends TAppController
 
     Skin(Page: string): string
     {
-        return (this.constructor as typeof TApplication).SkinName + '-' + Page;
+        if (Page)
+            return (this.constructor as typeof TApplication).SkinName + '-' + Page;
+        else
+            return (this.constructor as typeof TApplication).SkinName + '-default';
     }
 
     get SkinName(): string
@@ -168,6 +171,6 @@ export class TApplication extends TAppController
     private HardwareBackButtonDisabled = false;
 
     private static AcceptedTerms: boolean = false;
-    private static SkinName: string = 'strengths';
+    private static SkinName: string = 'skin';
     private static Storage: TSqliteStorage;
 }
