@@ -1,11 +1,20 @@
 <ion-row [ngStyle]="VslideH" margin-top>
     <ion-col col-12 no-padding>
         <section Flip-x [class.Filped]="ISFlip">
-            <ion-slides [ngStyle]="SetStyle(0)" (ionSlideDidChange)="UsageSlideChanged()">
+            <swiper [config]="config">
+                <div class="swiper-wrapper" [ngStyle]="SetStyle(0)">
+                    <div class="swiper-slide" *ngFor="let i of SelectedBody.UsageIcons"><ion-icon app-icon [ngStyle]="SetStyle(1)">{{app.IconFont(i)}}</ion-icon></div>
+                </div>
+
+                <div class="swiper-pagination"></div>          
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </swiper>
+            <!--<ion-slides [ngStyle]="SetStyle(0)" (ionSlideDidChange)="UsageSlideChanged()">
                 <ion-slide *ngFor="let i of SelectedBody.UsageIcons">
                     <ion-icon app-icon [ngStyle]="SetStyle(1)">{{app.IconFont(i)}}</ion-icon>
                 </ion-slide>
-            </ion-slides>
+            </ion-slides>-->
         </section>
         <ion-row RSideTop justify-content-end [class.slideIn]="ISFlip">
             <ion-col *ngFor="let i of SelectedBody.UsageIcons" col-2 text-center>
@@ -22,14 +31,20 @@
         </ion-row>
     </ion-col>
 
-    <ion-col col-12 no-padding text-center margin-top>
-        <!--
-        <ion-slides (ionSlideDidChange)="FileSlideChanged()">
+    <!--<ion-card (rotate)="swipeEvent($event)">
+        <ion-item>
+        Swiped: {{swipe}} times
+        </ion-item>
+    </ion-card>-->
+
+    <ion-col col-12 no-padding text-center margin-top style="height:90px">
+        
+        <ion-slides direction="vertical"  (ionSlideDidChange)="FileSlideChanged()">
             <ion-slide *ngFor="let f of FilterFiles" (click)="OnSelection.next(f)" tappable>
                 {{f.Name_LangId|translate}}
             </ion-slide>
         </ion-slides>
-        -->
-        <li *ngFor="let f of FilterFiles" (click)="OnSelection.next(f)" tappable>{{f.Name_LangId|translate}}</li>
+        
+        <!--<li *ngFor="let f of FilterFiles" (click)="OnSelection.next(f)" tappable>{{f.Name_LangId|translate}}</li>-->
     </ion-col>
 </ion-row>

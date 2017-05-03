@@ -1,6 +1,7 @@
 import {NgModule, ErrorHandler} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular';
+import {SwiperModule} from 'angular2-useful-swiper';
 import {TranslateModule} from "../UltraCreation/ng-ion/translate";
 
 import {MyApp} from './app.component';
@@ -27,6 +28,7 @@ let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
 @NgModule({
     imports: [
         BrowserModule,
+        SwiperModule,
         IonicModule.forRoot(MyApp, config),
         TranslateModule.forRoot()
     ],

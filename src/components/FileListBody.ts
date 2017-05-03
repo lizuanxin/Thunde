@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild, Input, Output, EventEmitter, ElementRef} f
 import {Slides} from 'ionic-angular'
 import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
 
+
 import * as Svc from '../providers'
 
 @Component({selector: 'filelist-body', templateUrl: `FileListBody.html`})
@@ -12,6 +13,16 @@ export class FileListBody implements OnInit
 
     }
 
+    config: Object = {
+            pagination: '.swiper-pagination',
+            paginationClickable: true,
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            loop: true,
+            effect: 'flip',
+            spaceBetween: 30
+    };
+
     ngOnInit()
     {
         this.BodyCategories.push(
@@ -19,11 +30,11 @@ export class FileListBody implements OnInit
         this.BodyCategories.push(
             new TBodyCategory(0xE941, Svc.const_data.BodyCategory.forelimb));
         this.BodyCategories.push(
-            new TBodyCategory(0xE900, Svc.const_data.Body.waist, /*Svc.const_data.Body.abdomen, */Svc.const_data.Body.buttock));
+            new TBodyCategory(0xE945, Svc.const_data.Body.waist, /*Svc.const_data.Body.abdomen, */Svc.const_data.Body.buttock));
         this.BodyCategories.push(
             new TBodyCategory(0xE942, Svc.const_data.BodyCategory.lowerlimb, Svc.const_data.Body.foot));
         this.BodyCategories.push(
-            new TBodyCategory(0xE900, Svc.const_data.BodyCategory.joint));
+            new TBodyCategory(0xE944, Svc.const_data.BodyCategory.joint));
 
         this.SelectBody(this.BodyCategories[0]);
     }
