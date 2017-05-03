@@ -1,6 +1,6 @@
-import {Component, ViewChild, OnInit, OnDestroy} from '@angular/core';
-import {NavController, NavParams, Content} from 'ionic-angular';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 
+import {NavController, NavParams} from 'ionic-angular';
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo'
 import * as View from '..'
 import * as Svc from '../../providers';
@@ -49,6 +49,12 @@ export class HomePage implements OnInit, OnDestroy
         }
         else
             this.SelectTab(this.Tabs[0]);
+
+        document.addEventListener("touchstart", () =>
+        {
+            if (TypeInfo.Assigned(this.DeviceScanning))
+                this.DeviceScanning = false;
+        });
     }
 
     ngOnDestroy(): void
@@ -118,7 +124,6 @@ export class HomePage implements OnInit, OnDestroy
         return this.nav.push(View.TouPage);
     }
 
-    @ViewChild(Content) Content: Content;
     private Tabs: Array<TTabItem> = [];
     private ActiveTab: TTabItem;
 

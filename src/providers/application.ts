@@ -1,5 +1,5 @@
 import {Injectable, Injector} from '@angular/core';
-import {Toast} from 'ionic-angular';
+import {Toast} from 'ionic-angular/components/toast/toast';
 
 import {TSqliteStorage} from '../UltraCreation/Storage';
 import {TAppController} from '../UltraCreation/ng-ion/appcontroller'

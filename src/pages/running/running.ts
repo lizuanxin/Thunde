@@ -1,8 +1,8 @@
 import {Component, OnInit, OnDestroy, ViewChild, AfterViewInit} from '@angular/core';
-import {NavController, NavParams, ViewController, Content} from 'ionic-angular';
 import {Subscription} from 'rxjs/Subscription'
 import 'rxjs/add/operator/toPromise';
 
+import {NavController, NavParams, ViewController, Content} from 'ionic-angular';
 import {PowerManagement} from '../../UltraCreation/Native/PowerManagement'
 import * as Svc from '../../providers';
 

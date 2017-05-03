@@ -1,7 +1,7 @@
 import {Component, OnInit, AfterViewInit, OnDestroy} from '@angular/core';
-import {NavController, NavParams, ViewController} from 'ionic-angular';
-
 import {Subscription} from 'rxjs/rx'
+
+import {NavController, NavParams, ViewController} from 'ionic-angular';
 
 import {TUtf8Encoding} from '../../UltraCreation/Encoding';
 import {TypeInfo} from '../../UltraCreation/Core';

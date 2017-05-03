@@ -1,7 +1,7 @@
 import {Component, OnInit, OnDestroy, ElementRef, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription'
-import {Platform, NavController, ViewController, NavParams, ModalController, Content} from 'ionic-angular';
 
+import {NavController, ViewController, NavParams, ModalController, Content} from 'ionic-angular';
 import {TypeInfo, EAbort} from '../../UltraCreation/Core';
 
 import {IScanDiscovery, Loki, TApplication, TDistributeService, TCategory, TScriptFile} from '../../providers';
@@ -13,15 +13,15 @@ import {OtaUpdatePage} from '../ota_update/ota_update';
 @Component({selector: 'page-go', templateUrl: 'go.html'})
 export class GoPage implements OnInit, OnDestroy
 {
-    constructor(public nav: NavController, public modalCtrl: ModalController, private view: ViewController, private navParams: NavParams, private platform: Platform,
+    constructor(public nav: NavController, public modalCtrl: ModalController, private view: ViewController, private navParams: NavParams,
         private app: TApplication, private Distribute: TDistributeService)
     {
         this.Category = navParams.get('Category');
         this.ScriptFile = navParams.get('ScriptFile');
 
-        if (platform.is('ios'))
+        if (app.IsIos)
             Loki.TShell.LinearTable = '3.3v';
-        else if (platform.is('android'))
+        else if (app.IsAndroid)
             Loki.TShell.LinearTable = '5v';
     }
 
@@ -29,7 +29,7 @@ export class GoPage implements OnInit, OnDestroy
     {
         if (! Loki.TShell.IsUsbPlugin)
         {
-            if (this.platform.is('android'))
+            if (this.app.IsAndroid)
                 Loki.TShell.EnableBLE().then(() => this.StartScan())
             else
                 this.StartScan();

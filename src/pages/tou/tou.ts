@@ -1,6 +1,6 @@
 import {Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
-import {NavController} from 'ionic-angular';
 
+import {NavController} from 'ionic-angular';
 import * as Svc from '../../providers';
 import * as View from '../demo/demo';
 

@@ -1,6 +1,6 @@
 import {Component, AfterViewInit, OnDestroy} from '@angular/core';
-import {NavController, NavParams, ViewController} from 'ionic-angular';
 
+import {NavController, NavParams, ViewController} from 'ionic-angular';
 import {PowerManagement} from '../../UltraCreation/Native/PowerManagement'
 import * as Svc from '../../providers';
 

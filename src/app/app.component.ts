@@ -1,29 +1,29 @@
 import {Component} from '@angular/core';
-import {Platform} from 'ionic-angular';
 
 import {SplashScreen} from '../UltraCreation/Native/SplashScreen';
 import {StatusBar} from '../UltraCreation/Native/StatusBar';
-import {HomePage} from '../pages/home/home';
-import {Initialization} from '../providers'
+
+import * as View from '../pages';
+import * as Svc from '../providers'
 
 @Component({template: `<ion-nav [root]="rootPage"></ion-nav>`})
 export class MyApp
 {
-    constructor(platform: Platform)
+    constructor(app: Svc.TApplication)
     {
-        platform.ready().then(() =>
+        app.Platform.ready().then(() =>
         {
             StatusBar.hide();
             SplashScreen.show();
 
-            if (platform.is('ios'))
-            {
+            if (app.IsIos)
                 StatusBar.styleBlackTranslucent();
-            }
-            Initialization.Execute()
+
+            Svc.Initialization.Execute()
                 .then(() =>
                 {
-                    this.rootPage = HomePage;
+                    this.rootPage = View.HomePage;
+
                     setTimeout(() =>
                     {
                         SplashScreen.hide();
