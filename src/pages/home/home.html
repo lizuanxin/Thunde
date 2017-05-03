@@ -1,5 +1,5 @@
 <ion-header no-shadow no-border>
-  <ion-toolbar transparent  [ngClass]="PlatformShowWhen">
+  <ion-toolbar transparent Header-Default [ngClass]="PlatformShowWhen">
     <ion-buttons left>
       <button ion-button icon-only color="light" [ngStyle]="{'margin':'0 6px','padding':'0 2px','min-width':'44px'}" tappable>
           <ion-icon [ngClass]="app.SkinColor" app-icon>&#xe908;</ion-icon>
@@ -11,7 +11,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content no-scroll class="D-blue" color="light" [ngSwitch]="ActiveTab.Index">
+<ion-content no-scroll [class.D-blue]="'ActiveTab.Index === 0'" color="light" [ngSwitch]="ActiveTab.Index">
     <filelist-body *ngSwitchCase="0" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-body>
     <filelist-card *ngSwitchCase="1" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-card>
     <filelist-dial *ngSwitchCase="2" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-dial>
