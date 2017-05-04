@@ -1,12 +1,17 @@
-<ion-header no-shadow no-border>
+<ion-header no-shadow no-border [ngClass]="app.Skin()">
   <ion-toolbar>
-    <ion-title text-center>FAQ</ion-title>
+      <ion-title text-center><span ion-text color="light">FAQ</span></ion-title>
+      <ion-buttons left>
+        <button ion-button clear (click)="Back()" tappable>
+          <ion-icon app-icon color="light">&#xe92b;</ion-icon>
+        </button>
+      </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-    <ion-list *ngIf="Selected === null" no-lines split-thin>
+    <ion-list *ngIf="Selected === null"  split-thin>
         <ion-item color="lightBlue" *ngFor="let iter of Items" (click)="Select(iter)" tappable>
-          <ion-icon color="ligray" class="blue-icon" item-left>&#xe92a;</ion-icon>
+          <ion-icon color="ligray" item-left style="opacity:.1">&#xf3d1;</ion-icon>
           {{iter.title}}
         </ion-item>
     </ion-list>
@@ -17,13 +22,3 @@
       </ion-col>
     </ion-row>
 </ion-content>
-
-<ion-footer no-shadow>
-  <div content-footer [ngClass]="app.SkinConFooter">
-    <ion-buttons left>
-      <button ion-button icon-only (click)="Back()" tappable>
-        <ion-icon app-icon [ngClass] = "app.SkinColor">&#xe92b;</ion-icon>
-      </button>
-    </ion-buttons>
-  </div>
-</ion-footer>

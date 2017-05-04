@@ -17,6 +17,7 @@ let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
     //iconMode: 'ios',
     activator: 'none',     // "ripple", "highlight"
     // pageTransition: 'ios-transition',
+    backButtonText: '',
     pageTransitionDelay: 0,
     swipeBackEnabled: false,
     // statusbarPadding: true,
