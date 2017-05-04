@@ -7,8 +7,8 @@
                     <div class="swiper-slide" *ngFor="let i of SelectedBody.UsageIcons"><ion-icon app-icon [ngStyle]="SetStyle(1)">{{app.IconFont(i)}}</ion-icon></div>
                 </div>
                 <div class="swiper-pagination"></div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"><ion-icon app-icon>&#xe918;</ion-icon></div>
+                <div class="swiper-button-prev"><ion-icon app-icon>&#xe918;</ion-icon></div>
             </swiper>
             <!--<ion-slides [ngStyle]="SetStyle(0)" (ionSlideDidChange)="UsageSlideChanged()">
                 <ion-slide *ngFor="let i of SelectedBody.UsageIcons">
@@ -16,11 +16,11 @@
                 </ion-slide>
             </ion-slides>-->
         </section>
-        <ion-row RSideTop justify-content-end>
+        <!--<ion-row RSideTop justify-content-end>
             <ion-col *ngFor="let i of SelectedBody.UsageIcons" col-2 text-center>
                 <div><ion-icon app-icon>{{app.IconFont(i)}}</ion-icon></div>
             </ion-col>
-        </ion-row>
+        </ion-row>-->
     </ion-col>
 
     <ion-col col-10 offset-1 no-padding>

@@ -1,9 +1,9 @@
-<ion-header no-shadow no-border>
+<ion-header no-shadow no-border [ngClass]="app.Skin()">
     <ion-toolbar transparent>
         <ion-title text-center><span [ngClass]="app.SkinColor">{{ScriptFile.Name_LangId|translate}}</span></ion-title>
     </ion-toolbar>
 </ion-header>
-<ion-content [ngClass]="app.Skin('go')" [class.no-scroll]="IsShowDescIcon">
+<ion-content [ngClass]="app.Skin()" [class.no-scroll]="IsShowDescIcon">
     <ng-template [ngIf]="!IsShowingDeviceList">
         <div [ngClass]="{true:'fadeout',false:'fadein'}[IsShowDescIcon]" id="gridBody">
             <div *ngFor="let body of ScriptFile.BodyParts;let i = index">

@@ -20,7 +20,7 @@ export class DemoPage implements OnDestroy, AfterViewInit
 
     ngOnInit()
     {
-        this.app.SetSkin(this.app.Skins[1]);
+        this.app.SetSkin('skin');
     }
 
     ngAfterViewInit()
