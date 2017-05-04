@@ -12,10 +12,16 @@ export class Profile implements OnInit
 
     ngOnInit()
     {
-        this.app.IsSupportedOTG().then(value => this.IsSupportedOTG = value);
+        this.app.IsSupportedOTG().then(value => 
+        {
+            if (value)
+                this.OTG_Value = 'yes'
+            else
+                this.OTG_Value = 'no'
+        });
     }
 
     @Output() OnSelection = new EventEmitter<string>();
 
-    IsSupportedOTG: boolean;
+    OTG_Value: string;
 }

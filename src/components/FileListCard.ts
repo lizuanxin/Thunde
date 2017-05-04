@@ -4,10 +4,10 @@ import * as Svc from '../providers';
 @Component({selector: 'filelist-card', template: `
     <ion-card card-list-default *ngFor="let f of FileList">
         <ion-card-content (click)="OnSelection.emit(f)" tappable>
-            <h2><ion-icon app-icon>&#xe93e;</ion-icon></h2>
-            <ion-card-title>
-                {{f.Name_LangId|translate}}
-            </ion-card-title>
+            <ion-item>
+                <ion-icon app-icon item-left>&#xe93e;</ion-icon>
+                <h2>{{f.Name_LangId|translate}}</h2>
+            </ion-item>
         </ion-card-content>
     </ion-card>
 `})

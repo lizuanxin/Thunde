@@ -140,6 +140,11 @@ $darkColor) {
     background-repeat: no-repeat;
 }
 
+@mixin gradient-liner($direction,$startColor,$endColor) {
+    background: linear-gradient($direction,$startColor,$endColor);
+    background: -webkit-linear-gradient($direction,$startColor,$endColor);
+}
+
 @mixin square($outlineStyle,
 $outlinewidth) {
     position: relative;
