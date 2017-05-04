@@ -26,8 +26,8 @@
     .skin-home{
         background-color: color($DominantColor,D-Default,base);
         background-image:url(../assets/img/bg_home.png);
-        background-repeat:no-repeat;
-        background-position: left top;
+        background-repeat:repeat-x; 
+        background-position: center top;
         background-size:contain;  
         section{
             &[Flip-x]{

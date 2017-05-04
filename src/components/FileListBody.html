@@ -1,5 +1,5 @@
-<ion-row [ngStyle]="VslideH">
-    <ion-col col-12 no-padding>
+<ion-row [ngStyle]="VslideH" [ngClass]="app.Skin('home')">
+    <ion-col col-12 no-padding margin-top>
         <section Flip-x>
             <swiper [config]="{pagination: '.swiper-pagination', paginationClickable: true,
                 nextButton: '.swiper-button-next', prevButton: '.swiper-button-prev', effect: 'cube'}">
