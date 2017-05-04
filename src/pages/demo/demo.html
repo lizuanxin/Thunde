@@ -1,4 +1,4 @@
-<ion-content no-scroll padding [ngClass]="app.Skin()" color="light">
+<ion-content no-scroll padding [ngClass]="app.Skin('demo')" color="light">
     <ion-row *ngIf="IsShowingDeviceList">
         <ion-col text-center text-light>
             <ion-list absolute [ngStyle]="{zIndex:1,top:0,left:0,right:0}" [class.fadein]="DeviceList.length>0">

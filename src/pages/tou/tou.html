@@ -9,7 +9,7 @@
         </ion-grid>
     </ion-toolbar>
 </ion-header>
-<ion-content padding-left padding-right default id="OuterHtml" [ngStyle]="{'position':'relative'}">
+<ion-content padding-left padding-right [ngClass]="app.Skin('tou')" id="OuterHtml" [ngStyle]="{'position':'relative'}">
     <div showWhen="android" [ngClass]="'radian'" [class.fadeOut]="FadeOut" [ngStyle]="{'margin-top':'-16px','min-height':OffsetY}"></div>
     <div list-warning [innerHTML]="'tou_page.terms_conditions'|translate"></div>
     <ion-list no-margin no-lines transparent *ngIf="IsFirstTime">

@@ -14,6 +14,14 @@
         background-color: color($DominantColor,D-Default,base);         
     }
 
+    .skin-demo{
+        background-color: color($DominantColor,D-demo,base);         
+    }
+
+    .skin-tou{
+        background-color: color($DominantColor,D-tou,base);         
+    }
+
     .skin-home{
         background-color: color($DominantColor,D-Default,base);
         background-image:url(../assets/img/bg_home.png);
