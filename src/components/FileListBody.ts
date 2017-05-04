@@ -43,6 +43,7 @@ export class FileListBodyComp implements OnInit
     {
         this.SelectedBody = b;
         this.SelectedFileList = [];
+console.log(b);
 
         //this.Slides.slideTo(0, 0);
     }

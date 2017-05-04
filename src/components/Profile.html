@@ -11,9 +11,9 @@
         {{'profile_page.tou'|translate}}
         <ion-note item-right><ion-icon>&#xf3d1;</ion-icon></ion-note>
     </button>
-    <button ion-item detail-none>
+    <button ion-item detail-none style="background-color:lightyellow">
         {{'profile_page.check_otg'|translate}}
-        <p item-right text-uppercase>{{OTG_Value}}</p>        
+        <p item-right text-uppercase>{{OTG_Value}}<ion-icon [ngStyle]="{fontSize:'1.4em', color: IsSupportedOTG === true ? 'yellowgreen' : '#CCC'}">&#xf1f7;</ion-icon></p>        
     </button>
     <button ion-item detail-none>
         当前版本：

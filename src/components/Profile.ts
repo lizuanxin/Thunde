@@ -12,16 +12,10 @@ export class ProfileComp implements OnInit
 
     ngOnInit()
     {
-        this.app.IsSupportedOTG().then(value => 
-        {
-            if (value)
-                this.OTG_Value = 'yes'
-            else
-                this.OTG_Value = 'no'
-        });
+        this.app.IsSupportedOTG().then(value => this.IsSupportedOTG = value);
     }
 
     @Output() OnSelection = new EventEmitter<string>();
 
-    OTG_Value: string;
+    IsSupportedOTG: boolean;
 }

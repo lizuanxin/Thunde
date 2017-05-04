@@ -35,12 +35,13 @@ ion-toolbar {
     &[FooterTab-Default]{
         ion-row{
             ion-col{
-                color:#333;
-                background-color:rgba(0,96,151,.05);
+                color:#a1a1a1;
+                background-color:#edf6ff;
                 &.state{
                     background-color:color($DominantColor,D-Default,base);                 
                     button{
-                        background-color:#23609d;
+                        @include gradient-liner(top,#8adaff,#7f9dff);
+                        // background-color:#23609d;
                         color:color($colors,light,base);
                     }
                 }
@@ -55,7 +56,7 @@ ion-toolbar {
                     background:transparent;
                     display: inherit;
                     margin: auto;
-                    color:#333;
+                    color:#a1a1a1;
                     ion-icon{
                         margin-top:-5px;
                     }
