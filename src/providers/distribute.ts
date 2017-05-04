@@ -8,6 +8,8 @@ import {TypeInfo, Exception, EAbort} from '../UltraCreation/Core'
 import {TUtf8Encoding} from '../UltraCreation/Encoding'
 import {THashMd5} from '../UltraCreation/Hash'
 import {TAssetService, TScriptFile} from './asset'
+import {TApplication} from './application'
+
 import * as Loki from './loki/file';
 
 export const WebRoot = GetWebRoot();
@@ -93,7 +95,7 @@ export function HttpRequest(Url: string,
 @Injectable()
 export class TDistributeService
 {
-    constructor (private Asset: TAssetService)
+    constructor (private Asset: TAssetService, private app: TApplication)
     {
         console.log('TDistributeService construct');
     }
@@ -172,4 +174,26 @@ export class TDistributeService
                 return HttpRequest(WebRoot + '/assets/' + FileName + '.bin', 'GET', 'arraybuffer') as Promise<ArrayBuffer>;
             })
     }
+
+    ReadFaq(): Promise<Array<{title: string, content: string}>>
+    {
+        if (! TypeInfo.Assigned(this._FaqTranslate))
+        {
+            // try using localize language faq
+            return HttpRequest(WebRoot + '/assets/trans_faq_' + this.app.Language + '.json', 'GET', 'json')
+                .catch(err =>
+                {
+                    // fallback to english
+                    if (err instanceof EHttp)
+                        return HttpRequest(WebRoot + '/assets/trans_faq_en.json', 'GET', 'json')
+                    else
+                        return Promise.reject(err);
+                })
+                .then((obj) => this._FaqTranslate = obj);
+        }
+        else
+            return Promise.resolve(this._FaqTranslate);
+    }
+
+    private _FaqTranslate: Object;
 }
