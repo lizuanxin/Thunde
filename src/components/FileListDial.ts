@@ -8,7 +8,7 @@ import * as Svc from '../providers';
 const SHOWING_ITEM_COUNT = 6;
 
 @Component({selector: 'filelist-dial', template: '<canvas style="width:100%" tappable></canvas>'})
-export class FileListDial implements OnInit, OnDestroy, DoCheck
+export class FileListDialComp implements OnInit, OnDestroy, DoCheck
 {
     constructor(private Elements: ElementRef, private app: Svc.TApplication)
     {

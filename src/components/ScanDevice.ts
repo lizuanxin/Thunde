@@ -23,7 +23,7 @@ import * as Svc from '../providers'
         </ion-item>
     </ion-list>`
 })
-export class ScanDevice implements OnInit, OnDestroy
+export class ScanDeviceComp implements OnInit, OnDestroy
 {
     constructor(private app: Svc.TApplication)
     {

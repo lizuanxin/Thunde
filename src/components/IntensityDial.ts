@@ -2,7 +2,7 @@ import {Component, OnInit, Input, Output, EventEmitter, ElementRef} from '@angul
 import {TypeInfo} from "../UltraCreation/Core/TypeInfo";
 
 @Component({selector: 'intensity-dial', template: '<canvas style="width:100%" tappable></canvas>'})
-export class IntensityDial implements OnInit
+export class IntensityDialComp implements OnInit
 {
     constructor(private Elements: ElementRef)
     {

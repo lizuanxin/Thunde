@@ -5,7 +5,7 @@ import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
 import * as Svc from '../providers'
 
 @Component({selector: 'filelist-body', templateUrl: `FileListBody.html`})
-export class FileListBody implements OnInit
+export class FileListBodyComp implements OnInit
 {
     constructor(private Elements: ElementRef, private app: Svc.TApplication)
     {

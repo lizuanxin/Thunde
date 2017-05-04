@@ -1,7 +1,7 @@
 import {Component, OnInit, Input, Output, EventEmitter, ElementRef} from '@angular/core';
 
 @Component({selector: 'scrollvalue', template: '<canvas style="width:100%" tappable></canvas>'})
-export class ScrollValue implements OnInit
+export class FileListSlideComp implements OnInit
 {
     constructor(private Elements: ElementRef)
     {

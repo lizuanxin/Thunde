@@ -11,7 +11,7 @@ import * as Svc from '../providers';
         </ion-card-content>
     </ion-card>
 `})
-export class FileListCard
+export class FileListCardComp
 {
     constructor(private Elements: ElementRef, private app: Svc.TApplication)
     {

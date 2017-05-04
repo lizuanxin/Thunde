@@ -3,7 +3,7 @@ import * as Svc from '../providers'
 
 @Component({selector: 'profile', templateUrl: 'Profile.html',
 })
-export class Profile implements OnInit
+export class ProfileComp implements OnInit
 {
     constructor(private app: Svc.TApplication)
     {

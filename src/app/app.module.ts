@@ -4,9 +4,6 @@ import {BrowserModule} from '@angular/platform-browser';
 import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular'
 import {TranslateModule} from "../UltraCreation/ng-ion/translate";
 
-import 'swiper';
-import {SwiperModule} from 'angular2-useful-swiper';
-
 import {MyApp} from './app.component';
 
 import * as View from '../pages'
@@ -32,15 +29,14 @@ let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
 @NgModule({
     imports: [
         BrowserModule,
-        SwiperModule,
         IonicModule.forRoot(MyApp, config),
-        TranslateModule.forRoot()
+        TranslateModule.forRoot(),
+        Cmp.ComponentsModule
     ],
     bootstrap: [IonicApp],
 
     declarations: [
         MyApp,
-        Cmp.Profile, Cmp.IntensityDial, Cmp.ScanDevice, Cmp.FileListDial, Cmp.FileListBody, Cmp.FileListCard,
         View.HomePage, View.TouPage, View.FaqPage, View.GoPage, View.RunningPage, View.OtaUpdatePage,
         View.DemoPage, View.DemoModeRunningPage,
     ],
