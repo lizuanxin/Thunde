@@ -2,7 +2,8 @@
     <ion-col col-12 no-padding margin-top>
         <section Flip-x>
             <swiper [Config]="{pagination:'.swiper-pagination', paginationClickable: true,
-                nextButton:'.swiper-button-next', prevButton:'.swiper-button-prev', effect:'cube'}">
+                nextButton:'.swiper-button-next', prevButton:'.swiper-button-prev', effect:'cube'}"
+            (OnChangeEnd)="UsageSwiperChanged($event.activeIndex)">
                 <div class="swiper-wrapper" [ngStyle]="SetStyle(0)">
                     <div class="swiper-slide" *ngFor="let i of SelectedBody.UsageIcons"><ion-icon app-icon [ngStyle]="SetStyle(1)">{{app.IconFont(i)}}</ion-icon></div>
                 </div>

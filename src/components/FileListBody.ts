@@ -31,8 +31,7 @@ export class FileListBodyComp implements OnInit
     {
     }
 
-    @Input()
-    set FileList(Value: Svc.TScriptFileList)
+    @Input() set FileList(Value: Svc.TScriptFileList)
     {
         if (! TypeInfo.Assigned(Value))
             return;
@@ -52,7 +51,7 @@ export class FileListBodyComp implements OnInit
         this.Swiper.Update();
     }
 
-    UsageSlideChanged()
+    UsageSwiperChanged(ev: Swiper)
     {
         this.SelectedFileList = [];
     }
@@ -105,7 +104,7 @@ export class FileListBodyComp implements OnInit
 
     @ViewChild(SwiperComp) private Swiper: SwiperComp;
     private _FileList?: Svc.TScriptFileList;
-    private SelectedFileList: Svc.TScriptFileList = [];
+    SelectedFileList: Svc.TScriptFileList = [];
 }
 
 class TBodyCategory
