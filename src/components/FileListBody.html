@@ -24,6 +24,6 @@
 
     <ion-col col-12 no-padding text-center margin-top style="height:90px">
         <!--<filelist-slide [Datas]="FileNames" (OnDataSelelcted)="FileNameSelected($event)"></filelist-slide>-->
-        <li *ngFor="let f of FilterFiles" (click)="OnSelection.next(f)" tappable>{{f.Name_LangId|translate}}</li>
+        <li *ngFor="let f of FilteredFiles" (click)="OnSelection.next(f)" tappable>{{f.Name_LangId|translate}}</li>
     </ion-col>
 </ion-row>

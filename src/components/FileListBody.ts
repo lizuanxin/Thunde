@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, Input, Output, EventEmitter, ElementRef} from '@angular/core';
+import {Component, OnInit, ViewChild, Input, Output, EventEmitter} from '@angular/core';
 import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
 
 import * as Svc from '../providers'
@@ -7,7 +7,7 @@ import {SwiperComp} from './Swiper'
 @Component({selector: 'filelist-body', templateUrl: `FileListBody.html`})
 export class FileListBodyComp implements OnInit
 {
-    constructor(private Elements: ElementRef, private app: Svc.TApplication)
+    constructor()
     {
     }
 
@@ -27,10 +27,6 @@ export class FileListBodyComp implements OnInit
         this.SelectBody(this.BodyCategories[0]);
     }
 
-    ngAfterViewInit()
-    {
-    }
-
     @Input() set FileList(Value: Svc.TScriptFileList)
     {
         if (! TypeInfo.Assigned(Value))
@@ -45,25 +41,23 @@ export class FileListBodyComp implements OnInit
 
     SelectBody(b: TBodyCategory)
     {
-        this.SelectedBody = b;
-        this.SelectedFileList = [];
-
         this.Swiper.Update();
+
+        this.SelectedBody = b;
+        this._FilteredFiles = [];
     }
 
     UsageSwiperChanged(ev: Swiper)
     {
-        console.log(ev);
-
-        this.SelectedFileList = [];
+        this._FilteredFiles = [];
     }
 
-    get FilterFiles(): Svc.TScriptFileList
+    get FilteredFiles(): Svc.TScriptFileList
     {
         if (! TypeInfo.Assigned(this._FileList))
             return [];
 
-        if (this.SelectedFileList.length === 0)
+        if (this._FilteredFiles.length === 0)
         {
             let Idx = this.Swiper.Instance.activeIndex;
             let BodyPart = this.SelectedBody.SwiperBodyPart(Idx);
@@ -76,18 +70,14 @@ export class FileListBodyComp implements OnInit
                 {
                     if (b.Id === BodyPart.Id)
                     {
-                        this.SelectedFileList.push(f);
+                        this._FilteredFiles.push(f);
                         break;
                     }
                 }
             }
         }
 
-        return this.SelectedFileList;
-    }
-
-    FileSlideChanged()
-    {
+        return this._FilteredFiles;
     }
 
     SetStyle(n: number): Object
@@ -106,7 +96,7 @@ export class FileListBodyComp implements OnInit
 
     @ViewChild(SwiperComp) private Swiper: SwiperComp;
     private _FileList?: Svc.TScriptFileList;
-    SelectedFileList: Svc.TScriptFileList = [];
+    private _FilteredFiles: Svc.TScriptFileList = [];
 }
 
 class TBodyCategory
