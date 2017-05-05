@@ -13,10 +13,10 @@
     </ion-item>
 </ion-list>
 <ion-list inset list-init list-gray>
-    <ion-item detail-none style="background-color:lightyellow">
-        {{'profile_page.check_otg'|translate}}
-        <p item-right text-uppercase><ion-icon [ngStyle]="{fontSize:'1.4em', color: IsSupportedOTG === true ? 'yellowgreen' : '#CCC'}">&#xf1f7;</ion-icon></p>        
-    </ion-item>
+    <ion-item-divider text-uppercase>
+        {{'profile_page.check_otg'|translate}}（{{IsSupportedOTG === true ? '允许' : '禁止'}}）
+        <p item-right><ion-icon [ngStyle]="{fontSize:'1.4em', color: IsSupportedOTG === true ? 'white' : 'rgba(255,255,255,0.5)'}">&#xf1f7;</ion-icon></p>
+    </ion-item-divider>
     <ion-item detail-none>
         当前版本：
         <ion-note item-right>V2.1</ion-note>        
