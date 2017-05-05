@@ -1,3 +1,19 @@
+@mixin IonList($color,$value){
+    &[list-#{$color}]{
+        background-color:lighten($value,35%);
+        border:solid 1px lighten($value,20%);
+        ion-item.item{
+            border-bottom:solid 1px lighten($value,20%);
+            ion-label{
+                color:darken($value,5%)
+            }
+            ion-note{
+                color:lighten($value,20%)
+            }
+        }
+    }
+}
+
 @mixin DominantColor() {
 
     ion-header{

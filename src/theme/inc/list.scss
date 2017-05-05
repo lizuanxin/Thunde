@@ -1,10 +1,22 @@
-ion-list {
+ion-list.list {
+    @include IonList(gray,#6490fb);
+    &[list-init]{
+        border-radius: 5px;
+        ion-item.item{
+            padding:0;
+            background-color:transparent;
+            .item-inner{
+                padding-left:16px;
+            }
+            ion-label{
+                font-size:1.5rem;
+            }
+        }
+    }
     &[list-side] {
         .item {
             font-size: 1.5rem;
             ion-icon {
-                // font-size: 2rem;
-                // margin-top: -.5rem;
                 &[inline-left] {
                     margin-left:  .5rem;
                     margin-right: .8rem;

@@ -1,26 +1,28 @@
-<ion-list inset list-side style="margin:0">
-    <button ion-item detail-none (click)="OnSelection.next('demo')" tappable>
+<ion-list inset list-init list-gray>
+    <ion-item detail-none (click)="OnSelection.next('demo')" tappable>
         {{'profile_page.demo'|translate}}
         <ion-note item-right><ion-icon>&#xf3d1;</ion-icon></ion-note>
-    </button>
-    <button ion-item detail-none (click)="OnSelection.next('faq')" tappable>
+    </ion-item>
+    <ion-item detail-none (click)="OnSelection.next('faq')" tappable>
         {{'profile_page.faq'|translate}}
         <ion-note item-right><ion-icon>&#xf3d1;</ion-icon></ion-note>
-    </button>
-    <button ion-item detail-none (click)="OnSelection.next('tou')" tappable>
+    </ion-item>
+    <ion-item detail-none (click)="OnSelection.next('tou')" tappable>
         {{'profile_page.tou'|translate}}
         <ion-note item-right><ion-icon>&#xf3d1;</ion-icon></ion-note>
-    </button>
-    <button ion-item detail-none style="background-color:lightyellow">
+    </ion-item>
+</ion-list>
+<ion-list inset list-init list-gray>
+    <ion-item detail-none style="background-color:lightyellow">
         {{'profile_page.check_otg'|translate}}
-        <p item-right text-uppercase>{{OTG_Value}}<ion-icon [ngStyle]="{fontSize:'1.4em', color: IsSupportedOTG === true ? 'yellowgreen' : '#CCC'}">&#xf1f7;</ion-icon></p>        
-    </button>
-    <button ion-item detail-none>
+        <p item-right text-uppercase><ion-icon [ngStyle]="{fontSize:'1.4em', color: IsSupportedOTG === true ? 'yellowgreen' : '#CCC'}">&#xf1f7;</ion-icon></p>        
+    </ion-item>
+    <ion-item detail-none>
         当前版本：
         <ion-note item-right>V2.1</ion-note>        
-    </button>
-    <button ion-item detail-none>        
+    </ion-item>
+    <ion-item detail-none>        
         <ion-note item-right>深圳瑰琦科技</ion-note>        
-    </button>
+    </ion-item>
 </ion-list>
 
