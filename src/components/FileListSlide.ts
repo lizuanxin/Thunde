@@ -1,5 +1,7 @@
 import {Component, OnInit, Input, Output, EventEmitter, ElementRef} from '@angular/core';
 
+import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
+
 @Component({selector: 'scrollvalue', template: '<canvas style="width:100%" tappable></canvas>'})
 export class FileListSlideComp implements OnInit
 {
@@ -15,101 +17,95 @@ export class FileListSlideComp implements OnInit
         this.Canvas.addEventListener("touchcancel", this.TouchHandler.bind(this));
         this.Canvas.addEventListener("touchend", this.TouchHandler.bind(this));
 
+        this.Canvas.addEventListener("click", this.Click.bind(this));
+
         let rect = this.Canvas.getBoundingClientRect();
         let width = rect.width * window.devicePixelRatio;
-        let height = rect.height * window.devicePixelRatio;
-        if (height <= 0)
-            height = width;
+        this.DisplayHeight = rect.height * window.devicePixelRatio;
+        if (this.DisplayHeight <= 0)
+            this.DisplayHeight = width;
 
         this.Canvas.style.width = width.toString();
-        this.Canvas.style.height = height.toString();
+        this.Canvas.style.height = this.DisplayHeight.toString();
         this.Canvas.width  = width;
-        this.Canvas.height = height;
+        this.Canvas.height = this.DisplayHeight;
         this.Ctx = this.Canvas.getContext('2d');
 
-        this.DisplayHeight = Math.trunc(height * 9 / 10);
-        this.Padding = this.DisplayHeight / 10;
-        let FontSize = 0.1;
-        this.Ctx.font = this.SetFontSize(FontSize);
-        let TextWidth = this.Ctx.measureText(this.MaxValue + "").width;
+        this.Ctx.textBaseline = 'middle';
+        this.Ctx.textAlign = 'center';
+        this.Ctx.font = this.FontSize(0.06);
+        this.ItemHeight = Math.trunc(this.Ctx.measureText('H').width * 3);
+        console.log("DisplayHeight:" + this.DisplayHeight + "ItemHeight:" + this.ItemHeight);
 
-        if (TextWidth > width)
-        {
-            this.Ctx.font = this.SetFontSize(FontSize * (width - this.Padding * 2)/TextWidth);
-            TextWidth = width - this.Padding * 2;
-        }
-        this.ItemHeight = TextWidth;
-
-        this.Ox = width/2;
-        this.Oy = Math.trunc(this.DisplayHeight / 2 + this.Padding);
-        this.ViewInited = true;
+        this.Ox = width / 2;
+        this.Oy = Math.trunc(this.DisplayHeight / 2);
 
         setTimeout(() => this.Paint(), 0);
     }
 
     private Paint()
     {
-        if (! this.ViewInited)
+        if (! this.Ctx || this.DataArray.length <= 0)
             return;
 
         this.Ctx.clearRect(0, 0, this.Canvas.width, this.Canvas.height);
-        let Offset = this.ScrollingY % this.ItemHeight + this.Padding;
+        let StartY = Math.trunc(this.Oy - this.ItemHeight * (this.ShowItemCount - 1)/2);
+        let Offset = Math.trunc(this.ScrollingY % this.ItemHeight) + StartY;
         let Idx = Math.trunc(-this.ScrollingY / this.ItemHeight);
 
-        let CenterItemRect = this.GetCenterItemRect();
-        let Count = Math.trunc(this.DisplayHeight / this.ItemHeight) + Idx;
-        console.log("ScrollingY:" + this.ScrollingY + "  Idx:" + Idx + "  ItemHeight" + this.ItemHeight + "  Count:" + Count);
+        let CenterItemRect = this.CenterItemRect();
+        let Count = this.ShowItemCount + Idx;
+        console.log("ScrollingY:" + this.ScrollingY + "  Idx:" + Idx + "  ItemHeight" + this.ItemHeight + "  Count:" + Count + "  Offset:" + Offset);
+
+        let Alpha = 1;
+        let Font = this.FontSize(0.1);
+        let FontOffset = 0;
+        let FillStyle = "#ff0000";
 
         for (let i = Idx; i >= 0 && i < Count; i++)
         {
-            Offset += this.ItemHeight;
-            this.Ctx.textBaseline = 'middle';
-            this.Ctx.textAlign = 'center';
-
             if (Offset >= CenterItemRect.top && Offset <= CenterItemRect.bottom)
             {
-                this.Ctx.globalAlpha = 1;
-                this.Ctx.font = this.SetFontSize(0.2);
-                this.Ctx.fillStyle = "#ff0000"
+                Alpha = 1;
+                Font = this.FontSize(0.1);
+                FillStyle = "#ff0000";
             }
             else
             {
-                let Alpha = Offset / this.DisplayHeight;
-                this.Ctx.fillStyle = "#000000";
-                let SizeOffest = 0.1 * Alpha * Alpha;
-                //console.log("SizeOffest:" + SizeOffest);
+                Alpha = Offset / this.DisplayHeight;
+                FillStyle = "#000000";
+                FontOffset = 0.1 * Alpha * Alpha;
 
                 if (Offset <= CenterItemRect.top)
                 {
-                    this.Ctx.font = this.SetFontSize(0.1 + SizeOffest);
-                    this.Ctx.globalAlpha = 0.1 + Alpha * Alpha;
+                    Font = this.FontSize(0.05 + FontOffset);
+                    Alpha = 0.1 + Alpha * Alpha;
                 }
                 else if (Offset >= CenterItemRect.bottom)
                 {
-                    this.Ctx.font = this.SetFontSize(0.2 - SizeOffest);
-                    this.Ctx.globalAlpha = 1 - Alpha * Alpha;
+                    Font = this.FontSize(0.1 - FontOffset);
+                    Alpha = 1 - Alpha * Alpha;
                 }
             }
 
-            this.Ctx.fillText(i + "", this.Ox, Offset);
+            this.DrawText(this.DataArray[i],
+            {
+                x: this.Ox,
+                y: Offset,
+                font: Font,
+                fillStyle: FillStyle,
+                globalAlpha: Alpha
+            });
+
+            Offset += this.ItemHeight;
         }
     }
 
-    private GetCenterItemRect()
+    private CenterItemRect()
     {
-        let count = Math.trunc(this.DisplayHeight / this.ItemHeight);
         let rect = {left: 0, right: 0, top: 0, bottom: 0};
-        if ((count % 2) === 0)
-        {
-            rect.top = this.Oy - this.ItemHeight;
-            rect.bottom = this.Oy;
-        }
-        else
-        {
-            rect.top = this.Oy - this.ItemHeight / 2;
-            rect.bottom = this.Oy + this.ItemHeight / 2;
-        }
-
+        rect.top = this.Oy - this.ItemHeight / 2;
+        rect.bottom = this.Oy + this.ItemHeight / 2;
         rect.left = 0;
         rect.right = this.Canvas.width;
 
@@ -118,12 +114,13 @@ export class FileListSlideComp implements OnInit
 
     private DrawText(value: string, option: ICanvasDrawOption)
     {
-        this.Ctx.textBaseline = 'middle';
-        this.Ctx.textAlign = 'center';
-        this.Ctx.fillStyle = option.fillColor;
+        this.Ctx.save();
+        this.Ctx.fillStyle = option.fillStyle;
         this.Ctx.font = option.font;
+        this.Ctx.globalAlpha = option.globalAlpha;
 
         this.Ctx.fillText(value, option.x, option.y);
+        this.Ctx.restore();
     }
 
     private TouchHandler(ev: TouchEvent)
@@ -144,6 +141,11 @@ export class FileListSlideComp implements OnInit
                 return;
 
             this.ScrollingY = this.ScrollingY + (t.clientY - this.RelativeO.clientY) * 1.5 * window.devicePixelRatio;
+            if (this.ScrollingY < -this.ScrollMaxY)
+                this.ScrollingY = -this.ScrollMaxY;
+            if (this.ScrollingY > 0)
+                this.ScrollingY = 0;
+
             this.Paint();
             break;
 
@@ -159,57 +161,50 @@ export class FileListSlideComp implements OnInit
             this.RelativeO = ev.touches[0];
     }
 
-
-    private SetFontSize(size: number, iconFont: boolean = false): string
+    private FontSize(size: number, iconFont: boolean = false): string
     {
         return (this.Canvas.width * size + 'px ' + (iconFont ? 'Thundericons' : 'arial')).toString();
     }
 
-    @Input()
-    set Min(min: number)
+    private Click(ev: MouseEvent)
     {
-        this.MinValue = min;
+        let Offset = ev.offsetY * 1.5 * window.devicePixelRatio;
+
+        let Idx = Math.trunc((Offset - this.ScrollingY) / this.ItemHeight);
+        if (Idx >= 0 && Idx < this.DataArray.length)
+            this.OnDataSelelcted.emit(Idx);
     }
 
     @Input()
-    set Max(max: number)
+    set Datas(Values: Array<string>)
     {
-        this.MaxValue = max;
-    }
-
-    @Input()
-    set Progress(Progress: number)
-    {
-        console.log("value:" + Progress + "  ViewInited:" + this.ViewInited + "  MinValue" + this.MinValue + "  MaxValue" + this.MaxValue);
-
-        if (this.CurrrentValue === Progress)
+        if (! TypeInfo.Assigned(Values))
             return;
-        else
-            this.CurrrentValue = Progress; //界面未初始化好 先保存传进来的值
 
-        if (this.MinValue <= Math.trunc(Progress) && Math.trunc(Progress) <= this.MaxValue)
-            this.Paint();
+        if (Values === this.DataArray)
+            return;
+
+        this.DataArray = Values;
+        this.ScrollMaxY = this.ItemHeight * (this.DataArray.length - this.ShowItemCount);
+        this.Paint();
     }
 
-    @Output() OnValueChanged: EventEmitter<any> = new EventEmitter();
+    @Output() OnDataSelelcted: EventEmitter<number> = new EventEmitter();
 
-    private ViewInited: boolean = false;
-
-    private MinValue: number = 0;
-    private MaxValue: number = 100;
-
+    private ShowItemCount = 3;
     private Ox: number;
     private Oy: number;
     private ItemHeight: number = 0;
     private DisplayHeight: number = 0;
-    private Padding: number = 0;
     private ScrollingY = 0;
+    private ScrollMaxY = 0;
 
     private RelativeO: Touch;
     private Darging = false;
-    private CurrrentValue: number = 0;
     private Ctx: CanvasRenderingContext2D;
     private Canvas: HTMLCanvasElement;
+
+    private DataArray: Array<string> = [];
 }
 
 interface ICanvasDrawOption
@@ -224,6 +219,6 @@ interface ICanvasDrawOption
     lineWidth?: number,
     lineCap?: string,
     font?:string,
-    strokeColor?: any,
-    fillColor?: string
+    strokeStyle?: any,
+    fillStyle?: string
 }
