@@ -7,7 +7,7 @@ import {SwiperComp} from './Swiper'
 @Component({selector: 'filelist-body', templateUrl: `FileListBody.html`})
 export class FileListBodyComp implements OnInit
 {
-    constructor()
+    constructor(private app: Svc.TApplication)
     {
     }
 
@@ -41,10 +41,10 @@ export class FileListBodyComp implements OnInit
 
     SelectBody(b: TBodyCategory)
     {
-        this.Swiper.Update();
-
         this.SelectedBody = b;
         this._FilteredFiles = [];
+
+        this.Swiper.Update();
     }
 
     UsageSwiperChanged(ev: Swiper)
