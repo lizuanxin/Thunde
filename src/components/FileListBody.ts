@@ -76,8 +76,6 @@ export class FileListBodyComp implements OnInit
                 }
             }
 
-            console.log('asfdsaf');
-
             this.FileSwiper.Update();
         }
 
