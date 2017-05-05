@@ -175,17 +175,17 @@ export class TDistributeService
             })
     }
 
-    ReadFaq(): Promise<Array<{title: string, content: string}>>
+    ReadJsonFile(FileName: string): Promise<Array<{title: string, content: string}>>
     {
         if (! TypeInfo.Assigned(this._FaqTranslate))
         {
             // try using localize language faq
-            return HttpRequest(WebRoot + '/assets/trans_faq_' + this.app.Language + '.json', 'GET', 'json')
+            return HttpRequest(WebRoot + '/assets/translate/'+ this.app.Language + '/'+  FileName + '.json', 'GET', 'json')
                 .catch(err =>
                 {
                     // fallback to english
                     if (err instanceof EHttp)
-                        return HttpRequest(WebRoot + '/assets/trans_faq_en.json', 'GET', 'json')
+                        return HttpRequest(WebRoot + '/assets/translate/en/'+ FileName, 'GET', 'json')
                     else
                         return Promise.reject(err);
                 })

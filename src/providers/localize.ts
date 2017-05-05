@@ -202,7 +202,7 @@ export let translate_zh =
         shutdown: '设备已关机。',
         low_battery: '电池电量低，请充电',
         disconnected: '设备已断开。',
-        no_load: '请检查电极帖',
+        no_load: '请检查电极贴',
         hardware_error: 'Hardware error, Please contact Customer Service.',
 
         network_unavailable: '无网络',
@@ -252,7 +252,7 @@ export let translate_zh =
 
     demo_mode_play_page:
     {
-        electrode: '帖好电极贴',
+        electrode: '贴好电极贴',
         phone_power: '手<br/>机<br/>取<br/>电',
         switch: '模式切换<br/>长按关闭',
         strength: '强度控制',
