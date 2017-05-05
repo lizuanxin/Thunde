@@ -1,7 +1,11 @@
 @mixin IonList($color,$value){
     &[list-#{$color}]{
         background-color:lighten($value,35%);
-        border:solid 1px lighten($value,20%);
+        
+        &[out-line]{
+            border:solid 1px lighten($value,20%);
+        }
+
         ion-item-divider.item,ion-item.item{
             border-bottom:solid 1px lighten($value,20%);
         }
