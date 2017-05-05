@@ -24,7 +24,7 @@ export class FileListBodyComp implements OnInit
         this.BodyCategories.push(
             new TBodyCategory(0xE944, Svc.const_data.BodyCategory.joint));
 
-        this.SelectBody(this.BodyCategories[0]);
+        this.SelectBodyCategory(this.BodyCategories[0]);
     }
 
     @Input() set FileList(Value: Svc.TScriptFileList)
@@ -39,16 +39,17 @@ export class FileListBodyComp implements OnInit
 
     @Output() OnSelection = new EventEmitter<Svc.TScriptFile>();
 
-    SelectBody(b: TBodyCategory)
+    SelectBodyCategory(b: TBodyCategory)
     {
-        this.SelectedBody = b;
+        this.CurrBodyCategory = b;
         this._FilteredFiles = [];
 
-        this.Swiper.Update();
+        this.BodySwiper.Update();
     }
 
-    UsageSwiperChanged(ev: Swiper)
+    UsageIconChanged(Idx: number)
     {
+        this.UsageIconIdx = Idx;
         this._FilteredFiles = [];
     }
 
@@ -59,8 +60,7 @@ export class FileListBodyComp implements OnInit
 
         if (this._FilteredFiles.length === 0)
         {
-            let Idx = this.Swiper.Instance.activeIndex;
-            let BodyPart = this.SelectedBody.SwiperBodyPart(Idx);
+            let BodyPart = this.CurrBodyCategory.BodyPartOf(this.UsageIconIdx);
             if (! TypeInfo.Assigned(BodyPart))
                 return;
 
@@ -75,6 +75,10 @@ export class FileListBodyComp implements OnInit
                     }
                 }
             }
+
+            console.log('asfdsaf');
+
+            this.FileSwiper.Update();
         }
 
         return this._FilteredFiles;
@@ -92,11 +96,14 @@ export class FileListBodyComp implements OnInit
     }
 
     private BodyCategories = new Array<TBodyCategory>();
-    private SelectedBody: TBodyCategory;
+    private CurrBodyCategory: TBodyCategory;
+    private UsageIconIdx: number = 0;
 
-    @ViewChild(SwiperComp) private Swiper: SwiperComp;
     private _FileList?: Svc.TScriptFileList;
     private _FilteredFiles: Svc.TScriptFileList = [];
+
+    @ViewChild('BodySwiper') private BodySwiper: SwiperComp;
+    @ViewChild('FileSwiper') private FileSwiper: SwiperComp;
 }
 
 class TBodyCategory
@@ -130,13 +137,14 @@ class TBodyCategory
         }
     };
 
-    SwiperBodyPart(Idx: number): Svc.IBodyPart
+    BodyPartOf(IconIdx: number): Svc.IBodyPart
     {
-        let Icon = this.UsageIcons[Idx];
+        let Icon = this.UsageIcons[IconIdx];
         return this._UsageIconBodyPart.get(Icon);
     }
 
     UsageIcons = new Array<number>();
     BodyParts = new Array<Svc.IBodyPart>();
+
     private _UsageIconBodyPart = new Map<number, Svc.IBodyPart>();
 }

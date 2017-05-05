@@ -16,12 +16,6 @@ export class SwiperComp implements AfterViewInit
 {
     constructor(private Ref: ElementRef, private ngZone: NgZone)
     {
-
-    }
-
-    ngOnDestroy()
-    {
-        console.log('swiper component destroyed');
     }
 
     ngAfterViewInit()
@@ -44,6 +38,8 @@ export class SwiperComp implements AfterViewInit
                     this.Instance.update();
                     this.Refreshing = null;
 
+                    this.LastActiveIndex = undefined;
+                    this.CheckSlideChanging();
                     resolve();
                 }, 0);
             })
@@ -59,29 +55,7 @@ export class SwiperComp implements AfterViewInit
     // onInit(swiper)       function    Callback function, will be executed right after Swiper initialization
     // onDestroy(swiper)    function    Callback function, will be executed when you destroy Swiper
 
-    /** will be executed in the beginning/ending of animation to other slide (next or previous). */
-    @Output() OnChangeStart = new EventEmitter<Swiper>();
-    @Output() OnChangeEnd = new EventEmitter<Swiper>();
-
-    /** Same as OnChangeStart but for "forward" direction only */
-    @Output() OnNextStart = new EventEmitter<Swiper>();
-    @Output() OnNextEnd = new EventEmitter<Swiper>();
-
-    /** Same as OnChangeStart but for "backword" direction only */
-    @Output() OnPrevStart = new EventEmitter<Swiper>();
-    @Output() OnPrevEnd = new EventEmitter<Swiper>();
-
-    /** will be executed in the beginning/ending of transition */
-    @Output() OnTransitionStart = new EventEmitter<Swiper>();
-    @Output() OnTransitionEnd = new EventEmitter<Swiper>();
-
-    @Output() OnTouchStart = new EventEmitter<{Inst: Swiper, ev: TouchEvent}>();
-    @Output() OnTouchMove = new EventEmitter<{Inst: Swiper, ev: TouchEvent}>();
-    /**  will be executed when user touch and move finger over Swiper in direction opposite to direction parameter. */
-    @Output() OnTouchMoveOpposite = new EventEmitter<{Inst: Swiper, ev: TouchEvent}>();
-    /** will be executed when user touch and move finger over Swiper and move it. */
-    @Output() OnSlidesMove = new EventEmitter<{Inst: Swiper, ev: TouchEvent}>();
-    @Output() OnTouchEnd = new EventEmitter<{Inst: Swiper, ev: TouchEvent}>();
+    @Output() OnSlideChanged = new EventEmitter<number>();
 
     /** 300ms delay */
     @Output() OnClick = new EventEmitter<{Inst: Swiper, ev: TouchEvent}>();
@@ -101,7 +75,6 @@ export class SwiperComp implements AfterViewInit
     @Output() OnAutoplay = new EventEmitter<Swiper>();
     @Output() OnAutoplayStart = new EventEmitter<Swiper>();
     @Output() OnAutoplayStop = new EventEmitter<Swiper>();
-
     /*
     onSetTranslate(swiper, translate) 	function 		Callback function, will be executed when swiper's wrapper change its position. Receives swiper instance and current translate value as an arguments
     onSetTransition(swiper, transition) 	function 		Callback function, will be executed everytime when swiper starts animation. Receives swiper instance and current transition duration (in ms) as an arguments
@@ -113,18 +86,15 @@ export class SwiperComp implements AfterViewInit
     onAfterResize(swiper) 	function 		Callback function, will be executed on window resize right after swiper's onresize manipulation
     onKeyPress(swiper, kc) 	function 		Callback function, will be executed on "keydown" event when keyboard control is enabled
     */
-
     private HookSwiperEvents()
     {
-        (this.Instance as any).on('slideChangeStart', (Inst: Swiper) => this.OnChangeStart.next(Inst));
-        (this.Instance as any).on('slideChangeEnd', (Inst: Swiper) => this.OnChangeEnd.next(Inst));
-
-        (this.Instance as any).on('slideNextStart', (Inst: Swiper) => this.OnNextStart.next(Inst));
-        (this.Instance as any).on('slideNextEnd', (Inst: Swiper) => this.OnNextEnd.next(Inst));
-
-        (this.Instance as any).on('slidePrevStart', (Inst: Swiper) => this.OnPrevStart.next(Inst));
-        (this.Instance as any).on('slidePrevEnd', (Inst: Swiper) => this.OnPrevEnd.next(Inst));
-
+        /* all these can not simply use to decide slide changed
+        (this.Instance as any).on('slideChangeStart', (Inst: Swiper) => this.OnSlideChangeStart.next(Inst));
+        (this.Instance as any).on('slideChangeEnd', (Inst: Swiper) => this.OnSlideChangeEnd.next(Inst));
+        (this.Instance as any).on('slideNextStart', (Inst: Swiper) => this.OnSlideNextStart.next(Inst));
+        (this.Instance as any).on('slideNextEnd', (Inst: Swiper) => this.OnSlideNextEnd.next(Inst));
+        (this.Instance as any).on('slidePrevStart', (Inst: Swiper) => this.OnSlidePrevStart.next(Inst));
+        (this.Instance as any).on('slidePrevEnd', (Inst: Swiper) => this.OnSlidePrevEnd.next(Inst));
         (this.Instance as any).on('transitionStart', (Inst: Swiper) => this.OnTransitionStart.next(Inst));
         (this.Instance as any).on('transitionEnd', (Inst: Swiper) => this.OnTransitionEnd.next(Inst));
 
@@ -133,6 +103,8 @@ export class SwiperComp implements AfterViewInit
         (this.Instance as any).on('touchMoveOpposite', (Inst: Swiper, ev: TouchEvent) => this.OnTouchMoveOpposite.next({Inst: Inst, ev: ev}));
         (this.Instance as any).on('slidesMove', (Inst: Swiper, ev: TouchEvent) => this.OnSlidesMove.next({Inst: Inst, ev: ev}));
         (this.Instance as any).on('touchEnd', (Inst: Swiper, ev: TouchEvent) => this.OnTouchEnd.next({Inst: Inst, ev: ev}));
+        */
+        (this.Instance as any).on('touchEnd', (Inst: Swiper, ev: TouchEvent) => this.CheckSlideChanging());
 
         (this.Instance as any).on('click', (Inst: Swiper, ev: TouchEvent) => this.OnClick.next({Inst: Inst, ev: ev}));
         (this.Instance as any).on('tap', (Inst: Swiper, ev: TouchEvent) => this.OnTap.next({Inst: Inst, ev: ev}));
@@ -150,6 +122,19 @@ export class SwiperComp implements AfterViewInit
         (this.Instance as any).on('autoplayStop', (Inst: Swiper) => this.OnAutoplayStop.next(Inst));
     }
 
+    private CheckSlideChanging()
+    {
+        setTimeout(() =>
+        {
+            if (this.LastActiveIndex !== this.Instance.activeIndex)
+            {
+                this.OnSlideChanged.next(this.Instance.activeIndex);
+                this.LastActiveIndex = this.Instance.activeIndex;
+            }
+        });
+    }
+
     private Wrapper: HTMLElement;
     private Refreshing: Promise<void>;
+    private LastActiveIndex: number;
 }
