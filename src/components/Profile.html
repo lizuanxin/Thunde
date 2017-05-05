@@ -1,4 +1,4 @@
-<ion-list inset list-init list-gray>
+<ion-list inset list-init list-blue>
     <ion-item detail-none (click)="OnSelection.next('demo')" tappable>
         {{'profile_page.demo'|translate}}
         <ion-note item-right><ion-icon>&#xf3d1;</ion-icon></ion-note>
@@ -12,7 +12,7 @@
         <ion-note item-right><ion-icon>&#xf3d1;</ion-icon></ion-note>
     </ion-item>
 </ion-list>
-<ion-list inset list-init list-gray>
+<ion-list inset list-init list-blue>
     <ion-item-divider text-uppercase>
         {{'profile_page.check_otg'|translate}}（{{IsSupportedOTG === true ? '允许' : '禁止'}}）
         <p item-right><ion-icon [ngStyle]="{fontSize:'1.4em', color: IsSupportedOTG === true ? 'white' : 'rgba(255,255,255,0.5)'}">&#xf1f7;</ion-icon></p>

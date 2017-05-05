@@ -1,5 +1,5 @@
 ion-list.list {
-    @include IonList(gray,#6490fb);
+    @include IonList('blue',#6490fb);
     &[list-init]{
         border-radius: 5px;
         .item{
@@ -14,7 +14,7 @@ ion-list.list {
             [item-right]{
                 margin:0 8px 0 8px;
             }
-            
+
             ion-label{
                 font-size:1.5rem;
             }
