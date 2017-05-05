@@ -17,5 +17,5 @@ export class ProfileComp implements OnInit
 
     @Output() OnSelection = new EventEmitter<string>();
 
-    IsSupportedOTG: boolean;
+    private IsSupportedOTG: boolean;
 }

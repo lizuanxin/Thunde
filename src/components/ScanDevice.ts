@@ -43,8 +43,6 @@ export class ScanDeviceComp implements OnInit, OnDestroy
 
     ngOnDestroy()
     {
-        console.log('destroy scan device');
-
         if (TypeInfo.Assigned(this.ScanSubscription))
         {
             this.ScanSubscription.unsubscribe();

@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewChild, Input, Output, EventEmitter, ElementRef} from '@angular/core';
-import {Slides} from 'ionic-angular'
 import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
 
 import * as Svc from '../providers'
+import {SwiperComp} from './Swiper'
 
 @Component({selector: 'filelist-body', templateUrl: `FileListBody.html`})
 export class FileListBodyComp implements OnInit
@@ -27,30 +27,19 @@ export class FileListBodyComp implements OnInit
         this.SelectBody(this.BodyCategories[0]);
     }
 
+    ngAfterViewInit()
+    {
+    }
+
     @Input()
     set FileList(Value: Svc.TScriptFileList)
     {
         if (! TypeInfo.Assigned(Value))
             return;
-
-        this.InitFileNames(Value);
         if (Value === this._FileList)
             return;
 
         this._FileList = Value;
-    }
-
-    InitFileNames(Value: Svc.TScriptFileList)
-    {
-        console.log("length:" + Value.length);
-        let Strs = new Array<string>();
-        for (let i=0; i< Value.length; i++)
-        {
-            let Name= this.app.Translate(Value[i].Name_LangId) as string;
-            Strs.push(Name);
-        }
-
-        this.FileNames = Strs;
     }
 
     @Output() OnSelection = new EventEmitter<Svc.TScriptFile>();
@@ -59,20 +48,13 @@ export class FileListBodyComp implements OnInit
     {
         this.SelectedBody = b;
         this.SelectedFileList = [];
-        console.log(b);
 
-        //this.Slides.slideTo(0, 0);
-    }
-
-    FileNameSelected(Index: number)
-    {
-        console.log(this.FileNames[Index]);
+        this.Swiper.Update();
     }
 
     UsageSlideChanged()
     {
-        //if (this.Slides.getActiveIndex() < this.SelectedBody.UsageIcons.length)
-            this.SelectedFileList = [];
+        this.SelectedFileList = [];
     }
 
     get FilterFiles(): Svc.TScriptFileList
@@ -82,7 +64,7 @@ export class FileListBodyComp implements OnInit
 
         if (this.SelectedFileList.length === 0)
         {
-            let SlideIdx = this.Slides.getActiveIndex();
+            let SlideIdx = 0;//this.Slides.getActiveIndex();
             let BodyPart = this.SelectedBody.SlideBodyPart(SlideIdx);
             if (! TypeInfo.Assigned(BodyPart))
                 return;
@@ -118,23 +100,12 @@ export class FileListBodyComp implements OnInit
         }
     }
 
-    @ViewChild(Slides) private Slides: Slides;
+    private BodyCategories = new Array<TBodyCategory>();
+    private SelectedBody: TBodyCategory;
 
-    BodyCategories = new Array<TBodyCategory>();
-    SelectedBody: TBodyCategory;
-    SelectedFileList: Svc.TScriptFileList = [];
-
-    SwapConfig = {
-        pagination: '.swiper-pagination',
-        paginationClickable: true,
-        nextButton: '.swiper-button-next',
-        prevButton: '.swiper-button-prev',
-        effect: 'flip',
-        spaceBetween: 30
-    };
-
-    FileNames: Array<string> = [];
+    @ViewChild(SwiperComp) private Swiper: SwiperComp;
     private _FileList?: Svc.TScriptFileList;
+    private SelectedFileList: Svc.TScriptFileList = [];
 }
 
 class TBodyCategory

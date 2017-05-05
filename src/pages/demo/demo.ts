@@ -1,5 +1,5 @@
 import {Component, AfterViewInit, OnDestroy, ElementRef, ViewChild} from '@angular/core';
-import {Subscription} from 'rxjs/Rx'
+import {Subscription} from 'rxjs/Subscription'
 
 import {NavController, NavParams} from 'ionic-angular';
 import {TypeInfo} from '../../UltraCreation/Core';

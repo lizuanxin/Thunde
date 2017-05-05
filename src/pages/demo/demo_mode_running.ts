@@ -1,5 +1,6 @@
 import {Component, OnInit, AfterViewInit, OnDestroy} from '@angular/core';
-import {Subscription} from 'rxjs/rx'
+import {Subscription} from 'rxjs/Subscription'
+import 'rxjs/add/operator/toPromise';
 
 import {NavController, NavParams, ViewController} from 'ionic-angular';
 

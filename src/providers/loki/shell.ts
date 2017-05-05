@@ -1,4 +1,4 @@
-import {Subject} from 'rxjs/Rx';
+import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/toPromise';
 
 import {TypeInfo, EAbort} from '../../UltraCreation/Core';

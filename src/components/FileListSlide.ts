@@ -2,7 +2,7 @@ import {Component, OnInit, Input, Output, EventEmitter, ElementRef} from '@angul
 
 import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
 
-@Component({selector: 'scrollvalue', template: '<canvas style="width:100%" tappable></canvas>'})
+@Component({selector: 'filelist-slide', template: '<canvas style="width:100%" tappable></canvas>'})
 export class FileListSlideComp implements OnInit
 {
     constructor(private Elements: ElementRef)

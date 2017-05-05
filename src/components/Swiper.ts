@@ -18,31 +18,52 @@ export class SwiperComp implements AfterViewChecked, AfterViewInit
 
     }
 
+    ngOnDestroy()
+    {
+        console.log('swiper component destroyed');
+    }
+
     ngAfterViewInit()
     {
-        this.Div = this.Ref.nativeElement.querySelector('.swiper-wrapper');
-        this.slideCount = this.Div.childElementCount;
-        this.Instance = new Swiper(this.Ref.nativeElement.querySelector('swiper > div'), this.config);
-
-        console.log(this.Ref.nativeElement);
-
+        this.Wrapper = this.Ref.nativeElement.querySelector('.swiper-wrapper');
+        this.Instance = new Swiper(this.Ref.nativeElement.querySelector('swiper > div'), this.Config);
     }
 
     ngAfterViewChecked()
     {
-        console.log('after view checked');
-
-        if (this.Div && this.slideCount !== this.Div.childElementCount)
+        /*
+        if (this.Wrapper && this.slideCount !== this.Wrapper.childElementCount)
         {
-            this.slideCount = this.Div.childElementCount;
-            this.Instance.activeIndex = 0;
+            this.slideCount = this.Wrapper.childElementCount;
+            this.Instance.slideTo(0, 0);
             this.Instance.update();
         }
+        */
     }
 
-    @Input() config: SwiperOptions;
+    Update(): Promise<void>
+    {
+        if (! this.Refreshing)
+        {
+            this.Refreshing = new Promise<void>((resolve, reject) =>
+            {
+                setTimeout(() =>
+                {
+                    this.Instance.slideTo(0, 0);
+                    this.Instance.update();
+                    this.Refreshing = null;
+
+                    resolve();
+                }, 0);
+            })
+        }
+
+        return this.Refreshing;
+    }
 
     Instance: Swiper;
-    private Div: HTMLElement;
-    private slideCount = 0;
+    @Input() Config: SwiperOptions;
+
+    private Wrapper: HTMLElement;
+    private Refreshing: Promise<void>;
 }
