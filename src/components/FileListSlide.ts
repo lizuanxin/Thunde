@@ -168,7 +168,7 @@ export class FileListSlideComp implements OnInit
 
     private Click(ev: MouseEvent)
     {
-        let Offset = ev.offsetY * 1.5 * window.devicePixelRatio;
+        let Offset = ev.offsetY * window.devicePixelRatio;
 
         let Idx = Math.trunc((Offset - this.ScrollingY) / this.ItemHeight);
         if (Idx >= 0 && Idx < this.DataArray.length)
