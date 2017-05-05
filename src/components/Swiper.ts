@@ -27,6 +27,8 @@ export class SwiperComp implements AfterViewChecked, AfterViewInit
     {
         this.Wrapper = this.Ref.nativeElement.querySelector('.swiper-wrapper');
         this.Instance = new Swiper(this.Ref.nativeElement.querySelector('swiper > div'), this.Config);
+
+        //this.Instance.
     }
 
     ngAfterViewChecked()
