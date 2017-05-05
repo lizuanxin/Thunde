@@ -4,12 +4,14 @@
             <swiper [Config]="{pagination:'.swiper-pagination', paginationClickable: true,
                 nextButton:'.swiper-button-next', prevButton:'.swiper-button-prev', effect:'cube'}"
             (OnTransitionEnd)="UsageSwiperChanged($event)">
-                <div class="swiper-wrapper" [ngStyle]="SetStyle(0)">
-                    <div class="swiper-slide" *ngFor="let i of SelectedBody.UsageIcons"><ion-icon app-icon [ngStyle]="SetStyle(1)">{{app.IconFont(i)}}</ion-icon></div>
-                </div>
-                <div class="swiper-pagination"></div>
-                <div class="swiper-button-next"><ion-icon app-icon>&#xe918;</ion-icon></div>
-                <div class="swiper-button-prev"><ion-icon app-icon>&#xe918;</ion-icon></div>
+       
+                    <div class="swiper-wrapper" [ngStyle]="SetStyle(0)">
+                        <div class="swiper-slide" *ngFor="let i of SelectedBody.UsageIcons"><ion-icon app-icon [ngStyle]="SetStyle(1)">{{app.IconFont(i)}}</ion-icon></div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-next"><ion-icon app-icon>&#xe918;</ion-icon></div>
+                    <div class="swiper-button-prev"><ion-icon app-icon>&#xe918;</ion-icon></div>
+
             </swiper>
         </section>
     </ion-col>
@@ -22,8 +24,35 @@
         </ion-row>
     </ion-col>
 
-    <ion-col col-12 no-padding text-center margin-top style="height:90px">
+    <ion-col col-12 no-padding text-center margin-top style="height:150px">
+        <swiper [Config]="{direction: 'vertical',slidesPerView: 3,centeredSlides: true}">
+       
+                    <div class="swiper-wrapper">
+                            <div class="swiper-slide" >Slide 1</div>
+                            <div class="swiper-slide" >Slide 2</div>
+                            <div class="swiper-slide" >Slide 3</div>
+                            <div class="swiper-slide" >Slide 4</div>
+                            <div class="swiper-slide" >Slide 5</div>
+                            <div class="swiper-slide" >Slide 6</div>
+                            <div class="swiper-slide" >Slide 7</div>
+                            <div class="swiper-slide" >Slide 8</div>
+                            <div class="swiper-slide" >Slide 9</div>
+                            <div class="swiper-slide" >Slide 10</div>
+                        <!--<div class="swiper-slide" *ngFor="let f of FilterFiles">{{f.Name_LangId|translate}}</div>-->
+                    </div>
+
+
+            </swiper>
+            <!--<swiper [Config]="{direction: 'vertical',slidesPerView: 3, centeredSlides: true}">
+       
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide" *ngFor="let f of FilterFiles">{{f.Name_LangId|translate}}</div>
+                    </div>
+            </swiper>-->
+        
         <!--<filelist-slide [Datas]="FileNames" (OnDataSelelcted)="FileNameSelected($event)"></filelist-slide>-->
-        <li *ngFor="let f of FilteredFiles" (click)="OnSelection.next(f)" tappable>{{f.Name_LangId|translate}}</li>
+
+        <!--<li *ngFor="let f of FilterFiles" (click)="OnSelection.next(f)" tappable>{{f.Name_LangId|translate}}</li>-->
+
     </ion-col>
 </ion-row>
