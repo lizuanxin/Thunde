@@ -9,11 +9,12 @@ import * as Svc from '../../providers';
 export class FaqPage implements OnInit
 {
     constructor(public navCtrl: NavController, public app: Svc.TApplication, private Distribute: Svc.TDistributeService)
-    {}
+    {
+    }
 
     ngOnInit()
     {
-        this.Distribute.ReadFaq()
+        this.Distribute.ReadJsonFile('faq')
             .then(values => this.Items = values)
             .catch(err => console.log(err.message));
     }
