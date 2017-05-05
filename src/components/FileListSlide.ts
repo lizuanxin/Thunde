@@ -2,16 +2,46 @@ import {Component, OnInit, Input, Output, EventEmitter, ElementRef} from '@angul
 
 import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
 
+import * as Svc from '../providers';
+
 @Component({selector: 'filelist-slide', template: '<canvas style="width:100%" tappable></canvas>'})
 export class FileListSlideComp implements OnInit
 {
-    constructor(private Elements: ElementRef)
+    constructor(private Elements: ElementRef, private app: Svc.TApplication)
     {
     }
 
     ngOnInit()
     {
-        this.Canvas = this.Elements.nativeElement.children[0] as HTMLCanvasElement;
+        let Canvas = this.Elements.nativeElement.children[0] as HTMLCanvasElement;
+        this.Content = new TContentCanvas(Canvas, this.app, this.OnDataSelelcted);
+    }
+
+    @Input()
+    set Datas(Values: Array<string>)
+    {
+        if (! TypeInfo.Assigned(Values))
+            return;
+
+        if (TypeInfo.Assigned(this.Content))
+        {
+            this.Content.InitDatas(Values);
+        }
+    }
+
+    @Output() OnDataSelelcted: EventEmitter<number> = new EventEmitter();
+
+    private Content: TContentCanvas;
+}
+
+
+/* TContentCanvas */
+
+class TContentCanvas
+{
+    constructor(private Canvas: HTMLCanvasElement, private app: Svc.TApplication,
+        private OnSelection: EventEmitter<number>)
+    {
         this.Canvas.addEventListener("touchstart", this.TouchHandler.bind(this));
         this.Canvas.addEventListener("touchmove", this.TouchHandler.bind(this));
         this.Canvas.addEventListener("touchcancel", this.TouchHandler.bind(this));
@@ -33,14 +63,29 @@ export class FileListSlideComp implements OnInit
 
         this.Ctx.textBaseline = 'middle';
         this.Ctx.textAlign = 'center';
-        this.Ctx.font = this.FontSize(0.06);
-        this.ItemHeight = Math.trunc(this.Ctx.measureText('H').width * 3);
+        this.Ctx.font = this.FontSize(this.TextSize);
+        this.ItemHeight = Math.trunc(this.Ctx.measureText('按').width * 2);
+        if (this.ItemHeight * this.ShowItemCount > this.DisplayHeight)
+        {
+            this.TextSize = this.TextSize * 2 * (this.ItemHeight / this.DisplayHeight)
+            this.ItemHeight = Math.trunc(this.DisplayHeight / this.ShowItemCount);
+        }
         console.log("DisplayHeight:" + this.DisplayHeight + "ItemHeight:" + this.ItemHeight);
 
         this.Ox = width / 2;
         this.Oy = Math.trunc(this.DisplayHeight / 2);
 
         setTimeout(() => this.Paint(), 0);
+    }
+
+    InitDatas(Values: Array<string>)
+    {
+        if (Values === this.DataArray)
+            return;
+
+        this.DataArray = Values;
+        this.ScrollMaxY = this.ItemHeight * (this.DataArray.length - this.ShowItemCount);
+        this.Paint();
     }
 
     private Paint()
@@ -55,35 +100,33 @@ export class FileListSlideComp implements OnInit
 
         let CenterItemRect = this.CenterItemRect();
         let Count = this.ShowItemCount + Idx;
-        console.log("ScrollingY:" + this.ScrollingY + "  Idx:" + Idx + "  ItemHeight" + this.ItemHeight + "  Count:" + Count + "  Offset:" + Offset);
+        //console.log("ScrollingY:" + this.ScrollingY + "  Idx:" + Idx + "  ItemHeight" + this.ItemHeight + "  Count:" + Count + "  Offset:" + Offset);
 
-        let Alpha = 1;
-        let Font = this.FontSize(0.1);
-        let FontOffset = 0;
-        let FillStyle = "#ff0000";
+        this.DrawRect(this.Oy - this.ItemHeight * 1.5);
+        this.DrawRect(this.Oy - this.ItemHeight * 0.5);
+        this.DrawRect(this.Oy + this.ItemHeight * 0.5);
 
         for (let i = Idx; i >= 0 && i < Count; i++)
         {
-            if (Offset >= CenterItemRect.top && Offset <= CenterItemRect.bottom)
-            {
-                Alpha = 1;
-                Font = this.FontSize(0.1);
-                FillStyle = "#ff0000";
-            }
-            else
+            let Alpha = 1;
+            let Font = this.FontSize(this.TextSize);
+            let FontOffset = 0;
+            let FillStyle = "#ff0000";
+
+            if (Offset < CenterItemRect.top || Offset > CenterItemRect.bottom)
             {
                 Alpha = Offset / this.DisplayHeight;
                 FillStyle = "#000000";
-                FontOffset = 0.1 * Alpha * Alpha;
+                FontOffset = this.TextSize * Alpha * Alpha;
 
                 if (Offset <= CenterItemRect.top)
                 {
-                    Font = this.FontSize(0.05 + FontOffset);
+                    Font = this.FontSize(this.TextSize / 2 + FontOffset);
                     Alpha = 0.1 + Alpha * Alpha;
                 }
                 else if (Offset >= CenterItemRect.bottom)
                 {
-                    Font = this.FontSize(0.1 - FontOffset);
+                    Font = this.FontSize(this.TextSize - FontOffset / 2);
                     Alpha = 1 - Alpha * Alpha;
                 }
             }
@@ -120,6 +163,16 @@ export class FileListSlideComp implements OnInit
         this.Ctx.globalAlpha = option.globalAlpha;
 
         this.Ctx.fillText(value, option.x, option.y);
+        this.Ctx.restore();
+    }
+
+    private DrawRect(Offset)
+    {
+        this.Ctx.save();
+        this.Ctx.lineWidth = 4;
+        this.Ctx.strokeStyle = 'red';
+        this.Ctx.rect(0, Offset, this.Canvas.width, this.ItemHeight);
+        this.Ctx.stroke();
         this.Ctx.restore();
     }
 
@@ -169,28 +222,16 @@ export class FileListSlideComp implements OnInit
     private Click(ev: MouseEvent)
     {
         let Offset = ev.offsetY * window.devicePixelRatio;
-
-        let Idx = Math.trunc((Offset - this.ScrollingY) / this.ItemHeight);
-        if (Idx >= 0 && Idx < this.DataArray.length)
-            this.OnDataSelelcted.emit(Idx);
+        let CenterRect = this.CenterItemRect();
+        if ((Offset - CenterRect.bottom) < 0 && (Offset - CenterRect.top) > 0) // 只选中间
+        {
+            let Index = Math.round((-this.ScrollingY - (this.ShowItemCount - 1)/2)/ this.ItemHeight) + 1;
+            if (Index >= 0 && Index < this.DataArray.length)
+                this.OnSelection.emit(Index);
+        }
     }
 
-    @Input()
-    set Datas(Values: Array<string>)
-    {
-        if (! TypeInfo.Assigned(Values))
-            return;
-
-        if (Values === this.DataArray)
-            return;
-
-        this.DataArray = Values;
-        this.ScrollMaxY = this.ItemHeight * (this.DataArray.length - this.ShowItemCount);
-        this.Paint();
-    }
-
-    @Output() OnDataSelelcted: EventEmitter<number> = new EventEmitter();
-
+    private TextSize: number = 0.08;
     private ShowItemCount = 3;
     private Ox: number;
     private Oy: number;
@@ -202,7 +243,6 @@ export class FileListSlideComp implements OnInit
     private RelativeO: Touch;
     private Darging = false;
     private Ctx: CanvasRenderingContext2D;
-    private Canvas: HTMLCanvasElement;
 
     private DataArray: Array<string> = [];
 }
