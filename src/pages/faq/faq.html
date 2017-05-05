@@ -9,7 +9,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-    <ion-list *ngIf="Selected === null" list-init list-blue>
+    <ion-list *ngIf="Selected === null" inset list-init list-blue>
         <ion-item color="lightBlue" *ngFor="let iter of Items" (click)="Select(iter)" tappable>          
           {{iter.title}}
         </ion-item>
