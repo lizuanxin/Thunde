@@ -9,7 +9,6 @@ export class FileListBodyComp implements OnInit
 {
     constructor(private Elements: ElementRef, private app: Svc.TApplication)
     {
-
     }
 
     ngOnInit()
@@ -28,13 +27,30 @@ export class FileListBodyComp implements OnInit
         this.SelectBody(this.BodyCategories[0]);
     }
 
-    @Input() set FileList(Value: Svc.TScriptFileList)
+    @Input()
+    set FileList(Value: Svc.TScriptFileList)
     {
         if (! TypeInfo.Assigned(Value))
             return;
+
+        this.InitFileNames(Value);
         if (Value === this._FileList)
             return;
+
         this._FileList = Value;
+    }
+
+    InitFileNames(Value: Svc.TScriptFileList)
+    {
+        console.log("length:" + Value.length);
+        let Strs = new Array<string>();
+        for (let i=0; i< Value.length; i++)
+        {
+            let Name= this.app.Translate(Value[i].Name_LangId) as string;
+            Strs.push(Name);
+        }
+
+        this.FileNames = Strs;
     }
 
     @Output() OnSelection = new EventEmitter<Svc.TScriptFile>();
@@ -43,9 +59,14 @@ export class FileListBodyComp implements OnInit
     {
         this.SelectedBody = b;
         this.SelectedFileList = [];
-console.log(b);
+        console.log(b);
 
         //this.Slides.slideTo(0, 0);
+    }
+
+    FileNameSelected(Index: number)
+    {
+        console.log(this.FileNames[Index]);
     }
 
     UsageSlideChanged()
@@ -84,7 +105,6 @@ console.log(b);
 
     FileSlideChanged()
     {
-
     }
 
     SetStyle(n: number): Object
@@ -113,6 +133,7 @@ console.log(b);
         spaceBetween: 30
     };
 
+    FileNames: Array<string> = [];
     private _FileList?: Svc.TScriptFileList;
 }
 
