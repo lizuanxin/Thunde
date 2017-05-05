@@ -53,6 +53,8 @@ export class FileListBodyComp implements OnInit
 
     UsageSwiperChanged(ev: Swiper)
     {
+        console.log(ev);
+
         this.SelectedFileList = [];
     }
 
@@ -63,8 +65,8 @@ export class FileListBodyComp implements OnInit
 
         if (this.SelectedFileList.length === 0)
         {
-            let SlideIdx = 0;//this.Slides.getActiveIndex();
-            let BodyPart = this.SelectedBody.SlideBodyPart(SlideIdx);
+            let Idx = this.Swiper.Instance.activeIndex;
+            let BodyPart = this.SelectedBody.SwiperBodyPart(Idx);
             if (! TypeInfo.Assigned(BodyPart))
                 return;
 
@@ -138,7 +140,7 @@ class TBodyCategory
         }
     };
 
-    SlideBodyPart(Idx: number): Svc.IBodyPart
+    SwiperBodyPart(Idx: number): Svc.IBodyPart
     {
         let Icon = this.UsageIcons[Idx];
         return this._UsageIconBodyPart.get(Icon);

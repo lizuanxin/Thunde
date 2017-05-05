@@ -8,9 +8,7 @@ import 'swiper';
 
 @Component({selector: 'swiper',
     template: `<div [ngClass]="{'swiper-container': config?.containerModifierClass === undefined}">
-        <ng-content></ng-content></div>`,
-    styles: [':host {display: block;}']
-})
+        <ng-content></ng-content></div>`})
 export class SwiperComp implements AfterViewInit
 {
     constructor(private Ref: ElementRef, private ngZone: NgZone)
