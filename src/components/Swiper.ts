@@ -24,6 +24,8 @@ export class SwiperComp implements AfterViewInit
 
         this.Instance = new Swiper(this.Ref.nativeElement.querySelector('swiper > div'), this.Config);
         this.HookSwiperEvents();
+
+        this.Update();
     }
 
     Update(): Promise<void>
