@@ -25,6 +25,7 @@ export class FileListBodyComp implements OnInit
             new TBodyCategory(0xE944, Svc.const_data.BodyCategory.joint));
 
         this.SelectBodyCategory(this.BodyCategories[0]);
+ 
     }
 
     @Input() set FileList(Value: Svc.TScriptFileList)

@@ -16,3 +16,18 @@
         font-size:3.6rem;
     }
 }
+
+[swiper-piker]{
+    .swiper-wrapper{
+        transform: rotateX(21.16deg) translate3d(0px, 50px, 0px);
+        transition-duration: 150ms;
+    }
+    .swiper-slide{
+        color:#ccc;
+         
+        &.swiper-slide-active{
+            color:color($DominantColor,D-header,base);
+        }
+    } 
+}
+
