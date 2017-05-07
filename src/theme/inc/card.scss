@@ -24,11 +24,12 @@
 
 ion-card{
     &[card-list-default]{
-        @include gradient-liner(right,lighten(color($DominantColor,D-blue,base),15%),color($colors,light,base));
+        @include gradient-liner(right,lighten(color($DominantColor,D-header,base),25%),color($colors,light,base));
         border-radius:6px;
-        box-shadow: 0 1px 2px lighten(color($DominantColor,D-blue,base),10%);
+        box-shadow: 0 1px 2px lighten(color($DominantColor,D-header,base),20%);
         ion-card-content{
             ion-item{
+                color:darken(color($DominantColor,D-header,base),5%);
                 background-color:transparent;
                 [item-left]{                    
                     font-size:10rem;                    

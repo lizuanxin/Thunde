@@ -1,4 +1,4 @@
-<ion-row [ngClass]="app.Skin('home')">
+<ion-row [ngClass]="app.Skin('home')" style="padding-bottom:10vh">
     <ion-col col-12 no-padding margin-top>
         <section Flip-x>
             <swiper #BodySwiper [Config]="{pagination:'.swiper-pagination', paginationClickable: true,
@@ -23,11 +23,17 @@
         </ion-row>
     </ion-col>
 
-    <ion-col col-12 no-padding text-center margin-top style="height:150px">
+
+</ion-row>
+<ion-row align-items-center style="margin-top:-5vh">
+    <ion-col col-8 no-padding text-center style="height:120px">
         <swiper swiper-piker #FileSwiper [Config]="{direction: 'vertical',slidesPerView: 3,centeredSlides: true}">
             <div class="swiper-wrapper">
-                <div class="swiper-slide" *ngFor="let f of FilteredFiles">{{f.Name_LangId|translate}}</div>
+                <div class="swiper-slide" *ngFor="let f of FilteredFiles" [ngStyle]="{transform: 'rotateX(0deg) translate3d(0px, 0px, 90px)'}">{{f.Name_LangId|translate}}</div>
             </div>
         </swiper>
+    </ion-col>
+    <ion-col col-4>
+        <button clear><ion-icon app-icon style="font-size:20vw;color:#6fc5ff">&#xe929;</ion-icon></button>
     </ion-col>
 </ion-row>

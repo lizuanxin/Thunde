@@ -24,7 +24,8 @@
     }
     .swiper-slide{
         color:#ccc;
-         
+        -webkit-transform-origin: center center;
+        transform-origin: center center;
         &.swiper-slide-active{
             color:color($DominantColor,D-header,base);
         }
