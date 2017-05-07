@@ -24,9 +24,13 @@
     }
     .swiper-slide{
         color:#ccc;
+        -webkit-transform:scale(.85);
+        transform:scale(.85);
         -webkit-transform-origin: center center;
         transform-origin: center center;
         &.swiper-slide-active{
+            -webkit-transform:scale(1);
+            transform:scale(1);
             color:color($DominantColor,D-header,base);
         }
     } 

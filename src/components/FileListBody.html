@@ -29,7 +29,7 @@
     <ion-col col-8 no-padding text-center style="height:120px">
         <swiper swiper-piker #FileSwiper [Config]="{direction: 'vertical',slidesPerView: 3,centeredSlides: true}">
             <div class="swiper-wrapper">
-                <div class="swiper-slide" *ngFor="let f of FilteredFiles" [ngStyle]="{transform: 'rotateX(0deg) translate3d(0px, 0px, 90px)'}">{{f.Name_LangId|translate}}</div>
+                <div class="swiper-slide" *ngFor="let f of FilteredFiles">{{f.Name_LangId|translate}}</div>
             </div>
         </swiper>
     </ion-col>
