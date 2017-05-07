@@ -36,7 +36,7 @@ ion-toolbar {
         ion-row{
             ion-col{
                 color:#a1a1a1;
-                background-color:#edf6ff;
+                background-color:lighten(color($DominantColor,D-header,base),28%);
                 &.state{
                     background-color:color($DominantColor,D-Default,base);                 
                     button{
