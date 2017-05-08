@@ -7,6 +7,7 @@ import * as Svc from '../providers'
 @Component({
   selector: 'scan-device',
   template: `
+
     <div Dev-Mask *ngIf="Visible" (click)="OnCancel.next()" tappable>
         <ion-list [class.fadein]="DeviceList.length>0" margin>
             <ng-template [ngIf]="DeviceList.length>0">
@@ -24,6 +25,7 @@ import * as Svc from '../providers'
             </ion-item>
         </ion-list>
     </div>
+
     `
 })
 export class ScanDeviceComp implements OnInit, OnDestroy

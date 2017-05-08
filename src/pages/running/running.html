@@ -8,7 +8,7 @@
 
 <ion-content no-scroll padding [ngClass]="app.Skin('running')">
     <ng-template [ngIf]="! Finish">
-    <ion-row align-items-center [ngStyle]="CanvasClientHeight">
+    <ion-row align-items-center [ngStyle]="CanvasClientHeight" margin-horizontal>
         <ion-col col-10 offset-1>
             <intensity-dial [Value]="Intensity" (OnValueChanged)="AdjustIntensity($event)"></intensity-dial>
         </ion-col>
@@ -39,7 +39,7 @@
     <ion-toolbar transparent visible>
         <ion-row style="margin-top:-50px">
             <ion-col text-center>
-                <button ion-fab color="lightblue" (click)="Shutdown()" style="display:inline-block; font-size: 0.8rem; width:66px; height:66px"  tappable>
+                <button ion-fab color="lightblue" (click)="Shutdown()" style="display:inline-block; font-size: 1.2rem; width:80px; height:80px"  tappable>
                     <ion-icon *ngIf="! Finish">&#xf359;</ion-icon>
                     <ion-icon app-icon *ngIf="Finish">&#xe936;</ion-icon>
                 </button>
