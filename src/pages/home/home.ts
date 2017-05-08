@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {isDevMode, Component, OnInit} from '@angular/core';
 
 import {NavController, NavParams} from 'ionic-angular';
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo'
@@ -25,6 +25,9 @@ export class HomePage implements OnInit
 
     ngOnInit(): void
     {
+        if (isDevMode())
+            console.log('develope mode....');
+
         this.Tabs.push(new TTabItem(0, Svc.const_data.Category.relax));
         this.Tabs.push(new TTabItem(1, Svc.const_data.Category.muscle_training));
         // this.Tabs.push(new TTabItem(2, Svc.const_data.Category.fat_burning));
@@ -67,7 +70,7 @@ export class HomePage implements OnInit
     ActiveSwitch(): string
     {
         switch(this.ActiveTab.Index)
-        {            
+        {
             case 1: return 'sport';
             default: return ''
         }
@@ -104,7 +107,7 @@ export class HomePage implements OnInit
             params.DeviceId = DeviceId;
 
             this.app.ShowLoading()
-                .then(() => this.nav.push(View.RunningPage, params));
+                .then(() => this.nav.push(View.RunningPage, params))
         }
     }
 

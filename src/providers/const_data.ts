@@ -176,15 +176,15 @@ export namespace const_data
 
         {Id: '{00000000-0000-4000-4100-000000004001}', Author: 'UltraCreation Team',
             Category_Id: Category.muscle_training.Id, Mode_Id: null, Name: 'dumbbell',
-            BodyParts: [Body.upperarm],
+            BodyParts: [Body.upperarm], Icon: 0xe948,
             Content: 'V1D16{|R1P96F6C5a}{R4a|R1P12cF6|F7|F8|F9|Fa|Fb|Fc|Fd|Fe|Ff|F10|F11|F12|F13|F14|F15|F16|F17|F18|F19|F1a|F1b|F1c|F1d|F1e|F1f|F20|F21|F22|F23|F24|F25|F26|F27|F28|F29|F2a|F2b|F2c|F2d|F2e|F2f|F30|F31|F32|F33|F34|F35|F36|F37|F38|F39|F3a|F3b|F3c|F3d|F3e|F3f|F40|F41|F42|F43|F44|F45|F46|F47|F48|F49|F4a|R177F4b|R2F4a|R1F45|F40|F3b|F36|F31|F2c|F27|F22|F1d|F18|F13|Fe|F9|R20F4}'},
         {Id: '{00000000-0000-4000-4100-000000004002}', Author: 'UltraCreation Team',
             Category_Id: Category.muscle_training.Id, Mode_Id: null, Name: 'push_ups',
-            BodyParts: [Body.upperarm],
+            BodyParts: [Body.upperarm], Icon: 0xe947,
             Content: 'V1D16{|R1P96I3e8F32C2ee}{Rf0I500|R1P32F32|P35|P38|P3b|P3e|P41|P44|P47|P4a|P4d|P50|P53|P56|P59|P5c|P5f|P62|P65|P68|P6b|P6e|P71|P74|P77|P7a|P7d|P80|P83|P86|P89|P8c|P8f|P92|P95|P96|P93|P90|P8d|P8a|P87|P84|P81|P7e|P7b|P78|P75|P72|P6f|P6c|P69|P66|P63|P60|P5d|P5a|P57|P54|P51|P4e|P4b|P48|P45|P42|P3f|P3c|P39|P36|P33}'},
         {Id: '{00000000-0000-4000-4100-000000004003}', Author: 'UltraCreation Team',
             Category_Id: Category.muscle_training.Id, Mode_Id: null, Name: 'sit_ups',
-            BodyParts: [Body.abdomen],
+            BodyParts: [Body.abdomen], Icon: 0xe949,
             Content: 'V1D16{|R1P96I3e8F32C2ee}{R200I600|R1P32F3cC3|P38|P3e|P44|P4a|P50|P56|P5c|P62|P68|P6e|P74|P7a|P80|P86|P8c|P92|P96}'},
         ]
 

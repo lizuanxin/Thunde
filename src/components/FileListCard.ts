@@ -6,7 +6,7 @@ import * as Svc from '../providers';
         <ion-card card-list-default *ngFor="let f of FileList">
             <ion-card-content (tap)="OnSelection.emit(f)" tappable>
                 <ion-item>
-                    <ion-icon app-icon item-left>&#xe93e;</ion-icon>
+                    <ion-icon app-icon item-left>{{app.IconFont(f.Icon)}}</ion-icon>
                     <h2>{{f.Name_LangId|translate}}</h2>
                 </ion-item>
             </ion-card-content>

@@ -9,7 +9,7 @@ import * as Svc from '../providers'
   template: `
     <ion-list *ngIf="Visible" [class.fadein]="DeviceList.length>0" margin>
         <ng-template [ngIf]="DeviceList.length>0">
-            <ion-item *ngFor="let device of DeviceList" (click)="SelectionDevice(device.id);" tappable>
+            <ion-item *ngFor="let device of DeviceList" (click)="SelectionDevice(device.id);$event.stopPropagation()" tappable>
                 <p>{{'home_page.title'|translate}}</p>
                 <ion-icon app-icon *ngIf="device.rssi<-80" item-right><span f-1-2>{{device.rssi}}</span> &#xe92f;</ion-icon>
                 <ion-icon app-icon *ngIf="device.rssi<-70 && device.rssi>=-80" item-right><span f-1-2>{{device.rssi}}</span> &#xe92e;</ion-icon>
@@ -19,7 +19,7 @@ import * as Svc from '../providers'
             </ion-item>
         </ng-template>
         <ion-item *ngIf="DeviceList.length===0" [class.fadein]="DeviceList.length===0">
-            <span>{{'go_page.plug_device'|translate}}</span>
+            <span>{{'hint.plug_device'|translate}}</span>
         </ion-item>
     </ion-list>
     `
@@ -46,6 +46,8 @@ export class ScanDeviceComp implements OnInit, OnDestroy
 
     ngOnDestroy()
     {
+        console.log('scan-device destroy');
+
         if (TypeInfo.Assigned(this.ScanSubscription))
         {
             this.ScanSubscription.unsubscribe();
@@ -60,14 +62,16 @@ export class ScanDeviceComp implements OnInit, OnDestroy
 
         if (isDevMode())
         {
-            Shell.Connect()
+            this.app.ShowLoading()
+                .then(() => Shell.Connect())
                 .then(() => Shell.StopOutput())
                 .catch(err => console.log(err.message))
                 .then(() => this.OnSelection.next(DeviceId));
         }
         else
         {
-            Shell.Connect()
+            this.app.ShowLoading()
+                .then(() => Shell.Connect())
                 .then(() => Shell.StopOutput())
                 .then(() => this.OnSelection.next(DeviceId))
                 .catch(err=>

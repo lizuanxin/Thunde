@@ -15,6 +15,7 @@ export let translate_en =
         min: 'Minutes',
 
         back_twice_exit: 'Press Back twice to Exit',
+        plug_device: 'Plugin your device...',
         shutdown: 'Thunderbolt has been shutdown.',
         low_battery: 'Battery is Low, Please recharge...',
         disconnected: '',
@@ -213,6 +214,7 @@ export let translate_zh =
         min: '分钟',
 
         back_twice_exit: '双击退出应用',
+        plug_device: '请插入您的设备...',
         shutdown: '设备已关机。',
         low_battery: '电池电量低，请充电',
         disconnected: '设备已断开。',

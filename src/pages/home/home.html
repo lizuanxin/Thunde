@@ -31,6 +31,6 @@
   </ion-toolbar>
 </ion-footer>
 
-<ion-backdrop my-backdrop *ngIf="DeviceScanning" (click)="DeviceScanning=false" tappable>
-    <scan-device (OnCancel)="DeviceScanning=false" (OnSelection)="DeviceSelection($event)"></scan-device>
+<ion-backdrop my-backdrop *ngIf="DeviceScanning" (click)="DeviceScanning=false">
+    <scan-device (OnSelection)="DeviceSelection($event)"></scan-device>
 </ion-backdrop>
