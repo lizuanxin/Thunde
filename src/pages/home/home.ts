@@ -49,12 +49,6 @@ export class HomePage implements OnInit
         }
         else
             this.SelectTab(this.Tabs[0]);
-
-        document.addEventListener("touchstart", () =>
-        {
-            if (TypeInfo.Assigned(this.DeviceScanning))
-                this.DeviceScanning = false;
-        });
     }
 
     ProfileSwitch(id: string)
@@ -72,14 +66,12 @@ export class HomePage implements OnInit
 
     ActiveSwitch(): string
     {
-
         switch(this.ActiveTab.Index)
         {
             case 0: return 'home';
             case 1: return 'sport';
             case 2: return '';
         }
-
     }
 
     SelectTab(Tab: TTabItem): void

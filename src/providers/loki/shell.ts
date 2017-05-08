@@ -126,6 +126,11 @@ export class TShell extends TAbstractShell
         return BLE.TGatt.BrowserFakeDevice;
     }
 
+    static set FakeDevice(v: boolean)
+    {
+        BLE.TGatt.BrowserFakeDevice = v;
+    }
+
     static StartScan(): Subject<Array<BLE.IScanDiscovery>>
     {
         BLE.TGatt.BrowserFakeDevice = true;

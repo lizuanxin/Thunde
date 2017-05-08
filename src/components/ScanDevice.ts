@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Output, EventEmitter} from '@angular/core';
+import {isDevMode, Component, OnInit, OnDestroy, Output, EventEmitter} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription'
 
 import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
@@ -7,8 +7,8 @@ import * as Svc from '../providers'
 @Component({
   selector: 'scan-device',
   template: `
-    <div Dev-Mask>
-        <ion-list *ngIf="Visible" [class.fadein]="DeviceList.length>0" margin>
+    <div Dev-Mask *ngIf="Visible" (click)="OnCancel.next()" tappable>
+        <ion-list [class.fadein]="DeviceList.length>0" margin>
             <ng-template [ngIf]="DeviceList.length>0">
                 <ion-item *ngFor="let device of DeviceList" (click)="SelectionDevice(device.id);" tappable>
                     <p>{{'home_page.title'|translate}}</p>
@@ -35,6 +35,8 @@ export class ScanDeviceComp implements OnInit, OnDestroy
 
     ngOnInit()
     {
+        Svc.Loki.TShell.FakeDevice = isDevMode();
+
         if (! Svc.Loki.TShell.IsUsbPlugin)
         {
             if (this.app.IsAndroid)
@@ -58,6 +60,12 @@ export class ScanDeviceComp implements OnInit, OnDestroy
     {
         let Shell = Svc.Loki.TShell.Get(DeviceId);
 
+        if (isDevMode())
+        {
+            this.OnSelection.next(DeviceId);
+            return;
+        }
+
         Shell.Connect()
             .then(() => Shell.StopOutput())
             .then(() => this.OnSelection.next(DeviceId))
@@ -65,7 +73,6 @@ export class ScanDeviceComp implements OnInit, OnDestroy
             {
                 this.app.HideLoading()
                     .then(() => this.app.ShowHintId(err.message))
-
                 this.OnSelection.next(null);
             });
     }
@@ -83,24 +90,31 @@ export class ScanDeviceComp implements OnInit, OnDestroy
                     setTimeout(() => this.StartScan(), 0);
             });
 
-        setTimeout(() =>
+        if (isDevMode())
         {
-                this.Visible = true;
-                this.app.HideLoading();
-
-            /*
-            if (this.DeviceList.length !== 1)
+            setTimeout(() =>
             {
                 this.Visible = true;
                 this.app.HideLoading();
-            }
-            else
-                this.SelectionDevice(this.DeviceList[0].id);
-            */
-        }, 2000);
+            }, 500);
+        }
+        else
+        {
+            setTimeout(() =>
+            {
+                if (this.DeviceList.length !== 1)
+                {
+                    this.Visible = true;
+                    this.app.HideLoading();
+                }
+                else
+                    this.SelectionDevice(this.DeviceList[0].id);
+            }, 2000);
+        }
     }
 
     @Output() OnSelection = new EventEmitter<string>();
+    @Output() OnCancel = new EventEmitter<void>();
 
     private DeviceList: Array<Svc.IScanDiscovery> = [];
     private ScanSubscription: Subscription;

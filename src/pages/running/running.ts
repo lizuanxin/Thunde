@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, ViewChild, AfterViewInit} from '@angular/core';
+import {isDevMode, Component, OnInit, OnDestroy, ViewChild, AfterViewInit} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription'
 import 'rxjs/add/operator/toPromise';
 
@@ -181,15 +181,13 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
                         this.Downloading = false;
                     });
             })
-            .then(() =>
-            {
-                return this.app.HideLoading().then(() => this.Shell.StartScriptFile(this.ScriptFile.Name));
-            })
+            .then(() => this.app.HideLoading())
+            .then(() => this.Shell.StartScriptFile(this.ScriptFile.Name))
             .catch(err=>
             {
                 this.app.HideLoading()
                     .then(() => this.app.ShowHintId(err.message))
-                    //.then(() => this.ClosePage());
+                    .then(() => isDevMode() ? null : this.ClosePage());
             });
     }
 
