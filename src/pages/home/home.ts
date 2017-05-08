@@ -74,6 +74,18 @@ export class HomePage implements OnInit, OnDestroy
         }
     }
 
+    ActiveSwitch(): string
+    {       
+        
+        switch(this.ActiveTab.Index)
+        {
+            case 0: return 'home';
+            case 1: return 'sport';
+            case 2: return '';
+        }
+
+    }
+
     SelectTab(Tab: TTabItem): void
     {
         this.ActiveTab = Tab;

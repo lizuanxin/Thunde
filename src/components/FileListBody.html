@@ -1,5 +1,5 @@
-<ion-row [ngClass]="app.Skin('home')" style="padding-bottom:10vh">
-    <ion-col col-12 no-padding margin-top>
+<ion-row style="padding-bottom:10vh">
+    <ion-col col-12 no-padding>
         <section Flip-x>
             <swiper #BodySwiper [Config]="{pagination:'.swiper-pagination', paginationClickable: true,
                 nextButton:'.swiper-button-next', prevButton:'.swiper-button-prev', effect:'cube'}"
@@ -15,7 +15,7 @@
         </section>
     </ion-col>
 
-    <ion-col col-10 offset-1 no-padding margin-top>
+    <ion-col col-10 offset-1 no-padding>
         <ion-row VSideLeft nowrap>
             <ion-col no-padding text-center [class.active]="CurrBodyCategory===b" *ngFor="let b of BodyCategories" (click)="SelectBodyCategory(b)" tappable>
                 <button><b><span app-icon [innerHTML]="+app.IconFont(b.Icon)"></span></b></button>
@@ -26,12 +26,12 @@
 
 </ion-row>
 <ion-row align-items-center style="margin-top:-5vh">
-    <ion-col col-8 no-padding text-center style="height:120px">
-        <swiper swiper-piker #FileSwiper [Config]="{direction: 'vertical',slidesPerView: 3,centeredSlides: true}">
-            <div class="area-bar"></div>
+    <ion-col col-8 no-padding text-center style="height:160px">
+        <swiper swiper-piker #FileSwiper [Config]="{direction: 'vertical',pagination: '.swiper-pagination', paginationType: 'progress',slidesPerView: 4,centeredSlides: true}">
             <div class="swiper-wrapper">
-                <div class="swiper-slide" *ngFor="let f of FilteredFiles"><div class="active-bar"></div>{{f.Name_LangId|translate}}</div>
+                <div class="swiper-slide" *ngFor="let f of FilteredFiles">{{f.Name_LangId|translate}}</div>
             </div>
+            <div class="swiper-pagination" style="left:10%"></div>
         </swiper>
     </ion-col>
     <ion-col col-4>

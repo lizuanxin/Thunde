@@ -11,7 +11,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content no-scroll color="light" [ngSwitch]="ActiveTab.Index">
+<ion-content no-scroll color="light"  [ngClass]="app.Skin(ActiveSwitch())" [ngSwitch]="ActiveTab.Index">
     <scan-device *ngIf="DeviceScanning" (OnVisible)="DeviceListVisible()" (OnSelection)="DeviceSelection($event)"></scan-device>
     <filelist-body *ngSwitchCase="0" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-body>
     <ion-row *ngSwitchCase="1" margin>
