@@ -18,8 +18,8 @@
     <ion-list transparent no-margin no-padding>
       <ion-item no-lines no-margin no-padding>
         <ion-range min="0" max="100" [ngModel]="Ticking / ScriptFile.Duration * 100" color="secondary" disabled progress-bar>
-          <ion-label range-right [ngClass] = "app.SkinColor" [ngStyle]="{'margin':'0 0px 0 10px', 'font-size':'0.3vm', 'opacity': 0.3}">{{TotalMinute}}</ion-label>
-          <ion-label range-left [ngClass] = "app.SkinColor" [ngStyle]="{'margin':'0 13px 0 0px', 'font-size':'0.3vm'}">{{TickingDownHint}}</ion-label>
+          <ion-label range-right [ngClass] = "app.SkinColor" [ngStyle]="{'margin-left':'6px','font-size':'0.22vm', 'opacity': 0.3}">{{TotalMinute}}</ion-label>
+          <ion-label range-left [ngClass] = "app.SkinColor" [ngStyle]="{width:'48px', 'margin-left':'6px', 'font-size':'0.22vm'}">{{TickingDownHint}}</ion-label>
         </ion-range>
       </ion-item>
     </ion-list>
