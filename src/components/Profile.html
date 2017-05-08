@@ -1,28 +1,59 @@
 <ion-list inset list-init list-blue out-line>
-    <ion-item detail-none (click)="OnSelection.next('demo')" tappable>
+    <ion-item detail-none (click)="OnSelection.emit('demo')" tappable>
         {{'profile_page.demo'|translate}}
         <ion-note item-right><ion-icon>&#xf3d1;</ion-icon></ion-note>
     </ion-item>
-    <ion-item detail-none (click)="OnSelection.next('faq')" tappable>
+    <ion-item detail-none (click)="OnSelection.emit('faq')" tappable>
         {{'profile_page.faq'|translate}}
         <ion-note item-right><ion-icon>&#xf3d1;</ion-icon></ion-note>
     </ion-item>
-    <ion-item detail-none (click)="OnSelection.next('tou')" tappable>
+    <ion-item detail-none (click)="OnSelection.emit('tou')" tappable>
         {{'profile_page.tou'|translate}}
         <ion-note item-right><ion-icon>&#xf3d1;</ion-icon></ion-note>
     </ion-item>
 </ion-list>
+
 <ion-list inset list-init list-blue out-line>
     <ion-item-divider text-uppercase>
-        {{'profile_page.check_otg'|translate}}（{{IsSupportedOTG === true ? '允许' : '禁止'}}）
-        <p item-right><ion-icon [ngStyle]="{fontSize:'1.4em', color: IsSupportedOTG === true ? 'white' : 'rgba(255,255,255,0.5)'}">&#xf1f7;</ion-icon></p>
+        {{'profile_page.check_otg'|translate}}
+        <ion-icon *ngIf="IsSupportedOTG"  style="color: #fff; margin-right: 8px" item-right>&#xf2bc;</ion-icon>
+        <ion-icon *ngIf="! IsSupportedOTG" style="color: #fff; margin-right: 8px" item-right>&#xf2c0;</ion-icon>
+    </ion-item-divider>
+</ion-list>
+<!--<ion-list inset list-init list-blue out-line>
+    <ion-item-divider detail-none (click)="Toggle('auth')" text-uppercase>
+        {{'profile_page.no_login'|translate}}
+        <ion-note item-right style="color: #fff; padding-right: 8px"><ion-icon #authimg>&#xf3d1;</ion-icon></ion-note>
+    </ion-item-divider>
+    <ng-template [ngIf]="AuthShowing">
+        <ion-item detail-none *ngFor="let item of AuthArray,let Index = index" tappable>
+            <ion-note item-left style="margin-left:16px">{{item.name}}</ion-note>
+            <ion-note item-right style="color: #4b7efa">{{item.option}}</ion-note>
+        </ion-item>
+    </ng-template>
+</ion-list>-->
+
+<ion-list inset list-init list-blue out-line>
+    <ion-item-divider text-uppercase>
+        <ion-note color="light">{{'profile_page.company_name'|translate}}</ion-note>
     </ion-item-divider>
     <ion-item detail-none>
-        当前版本：
-        <ion-note item-right>V2.1</ion-note>        
+        <ion-note item-left style="margin-left:16px; font-size: 1.5rem">
+            {{'profile_page.address'|translate}}
+        </ion-note>
+        <ion-note style="font-size: 0.2rem" item-right>{{'profile_page.company_address'|translate}}</ion-note>
     </ion-item>
-    <ion-item detail-none>        
-        <ion-note item-right>深圳瑰琦科技</ion-note>        
+    <ion-item detail-none>
+        <ion-note item-left style="margin-left:16px; font-size: 1.5rem">
+            {{'profile_page.phone_number'|translate}}
+        </ion-note>
+        <ion-note item-right>{{'profile_page.company_phone_number'|translate}}</ion-note>
+    </ion-item>
+
+    <ion-item detail-none>
+        <ion-note item-left style="margin-left:16px; font-size: 1.5rem">
+            {{'profile_page.app_version'|translate}}
+        </ion-note>
+        <ion-note item-right>v2.1</ion-note>
     </ion-item>
 </ion-list>
-

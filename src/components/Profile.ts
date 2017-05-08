@@ -7,7 +7,6 @@ export class ProfileComp implements OnInit
 {
     constructor(private app: Svc.TApplication)
     {
-
     }
 
     ngOnInit()
