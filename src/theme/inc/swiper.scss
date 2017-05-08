@@ -18,20 +18,40 @@
 }
 
 [swiper-piker]{
+    position:relative;
+    .area-bar{
+        position:absolute;
+        width:3px;
+        left:15%;
+        top:0;
+        bottom:0;
+        background:-webkit-linear-gradient(top,transparent,rgba(0,0,0,.05),transparent) 
+        
+    }
     .swiper-wrapper{        
         transform: rotateX(21.16deg) translate3d(0px, 40px, 0px);
         transition-duration: 150ms;
     }
-    .swiper-slide{        
+    .swiper-slide{  
+        position:relative;      
         color:#ccc;
         -webkit-transform:scale(.85);
         transform:scale(.85);
         -webkit-transform-origin: center center;
         transform-origin: center center;
         &.swiper-slide-active{
+            display: flex;
+            align-items: center;
             -webkit-transform:scale(1);
             transform:scale(1);
-            color:color($DominantColor,D-header,base);
+            color:darken(color($DominantColor,D-blue,base),25%);
+            .active-bar{
+                position:absolute;
+                left:15%;
+                height:30%;
+                width:3px;
+                background-color:darken(color($DominantColor,D-blue,base),25%);
+            }
         }
     } 
 }

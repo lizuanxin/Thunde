@@ -28,8 +28,9 @@
 <ion-row align-items-center style="margin-top:-5vh">
     <ion-col col-8 no-padding text-center style="height:120px">
         <swiper swiper-piker #FileSwiper [Config]="{direction: 'vertical',slidesPerView: 3,centeredSlides: true}">
+            <div class="area-bar"></div>
             <div class="swiper-wrapper">
-                <div class="swiper-slide" *ngFor="let f of FilteredFiles">{{f.Name_LangId|translate}}</div>
+                <div class="swiper-slide" *ngFor="let f of FilteredFiles"><div class="active-bar"></div>{{f.Name_LangId|translate}}</div>
             </div>
         </swiper>
     </ion-col>
