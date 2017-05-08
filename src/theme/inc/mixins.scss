@@ -70,6 +70,10 @@
     .skin-sport{
         background:-webkit-linear-gradient(top,color($DominantColor,D-header,base),color($DominantColor,D-blue,base));
     }
+
+    .skin-running{
+        background:-webkit-linear-gradient(top,color($DominantColor,D-header,base),color($DominantColor,D-blue,base));
+    }
 }
 
 @mixin background-list($list) {

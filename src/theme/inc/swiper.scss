@@ -38,13 +38,13 @@
     .swiper-slide{  
         position:relative;      
         color:#ccc;
-        -webkit-transform:scale(.85);
-        transform:scale(.85);
+        -webkit-transform:scale(1);
+        transform:scale(1);
         -webkit-transform-origin: center center;
         transform-origin: center center;
         &.swiper-slide-active{
-            -webkit-transform:scale(1);
-            transform:scale(1);
+            -webkit-transform:scale(1.3);
+            transform:scale(1.3);
             color:darken(color($DominantColor,D-blue,base),25%);            
         }
     } 
