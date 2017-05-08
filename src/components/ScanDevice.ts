@@ -62,19 +62,23 @@ export class ScanDeviceComp implements OnInit, OnDestroy
 
         if (isDevMode())
         {
-            this.OnSelection.next(DeviceId);
-            return;
+            Shell.Connect()
+                .then(() => Shell.StopOutput())
+                .catch(err => console.log(err.message))
+                .then(() => this.OnSelection.next(DeviceId));
         }
-
-        Shell.Connect()
-            .then(() => Shell.StopOutput())
-            .then(() => this.OnSelection.next(DeviceId))
-            .catch(err=>
-            {
-                this.app.HideLoading()
-                    .then(() => this.app.ShowHintId(err.message))
-                this.OnSelection.next(null);
-            });
+        else
+        {
+            Shell.Connect()
+                .then(() => Shell.StopOutput())
+                .then(() => this.OnSelection.next(DeviceId))
+                .catch(err=>
+                {
+                    this.app.HideLoading()
+                        .then(() => this.app.ShowHintId(err.message))
+                    this.OnSelection.next(null);
+                });
+        }
     }
 
     private StartScan()
