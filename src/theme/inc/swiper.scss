@@ -18,11 +18,11 @@
 }
 
 [swiper-piker]{
-    .swiper-wrapper{
-        transform: rotateX(21.16deg) translate3d(0px, 50px, 0px);
+    .swiper-wrapper{        
+        transform: rotateX(21.16deg) translate3d(0px, 40px, 0px);
         transition-duration: 150ms;
     }
-    .swiper-slide{
+    .swiper-slide{        
         color:#ccc;
         -webkit-transform:scale(.85);
         transform:scale(.85);

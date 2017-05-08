@@ -1,7 +1,7 @@
 @mixin IonList($color,$value){
     &[list-#{$color}]{
         background-color:lighten($value,35%);
-        
+
         &[out-line]{
             border:solid 1px lighten($value,20%);
         }
@@ -43,7 +43,7 @@
     }
 
     .skin-demo{
-        background-color: color($DominantColor,D-demo,base);         
+        background-color: darken(color($DominantColor,D-header,base),5%);         
     }
 
     .skin-tou{
