@@ -24,7 +24,6 @@ export let translate_en =
 
         network_unavailable: 'Network Unavailable.',
         congratulations: 'Congratulations',
-        plug_device: 'Plugin your device...',
     },
 
     button:
@@ -223,7 +222,6 @@ export let translate_zh =
 
         network_unavailable: '无网络',
         congratulations: '太棒啦！',
-        plug_device: '请插入设备...',
     },
 
     button:
