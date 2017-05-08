@@ -25,7 +25,6 @@ export class FileListBodyComp implements OnInit
             new TBodyCategory(0xE944, Svc.const_data.BodyCategory.joint));
 
         this.SelectBodyCategory(this.BodyCategories[0]);
- 
     }
 
     @Input() set FileList(Value: Svc.TScriptFileList)
@@ -81,6 +80,12 @@ export class FileListBodyComp implements OnInit
         }
 
         return this._FilteredFiles;
+    }
+
+    SelectionFile(ev: any)
+    {
+        let f = this._FilteredFiles[this.FileSwiper.Instance.activeIndex];
+        this.OnSelection.next(f);
     }
 
     SetStyle(n: number): Object

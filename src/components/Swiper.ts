@@ -77,17 +77,7 @@ export class SwiperComp implements AfterViewInit
     @Output() OnAutoplay = new EventEmitter<Swiper>();
     @Output() OnAutoplayStart = new EventEmitter<Swiper>();
     @Output() OnAutoplayStop = new EventEmitter<Swiper>();
-    /*
-    onSetTranslate(swiper, translate) 	function 		Callback function, will be executed when swiper's wrapper change its position. Receives swiper instance and current translate value as an arguments
-    onSetTransition(swiper, transition) 	function 		Callback function, will be executed everytime when swiper starts animation. Receives swiper instance and current transition duration (in ms) as an arguments
-    onLazyImageLoad(swiper, slide, image) 	function 		Callback function, will be executed in the beginning of lazy loading of image
-    onLazyImageReady(swiper, slide, image) 	function 		Callback function, will be executed when lazy loading image will be loaded
-    onPaginationRendered(swiper, paginationContainer) 	function 		Callback function, will be executed after pagination elements generated and added to DOM
-    onScroll(swiper, e) 	function 		Callback function, will be executed when slider sliding or scrolling happens with mousehweel control
-    onBeforeResize(swiper) 	function 		Callback function, will be executed on window resize right before swiper's onresize manipulation
-    onAfterResize(swiper) 	function 		Callback function, will be executed on window resize right after swiper's onresize manipulation
-    onKeyPress(swiper, kc) 	function 		Callback function, will be executed on "keydown" event when keyboard control is enabled
-    */
+
     private HookSwiperEvents()
     {
         /* all these can not simply use to decide slide changed

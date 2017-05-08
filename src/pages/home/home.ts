@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import {NavController, NavParams} from 'ionic-angular';
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo'
@@ -6,7 +6,7 @@ import * as View from '..'
 import * as Svc from '../../providers';
 
 @Component({selector: 'page-home', templateUrl: 'home.html'})
-export class HomePage implements OnInit, OnDestroy
+export class HomePage implements OnInit
 {
     constructor(private nav: NavController, private navParams: NavParams,
         private app: Svc.TApplication, private Asset: Svc.TAssetService, private Distribute: Svc.TDistributeService)
@@ -57,10 +57,6 @@ export class HomePage implements OnInit, OnDestroy
         });
     }
 
-    ngOnDestroy(): void
-    {
-    }
-
     ProfileSwitch(id: string)
     {
         switch(id)
@@ -75,8 +71,8 @@ export class HomePage implements OnInit, OnDestroy
     }
 
     ActiveSwitch(): string
-    {       
-        
+    {
+
         switch(this.ActiveTab.Index)
         {
             case 0: return 'home';

@@ -14,11 +14,7 @@
 <ion-content no-scroll color="light"  [ngClass]="app.Skin(ActiveSwitch())" [ngSwitch]="ActiveTab.Index">
     <scan-device *ngIf="DeviceScanning" (OnVisible)="DeviceListVisible()" (OnSelection)="DeviceSelection($event)"></scan-device>
     <filelist-body *ngSwitchCase="0" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-body>
-    <ion-row *ngSwitchCase="1" margin>
-      <ion-col col-12>
-          <filelist-card  [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-card>
-      </ion-col>
-    </ion-row>
+    <filelist-card *ngSwitchCase="1" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-card>
     <filelist-dial *ngSwitchCase="2" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-dial>
     <profile *ngSwitchCase="65536" (OnSelection)="ProfileSwitch($event)"></profile>
 </ion-content>
