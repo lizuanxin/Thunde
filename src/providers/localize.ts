@@ -23,6 +23,7 @@ export let translate_en =
 
         network_unavailable: 'Network Unavailable.',
         congratulations: 'Congratulations',
+        plug_device: 'Plugin your device...',
     },
 
     button:
@@ -55,8 +56,8 @@ export let translate_en =
         check_otg: 'USB On-The-Go',
         demo: 'Demo',
         appearance: 'Appearance',
-        app_version: 'App Version:',
-        company_name: 'Co., Ltd GuiQi Technology (shenzhen)',
+        app_version: 'App Version',
+        company: 'Co., Ltd GuiQi Technology (shenzhen)',
         address: 'address:',
         company_address: '深圳市南山区科技园科丰路8号金达科技中心',
         phone_number: 'phone:',
@@ -219,7 +220,8 @@ export let translate_zh =
         hardware_error: 'Hardware error, Please contact Customer Service.',
 
         network_unavailable: '无网络',
-        congratulations: '太棒啦！'
+        congratulations: '太棒啦！',
+        plug_device: '请插入设备...',
     },
 
     button:
@@ -249,8 +251,8 @@ export let translate_zh =
         tou: '使用条款',
         check_otg: 'OTG 状态',
         demo: '基本操作',
-        app_version: '软件当前版本:',
-        company_name: 'Co., Ltd 深圳瑰琦科技有限公司',
+        app_version: '软件当前版本',
+        company: 'Co., Ltd 深圳瑰琦科技有限公司',
         address: '地址:',
         company_address: '深圳市南山区科技园科丰路8号金达科技中心',
         phone_number: '电话:',
