@@ -12,7 +12,7 @@
 </ion-header>
 
 <ion-content no-scroll  color="light"  [ngClass]="app.Skin(ActiveSwitch())" [ngSwitch]="ActiveTab.Index">
-    <scan-device *ngIf="DeviceScanning" (OnVisible)="DeviceListVisible()" (OnSelection)="DeviceSelection($event)"></scan-device>
+    <scan-device *ngIf="DeviceScanning" (OnCancel)="DeviceScanning=false" (OnSelection)="DeviceSelection($event)"></scan-device>
     <filelist-body *ngSwitchCase="0" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-body>
     <filelist-card *ngSwitchCase="1" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-card>
     <filelist-dial *ngSwitchCase="2" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-dial>
