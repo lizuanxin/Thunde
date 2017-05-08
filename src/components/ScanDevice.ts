@@ -7,8 +7,6 @@ import * as Svc from '../providers'
 @Component({
   selector: 'scan-device',
   template: `
-
-    <div Dev-Mask *ngIf="Visible" (click)="OnCancel.next()" tappable>
         <ion-list [class.fadein]="DeviceList.length>0" margin>
             <ng-template [ngIf]="DeviceList.length>0">
                 <ion-item *ngFor="let device of DeviceList" (click)="SelectionDevice(device.id);" tappable>
@@ -24,8 +22,6 @@ import * as Svc from '../providers'
                 <span>{{'go_page.plug_device'|translate}}</span>
             </ion-item>
         </ion-list>
-    </div>
-
     `
 })
 export class ScanDeviceComp implements OnInit, OnDestroy
@@ -120,7 +116,7 @@ export class ScanDeviceComp implements OnInit, OnDestroy
     }
 
     @Output() OnSelection = new EventEmitter<string>();
-    @Output() OnCancel = new EventEmitter<void>();
+    // @Output() OnCancel = new EventEmitter<void>();
 
     private DeviceList: Array<Svc.IScanDiscovery> = [];
     private ScanSubscription: Subscription;
