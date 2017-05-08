@@ -105,6 +105,21 @@ div {
             border-radius: 5%;
         }
     }
+    &[Dev-Mask]{
+
+        display: flex;
+        position:absolute;
+        align-items: center;
+        z-index:1;
+        top:0;
+        left:0;
+        right:0;
+        bottom:0;
+        background-color:lighten(color($DominantColor,D-header,base),25%);        
+        ion-list{
+            width:100%;
+        }
+    }
 }
 
 .radian {
