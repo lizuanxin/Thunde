@@ -22,10 +22,10 @@
         <div #tips1 class="tips" [class.animateTips]="TypeMode > 3"></div>
         <div #tips2 class="tips" [class.animateTips]="TypeMode > 4"></div>
         <div #tips3 class="tips" [class.animateTips]="TypeMode > 9"></div>
-        <div #electrode>{{'demo_mode_play_page.electrode'|translate}}</div>
-        <div #power [innerHTML]="'demo_mode_play_page.phone_power'|translate"></div>
-        <div #switch [innerHTML]="'demo_mode_play_page.switch'|translate"></div>
-        <div #strength [innerHTML]="'demo_mode_play_page.strength'|translate"></div>
+        <div #electrode>{{'demo_play_page.electrode'|translate}}</div>
+        <div #power [innerHTML]="'demo_play_page.phone_power'|translate"></div>
+        <div #switch [innerHTML]="'demo_play_page.switch'|translate"></div>
+        <div #strength [innerHTML]="'demo_play_page.strength'|translate"></div>
         <div><ion-icon app-icon #line1>&#xe92a;</ion-icon></div>
         <div><ion-icon app-icon #line2>&#xe931;</ion-icon></div>
         <div><ion-icon app-icon #line3>&#xe935;</ion-icon></div>
@@ -37,7 +37,7 @@
         <div><ion-icon app-icon #key>&#xe921;</ion-icon></div>
         <div><ion-icon #body app-icon>&#xe91f;</ion-icon></div>
     </div>
-    <div text-light absolute style="z-index:1;left:30px;bottom:30px" (click)="nav.pop()" tappable>{{'demo_mode_play_page.skip'|translate}}</div>
+    <div text-light absolute style="z-index:1;left:30px;bottom:30px" (click)="nav.pop()" tappable>{{'demo_play_page.skip'|translate}}</div>
     <div text-center #ready class="animation" [ngStyle]="{opacity:0}">
         <button clear text-light [ngStyle]="{fontSize:'4.2em',overflow:'visible'}" (click)="Go()" tappable>
             <ion-icon app-icon>&#xe929;</ion-icon>

@@ -37,7 +37,7 @@ export class SwiperComp implements AfterViewInit
                 setTimeout(() =>
                 {
                     this.Instance.slideTo(0, 0);
-                    this.Instance.update();
+                    this.Instance.update(true);
                     this.Refreshing = null;
 
                     this.LastActiveIndex = undefined;

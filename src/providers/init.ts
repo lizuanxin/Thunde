@@ -129,7 +129,7 @@ export namespace Initialization
             // Id, Category_Id, Mode_Id, Body_Id, Author, Content
             queries.push(new TSqlQuery(InsertScriptFile, [iter.Id, Icon, iter.Category_Id, iter.Mode_Id, iter.Author, iter.Content]));
 
-            if (iter.BodyParts.length === 0)
+            if (! iter.BodyParts || iter.BodyParts.length === 0)
             {
                 for (let body of const_data.BodyParts)
                     queries.push(new TSqlQuery(InsertScriptFile_Body, [iter.Id, body.Id]));

@@ -57,7 +57,7 @@ export let translate_en =
         appearance: 'Appearance',
     },
 
-    demo_mode_play_page:
+    demo_play_page:
     {
         electrode: 'Apply all the Electrodes',
         phone_power: 'O<br/>T<br/>G<br/>',
@@ -71,6 +71,7 @@ export let translate_en =
         demo_play_finish: 'Discover the hitting and contraction effects in the long list of programs'
     },
 
+    /*
     go_page:
     {
         plug_device: 'Plugin your device...',
@@ -82,6 +83,7 @@ export let translate_en =
         cluster_freq: '<b>Stimulation</b> Frequency: ',
         pulse_width:  '<b>Impulse</b>: ',
     },
+    */
 
     running_page:
     {
@@ -117,20 +119,20 @@ export let translate_en =
     scriptfile:
     {
     /* therpy */
-        sore: 'Sore Therpy',
-        pain: 'Pain Treatment',
-        han: 'Hans Treatment',
-    /* relax */
+        sore: 'Sore therapy',
+        pain: 'Pain therapy',
+        han: 'Hans therapy',
         knock: 'Knock',
         press: 'Press',
         twist: 'Twist',
         knead: 'Knead',
-        joint: 'Joint',
-        shoudler: 'Shoudler',
-        upperarm: 'Upperarm',
-        waist: 'Waist',
-        soles: 'Soles',
-        leg: 'Leg',
+
+        shoudler: 'Shoudler Deep-therapy',
+        upperarm: 'Upperarm Deep-therapy',
+        waist: 'Waist Deep-therapy',
+        leg: 'Leg Deep-therapy',
+        soles: 'Soles Deep-therapy',
+        joint: 'Joint Deep-therapy',
 
     /* fat-burning */
         fb_a: 'Burning A',
@@ -238,19 +240,7 @@ export let translate_zh =
         demo: '基本操作',
     },
 
-    go_page:
-    {
-        plug_device: '请插入您的设备...',
-
-        advise: '适用于',
-        professional: '专业描述',
-        seq: '<b>序列</b> ',
-        effect_freq: '有效<b>作用</b>频率: ',
-        cluster_freq: '<b>刺激簇</b>频率: ',
-        pulse_width: '输出<b>脉冲</b>宽度: ',
-    },
-
-    demo_mode_play_page:
+    demo_play_page:
     {
         electrode: '贴好电极贴',
         phone_power: '手<br/>机<br/>取<br/>电',
@@ -300,17 +290,18 @@ export let translate_zh =
     {
         sore: '酸痛治疗',
         pain: '疼痛治疗',
-        han: '快速镇痛',
+        han: '韩氏止痛',
         knock: '敲打',
         press: '按压',
-        twist: '拧',
+        twist: '搓',
         knead: '揉',
-        joint: '关节舒展',
-        shoudler: '肩部按摩',
-        upperarm: '上臂按摩',
-        waist: '腰部',
-        soles: '足底',
-        leg: '腿部',
+
+        joint: '关节深度治疗',
+        shoudler: '肩部深度治疗',
+        upperarm: '上臂深度治疗',
+        waist: '腰部深度治疗',
+        soles: '足底深度治疗',
+        leg: '腿部深度治疗',
 
     /* fat-burning */
         fb_a: '燃烧脂肪 A',
