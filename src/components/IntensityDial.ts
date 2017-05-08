@@ -1,10 +1,12 @@
 import {Component, OnInit, Input, Output, EventEmitter, ElementRef} from '@angular/core'
 import {TypeInfo} from "../UltraCreation/Core/TypeInfo";
 
+import * as Svc from '../providers/application';
+
 @Component({selector: 'intensity-dial', template: '<canvas style="width:100%" tappable></canvas>'})
 export class IntensityDialComp implements OnInit
 {
-    constructor(private Elements: ElementRef)
+    constructor(private Elements: ElementRef, private app: Svc.TApplication)
     {
         this.Image = new Image();
         this.Image.src = "assets/img/bg_dial.png";
@@ -12,7 +14,37 @@ export class IntensityDialComp implements OnInit
 
     ngOnInit()
     {
-        this.Canvas = this.Elements.nativeElement.children[0] as HTMLCanvasElement;
+        let Canvas = this.Elements.nativeElement.children[0] as HTMLCanvasElement;
+        this.Content = new TContentCanvas(Canvas, this.app, this.OnValueChanged);
+    }
+
+    @Input()
+    set Value(v: number)
+    {
+        if (this._Value === v)
+            return;
+        else
+            this._Value = v;
+
+        if (this._Min <= Math.trunc(v) && Math.trunc(v) <= this._Max && TypeInfo.Assigned(this.Content))
+            this.Content.Paint(this._Value);
+    }
+
+    @Output() OnValueChanged = new EventEmitter<number>(true);
+
+    private _Min: number = 0;
+    private _Max: number = 60;
+    private _Value: number = 0;
+    private Image;
+
+    private Content: TContentCanvas;
+}
+
+export class TContentCanvas
+{
+    constructor(private Canvas: HTMLCanvasElement, private app: Svc.TApplication,
+        private OnValueChanged: EventEmitter<number>)
+    {
         this.Canvas.addEventListener("touchstart", this.TouchHandler.bind(this));
 
         let rect = this.Canvas.getBoundingClientRect();
@@ -33,7 +65,7 @@ export class IntensityDialComp implements OnInit
         setTimeout(() => this.Paint(this._Value), 0);
     }
 
-    private Paint(Progress: number)
+    Paint(Progress: number)
     {
         if (! TypeInfo.Assigned(this.Ctx))
             return;
@@ -46,15 +78,15 @@ export class IntensityDialComp implements OnInit
         this.DrawBackground(this.Image, width, width)
             .then(() =>
             {
-                this.DrawArc(
-                {
-                    x: this.CenterX,
-                    y: this.CenterY,
-                    radius: this.Radius - (width * 0.03)/2,
-                    startAngle: 0,
-                    endAngle: 2 * Math.PI,
-                    fillColor: 'rgba(0,0,0,.3)',
-                });
+                // this.DrawArc(
+                // {
+                //     x: this.CenterX,
+                //     y: this.CenterY,
+                //     radius: this.Radius - (width * 0.03)/2,
+                //     startAngle: 0,
+                //     endAngle: 2 * Math.PI,
+                //     fillColor: 'rgba(0,0,0,.2)',
+                // });
 
                 this.DrawArc(
                 {
@@ -63,8 +95,8 @@ export class IntensityDialComp implements OnInit
                     radius: this.Radius,
                     startAngle: this.StartAngle + anglePiece * Progress,
                     endAngle: this.EndAngle,
-                    lineWidth: width * 0.03,
-                    strokeColor: '#bacade',
+                    lineWidth: width * 0.036,
+                    strokeColor: '#ebebeb',
                 });
 
                 this.DrawArc(
@@ -72,10 +104,11 @@ export class IntensityDialComp implements OnInit
                     x: this.CenterX,
                     y: this.CenterY,
                     radius: this.Radius,
-                    startAngle: 0.5005 * Math.PI,
+                    startAngle: 0.501 * Math.PI,
                     endAngle: this.StartAngle,
                     lineWidth: width * 0.1,
-                    strokeColor: '#ffffff'
+                    strokeColor: '#74aeff',
+                    shadowBox: {shadowOffsetX:0, shadowOffsetY: width * 0.02, shadowBlur: width * 0.02, shadowColor:'rgba(116, 174, 255, 0.2)'}
                 });
 
                 this.DrawArc(
@@ -84,9 +117,10 @@ export class IntensityDialComp implements OnInit
                     y: this.CenterY,
                     radius: this.Radius,
                     startAngle: this.EndAngle%(2 * Math.PI),
-                    endAngle: 0.4995 * Math.PI,
+                    endAngle: 0.499 * Math.PI,
                     lineWidth: width * 0.1,
-                    strokeColor: '#ffffff'
+                    strokeColor: '#74aeff',
+                    shadowBox: {shadowOffsetX:0, shadowOffsetY: width * 0.02, shadowBlur: width * 0.02, shadowColor:'rgba(116, 174, 255, 0.2)'}
                 });
 
                 this.DrawRotateText("-", {
@@ -94,8 +128,8 @@ export class IntensityDialComp implements OnInit
                     y: this.CenterY,
                     radius: this.Radius,
                     angle: 0.5005*Math.PI + (this.StartAngle - 0.5005*Math.PI)/2,
-                    font: this.SetFontSize(0.08),
-                    fillColor: '#9a9b9b'
+                    font: this.SetFontSize(0.11),
+                    fillColor: '#fff'
                 });
 
                 this.DrawRotateText("+", {
@@ -103,23 +137,32 @@ export class IntensityDialComp implements OnInit
                     y: this.CenterY,
                     radius: this.Radius,
                     angle: this.EndAngle%(2 * Math.PI) + (0.4995 * Math.PI - this.EndAngle%(2 * Math.PI))/2,
-                    font: this.SetFontSize(0.08),
-                    fillColor: '#9a9b9b'
+                    font: this.SetFontSize(0.09),
+                    fillColor: '#fff'
                 });
 
                 this.DrawText(Math.trunc(Progress).toString(), {
                     x: this.CenterX,
                     y: this.CenterY,
                     font: this.SetFontSize(0.38),
-                    fillColor: '#aaffff'
+                    fillColor: 'rgba(0,0,0,.6)'
                 })
             });
     }
 
     private DrawArc(option: ICanvasDrawOption)
     {
+        this.Ctx.save();
         this.Ctx.beginPath();
         this.Ctx.arc(option.x, option.y, option.radius, option.startAngle, option.endAngle, false);
+
+        if (option.shadowBox)
+        {
+            this.Ctx.shadowOffsetX = option.shadowBox.shadowOffsetX;
+            this.Ctx.shadowOffsetY = option.shadowBox.shadowOffsetY;
+            this.Ctx.shadowBlur = option.shadowBox.shadowBlur;
+            this.Ctx.shadowColor = option.shadowBox.shadowColor;
+        }
 
         if (option.fillColor)
         {
@@ -133,6 +176,8 @@ export class IntensityDialComp implements OnInit
             this.Ctx.strokeStyle = option.strokeColor;
             this.Ctx.stroke();
         }
+
+        this.Ctx.restore();
     }
 
     private DrawBackground(img: HTMLImageElement, width: number, height: number): Promise<any>
@@ -246,37 +291,9 @@ export class IntensityDialComp implements OnInit
         return (this.Canvas.width * size + 'px ' + (iconFont ? 'Thundericons' : 'arial')).toString();
     }
 
-    @Input()
-    set Min(min: number)
-    {
-        this._Min = min;
-    }
-
-    @Input()
-    set Max(max: number)
-    {
-        this._Max = max;
-    }
-
-    @Input()
-    set Value(v: number)
-    {
-        if (this._Value === v)
-            return;
-        else
-            this._Value = v;
-
-        if (this._Min <= Math.trunc(v) && Math.trunc(v) <= this._Max)
-            this.Paint(this._Value);
-    }
-
-    @Output() OnValueChanged = new EventEmitter<number>(true);
-
     private Ctx: CanvasRenderingContext2D;
-    private Canvas: HTMLCanvasElement;
     private Image: HTMLImageElement;
 
-    private _Min: number = 0;
     private _Max: number = 60;
     private _Value: number = 0;
 
@@ -300,5 +317,12 @@ interface ICanvasDrawOption
     lineCap?: string,
     font?:string,
     strokeColor?: any,
-    fillColor?: string
+    fillColor?: string,
+    shadowBox?:
+    {
+        shadowOffsetX?: number,
+        shadowOffsetY?: number,
+        shadowBlur?: number,
+        shadowColor?: string
+    }
 }
