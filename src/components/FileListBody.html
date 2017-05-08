@@ -1,6 +1,6 @@
-<ion-row style="padding-bottom:10vh">
+<ion-row style="padding-bottom:5vh;background:url(assets/img/bg_home.png) center bottom repeat-x;background-size:contain">
     <ion-col col-12 no-padding>
-        <section style="height:35vh" ion-text color="light">
+        <section ion-text color="light">
             <swiper #BodySwiper [Config]="{pagination:'.swiper-pagination', paginationClickable: true,
                 nextButton:'.swiper-button-next', prevButton:'.swiper-button-prev', effect:'cube'}"
             (OnSlideChanged)="UsageIconChanged($event)">
@@ -25,7 +25,7 @@
 
 
 </ion-row>
-<ion-row align-items-center style="margin-top:-5vh">
+<ion-row align-items-center margin-top>
     <ion-col col-8 no-padding text-center style="height:160px">
         <swiper swiper-piker #FileSwiper [Config]="{direction: 'vertical',pagination: '.swiper-pagination', paginationType: 'progress',slidesPerView: 4,centeredSlides: true}">
             <div class="swiper-wrapper">
