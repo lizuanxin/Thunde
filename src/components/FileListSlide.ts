@@ -102,9 +102,9 @@ class TContentCanvas
         let Count = this.ShowItemCount + Idx;
         //console.log("ScrollingY:" + this.ScrollingY + "  Idx:" + Idx + "  ItemHeight" + this.ItemHeight + "  Count:" + Count + "  Offset:" + Offset);
 
-        this.DrawRect(this.Oy - this.ItemHeight * 1.5);
-        this.DrawRect(this.Oy - this.ItemHeight * 0.5);
-        this.DrawRect(this.Oy + this.ItemHeight * 0.5);
+        // this.DrawRect(this.Oy - this.ItemHeight * 1.5);
+        // this.DrawRect(this.Oy - this.ItemHeight * 0.5);
+        // this.DrawRect(this.Oy + this.ItemHeight * 0.5);
 
         for (let i = Idx; i >= 0 && i < Count; i++)
         {
