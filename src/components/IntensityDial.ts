@@ -15,7 +15,7 @@ export class IntensityDialComp implements OnInit
     ngOnInit()
     {
         let Canvas = this.Elements.nativeElement.children[0] as HTMLCanvasElement;
-        this.Content = new TContentCanvas(Canvas, this.app, this.OnValueChanged);
+        this.Content = new TContentCanvas(Canvas, this.app, this.OnValueChanged, this.Image);
     }
 
     @Input()
@@ -35,7 +35,7 @@ export class IntensityDialComp implements OnInit
     private _Min: number = 0;
     private _Max: number = 60;
     private _Value: number = 0;
-    private Image;
+    private Image: HTMLImageElement;
 
     private Content: TContentCanvas;
 }
@@ -43,7 +43,7 @@ export class IntensityDialComp implements OnInit
 export class TContentCanvas
 {
     constructor(private Canvas: HTMLCanvasElement, private app: Svc.TApplication,
-        private OnValueChanged: EventEmitter<number>)
+        private OnValueChanged: EventEmitter<number>, private Image: HTMLImageElement)
     {
         this.Canvas.addEventListener("touchstart", this.TouchHandler.bind(this));
 
@@ -291,9 +291,6 @@ export class TContentCanvas
         return (this.Canvas.width * size + 'px ' + (iconFont ? 'Thundericons' : 'arial')).toString();
     }
 
-    private Ctx: CanvasRenderingContext2D;
-    private Image: HTMLImageElement;
-
     private _Max: number = 60;
     private _Value: number = 0;
 
@@ -302,6 +299,8 @@ export class TContentCanvas
     private Radius: number;
     private CenterX: number;
     private CenterY: number;
+
+    private Ctx: CanvasRenderingContext2D;
 }
 
 interface ICanvasDrawOption
