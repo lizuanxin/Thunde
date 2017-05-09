@@ -29,41 +29,8 @@ ion-toolbar {
     &[visible] {
         overflow: visible;
         contain: none;
-    }
-    
+    } 
 
-    &[FooterTab-Default]{
-        ion-row{
-            ion-col{
-                color:#a1a1a1;
-                background-color:lighten(color($DominantColor,D-header,base),28%);
-                &.state{
-                    background-color:color($DominantColor,D-Default,base);                 
-                    button{
-                        @include gradient-liner(top,#8adaff,#7f9dff);
-                        // background-color:#23609d;
-                        color:color($colors,light,base);
-                    }
-                }
-                button{                    
-                    width:10vw;
-                    padding-top:5vw;
-                    padding-bottom:5vw;
-                    font-size:5vw;
-                    border-radius:50%;
-                    height:0;
-                    line-height:0;
-                    background:transparent;
-                    display: inherit;
-                    margin: auto;
-                    color:#a1a1a1;
-                    ion-icon{
-                        margin-top:-5px;
-                    }
-                }
-            }
-        }
-    }
    
 }
 

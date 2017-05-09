@@ -177,8 +177,8 @@ $darkColor) {
 }
 
 @mixin gradient-liner($direction,$startColor,$endColor) {
-    background: linear-gradient($direction,$startColor,$endColor);
-    background: -webkit-linear-gradient($direction,$startColor,$endColor);
+    background-image: linear-gradient(to $direction,$startColor,$endColor);
+    background-image: -webkit-linear-gradient($direction,$startColor,$endColor);
 }
 
 @mixin square($outlineStyle,

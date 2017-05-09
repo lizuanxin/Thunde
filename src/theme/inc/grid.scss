@@ -8,11 +8,11 @@ div.grid {
         &:first-child {
             margin-top: 0;
         }
-        &:nth-child(odd){
-            background-color:rgba(255,255,255,.08)
+        &:nth-child(odd) {
+            background-color: rgba(255, 255, 255, .08)
         }
-        &:nth-child(even){
-            background-color:rgba(255,255,255,.05)
+        &:nth-child(even) {
+            background-color: rgba(255, 255, 255, .05)
         }
         &.border {
             border-style: solid;
@@ -31,7 +31,7 @@ div.grid {
         flex-direction: column;
         position: relative;
         padding: 8px 10px;
-        font-size:1.2rem;
+        font-size: 1.2rem;
         &.cell-max {
             width: 100%;
             flex: 1 100%;
@@ -61,77 +61,100 @@ div.grid {
     }
 }
 
-ion-row{
-    &.row-body{
-        ion-col{
-            button{
-                display:block;
-                margin:auto;
-                width:76%;
-                padding-top:38%;
-                padding-bottom:38%;
-                height:0;
-                line-height:0;
-                border-radius:50%;
-                background-color:transparent;
-                color:color($colors,light,base);
-                border:solid 1px color($colors,light,base);
-                font-size:8vw;
-
+ion-row {
+    &.row-body {
+        ion-col {
+            button {
+                display: block;
+                margin: auto;
+                width: 76%;
+                padding-top: 38%;
+                padding-bottom: 38%;
+                height: 0;
+                line-height: 0;
+                border-radius: 50%;
+                background-color: transparent;
+                color: color($colors, light, base);
+                border: solid 1px color($colors, light, base);
+                font-size: 8vw;
             }
-            &.active{
-                button{
-                    color:color($DominantColor,D-blue,base);
-                    background-color:color($colors,light,base); 
+            &.active {
+                button {
+                    color: color($DominantColor, D-blue, base);
+                    background-color: color($colors, light, base);
                 }
             }
         }
-    }    
-
-    &[Hslide]{
-        background:url(../assets/img/transparent-horizontal.png) no-repeat;
-        background-size:cover;
-        ion-slides{
-            ion-slide{
-                font-size:1.6rem;
-                &.active{
-                    color:#e02f5b;
-                    ion-icon{
+    }
+    &.row-tab {
+        ion-col {
+            color: #a1a1a1;
+            background-color: lighten(color($DominantColor, D-header, base), 28%);
+            &.state {
+                background-color: color($DominantColor, D-Default, base);
+                button {
+                    @include gradient-liner(top, #8adaff, #7f9dff);
+                    color: color($colors, light, base);
+                }
+            }
+            button {
+                margin: auto;
+                width: 10vw;
+                padding-top: 5vw;
+                padding-bottom: 5vw;
+                font-size: 5vw;
+                border-radius: 50%;
+                height: 0;
+                line-height: 0;
+                background: transparent;
+                display: block;
+                color: #a1a1a1;
+                ion-icon {
+                    margin-top: -5px;
+                }
+            }
+        }
+    }
+    &[Hslide] {
+        background: url(../assets/img/transparent-horizontal.png) no-repeat;
+        background-size: cover;
+        ion-slides {
+            ion-slide {
+                font-size: 1.6rem;
+                &.active {
+                    color: #e02f5b;
+                    ion-icon {
                         -webkit-transform: rotate(90deg);
-                        position:absolute;
-                        left:45%;
-                        top:-10px;
-                    }                   
-                }
-            }
-        }
-        
-    }
-
-    &[RSideTop]{
-        width:60%;
-        top:0;
-        right:5px;
-        z-index:1;
-        position:absolute;
-        ion-col{
-            font-size:5vw;
-            padding-left:0;
-            div{
-                border:solid 1px rgba(255,255,255,.3);
-                background-color:rgba(255,255,255,.1);
-                width:100%;
-                border-radius:10%;
-                padding-top:50%;
-                padding-bottom:50%;
-                height:0;
-                line-height:0;
-                ion-icon{
-                    margin-top:-2px;
+                        position: absolute;
+                        left: 45%;
+                        top: -10px;
+                    }
                 }
             }
         }
     }
-
-
+    &[RSideTop] {
+        width: 60%;
+        top: 0;
+        right: 5px;
+        z-index: 1;
+        position: absolute;
+        ion-col {
+            font-size: 5vw;
+            padding-left: 0;
+            div {
+                border: solid 1px rgba(255, 255, 255, .3);
+                background-color: rgba(255, 255, 255, .1);
+                width: 100%;
+                border-radius: 10%;
+                padding-top: 50%;
+                padding-bottom: 50%;
+                height: 0;
+                line-height: 0;
+                ion-icon {
+                    margin-top: -2px;
+                }
+            }
+        }
+    }
 }

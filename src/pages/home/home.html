@@ -19,8 +19,8 @@
 </ion-content>
 
 <ion-footer no-shadow no-border>
-  <ion-toolbar transparent no-padding FooterTab-Default>
-    <ion-row>
+  <ion-toolbar transparent no-padding>
+    <ion-row class="row-tab">
       <ion-col text-center [class.state]="tab.Index===ActiveTab.Index" *ngFor="let tab of Tabs" (click)="SelectTab(tab)" tappable>
         <button>
           <ion-icon app-icon>{{app.IconFont(tab.Icon)}}</ion-icon>
