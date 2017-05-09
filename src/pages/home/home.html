@@ -22,9 +22,9 @@
   <ion-toolbar transparent no-padding>
     <ion-row class="row-tab">
       <ion-col text-center [class.state]="tab.Index===ActiveTab.Index" *ngFor="let tab of Tabs" (click)="SelectTab(tab)" tappable>
-        <button>
+        <div class="button">
           <ion-icon app-icon>{{app.IconFont(tab.Icon)}}</ion-icon>
-        </button>
+        </div>
        <span text-nowrap f-12>{{tab.Name|translate}}</span>
       </ion-col>
     </ion-row>

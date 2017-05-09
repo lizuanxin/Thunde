@@ -64,7 +64,7 @@ div.grid {
 ion-row {
     &.row-body {
         ion-col {
-            div.button-icon{
+            div.button{
                 display: block;
                 margin: auto;
                 width: 76%;
@@ -79,7 +79,7 @@ ion-row {
                 font-size: 8vw;
             }
             &.active {
-                div.button-icon{
+                div.button{
                     color: color($DominantColor, D-blue, base);
                     background-color: color($colors, light, base);
                 }
@@ -92,12 +92,12 @@ ion-row {
             background-color: lighten(color($DominantColor, D-header, base), 28%);
             &.state {
                 background-color: color($DominantColor, D-Default, base);
-                button {
+                div.button {
                     @include gradient-liner(top, #8adaff, #7f9dff);
                     color: color($colors, light, base);
                 }
             }
-            button {
+            div.button {
                 margin: auto;
                 width: 10vw;
                 padding-top: 5vw;
