@@ -32,47 +32,46 @@
         &.skin-default{
             ion-toolbar.toolbar{
                 .toolbar-background{
-                    background:color($DominantColor,D-header,base);
+                    background:color($colors,color-primary,base);
                 }
             }
         }
     }
 
     .skin-default{
-        background-color: color($DominantColor,D-Default,base);         
+        background-color: color($colors,light,base);         
     }
 
     .skin-demo{
-        background-color: darken(color($DominantColor,D-header,base),5%);         
+        background-color: darken(color($colors,color-primary,base),5%);         
     }
 
     .skin-tou{
-        background-color: color($DominantColor,D-tou,base);
+        background-color: color($colors,color-primary-tou,base);
         color:color($colors,light,base);         
     }
 
-    .skin-home{
-        background-color: color($DominantColor,D-Default,base);
-        background-image:url(../assets/img/bg_home.png);
-        background-repeat:repeat-x; 
-        background-position: center top;
-        background-size:contain;  
-        section{
-            &[Flip-x]{
-                color:color($colors,light,base);
-            }
-        }
-        [RSideTop]{
-            color:color($colors,light,base);
-        }    
-    }
+    // .skin-home{
+    //     background-color: color($DominantColor,D-Default,base);
+    //     background-image:url(../assets/img/bg_home.png);
+    //     background-repeat:repeat-x; 
+    //     background-position: center top;
+    //     background-size:contain;  
+    //     section{
+    //         &[Flip-x]{
+    //             color:color($colors,light,base);
+    //         }
+    //     }
+    //     [RSideTop]{
+    //         color:color($colors,light,base);
+    //     }    
+    // }
 
     .skin-sport{
-        background:color($DominantColor,D-Default,base) -webkit-linear-gradient(top,color($DominantColor,D-header,base),color($DominantColor,D-blue,base));
+        background:color($colors,light,base) -webkit-linear-gradient(top,color($colors,color-primary,base),color($colors,color-primary-exc,base));
     }
-
     .skin-running{
-        background:color($DominantColor,D-Default,base) -webkit-linear-gradient(top,color($DominantColor,D-header,base),color($DominantColor,D-blue,base));
+        background:color($colors,light,base) -webkit-linear-gradient(top,color($colors,color-primary,base),color($colors,color-primary-exc,base));
     }
 }
 

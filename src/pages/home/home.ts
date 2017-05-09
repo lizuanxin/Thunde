@@ -72,6 +72,7 @@ export class HomePage implements OnInit
         switch(this.ActiveTab.Index)
         {
             case 1: return 'sport';
+            case 2: return 'sport';
             default: return ''
         }
     }
