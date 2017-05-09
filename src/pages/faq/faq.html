@@ -1,11 +1,16 @@
 <ion-header no-shadow no-border [ngClass]="app.Skin()">
-  <ion-toolbar>
-      <ion-title text-center><span ion-text color="light">FAQ</span></ion-title>
-      <ion-buttons left>
-        <button ion-button clear (click)="Back()" tappable>
-          <ion-icon app-icon color="light">&#xe92b;</ion-icon>
-        </button>
-      </ion-buttons>
+  <ion-toolbar transparent>
+      <ion-row align-items-center no-padding>
+        <ion-col col-2 align-self-center text-center no-padding>
+            <button clear (click)="Back()" tappable>
+                <ion-icon app-icon color="light" style="font-size: 1.8rem">&#xe92b;</ion-icon>
+            </button>
+        </ion-col>
+        <ion-col col-8 align-self-center text-center no-padding>
+            <span ion-text style="font-size: 2.5rem" color="light">FAQ</span>
+        </ion-col>
+        <ion-col col-2></ion-col>
+    </ion-row>
   </ion-toolbar>
 </ion-header>
 <ion-content>
