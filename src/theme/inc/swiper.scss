@@ -44,6 +44,12 @@
         color:#ccc;        
         -webkit-transform-origin: center center;
         transform-origin: center center;
+        span.timer{
+            position:absolute;
+            right:5px;
+            bottom:10px;
+            font-size:12px;
+        }
         &.swiper-slide-active{
             color:darken(color($DominantColor,D-blue,base),25%);            
         }

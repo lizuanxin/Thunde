@@ -39,7 +39,7 @@
             <div class="swiper-wrapper">
                 <div class="swiper-slide" *ngFor="let f of FilteredFiles" [ngStyle]="SetStyle(3)">
                     {{f.Name_LangId|translate}}
-                    <span>{{f.DurationMinute.toString()}}{{'hint.min'|translate}}</span>
+                    <span class="timer">{{f.DurationMinute.toString()}}{{'hint.min'|translate}}</span>
                 </div>
             </div>
             <div class="swiper-pagination" style="left:10%"></div>
