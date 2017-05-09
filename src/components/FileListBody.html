@@ -18,7 +18,9 @@
     <ion-col col-10 offset-1 no-padding>
         <ion-row nowrap class="row-body">
             <ion-col no-padding text-center [class.active]="CurrBodyCategory===b" *ngFor="let b of BodyCategories" (click)="SelectBodyCategory(b)" tappable>
-                <div class="button"><span app-icon [innerHTML]="+app.IconFont(b.Icon)"></span></div>
+                <div class="button">
+                    <span app-icon [innerHTML]="+app.IconFont(b.Icon)"></span>
+                </div>
             </ion-col>
         </ion-row>
     </ion-col>
@@ -35,12 +37,17 @@
             slideShadows : true
         }}">
             <div class="swiper-wrapper">
-                <div class="swiper-slide" *ngFor="let f of FilteredFiles" [ngStyle]="SetStyle(3)">{{f.Name_LangId|translate}}</div>
+                <div class="swiper-slide" *ngFor="let f of FilteredFiles" [ngStyle]="SetStyle(3)">
+                    {{f.Name_LangId|translate}}
+                    <span>{{f.DurationMinute.toString()}}{{'hint.min'|translate}}</span>
+                </div>
             </div>
             <div class="swiper-pagination" style="left:10%"></div>
         </swiper>
     </ion-col>
     <ion-col col-4>
-        <button clear (click)="SelectionFile($event)" tappable><ion-icon app-icon style="font-size:20vw;color:#6fc5ff">&#xe929;</ion-icon></button>
+        <button clear (click)="SelectionFile($event)" tappable>
+            <ion-icon app-icon style="font-size:20vw;color:#6fc5ff">&#xe929;</ion-icon>
+        </button>
     </ion-col>
 </ion-row>

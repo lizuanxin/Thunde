@@ -37,13 +37,13 @@ let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
 
     declarations: [
         MyApp,
-        View.HomePage, View.TouPage, View.FaqPage, View.GoPage, View.RunningPage, View.OtaUpdatePage,
+        View.HomePage, View.TouPage, View.FaqPage, View.RunningPage, View.OtaUpdatePage,
         View.DemoPage, View.DemoModeRunningPage,
     ],
 
     entryComponents: [
         MyApp,
-        View.HomePage, View.TouPage, View.FaqPage, View.GoPage, View.RunningPage, View.OtaUpdatePage,
+        View.HomePage, View.TouPage, View.FaqPage, View.RunningPage, View.OtaUpdatePage,
         View.DemoPage, View.DemoModeRunningPage,
     ],
 

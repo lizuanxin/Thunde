@@ -307,6 +307,61 @@ export class TScriptFile extends TAsset implements IScriptFile
         return TBase64Encoding.Instance.EncodeToString(HexConv.HexToBin(this.Md5));
     }
 
+    get DurationMinute(): number
+    {
+        return Math.trunc((this.Duration + 30) / 60);
+    }
+
+   /**
+     *  https://en.wikipedia.org/wiki/Degree_(angle)
+     *  https://en.wikipedia.org/wiki/Radian
+     *  http://www.w3schools.com/tags/canvas_arc.asp
+     *
+     *  turn[0.0~1.0]   degree[0°~360°]     radian[0~2π]:
+     *      90°         = 0.25 turn         = 0.5π
+     *      180°        = 0.5 turn          = 1π
+     *      360°        = 1 turn            = 2π
+     **/
+    DrawMinute(Canvas: HTMLCanvasElement, Ctx: CanvasRenderingContext2D,
+        Radius: number, Ox: number, Oy: number)// , Turns: number[])
+    {
+        let RestoreFillStyle = Ctx.fillStyle;
+        let Turns = [1.75, this.Duration / 3600];
+
+        let ColorFills: string[] = [null, Ctx.fillStyle as string];
+
+        Ctx.beginPath();
+        Ctx.moveTo(Ox, Oy);
+        Ctx.arc(Ox, Oy, Radius, 0, 2 * Math.PI);
+        Ctx.closePath();
+
+        let Alpha = Ctx.globalAlpha;
+        Ctx.globalAlpha = Alpha * 0.15;
+        Ctx.fillStyle = ColorFills[1];
+        Ctx.lineWidth = 1;
+        Ctx.fill();
+
+        Ctx.globalAlpha = Alpha;
+
+        for (let i = 0, StartArc = 0, EndArc = 0; i < Turns.length; i++ , StartArc = EndArc)
+        {
+            EndArc = EndArc + Turns[i] * Math.PI * 2;
+
+            Ctx.beginPath();
+            Ctx.moveTo(Ox, Oy);
+            Ctx.arc(Ox, Oy, Radius, StartArc, EndArc);
+            Ctx.closePath();
+
+            if (TypeInfo.Assigned(ColorFills[i]))
+            {
+                Ctx.fillStyle = ColorFills[i];
+                Ctx.fill();
+            }
+        }
+
+        Ctx.fillStyle = RestoreFillStyle;
+    }
+
     Icon: number = null;
     Category_Id: string = null;
     Mode_Id: string = null;
