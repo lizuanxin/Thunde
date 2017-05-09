@@ -64,7 +64,7 @@ div.grid {
 ion-row {
     &.row-body {
         ion-col {
-            button {
+            div.button-icon{
                 display: block;
                 margin: auto;
                 width: 76%;
@@ -79,7 +79,7 @@ ion-row {
                 font-size: 8vw;
             }
             &.active {
-                button {
+                div.button-icon{
                     color: color($DominantColor, D-blue, base);
                     background-color: color($colors, light, base);
                 }

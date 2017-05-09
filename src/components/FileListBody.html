@@ -18,7 +18,7 @@
     <ion-col col-10 offset-1 no-padding>
         <ion-row nowrap class="row-body">
             <ion-col no-padding text-center [class.active]="CurrBodyCategory===b" *ngFor="let b of BodyCategories" (click)="SelectBodyCategory(b)" tappable>
-                <button><span app-icon [innerHTML]="+app.IconFont(b.Icon)"></span></button>
+                <div class="button-icon"><span app-icon [innerHTML]="+app.IconFont(b.Icon)"></span></div>
             </ion-col>
         </ion-row>
     </ion-col>
