@@ -62,21 +62,11 @@ div.grid {
 }
 
 ion-row{
-
-    &[VSideLeft]{
+    &.row-body{
         ion-col{
-            &.active{                
-                // background:url(../assets/img/bg_btn_home.png)  center center no-repeat;
-                // background-size:contain;
-                button{
-                    color:color($DominantColor,D-blue,base);
-                    background-color:color($colors,light,base); 
-                }
-
-            }
             button{
-                margin:12% auto;
-                display: block;
+                display:block;
+                margin:auto;
                 width:76%;
                 padding-top:38%;
                 padding-bottom:38%;
@@ -84,34 +74,19 @@ ion-row{
                 line-height:0;
                 border-radius:50%;
                 background-color:transparent;
-                font-size:8vw;
                 color:color($colors,light,base);
-                border:solid 1px color($colors,light,base);                
-            }            
-            // &.active{
-            //     -webkit-transition: all .2s ease .1s;
-            //     -moz-transition: all .2s ease .1s;
-            //     transition: all .2s ease .1s;
-            //     color:white;
-            //     background-color:rgba(0,0,0,.5);                
-            //     span{
-            //         display: inline-block;
-            //         -webkit-transform: scale(1.2);
-            //     }
-            //     ion-icon{
-            //         -webkit-transform:rotate(180deg);
-            //         color:#e02f5b;
-            //     }                
-            // }
-        //    ion-icon{
-        //        position:absolute;
-        //        right:-15px;
-        //        font-size:2rem;
-        //        color:#FFFFFF;
+                border:solid 1px color($colors,light,base);
+                font-size:8vw;
 
-        //    } 
+            }
+            &.active{
+                button{
+                    color:color($DominantColor,D-blue,base);
+                    background-color:color($colors,light,base); 
+                }
+            }
         }
-    }
+    }    
 
     &[Hslide]{
         background:url(../assets/img/transparent-horizontal.png) no-repeat;
