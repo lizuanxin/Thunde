@@ -94,7 +94,8 @@ export class FileListBodyComp implements OnInit
         {
             case 0: return { height: Math.ceil(window.innerHeight * 0.34) + 'px' }
             case 1: return { fontSize: Math.ceil(window.innerWidth * 0.40) + 'px' }
-            case 2: return { height: Math.ceil(window.innerHeight * 0.28) + 'px' }            
+            case 2: return { height: Math.ceil(window.innerHeight * 0.28) + 'px' } 
+            case 3: return { fontSize: Math.ceil(window.innerWidth * 0.06) + 'px' }           
         }
     }
 

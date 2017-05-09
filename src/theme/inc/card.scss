@@ -29,7 +29,7 @@ ion-card{
         box-shadow: 0 1px 2px lighten(color($DominantColor,D-header,base),20%);
         ion-card-content{
             ion-item{
-                color:darken(color($DominantColor,D-header,base),5%);
+                // color:darken(color($DominantColor,D-header,base),5%);
                 background-color:transparent;
                 [item-left]{                    
                     font-size:8rem;                    
