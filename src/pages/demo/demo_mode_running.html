@@ -22,8 +22,8 @@
             <ion-list transparent no-margin>
               <ion-item no-padding no-lines>
                 <ion-range min="0" max="100" [ngModel]="InitRange" color="secondary" [ngStyle]="{marginTop:0,padding:0}" disabled progress-bar>
-                  <ion-label range-right [ngClass] = "app.SkinColor" [ngStyle]="{margin:'0 15px 0 10px'}">{{TickingDownHint}}</ion-label>
-                  <ion-label range-left [ngClass] = "app.SkinColor" [ngStyle]="{margin:'0 10px 0 15px'}">{{TotalMinute}}</ion-label>
+                  <ion-label range-right [ngClass] = "app.SkinColor" [ngStyle]="{marginLeft:'16px',marginRight:'2px','font-size':'0.22vm', 'opacity': 0.3}">{{TotalMinute}}</ion-label>
+                  <ion-label range-left [ngClass] = "app.SkinColor" [ngStyle]="{width:'48px', marginLeft:'6px',marginRight:'6px', 'font-size':'0.22vm'}">{{TickingDownHint}}</ion-label>
                 </ion-range>
               </ion-item>
             </ion-list>
@@ -45,13 +45,13 @@
   <ion-toolbar visible transparent>
     <ion-row [ngStyle]="{'margin-top':'-35px'}">
         <ion-col text-center>
-            <button ion-fab [ngStyle]="{display:'inline-flex', marginRight:'5vw'}" *ngIf="! Finish && CurrentRunningIndex > 0 && CurrentRunningIndex <= 2" (click)="LastMode()" tappable>
+            <button ion-fab trans-shadow [ngStyle]="{display:'inline-flex', marginRight:'5vw'}" *ngIf="! Finish && CurrentRunningIndex > 0 && CurrentRunningIndex <= 2" (click)="LastMode()" tappable>
                 <ion-icon app-icon>&#xe939;</ion-icon>
             </button>
-            <button ion-fab [ngStyle]="{display:'inline-flex', marginLeft: CurrentRunningIndex != 0 ?'5vw':''}" *ngIf="! Finish && CurrentRunningIndex < 2" (click)="NextMode()" tappable>
+            <button ion-fab trans-shadow [ngStyle]="{display:'inline-flex', marginLeft: CurrentRunningIndex != 0 ?'5vw':''}" *ngIf="! Finish && CurrentRunningIndex < 2" (click)="NextMode()" tappable>
                 <ion-icon app-icon>&#xe93a;</ion-icon>
             </button>
-            <button ion-fab [ngStyle]="{display:'inline-flex', marginLeft:'5vw'}" *ngIf="CurrentRunningIndex >= 2" (click)="Shutdown()" tappable>
+            <button ion-fab trans-shadow [ngStyle]="{display:'inline-flex', marginLeft: Finish ? '':'5vw'}" *ngIf="CurrentRunningIndex >= 2" (click)="Shutdown()" tappable>
                 <ion-icon app-icon>&#xe93b;</ion-icon>
             </button>
         </ion-col>
