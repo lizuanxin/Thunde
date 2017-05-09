@@ -1,12 +1,13 @@
 import {Component, OnInit, AfterViewInit, OnDestroy} from '@angular/core';
+import {NavController, NavParams, ViewController} from 'ionic-angular';
+
 import {Subscription} from 'rxjs/Subscription'
 import 'rxjs/add/operator/toPromise';
 
-import {NavController, NavParams, ViewController} from 'ionic-angular';
-
-import {TUtf8Encoding} from '../../UltraCreation/Encoding';
-import {TypeInfo} from '../../UltraCreation/Core';
-import {THashMd5} from '../../UltraCreation/Hash';
+import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
+import {TUtf8Encoding} from '../../UltraCreation/Encoding/Utf8';
+import {THashMd5} from '../../UltraCreation/Hash/Md5';
+import {PowerManagement} from '../../UltraCreation/Native/PowerManagement'
 
 import * as Svc from '../../providers';
 
@@ -17,7 +18,7 @@ const DEMO_MODES_TIMES: number[] = [45, 70, 80];
 export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 {
     constructor(public nav: NavController, private navParams: NavParams, private view: ViewController,
-        public app: Svc.TApplication, private Asset: Svc.TAssetService)
+        public app: Svc.TApplication, private AssetSvc: Svc.TAssetService)
     {
         this.SetModeInfo(DEMO_MODES[this.CurrentRunningIndex]);
 
@@ -27,6 +28,7 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     ngOnInit()
     {
+        PowerManagement.Acquire();
         this.ShellNotifySubscription = this.Shell.OnNotify.subscribe(
             Notify =>
             {
@@ -59,7 +61,6 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 
                 case Svc.Loki.TShellNotify.Ticking:
                     this.Ticking = this.Shell.Ticking;
-                    console.log("Ticking:" + this.Ticking);
 
                     if (DEMO_MODES_TIMES[this.CurrentRunningIndex] - this.Ticking <= 2)
                         this.NextMode();
@@ -77,6 +78,8 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     ngOnDestroy(): void
     {
+        PowerManagement.Release();
+
         if (TypeInfo.Assigned(this.ShellNotifySubscription))
         {
             this.ShellNotifySubscription.unsubscribe();
@@ -92,9 +95,7 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
         let ModeName = runningIndex.toLowerCase();
 
         this.ModeGif = 'assets/img/' + ModeName + '.gif';
-        this.ModeTitle = ModeName + '_title';
         this.ModeInfo = ModeName + '_info';
-        this.ModeSuggestion = ModeName + '_suggestion';
     }
 
     private Start()
@@ -152,11 +153,16 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
             {
                 this.CurrentRunningIndex ++;
 
-                this.Shell.StopTicking(); // 提前执行 防止 函数重复调用
-                this.Ticking = 0;
+                this.Shell.StopOutput().then(() =>
+                {
+                    this.Ticking = 0;
+                    this.SetModeInfo(DEMO_MODES[this.CurrentRunningIndex]);
+                    this.StartMode(this.CurrentRunningIndex, true);
+                });
+                /*
+                // this.Shell.StopTicking(); // 提前执行 防止 函数重复调用
 
-                this.SetModeInfo(DEMO_MODES[this.CurrentRunningIndex]);
-                this.StartMode(this.CurrentRunningIndex, true);
+                */
             }
             else
                 this.Finish = true;
@@ -184,8 +190,6 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
         if (TickingDown > 0)
         {
             let Min = Math.trunc((TickingDown) / 60);
-
-            console.log("Min:" + Min);
 
             let Sec = TickingDown % 60;
             if (Sec < 0)
@@ -240,7 +244,7 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
     get TextStyle(): Object
     {
         let screenHeight = window.innerHeight;
-        return { height: screenHeight * 0.15 + "px", overflowY: "scroll", padding: "0", margin: "0" }
+        return { height: screenHeight * 0.15 + "px", overflowY: "scroll", padding: "0" }
     }
 
     PointRotate(): string
@@ -308,9 +312,7 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
     Intensity: number = 0;
 
     ModeGif: string;
-    ModeTitle: string;
     ModeInfo: string;
-    ModeSuggestion: string;
 
     private Adjusting: Promise<any> = null;
     private Shell: Svc.Loki.TShell;
