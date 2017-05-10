@@ -166,16 +166,6 @@ class TContentCanvas
         this.Ctx.restore();
     }
 
-    private DrawRect(Offset)
-    {
-        this.Ctx.save();
-        this.Ctx.lineWidth = 4;
-        this.Ctx.strokeStyle = 'red';
-        this.Ctx.rect(0, Offset, this.Canvas.width, this.ItemHeight);
-        this.Ctx.stroke();
-        this.Ctx.restore();
-    }
-
     private TouchHandler(ev: TouchEvent)
     {
         if (ev.targetTouches.length !== 1)  // 1 finger touch
