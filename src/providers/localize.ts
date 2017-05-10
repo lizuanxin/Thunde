@@ -322,7 +322,7 @@ export let translate_zh =
     category:
     {
         recommend: '推荐',
-        relax: '放松',
+        relax: '按摩',
         muscle_training: '运动',
         fat_burning: '瘦身',
         therapy: '治疗',
