@@ -37,7 +37,7 @@
   </ng-template>
   <ng-template [ngIf]="Finish">
   <div v-m style="height:100%;">
-    <div center [ngClass] = "app.SkinColor">
+    <div center ion-text color="dark">
         <h2 text-center>{{'hint.congratulations'|translate}}</h2>
         <h3 padding text-center>{{'running_page.finish'|translate}}</h3>
         <!--<p text-center><ion-icon app-icon text-light style="font-size:46vw">&#xe938;</ion-icon></p>-->
@@ -51,7 +51,7 @@
             <ion-col text-center>
                 <button clear (click)="Shutdown()" style="display:inline-block; font-size: 1.2rem; width:80px; height:80px"  tappable>
                     <ion-icon *ngIf="! Finish" color="color-primary-light" style="font-size:18vw;">&#xf1ef;</ion-icon>
-                    <ion-icon app-icon *ngIf="Finish">&#xe936;</ion-icon>
+                    <ion-icon app-icon *ngIf="Finish" color="color-primary-light" style="font-size:18vw;">&#xe936;</ion-icon>
                 </button>
             </ion-col>
         </ion-row>
