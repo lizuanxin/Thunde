@@ -8,11 +8,11 @@ import * as Svc from '../providers';
                 <ion-item [ngStyle]="{background:SetBackgroundImg(f.Id),backgroundSize:'contain'}">
                     <ion-row item-left>
                         <ion-col col-12>
-                            <p style="font-size:5vw">{{f.Name_LangId|translate}}</p>
-                            <p>{{Massage(f.Id)|translate}}</p>
+                            <p style="font-size:5vw"><span ion-text color="dark">{{f.Name_LangId|translate}}</span></p>
+                            <p><span ion-text color="dark">{{Massage(f.Id)|translate}}</span></p>
                         </ion-col>
                         <ion-col col-12>
-                            <p><span f-1-2>{{'shoulder_neck.position'| translate}}</span></p>
+                            <p><span f-1-2 ion-text color="dark">{{'shoulder_neck.position'| translate}}</span></p>
                             <p><span f-1-2>{{f.DurationMinute.toString()}}{{'hint.min'|translate}}</span></p>
                         </ion-col>
                     </ion-row>

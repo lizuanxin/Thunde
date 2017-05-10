@@ -17,10 +17,10 @@
         }
         ion-item.item{            
             ion-label{
-                color:darken($value,5%)
+                color:darken($value,20%)
             }
             ion-note{
-                color:lighten($value,10%)
+                color:lighten($value,20%)
             }
         }
     }
