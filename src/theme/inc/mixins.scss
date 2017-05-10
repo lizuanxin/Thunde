@@ -1,13 +1,13 @@
 @mixin IonList($color,$value){
     &[list-#{$color}]{
-        background-color:lighten($value,35%);
+        background-color:lighten($value,50%);
 
         &[out-line]{
-            border:solid 1px lighten($value,20%);
+            border:solid 1px lighten($value,40%);
         }
 
         ion-item-divider.item,ion-item.item{
-            border-bottom:solid 1px lighten($value,20%);
+            border-bottom:solid 1px lighten($value,40%);
         }
         ion-item-divider.item{
             background-color:lighten($value,5%);
@@ -26,6 +26,44 @@
     }
 }
 
+@mixin ColorText()
+{
+    &.high-light {
+        text-shadow: 1px 1px 0px rgba(255, 255, 255, .7);
+    }
+    
+    &[text-shadow] {
+        text-shadow: 1px 1px 1px #202020;
+    }
+    &[text-light],
+    &.text-light {
+        color: color($colors, light, base);
+        [b-g-c] {
+            background-color: rgba(255, 255, 255, .05);
+        }
+    }
+
+    &[text-success],
+    &.text-success {
+        color: color($colors, success, base);
+    }
+
+    &[text-danger],
+    &.text-danger {
+        color: color($colors, danger, base);
+    }
+
+    &[text-orange],
+    &.text-orange {
+        color: color($colors, orange, base);
+    }
+    
+    &[text-yellow] {
+        color: #f4e827;
+    } 
+
+}
+
 @mixin DominantColor() {
 
     ion-header{
@@ -38,12 +76,27 @@
         }
     }
 
+    .skin-light{
+        background-color: color($colors,light,base);   
+     
+    }
+
+    .skin-thin{
+        background:darken(color($colors,light,base),3%);
+        canvas{
+            background-image: url(../assets/img/bg_canvas_dark.png);
+            background-repeat: no-repeat;
+            background-position-x: 36%;
+            background-size: cover;
+        } 
+    }
+
     .skin-default{
-        background-color: color($colors,light,base);         
+        background-color: darken(color($colors,light,base),3%);         
     }
 
     .skin-demo{
-        background-color: darken(color($colors,color-primary,base),5%);         
+        background-color: darken(color($colors,color-primary-demo,base),2%);         
     }
 
     .skin-tou{
@@ -68,7 +121,8 @@
     // }
 
     .skin-sport{
-        background:color($colors,light,base) -webkit-linear-gradient(top,color($colors,color-primary,base),color($colors,color-primary-exc,base));
+        background:darken(color($colors,light,base),5%);
+        // background:color($colors,light,base) -webkit-linear-gradient(top,color($colors,color-primary,base),color($colors,color-primary-exc,base));
     }
     .skin-running{
         background:color($colors,light,base) -webkit-linear-gradient(top,color($colors,color-primary,base),color($colors,color-primary-exc,base));

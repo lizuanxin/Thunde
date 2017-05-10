@@ -1,5 +1,6 @@
 ion-list.list {
-    @include IonList('blue',#6490fb);
+    // @include IonList('blue',#6490fb);
+    @include IonList('gray',#828282);
     &[list-init]{
         border-radius: 5px;
         .item{
@@ -13,6 +14,10 @@ ion-list.list {
 
             [item-right]{
                 margin:0 8px 0 8px;
+                *{
+                    display: inline-block;
+                    vertical-align: middle;
+                }
             }
 
             ion-label{

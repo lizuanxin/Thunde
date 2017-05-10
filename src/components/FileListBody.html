@@ -1,4 +1,4 @@
-<ion-row style="padding-bottom:5vh;background:url(assets/img/bg_home.png) center bottom repeat-x;background-size:contain">
+<ion-row style="padding-bottom:5vh;background:url(assets/img/bg_home_red.png) center bottom repeat-x;background-size:contain">
     <ion-col col-12 no-padding>
         <section ion-text color="light">
             <swiper #BodySwiper [Config]="{pagination:'.swiper-pagination', paginationClickable: true,
@@ -28,11 +28,11 @@
 
 </ion-row>
 <ion-row align-items-center style="position:absolute;bottom:0;left:0;right:0">
-    <ion-col col-8 no-padding text-center [ngStyle]="SetStyle(2)">
+    <ion-col col-8 no-padding  [ngStyle]="SetStyle(2)">
         <swiper swiper-piker #FileSwiper [Config]="{effect: 'coverflow', direction: 'vertical', pagination: '.swiper-pagination', paginationType: 'progress',slidesPerView: 4,centeredSlides: true,coverflow: {
-            rotate: 50,
+            rotate: 0,
             stretch: 0,
-            depth: 100,
+            depth: 0,
             modifier: 1,
             slideShadows : true
         }}">
@@ -45,9 +45,9 @@
             <div class="swiper-pagination" style="left:10%"></div>
         </swiper>
     </ion-col>
-    <ion-col col-4>
+    <ion-col col-4 text-center>
         <button clear (click)="SelectionFile($event)" tappable>
-            <ion-icon app-icon style="font-size:20vw;color:#6fc5ff">&#xe929;</ion-icon>
+            <ion-icon color="color-primary" app-icon style="font-size:15vw;">&#xe929;</ion-icon>
         </button>
     </ion-col>
 </ion-row>

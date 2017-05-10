@@ -15,17 +15,25 @@
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
 $colors: (
-    color-primary:#6490fb,
-    color-primary-exc:#8adbff,
-    color-primary-demo:#2c8cc3,
+    // color-primary:#6490fb,
+    // color-primary-exc:#8adbff,
+    // color-primary-demo:#2c8cc3,
+    // color-primary-tou:#2F2F2F,
+
+    color-primary:#d3120b,
+    color-primary-exc:#feb2b2,
+    color-primary-demo:#2F2F2F,
     color-primary-tou:#2F2F2F,
 
     primary: #242424, 
     secondary: #61b58a, 
+    success:green,
     danger: #f53d3d,
+
     orange:orange, 
     light: white, 
     dark: #222, 
+    
     purple: #382b5f, 
     scarlet: #03a451, 
     skyblue: #51e2f0, 
@@ -38,22 +46,7 @@ $colors: (
 );
 $menu-width: 280px;
 
-$DominantColor:(
-    D-header:#6490fb,
-    D-Default:#FFFFFF,
-    D-blue:#8adbff,
-    D-tou:#2F2F2F,
-    D-demo:#2c8cc3
-);
 
-$DominantLightColor:(
-    D-blue:#34e7ff
-);
-
-$background-list: 'abstract',
-'BlackRed',
-'strengths',
-'spots';
 $conFooterHeight:56px;
 // App iOS Variables
 // --------------------------------------------------

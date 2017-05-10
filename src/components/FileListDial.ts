@@ -114,16 +114,19 @@ class TContentCanvas
 
     PaintTo(Canvas: HTMLCanvasElement, Ctx: CanvasRenderingContext2D)
     {
-        if (this.app.SkinColor !== undefined)
-        {
-            Ctx.strokeStyle = '#000000';
-            Ctx.fillStyle = '#F2F2F2';
-        }
-        else
-        {
-            Ctx.strokeStyle = '#FFFFFF';
-            Ctx.fillStyle = '#222222';
-        }
+        // if (this.app.SkinColor !== undefined)
+        // {
+        //     Ctx.strokeStyle = '#000000';
+        //     Ctx.fillStyle = '#F2F2F2';
+        // }
+        // else
+        // {
+        //     Ctx.strokeStyle = '#FFFFFF';
+        //     Ctx.fillStyle = '#222222';
+        // }
+
+        Ctx.strokeStyle = '#222';
+        Ctx.fillStyle = '#333';
 
         let Offset = this.ScrollingY % this.ItemHeight + this.Padding;
         let Idx = Math.trunc(-this.ScrollingY / this.ItemHeight);

@@ -1,4 +1,4 @@
-<ion-list inset list-init list-blue out-line>
+<ion-list inset list-init list-gray out-line>
     <ion-item detail-none (click)="OnSelection.emit('demo')" tappable>
         {{'profile_page.demo'|translate}}
         <ion-note item-right><ion-icon>&#xf3d1;</ion-icon></ion-note>
@@ -13,16 +13,22 @@
     </ion-item>
 </ion-list>
 
-<ion-list inset list-init list-blue out-line>
-    <ion-item detail-none>
+<ion-list inset list-init list-gray out-line>
+    <ion-item detail-none [ngStyle]="{backgroundColor:!IsSupportedOTG ? '#ffdddc' : '#d7fbd8'}">
         {{'profile_page.check_otg'|translate}}
-        <ion-icon [ngStyle]="{ color: IsSupportedOTG ? '#4b7efa' : 'red',marginRight:0,fontSize:'2rem', paddingTop:'7px', paddingRight:'6px'}" item-right>&#xf1f7;</ion-icon>
+        <ion-note item-right>
+            <div [ngClass]="{'text-success':IsSupportedOTG,'text-danger':!IsSupportedOTG}">
+                <span ion-text f-1-2>{{IsSupportedOTG ? '支持' : '不支持'}}</span> 
+                <ion-icon f-2-8>{{IsSupportedOTG ? '&#xf2bc;' : '&#xf2c0;'}}</ion-icon>
+            </div>
+        </ion-note>
+        <!--<ion-icon [ngStyle]="{ color: IsSupportedOTG ? '#4b7efa' : 'red',marginRight:0,fontSize:'2rem', paddingTop:'7px', paddingRight:'6px'}" item-right>&#xf1f7;</ion-icon>-->
     </ion-item>
     <ion-item detail-none>
-        <ion-note item-left style="color: #4b7efa; margin-left:16px; font-size: 1.5rem">
+        <ion-note item-left style="margin-left:16px; font-size: 1.5rem">
             {{'profile_page.app_version'|translate}}
         </ion-note>
-        <ion-note item-right style="color: #4b7efa;">v2.1</ion-note>
+        <ion-note item-right>v2.1</ion-note>
     </ion-item>
 </ion-list>
 <!--<ion-list inset list-init list-blue out-line>
@@ -38,9 +44,9 @@
     </ng-template>
 </ion-list>-->
 
-<ion-list inset list-init list-blue out-line>
-    <ion-item detail-none>
-        <ion-note style="color: #4b7efa;">{{'profile_page.company'|translate}}</ion-note>
+<ion-list no-line inset list-init >
+    <ion-item detail-none text-center>
+        <ion-note>{{'profile_page.company'|translate}}</ion-note>
     </ion-item>
     <!--<ion-item detail-none>
         <ion-note item-left style="color: #4b7efa; margin-left:16px; font-size: 1.5rem">

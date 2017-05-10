@@ -1,12 +1,17 @@
-<ion-header no-shadow no-border>
+<ion-header no-shadow no-border [ngClass]="app.Skin()">
   <ion-toolbar transparent>
+    <ion-buttons left absolute>
+        <button ion-button icon-only color="light" [ngStyle]="{'margin':'0 6px','padding':'0 2px','min-width':'44px'}" tappable>
+            <ion-icon app-icon>&#xe908;</ion-icon>
+        </button>
+    </ion-buttons>
     <ion-title text-center>
-        <span [ngClass] = "app.SkinColor">{{ScriptFile.Name_LangId|translate}}</span>
+        <span ion-text color="light">{{ScriptFile.Name_LangId|translate}}</span>
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content no-scroll padding [ngClass]="app.Skin('running')">
+<ion-content no-scroll padding [ngClass]="app.Skin('light')">
     <ng-template [ngIf]="! Finish">
     <ion-row align-items-center [ngStyle]="CanvasClientHeight" margin-horizontal>
         <ion-col col-10 offset-1>
@@ -18,8 +23,8 @@
     <ion-list transparent no-margin no-padding>
       <ion-item no-lines no-margin no-padding>
         <ion-range min="0" max="100" [ngModel]="Ticking / ScriptFile.Duration * 100" color="secondary" disabled progress-bar>
-          <ion-label range-right [ngClass] = "app.SkinColor" [ngStyle]="{marginLeft:'16px',marginRight:'2px','font-size':'0.22vm', 'opacity': 0.3}">{{TotalMinute}}</ion-label>
-          <ion-label range-left [ngClass] = "app.SkinColor" [ngStyle]="{width:'48px', marginLeft:'6px',marginRight:'6px', 'font-size':'0.22vm'}">{{TickingDownHint}}</ion-label>
+          <ion-label range-right color="dark" [ngStyle]="{marginLeft:'16px',marginRight:'2px','font-size':'0.22vm', 'opacity': 0.3}">{{TotalMinute}}</ion-label>
+          <ion-label range-left color="dark" [ngStyle]="{width:'48px', marginLeft:'6px',marginRight:'6px', 'font-size':'0.22vm'}">{{TickingDownHint}}</ion-label>
         </ion-range>
       </ion-item>
     </ion-list>
@@ -39,8 +44,8 @@
     <ion-toolbar transparent visible>
         <ion-row style="margin-top:-50px">
             <ion-col text-center>
-                <button ion-fab color="lightblue" (click)="Shutdown()" style="display:inline-block; font-size: 1.6rem; width:60px; height:60px"  tappable>
-                    <ion-icon *ngIf="! Finish">&#xf359;</ion-icon>
+                <button clear (click)="Shutdown()" style="display:inline-block; font-size: 1.2rem; width:80px; height:80px"  tappable>                    
+                    <ion-icon *ngIf="! Finish" color="color-primary" app-icon style="font-size:15vw;">&#xe93b;</ion-icon>
                     <ion-icon app-icon *ngIf="Finish">&#xe936;</ion-icon>
                 </button>
             </ion-col>

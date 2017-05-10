@@ -16,6 +16,9 @@
         font-size:3.6rem;
     }
 }
+.swiper-pagination-bullet{
+    background:color($colors,light,base);
+}
 .swiper-wrapper{
     .swiper-slide{
         display: -webkit-flex;
@@ -36,14 +39,16 @@
     .swiper-pagination-progress{
         background-color:rgba(0,0,0,.1);
         .swiper-pagination-progressbar{
-            background:darken(color($DominantColor,D-blue,base),25%);
+            background:darken(color($colors,color-primary-exc,base),25%);
         }
     }
     .swiper-slide{  
         position:relative;      
-        color:#ccc;        
+        color:darken(color($colors,light,base),25%);         
         -webkit-transform-origin: center center;
         transform-origin: center center;
+        justify-content: flex-start;
+        padding-left:20%;
         span.timer{
             position:absolute;
             right:5px;
@@ -51,7 +56,7 @@
             font-size:12px;
         }
         &.swiper-slide-active{
-            color:darken(color($DominantColor,D-blue,base),25%);            
+            color:color($colors,color-primary,base); 
         }
         .swiper-slide-shadow-top,.swiper-slide-shadow-bottom{display:none}
     } 

@@ -1,5 +1,4 @@
-import {Component, AfterViewInit, OnDestroy, ElementRef, ViewChild} from '@angular/core';
-import {Subscription} from 'rxjs/Subscription'
+import {Component, AfterViewInit, ElementRef, ViewChild} from '@angular/core';
 
 import {NavController, NavParams} from 'ionic-angular';
 import {TypeInfo} from '../../UltraCreation/Core';
@@ -12,7 +11,7 @@ const ID = {'tips1':0, 'tips2':1, 'tips3':2, 'electrode':3, 'power':4, 'switch':
     'arrowPoint':14, 'key':15, 'body':16};
 
 @Component({selector: 'page-demo', templateUrl: 'demo.html'})
-export class DemoPage implements OnDestroy, AfterViewInit
+export class DemoPage implements AfterViewInit
 {
     constructor(public nav: NavController, private navParams: NavParams, public app: Svc.TApplication)
     {
@@ -25,84 +24,29 @@ export class DemoPage implements OnDestroy, AfterViewInit
 
     ngAfterViewInit()
     {
-        if (! Svc.Loki.TShell.IsUsbPlugin)
-        {
-            if (this.app.IsAndroid)
-                Svc.Loki.TShell.EnableBLE().then(() => this.StartScan())
-            else
-                this.StartScan();
-        }
         this.InitElementStyle();
         setTimeout(() => this.AnimationFlow(), 200);
     }
 
-    ngOnDestroy(): void
+    DeviceSelection(DeviceId?: string)
     {
-        if (TypeInfo.Assigned(this.ScanSubscription))
-            this.ScanSubscription.unsubscribe();
+        this.DeviceScanning = false;
 
-        Svc.Loki.TShell.StopScan().catch(err => console.log(err.message));
-    }
-
-    private StartScan()
-    {
-        this.ScanSubscription = Svc.Loki.TShell.StartScan()
-            .subscribe((next) => this.DeviceList = next,
-            (err) => console.error(err),
-            () =>
-            {
-                if (TypeInfo.Assigned(this.ScanSubscription))
-                    setTimeout(() => this.StartScan(), 0);
-            });
-    }
-
-    SelectionDevice(Device: Svc.IScanDiscovery)
-    {
-        this.Start(Device.id);
-    }
-
-    private Start(DeviceId: string)
-    {
-        if (TypeInfo.Assigned(this.ScanSubscription))
+        if (TypeInfo.Assigned(DeviceId))
         {
-            this.ScanSubscription.unsubscribe();
-            this.ScanSubscription = null;
-        }
+            let params = this.navParams.data;
+            params.DeviceId = DeviceId;
 
-        let params = this.navParams.data;
-        params.DeviceId = DeviceId;
-
-        this.app.ShowLoading().then(loading =>
-        {
-            let Shell = Svc.Loki.TShell.Get(DeviceId);
-
-            let StopScan: Promise<void> = Promise.resolve();
-            if (! Svc.Loki.TShell.IsUsbPlugin)
-                StopScan = Svc.Loki.TShell.StopScan();
-
-            StopScan.then(() => Shell.Connect())
+            this.app.ShowLoading()
                 .then(() => this.nav.push(View.DemoModeRunningPage, params))
-                .catch(err =>
-                {
-                    loading.dismiss()
-                        .then(() => this.app.ShowHintId(err.message));
-                })
-        });
+        }
     }
 
     Go()
     {
         console.log('go');
-
-        if (! Svc.Loki.TShell.IsUsbPlugin)
-        {
-            if (this.DeviceList.length === 1)
-                this.Start(this.DeviceList[0].id);
-            else
-                this.IsShowingDeviceList = true;
-        }
-        else
-            this.Start('USB');
+        this.app.ShowLoading()
+            .then(() => this.DeviceScanning = true);
     }
 
 
@@ -111,7 +55,7 @@ export class DemoPage implements OnDestroy, AfterViewInit
         let ele = this.animatedef.nativeElement,
             width = window.innerWidth,
             height = width * 1.5,
-            colorYellow = "#f4e827", colorLight = "#FFFFFF", colorLightOpacity = 'rgba(255,255,255,.5)';
+            colorYellow = "#d3120b", colorLight = "#333", colorLightOpacity = 'rgba(0,0,0,.3)';
             ele.children[ID.tips1].setAttribute("style",  "width: " + width * 0.14 + "px; height: " + width * 0.14 + "px; left: " + width * 0.39 + "px; top:" + height * 0.15 + "px");
             ele.children[ID.tips2].setAttribute("style",  "width: " + width * 0.05 + "px; height: " + width * 0.05 + "px; left: " + width * 0.83 + "px; top:" + height * 0.455 + "px");
             ele.children[ID.tips3].setAttribute("style",  "width: " + width * 0.14 + "px; height: " + width * 0.14 + "px; left: " + width * 0.62 + "px; top:" + height * 0.76 + "px");
@@ -258,5 +202,5 @@ export class DemoPage implements OnDestroy, AfterViewInit
     IsShowingDeviceList: boolean = false;
     DeviceList: Array<Svc.IScanDiscovery> = [];
 
-    private ScanSubscription: Subscription;
+    DeviceScanning = false;
 }

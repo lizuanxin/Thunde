@@ -6,10 +6,10 @@ import * as Svc from '../providers';
         <ion-card card-list-default *ngFor="let f of FileList">
             <ion-card-content (tap)="OnSelection.emit(f)" tappable>
                 <ion-item>
-                    <ion-icon app-icon item-left>{{app.IconFont(f.Icon)}}</ion-icon>
+                    <ion-icon app-icon item-left style="font-size:30vw">{{app.IconFont(f.Icon)}}</ion-icon>
                     <div item-right>
-                    <h2 >{{f.Name_LangId|translate}}</h2>
-                    <p item-right>{{f.DurationMinute.toString()}}{{'hint.min'|translate}}</p>
+                        <h2 text-right style="font-size:6vw">{{f.Name_LangId|translate}}</h2>
+                        <p text-right><span f-1-2>{{f.DurationMinute.toString()}}{{'hint.min'|translate}}</span></p>
                     </div>
                 </ion-item>
             </ion-card-content>

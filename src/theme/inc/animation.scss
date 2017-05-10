@@ -187,7 +187,7 @@
     opacity: 0;
     position: absolute;
     border-radius: 50%;
-    background-color: #fce000;
+    background-color: lighten(color($colors,color-primary,base),30%);
     -webkit-transform: scale(.5);
 }
 

@@ -1,23 +1,4 @@
-<ion-content no-scroll padding [ngClass]="app.Skin('demo')" color="light">
-    <ion-row *ngIf="IsShowingDeviceList">
-        <ion-col text-center text-light>
-            <ion-list absolute [ngStyle]="{zIndex:1,top:0,left:0,right:0}" [class.fadein]="DeviceList.length>0">
-                <ng-template [ngIf]="DeviceList.length>0">
-                    <ion-item *ngFor="let device of DeviceList" (click)="SelectionDevice(device)" tappable>
-                        <p>{{'home_page.title'|translate}}</p>
-                        <ion-icon app-icon *ngIf="device.rssi<-80" item-right><span f-12>{{device.rssi}}</span>&#xe92f;</ion-icon>
-                        <ion-icon app-icon *ngIf="device.rssi<-70 && device.rssi>=-80" item-right><span f-12>{{device.rssi}}</span>&#xe92e;</ion-icon>
-                        <ion-icon app-icon *ngIf="device.rssi<-60 && device.rssi>=-70" item-right><span f-12>{{device.rssi}}</span>&#xe92d;</ion-icon>
-                        <ion-icon app-icon *ngIf="device.rssi<-50 && device.rssi>=-60" item-right><span f-12>{{device.rssi}}</span>&#xe92c;</ion-icon>
-                        <ion-icon app-icon *ngIf="device.rssi>=-50" item-right><span f-12>{{device.rssi}}</span>&#xe926;</ion-icon>
-                    </ion-item>
-                </ng-template>
-                <ion-item *ngIf="DeviceList.length===0" [class.fadein]="DeviceList.length===0">
-                    <span>{{'go_page.plug_device'|translate}}</span>
-                </ion-item>
-            </ion-list>
-        </ion-col>
-    </ion-row>
+<ion-content no-scroll padding [ngClass]="app.Skin('light')">
     <div Animate-Canvas #animatedef>
         <div #tips1 class="tips" [class.animateTips]="TypeMode > 3"></div>
         <div #tips2 class="tips" [class.animateTips]="TypeMode > 4"></div>
@@ -37,11 +18,14 @@
         <div><ion-icon app-icon #key>&#xe921;</ion-icon></div>
         <div><ion-icon #body app-icon>&#xe91f;</ion-icon></div>
     </div>
-    <div text-light absolute style="z-index:1;left:30px;bottom:30px" (click)="nav.pop()" tappable>{{'demo_play_page.skip'|translate}}</div>
+    <div absolute style="z-index:1;left:30px;bottom:30px" (click)="nav.pop()" tappable>{{'demo_play_page.skip'|translate}}</div>
     <div text-center #ready class="animation" [ngStyle]="{opacity:0}">
-        <button clear text-light [ngStyle]="{fontSize:'4.2em',overflow:'visible'}" (click)="Go()" tappable>
-            <ion-icon app-icon>&#xe929;</ion-icon>
+        <button clear  [ngStyle]="{fontSize:'4.2em',overflow:'visible'}" (click)="Go()" tappable>
+            <ion-icon app-icon color="color-primary">&#xe929;</ion-icon>
         </button>
     </div>
 </ion-content>
+<ion-backdrop my-backdrop *ngIf="DeviceScanning" (click)="DeviceScanning=false">
+    <scan-device (OnSelection)="DeviceSelection($event)"></scan-device>
+</ion-backdrop>
 

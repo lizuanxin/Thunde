@@ -80,7 +80,7 @@ ion-row {
             }
             &.active {
                 div.button{
-                    color: color($DominantColor, D-blue, base);
+                    color: color($colors,color-primary-exc,base);
                     background-color: color($colors, light, base);
                 }
             }
@@ -89,11 +89,14 @@ ion-row {
     &.row-tab {
         ion-col {
             color: #a1a1a1;
-            background-color: lighten(color($DominantColor, D-header, base), 28%);
+            // background-color: lighten(color($colors,color-primary,base), 30%);
+            background-color: color($colors, light, base);
             &.state {
-                background-color: color($DominantColor, D-Default, base);
+                // background-color: color($colors, light, base);
+                background-color: darken(color($colors,light,base),3%);
                 div.button {
-                    @include gradient-liner(top, #8adaff, #7f9dff);
+                    // @include gradient-liner(top, color($colors,color-primary-exc,base), color($colors,color-primary,base));
+                    background-color:color($colors,color-primary,base);
                     color: color($colors, light, base);
                 }
             }
