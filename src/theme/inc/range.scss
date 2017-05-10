@@ -1,31 +1,60 @@
+// ion-range.range {
+//     &[progress-bar] {
+//         &.range-disabled {
+//             .range-knob {
+//                 outline: none;
+//                 border: none;
+//                 background-color: color($colors,light,base);
+//             }
+//         }
+//         .range-knob-handle {
+//             .range-knob {
+//                 top: 14px;
+//                 left: 16px;
+//                 width: 16px;
+//                 height: 16px;
+//                 box-shadow: 0 0 10px rgba(0,0,0,.1);
+//             }
+//         }
+//         .range-bar {
+//             margin-top: -2px;
+//             height: 6px;
+//             border-radius: 3px;
+//             background: lighten(color($colors,dark,base),80%);
+//             border: solid 1px rgba(255, 255, 255, .15);           
+//             &.range-bar-active {
+//                 background:color($colors,color-primary,base);                
+//             }
+//         }
+        
+//     }
+// }
+
 ion-range.range {
     &[progress-bar] {
+        .range-bar{
+            border-radius:10px;
+        }
+
+        .range-knob-handle{
+            .range-knob{
+                border:none;
+                box-shadow: 0 0 10px rgba(0,0,0,.2);
+                background-color:color($colors,light,base);
+            }
+        }
+
+
+
         &.range-disabled {
+            .range-bar-active{
+                background-color: lighten(color($colors,color-primary,base),10%);
+            }
             .range-knob {
                 outline: none;
-                border: none;
-                background-color: color($colors,light,base);
+                background-color:color($colors,light,base);
+                // transform: scale(.55);
             }
         }
-        .range-knob-handle {
-            .range-knob {
-                top: 14px;
-                left: 16px;
-                width: 16px;
-                height: 16px;
-                box-shadow: 0 0 10px rgba(0,0,0,.1);
-            }
-        }
-        .range-bar {
-            margin-top: -2px;
-            height: 6px;
-            border-radius: 3px;
-            background: lighten(color($colors,dark,base),80%);
-            border: solid 1px rgba(255, 255, 255, .15);           
-            &.range-bar-active {
-                background:color($colors,color-primary,base);                
-            }
-        }
-        
     }
 }

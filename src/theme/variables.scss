@@ -21,6 +21,7 @@ $colors: (
     // color-primary-tou:#2F2F2F,
 
     color-primary:#d3120b,
+    color-primary-light:lighten(#d3120b,10%),
     color-primary-exc:#feb2b2,
     color-primary-demo:#2F2F2F,
     color-primary-tou:#2F2F2F,
@@ -53,12 +54,12 @@ $conFooterHeight:56px;
 
 $range-md-hit-width:21px;
 $range-md-slider-height:21px;
-$range-md-bar-height:3px;
+$range-md-bar-height:5px;
 $range-md-bar-background-color:#d9d9d9;
 
 $range-ios-slider-height: 21px;
 $range-ios-hit-width:21px;
-$range-ios-bar-height:3px;
+$range-ios-bar-height:5px;
 $range-ios-knob-width:10px;
 $range-ios-knob-background-color:color($colors,light,base);
 
