@@ -18,7 +18,7 @@
         {{'profile_page.check_otg'|translate}}
         <ion-note item-right>
             <div [ngClass]="{'text-success':IsSupportedOTG,'text-danger':!IsSupportedOTG}">
-                <span ion-text f-1-2>{{IsSupportedOTG ? '支持' : '不支持'}}</span> 
+                <span ion-text f-1-2>{{IsSupportedOTG ? profile_page.support : 'profile_page.no_support'|translate}}</span>
                 <ion-icon f-2-8>{{IsSupportedOTG ? '&#xf2bc;' : '&#xf2c0;'}}</ion-icon>
             </div>
         </ion-note>
