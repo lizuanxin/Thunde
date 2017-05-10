@@ -6,7 +6,7 @@
         </button>
     </ion-buttons>
     <ion-buttons right>
-        <button ion-button icon-only color="light" [ngStyle]="{'margin':'0 6px','padding':'0 2px','min-width':'44px'}" tappable>
+        <button ion-button icon-only color="light" [ngStyle]="{'margin':'0 6px','padding':'0 2px','min-width':'44px'}" (click)="nav.popToRoot()" tappable>
             <ion-icon app-icon>&#xe936;</ion-icon>
         </button>
     </ion-buttons>
@@ -27,7 +27,7 @@
      </ion-row>
      <ion-row>
          <ion-col col-12>
-             <ion-range min="0" max="100" [ngModel]="Ticking / ScriptFile.Duration * 100" color="secondary" disabled progress-bar>                
+             <ion-range min="0" max="100" [ngModel]="Ticking / ScriptFile.Duration * 100" color="secondary" disabled progress-bar>
             </ion-range>
          </ion-col>
          <ion-col col-12 text-right>

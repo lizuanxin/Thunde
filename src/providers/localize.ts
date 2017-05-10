@@ -125,7 +125,7 @@ export let translate_en =
 
     category:
     {
-        recommend: 'Relax',
+        recommend: 'Recommend',
         relax: 'Relax',
         fat_burning: 'Fat-Burning',
         muscle_training: 'Muscle Training',
@@ -321,7 +321,7 @@ export let translate_zh =
 
     category:
     {
-        recommend: '放松',
+        recommend: '推荐',
         relax: '放松',
         muscle_training: '运动',
         fat_burning: '瘦身',
