@@ -90,6 +90,7 @@ export namespace const_data
         relax: Categories[0],
         muscle_training: Categories[1],
         fat_burning: Categories[2],
+        recommend: Categories[3],
     }
 
     export const ScriptFile: Array<IScriptFile> =
@@ -186,6 +187,19 @@ export namespace const_data
             Category_Id: Category.muscle_training.Id, Mode_Id: null, Name: 'sit_ups',
             BodyParts: [Body.abdomen], Icon: 0xe949,
             Content: 'V1D16{|R1P96I3e8F32C2ee}{R200I600|R1P32F3cC3|P38|P3e|P44|P4a|P50|P56|P5c|P62|P68|P6e|P74|P7a|P80|P86|P8c|P92|P96}'},
+
+        {Id: '{00000000-0000-4000-4100-0000000FF001}', Author: 'UltraCreation Team',
+            Category_Id: Category.recommend.Id, Mode_Id: null, Name: 'recommend1',
+            BodyParts: [Body.back], Icon: null,
+            Content: inplace_files.file3_sore_therpy},
+        {Id: '{00000000-0000-4000-4100-0000000FF002}', Author: 'UltraCreation Team',
+            Category_Id: Category.recommend.Id, Mode_Id: null, Name: 'recommend2',
+            BodyParts: [Body.back], Icon: null,
+            Content: inplace_files.file11_pain_treatment},
+        {Id: '{00000000-0000-4000-4100-0000000FF002}', Author: 'UltraCreation Team',
+            Category_Id: Category.recommend.Id, Mode_Id: null, Name: 'recommend3',
+            BodyParts: [Body.back], Icon: null,
+            Content: inplace_files.file7_shoulder},
         ]
 
         export const DemoModes =

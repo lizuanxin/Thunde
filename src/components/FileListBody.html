@@ -29,13 +29,9 @@
 </ion-row>
 <ion-row align-items-center style="position:absolute;bottom:0;left:0;right:0">
     <ion-col col-8 no-padding  [ngStyle]="SetStyle(2)">
-        <swiper swiper-piker #FileSwiper [Config]="{effect: 'coverflow', direction: 'vertical', pagination: '.swiper-pagination', paginationType: 'progress',slidesPerView: 4,centeredSlides: true,coverflow: {
-            rotate: 0,
-            stretch: 0,
-            depth: 0,
-            modifier: 1,
-            slideShadows : true
-        }}">
+        <swiper swiper-piker #FileSwiper [Config]="{effect: 'coverflow', direction: 'vertical',
+            pagination: '.swiper-pagination', paginationType: 'progress', slidesPerView: 4, centeredSlides: true,
+            coverflow: {rotate: 0, stretch: 0, depth: 0, modifier: 1, slideShadows : true}}">
             <div class="swiper-wrapper">
                 <div class="swiper-slide" *ngFor="let f of FilteredFiles" [ngStyle]="SetStyle(3)">
                     {{f.Name_LangId|translate}}
