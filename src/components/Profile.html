@@ -14,11 +14,11 @@
 </ion-list>
 
 <ion-list inset list-init list-gray out-line>
-    <ion-item detail-none [ngStyle]="{backgroundColor:!IsSupportedOTG ? '#ffdddc' : '#d7fbd8'}">
+    <ion-item detail-none>
         {{'profile_page.check_otg'|translate}}
         <ion-note item-right>
             <div [ngClass]="{'text-success':IsSupportedOTG,'text-danger':!IsSupportedOTG}">
-                <span ion-text f-1-2>{{IsSupportedOTG ? profile_page.support : 'profile_page.no_support'|translate}}</span>
+                <span ion-text f-1-2>{{IsSupportedOTG ? 'profile_page.support'|translate : 'profile_page.no_support'|translate}}</span>
                 <ion-icon f-2-8>{{IsSupportedOTG ? '&#xf2bc;' : '&#xf2c0;'}}</ion-icon>
             </div>
         </ion-note>

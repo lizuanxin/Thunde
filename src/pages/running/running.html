@@ -19,7 +19,7 @@
         </ion-col>
     </ion-row>
 
-  <div text-light f-48 text-center pull-bottom [ngStyle]="{'width':'100%','bottom':'60px'}">
+  <div text-light f-48 text-center pull-bottom [ngStyle]="{'width':'100%','bottom':'80px'}">
     <ion-list transparent no-margin no-padding>
       <ion-item no-lines no-margin no-padding>
         <ion-range min="0" max="100" [ngModel]="Ticking / ScriptFile.Duration * 100" color="secondary" disabled progress-bar>
@@ -42,10 +42,10 @@
 </ion-content>
 <ion-footer no-border no-shadow>
     <ion-toolbar transparent visible>
-        <ion-row style="margin-top:-50px">
+        <ion-row style="margin-top:-60px">
             <ion-col text-center>
                 <button clear (click)="Shutdown()" style="display:inline-block; font-size: 1.2rem; width:80px; height:80px"  tappable>
-                    <ion-icon *ngIf="! Finish" color="color-primary" app-icon style="font-size:15vw;">&#xe93b;</ion-icon>
+                    <ion-icon *ngIf="! Finish" color="color-primary" style="font-size:18vw;">&#xf1ef;</ion-icon>
                     <ion-icon app-icon *ngIf="Finish">&#xe936;</ion-icon>
                 </button>
             </ion-col>

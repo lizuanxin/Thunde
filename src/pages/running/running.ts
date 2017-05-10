@@ -86,7 +86,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     get CanvasClientHeight(): Object
     {
-        return {height: this.content.contentHeight*0.8 + 'px'}
+        return {height: this.content.contentHeight*0.7 + 'px'}
     }
 
     get TotalMinute(): string
