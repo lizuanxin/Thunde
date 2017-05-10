@@ -57,7 +57,7 @@ export let translate_en =
         demo: 'Demo',
         appearance: 'Appearance',
         app_version: 'App Version',
-        company: 'Co., Ltd GuiQi Technology (shenzhen)',
+        company: 'Co., Ltd. GuiQi Technology (shenzhen)',
         address: 'address:',
         company_address: '深圳市南山区科技园科丰路8号金达科技中心',
         phone_number: 'phone:',
@@ -67,6 +67,8 @@ export let translate_en =
         create: 'Create',
         already_a_user: 'Already a user?',
         login: 'Log in',
+        support: 'Support',
+        no_support: 'Not Support',
     },
 
     demo_play_page:
@@ -252,7 +254,7 @@ export let translate_zh =
         check_otg: 'OTG 状态',
         demo: '基本操作',
         app_version: '软件当前版本',
-        company: 'Co., Ltd 深圳瑰琦科技有限公司',
+        company: '深圳瑰琦科技有限公司',
         address: '地址:',
         company_address: '深圳市南山区科技园科丰路8号金达科技中心',
         phone_number: '电话:',
@@ -262,6 +264,8 @@ export let translate_zh =
         create: '注册',
         already_a_user: '已注册?',
         login: '登录',
+        support: '支持',
+        no_support: '不支持',
     },
 
     demo_play_page:
