@@ -10,7 +10,7 @@ import * as Svc from '../providers'
     <ion-list *ngIf="Visible" [class.fadein]="DeviceList.length>0" margin>
         <ng-template [ngIf]="DeviceList.length>0">
             <ion-item *ngFor="let device of DeviceList" (click)="SelectionDevice(device.id);$event.stopPropagation()" tappable>
-                <p>{{'home_page.title'|translate}}</p>
+                <p><span ion-text color="dark">{{'home_page.title'|translate}}</span></p>
                 <ion-icon app-icon *ngIf="device.rssi<-80" item-right><span f-1-2>{{device.rssi}}</span> &#xe92f;</ion-icon>
                 <ion-icon app-icon *ngIf="device.rssi<-70 && device.rssi>=-80" item-right><span f-1-2>{{device.rssi}}</span> &#xe92e;</ion-icon>
                 <ion-icon app-icon *ngIf="device.rssi<-60 && device.rssi>=-70" item-right><span f-1-2>{{device.rssi}}</span> &#xe92d;</ion-icon>
