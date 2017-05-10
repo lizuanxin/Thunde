@@ -19,7 +19,7 @@
         <ion-note item-right>
             <div [ngClass]="{'text-success':IsSupportedOTG,'text-danger':!IsSupportedOTG}">
                 <span ion-text f-1-2>{{'profile_page.'+(IsSupportedOTG ? 'support' : 'no_support')|translate}}</span>
-                <ion-icon f-2-8>{{IsSupportedOTG ? '&#xf2bc;' : '&#xf2c0;'}}</ion-icon>
+                <ion-icon f-2-4>{{IsSupportedOTG ? '&#xf2bc;' : '&#xf2c0;'}}</ion-icon>
             </div>
         </ion-note>
         <!--<ion-icon [ngStyle]="{ color: IsSupportedOTG ? '#4b7efa' : 'red',marginRight:0,fontSize:'2rem', paddingTop:'7px', paddingRight:'6px'}" item-right>&#xf1f7;</ion-icon>-->
