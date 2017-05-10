@@ -1,3 +1,4 @@
+import {isDevMode} from '@angular/core'
 import {TypeInfo, EAbort} from '../UltraCreation/Core'
 import {TSqliteStorage, TSqlQuery} from '../UltraCreation/Storage'
 
@@ -10,38 +11,45 @@ export namespace Initialization
 {
     export function Execute(): Promise<void>
     {
-        const db_version = '21';
+        const db_version = '22';
         let Storage = new TSqliteStorage(const_data.DatabaseName);
 
-        return Storage.ExecSQL(DestroyTableSQL).catch(() => {})
-            .then(() => Storage.ExecSQL(InitTableSQL))
-        /*
-        return Storage.ExecSQL('SELECT name FROM sqlite_master WHERE type="table" AND name="Asset"')
-            .then(result =>
-            {
-                // let Init = Storage.ExecSQL(DestroyTableSQL).catch(() => {});
-                let Init: Promise<any>;
-                if (result.rows.length !== 0)
+        let DevOrProd: Promise<void>;
+        if (isDevMode())
+        {
+            DevOrProd = Storage.ExecSQL(DestroyTableSQL).catch(() => {})
+                .then(() => Storage.ExecSQL(InitTableSQL));
+        }
+        else
+        {
+            DevOrProd = Storage.ExecSQL('SELECT name FROM sqlite_master WHERE type="table" AND name="Asset"')
+                .then(result =>
                 {
-                    Init = Storage.Get('db_version')
-                        .catch(err => 'destroying')
-                        .then(Value =>
-                        {
-                            if (Value === db_version)
+                    // let Init = Storage.ExecSQL(DestroyTableSQL).catch(() => {});
+                    let Init: Promise<any>;
+                    if (result.rows.length !== 0)
+                    {
+                        Init = Storage.Get('db_version')
+                            .catch(err => 'destroying')
+                            .then(Value =>
                             {
-                                console.log('skipping init data');
-                                return Promise.reject(new EAbort())
-                            }
-                            else
-                                return Storage.ExecSQL(DestroyTableSQL).catch(() => {});
-                        })
-                }
-                else
-                    Init = Storage.ExecSQL(DestroyTableSQL).catch(() => {});
+                                if (Value === db_version)
+                                {
+                                    console.log('skipping init data');
+                                    return Promise.reject(new EAbort())
+                                }
+                                else
+                                    return Storage.ExecSQL(DestroyTableSQL).catch(() => {});
+                            })
+                    }
+                    else
+                        Init = Storage.ExecSQL(DestroyTableSQL).catch(() => {});
 
-                return Init.then(() => Storage.ExecSQL(InitTableSQL));
-            })
-            */
+                    return Init.then(() => Storage.ExecSQL(InitTableSQL));
+                })
+        }
+
+        return DevOrProd
             .then(() => Storage.ExecSQL(InitDataSQL))
             .then(() => InitMode(Storage))
             .then(()=> InitBody(Storage))
@@ -129,7 +137,7 @@ export namespace Initialization
             // Id, Category_Id, Mode_Id, Body_Id, Author, Content
             queries.push(new TSqlQuery(InsertScriptFile, [iter.Id, Icon, iter.Category_Id, iter.Mode_Id, iter.Author, iter.Content]));
 
-            if (! iter.BodyParts || iter.BodyParts.length === 0)
+            if (! iter.BodyParts)
             {
                 for (let body of const_data.BodyParts)
                     queries.push(new TSqlQuery(InsertScriptFile_Body, [iter.Id, body.Id]));

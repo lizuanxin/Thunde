@@ -3,7 +3,7 @@ import {Subscription} from 'rxjs/Subscription'
 import 'rxjs/add/operator/toPromise';
 
 import {NavController, NavParams, ViewController, Content} from 'ionic-angular';
-import {PowerManagement} from '../../UltraCreation/Native/PowerManagement'
+// import {PowerManagement} from '../../UltraCreation/Native/PowerManagement'
 import * as Svc from '../../providers';
 
 @Component({selector: 'page-running', templateUrl: 'running.html'})
@@ -20,7 +20,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     ngOnInit()
     {
-        PowerManagement.Acquire();
+        // PowerManagement.Acquire();
 
         this.ShellNotifySubscription = this.Shell.OnNotify.subscribe(
             Notify =>
@@ -81,7 +81,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
         this.ShellNotifySubscription.unsubscribe();
         this.Shell.Detach();
 
-        PowerManagement.Release();
+        // PowerManagement.Release();
     }
 
     get CanvasClientHeight(): Object
