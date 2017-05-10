@@ -85,7 +85,7 @@ export namespace const_data
         {Id: '{00000000-0000-4000-3000-000000000001}', Icon: 0xe917, Name: 'relax'},
         {Id: '{00000000-0000-4000-3000-000000000002}', Icon: 0xe91e, Name: 'muscle_training'},
         {Id: '{00000000-0000-4000-3000-000000000003}', Icon: 0xe905, Name: 'fat_burning'},
-        {Id: '{00000000-0000-4000-3000-FFFFFFFFFFFF}', Icon: 0xe905, Name: 'recommend'},
+        {Id: '{00000000-0000-4000-3000-FFFFFFFFFFFF}', Icon: 0xe917, Name: 'recommend'},
     ]
 
     export const Category =
@@ -199,7 +199,7 @@ export namespace const_data
             Category_Id: Category.recommend.Id, Mode_Id: null, Name: 'recommend2',
             BodyParts: [Body.back], Icon: null,
             Content: inplace_files.file11_pain_treatment},
-        {Id: '{00000000-0000-4000-4100-0000000FF002}', Author: 'UltraCreation Team',
+        {Id: '{00000000-0000-4000-4100-0000000FF003}', Author: 'UltraCreation Team',
             Category_Id: Category.recommend.Id, Mode_Id: null, Name: 'recommend3',
             BodyParts: [Body.back], Icon: null,
             Content: inplace_files.file7_shoulder},

@@ -125,6 +125,7 @@ export let translate_en =
 
     category:
     {
+        recommend: 'Relax',
         relax: 'Relax',
         fat_burning: 'Fat-Burning',
         muscle_training: 'Muscle Training',
@@ -161,6 +162,18 @@ export let translate_en =
         dumbbell: 'Dumbbell',
         push_ups: 'Push-ups',
         sit_ups: 'Sit-ups',
+
+    /* recommend */
+        recommend1: '办公室肩颈活力',
+        recommend2: '加班后肩颈疼痛',
+        recommend3: '低头族肩颈放松'
+    },
+
+    shoulder_neck:
+    {
+        massage: '按摩',
+        soothing_massage: '舒缓按摩',
+        position: '肩部|颈部'
     },
 
     tou_page:
@@ -308,6 +321,7 @@ export let translate_zh =
 
     category:
     {
+        recommend: '放松',
         relax: '放松',
         muscle_training: '运动',
         fat_burning: '瘦身',
@@ -344,6 +358,18 @@ export let translate_zh =
         dumbbell: '哑铃',
         push_ups: '俯卧撑',
         sit_ups: '仰卧起坐',
+
+    /* recommend */
+        recommend1: '办公室肩颈活力',
+        recommend2: '加班后肩颈疼痛',
+        recommend3: '低头族肩颈放松'
+    },
+
+    shoulder_neck:
+    {
+        massage: '按摩',
+        soothing_massage: '舒缓按摩',
+        position: '肩部|颈部'
     },
 
     tou_page:
