@@ -18,22 +18,22 @@
 
 <ion-content no-scroll padding [ngClass]="app.Skin('light')">
  <ng-template [ngIf]="! Finish">
-     <h2 text-center f-1-6 padding-vertical>{{ScriptFile.Name_LangId|translate}}</h2>
-     <ion-row>
-         <ion-col col-6 offset-3 text-center style="font-size:10vw;font-weight:bold"><span ion-text color="dark-light">{{TickingDownHint}}</span></ion-col>
-         <ion-col col-3>
-             <ion-icon></ion-icon>
+     <h2 text-center f-1-6 padding-vertical style="border-bottom:solid 1px #F2F2F2">{{ScriptFile.Name_LangId|translate}}
+        <button clear float-right><ion-icon app-icon color="color-primary-light" f-2-0>&#xe94a;</ion-icon></button>
+     </h2>
+    <ion-row>
+        <ion-col col-12 text-right style="margin-bottom:-30px">
+            <span ion-text color="gray">{{TotalMinute}}</span>
          </ion-col>
-     </ion-row>
-     <ion-row>
          <ion-col col-12>
              <ion-range min="0" max="100" [ngModel]="Ticking / ScriptFile.Duration * 100" color="secondary" disabled progress-bar>
             </ion-range>
          </ion-col>
-         <ion-col col-12 text-right>
-            <span ion-text color="gray">{{TotalMinute}}</span>
-         </ion-col>
      </ion-row>
+     <ion-row>
+         <ion-col col-6 offset-3 text-center style="font-size:10vw;font-weight:bold"><span ion-text color="dark-light">{{TickingDownHint}}</span></ion-col>
+     </ion-row>
+
     <ion-row align-items-center  margin-horizontal>
         <ion-col col-10 offset-1>
             <intensity-dial [Value]="Intensity" (OnValueChanged)="AdjustIntensity($event)"></intensity-dial>

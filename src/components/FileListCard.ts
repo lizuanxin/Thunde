@@ -5,7 +5,7 @@ import * as Svc from '../providers';
     <div margin>
         <ion-card card-list-default *ngFor="let f of FileList">
             <ion-card-content (tap)="OnSelection.emit(f)" tappable>
-                <ion-item>
+                <ion-item [ngStyle]="{background:SetBackgroundImg(f.Id),backgroundSize:'contain'}">
                     <ion-row item-left>
                         <ion-col col-12>
                             <p style="font-size:5vw">{{f.Name_LangId|translate}}</p>
@@ -16,9 +16,6 @@ import * as Svc from '../providers';
                             <p><span f-1-2>{{f.DurationMinute.toString()}}{{'hint.min'|translate}}</span></p>
                         </ion-col>
                     </ion-row>
-                    <div item-right style="margin:0; padding:0">
-                        <img src="{{SetImg(f.Id)}}">
-                    </div>
                 </ion-item>
             </ion-card-content>
         </ion-card>
@@ -58,6 +55,11 @@ export class FileListCardComp
             case '{00000000-0000-4000-4100-0000000FF003}':
             return "assets/img//shoulders_recommend3.png";
         }
+    }
+
+    SetBackgroundImg(id): string
+    {
+        return 'url(' + this.SetImg(id) + ') right bottom no-repeat';
     }
 
     @Input() FileList: Svc.TScriptFileList;

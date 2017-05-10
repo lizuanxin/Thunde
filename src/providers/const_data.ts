@@ -85,7 +85,7 @@ export namespace const_data
         {Id: '{00000000-0000-4000-3000-000000000001}', Icon: 0xe917, Name: 'relax'},
         {Id: '{00000000-0000-4000-3000-000000000002}', Icon: 0xe91e, Name: 'muscle_training'},
         {Id: '{00000000-0000-4000-3000-000000000003}', Icon: 0xe905, Name: 'fat_burning'},
-        {Id: '{00000000-0000-4000-3000-FFFFFFFFFFFF}', Icon: 0xe905, Name: 'recommend'},
+        {Id: '{00000000-0000-4000-3000-FFFFFFFFFFFF}', Icon: 0xe94b, Name: 'recommend'},
     ]
 
     export const Category =
