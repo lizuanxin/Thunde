@@ -11,23 +11,23 @@
         </div>
       </div>
 
-      <div pull-bottom [ngStyle]="{width:'100%',bottom:'30px'}">
+      <div pull-bottom [ngStyle]="{width:'100%',bottom:'50px'}">
         <ion-row margin-horizontal>
             <ion-col col-8 offset-2 [ngStyle]="{marginTop:0,padding:0}">
                 <intensity-dial [Value]="Intensity" (OnValueChanged)="AdjustIntensity($event)"></intensity-dial>
             </ion-col>
         </ion-row>
-        <ion-row [ngStyle]="{position:'relative',zIndex:100}" no-padding no-margin>
-          <ion-col>
-            <ion-list transparent no-margin>
-              <ion-item no-padding no-lines>
-                <ion-range min="0" max="100" [ngModel]="InitRange" color="secondary" [ngStyle]="{marginTop:0,padding:0}" disabled progress-bar>
-                  <ion-label range-right [ngClass] = "app.SkinColor" [ngStyle]="{marginLeft:'16px',marginRight:'2px','font-size':'0.22vm', 'opacity': 0.3}">{{TotalMinute}}</ion-label>
-                  <ion-label range-left [ngClass] = "app.SkinColor" [ngStyle]="{width:'48px', marginLeft:'6px',marginRight:'6px', 'font-size':'0.22vm'}">{{TickingDownHint}}</ion-label>
-                </ion-range>
-              </ion-item>
-            </ion-list>
+        <ion-row align-items-end [ngStyle]="{position:'relative',zIndex:100}" no-padding no-margin>
+          <ion-col col-3 text-center>
+              {{TickingDownHint}}
           </ion-col>
+          <ion-col>
+              <ion-range min="0" max="100" [ngModel]="InitRange" color="secondary" style="padding:0"  disabled progress-bar>                  
+              </ion-range>
+          </ion-col>
+          <ion-col col-3 text-center>
+              {{TotalMinute}}
+          </ion-col>  
         </ion-row>
       </div>
     </ng-template>

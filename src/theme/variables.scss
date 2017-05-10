@@ -34,6 +34,7 @@ $colors: (
     orange:orange, 
     light: white, 
     dark: #222, 
+    dark-light: lighten(#222,20%), 
 
     purple: #382b5f, 
     scarlet: #03a451, 
@@ -52,15 +53,16 @@ $conFooterHeight:56px;
 
 // ******RangeStyle Start****** //
 
-$range-md-hit-width:21px;
-$range-md-slider-height:21px;
-$range-md-bar-height:5px;
-$range-md-bar-background-color:#d9d9d9;
+$range-md-hit-width:36px;
+$range-md-slider-height:36px;
+$range-md-bar-height:16px;
+$range-md-knob-width:36px;
+$range-md-bar-background-color:#f0f0f0;
 
-$range-ios-slider-height: 21px;
-$range-ios-hit-width:21px;
-$range-ios-bar-height:5px;
-$range-ios-knob-width:10px;
+$range-ios-slider-height: 36px;
+$range-ios-hit-width:36px;
+$range-ios-bar-height:16px;
+$range-ios-knob-width:20px;
 $range-ios-knob-background-color:color($colors,light,base);
 
 // ******RangeStyle End****** //

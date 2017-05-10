@@ -11,48 +11,57 @@
         </button>
     </ion-buttons>
     <ion-title text-center>
-        <span ion-text color="light">{{ScriptFile.Name_LangId|translate}}</span>
+        <span ion-text color="light">{{'home_page.title'|translate}}</span>
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content no-scroll padding [ngClass]="app.Skin('light')">
-    <ng-template [ngIf]="! Finish">
-    <ion-row align-items-center [ngStyle]="CanvasClientHeight" margin-horizontal>
+ <ng-template [ngIf]="! Finish">
+     <h2 text-center f-1-6 padding-vertical>{{ScriptFile.Name_LangId|translate}}</h2>
+     <ion-row>
+         <ion-col col-6 offset-3 text-center style="font-size:10vw;font-weight:bold"><span ion-text color="dark-light">{{TickingDownHint}}</span></ion-col>
+         <ion-col col-3>
+             <ion-icon></ion-icon>
+         </ion-col>
+     </ion-row>
+     <ion-row>
+         <ion-col col-12>
+             <ion-range min="0" max="100" [ngModel]="Ticking / ScriptFile.Duration * 100" color="secondary" disabled progress-bar>                
+            </ion-range>
+         </ion-col>
+         <ion-col col-12 text-right>
+            <span ion-text color="gray">{{TotalMinute}}</span>
+         </ion-col>
+     </ion-row>
+    <ion-row align-items-center  margin-horizontal>
         <ion-col col-10 offset-1>
             <intensity-dial [Value]="Intensity" (OnValueChanged)="AdjustIntensity($event)"></intensity-dial>
         </ion-col>
     </ion-row>
 
-  <div text-light f-48 text-center pull-bottom [ngStyle]="{'width':'100%','bottom':'80px'}">
-    <ion-list transparent no-margin no-padding>
-      <ion-item no-lines no-margin no-padding>
-        <ion-range min="0" max="100" [ngModel]="Ticking / ScriptFile.Duration * 100" color="secondary" disabled progress-bar>
-          <ion-label range-right color="dark" [ngStyle]="{marginLeft:'16px',marginRight:'2px','font-size':'0.22vm', 'opacity': 0.3}">{{TotalMinute}}</ion-label>
-          <ion-label range-left color="dark" [ngStyle]="{width:'48px', marginLeft:'6px',marginRight:'6px', 'font-size':'0.22vm'}">{{TickingDownHint}}</ion-label>
-        </ion-range>
-      </ion-item>
-    </ion-list>
-  </div>
   </ng-template>
   <ng-template [ngIf]="Finish">
-  <div v-m style="height:100%;">
-    <div center ion-text color="dark">
-        <h2 text-center>{{'hint.congratulations'|translate}}</h2>
-        <h3 padding text-center>{{'running_page.finish'|translate}}</h3>
-        <!--<p text-center><ion-icon app-icon text-light style="font-size:46vw">&#xe938;</ion-icon></p>-->
+    <div v-m style="height:100%;">
+        <div center ion-text color="dark">
+            <h2 text-center>{{'hint.congratulations'|translate}}</h2>
+            <h3 padding text-center>{{'running_page.finish'|translate}}</h3>
+            <!--<p text-center><ion-icon app-icon text-light style="font-size:46vw">&#xe938;</ion-icon></p>-->
+        </div>
     </div>
-  </div>
   </ng-template>
 </ion-content>
 <ion-footer no-border no-shadow>
     <ion-toolbar transparent visible>
-        <ion-row style="margin-top:-60px">
-            <ion-col text-center>
-                <button clear (click)="Shutdown()" style="display:inline-block; font-size: 1.2rem; width:80px; height:80px"  tappable>
+        <ion-row style="margin-top:-50px">
+            <ion-col col-8 offset-2 text-center>
+                <button ion-button block round (click)="Shutdown()" color="color-primary-light">
+                    关闭
+                </button>
+                <!--<button clear (click)="Shutdown()" style="display:inline-block; font-size: 1.2rem; width:80px; height:80px"  tappable>
                     <ion-icon *ngIf="! Finish" color="color-primary-light" style="font-size:18vw;">&#xf1ef;</ion-icon>
                     <ion-icon app-icon *ngIf="Finish" color="color-primary-light" style="font-size:18vw;">&#xe936;</ion-icon>
-                </button>
+                </button>-->
             </ion-col>
         </ion-row>
     </ion-toolbar>
