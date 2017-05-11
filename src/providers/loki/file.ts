@@ -148,6 +148,8 @@ class TSnap implements ISnap
 
 export class TFile extends TPersistable
 {
+    static DEBUG_FILETIME: boolean = false;
+
     get Version(): number
     {
         return this._Version;
@@ -160,6 +162,9 @@ export class TFile extends TPersistable
 
         for (let Section of this.Sections)
         {
+            if (TFile.DEBUG_FILETIME)
+                console.log('----section starting at: ' + Math.trunc(RetVal / 1000));
+
             let Est = Section.TimeEst();
             RetVal += Est;
             Precalc.push(Est);
@@ -299,8 +304,15 @@ export class TSection extends TPersistable
     {
         let RetVal: number = 0;
 
+        let Prev: TBlock = null;
         for (let Block of this.Blocks)
+        {
+            if (TFile.DEBUG_FILETIME)
+                console.log('   +' + Math.trunc(RetVal / 1000) + ' ' + Block.Serialization(16, Prev));
+
             RetVal += Block.TimeEst();
+            Prev = Block;
+        }
 
         return (RetVal + this.Interval) * this.Repeat;
     }
@@ -403,7 +415,6 @@ export class TBlock extends TPersistable
         return (1000 / this.Freq * this.Cluster + this.Interval) * this.Repeat;
     }
 
-
     PushToken(token: TToken): void
     {
         switch(token.Type)
@@ -440,7 +451,7 @@ export class TBlock extends TPersistable
     {
         let RetVal = String.fromCharCode(ASCII.VerticalBar);
 
-        if (TypeInfo.Assigned(Prev))
+        if (! TypeInfo.Assigned(Prev))
         {
             if (this.Repeat !== DEF_REPEAT)
                 RetVal += 'R' + this.Repeat.toString(DigitBase).toLowerCase();

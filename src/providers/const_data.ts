@@ -98,7 +98,7 @@ export namespace const_data
 
     export const ScriptFile: Array<IScriptFile> =
     [
-        {Id: '{00000000-0000-4000-4000-000000000011}', Author: 'UltraCreation Team',
+        {Id: '{00000000-0000-4000-4000-000000000010}', Author: 'UltraCreation Team',
             Category_Id: Category.relax.Id,  Mode_Id: null, Name: 'knock',
             BodyParts: BodyCategory.all, Content: inplace_files.file1_knock},
         {Id: '{00000000-0000-4000-4000-000000000011}', Author: 'UltraCreation Team',

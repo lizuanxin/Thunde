@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="hk.com.ultracreation.thunderbolt" version="1.0.8" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>小摩线</name>
-  <description>
-        小摩线
-    </description>
+  <description>小摩线</description>
   <author email="Thunderbolt@ultracreation.com.hk" href="http://ultracreation.com.hk/">UltraCreation Thunderbolt Team</author>
   <content src="index.html"/>
   <access origin="*"/>
