@@ -5,7 +5,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   selector: 'page-download',
   templateUrl: 'download.html',
 })
-export class DownloadPage {
+export class Download {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
