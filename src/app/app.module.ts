@@ -13,7 +13,7 @@ import * as Svc from '../providers'
 let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
     //iconMode: 'ios',
     activator: 'none',     // "ripple", "highlight"
-    // pageTransition: 'ios-transition',
+    pageTransition: 'ios-transition',
     backButtonText: '',
     pageTransitionDelay: 0,
     swipeBackEnabled: false,

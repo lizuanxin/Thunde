@@ -64,6 +64,53 @@
 
 }
 
+@mixin InOutSide($maxsize:30) {
+    @for $i from 5 through $maxsize {
+        @if($i%5==0) {
+            &[p-#{$i}],
+            &.p-#{$i} {
+                padding: $i+px;
+            }
+            &[p-l-#{$i}],
+            &.p-l-#{$i} {
+                padding-left: $i+px;
+            }
+            &[p-r-#{$i}],
+            &.p-r-#{$i} {
+                padding-right: $i+px;
+            }
+            &[p-t-#{$i}],
+            &.p-t-#{$i} {
+                padding-top: $i+px;
+            }
+            &[p-b-#{$i}],
+            &.p-b-#{$i} {
+                padding-bottom: $i+px;
+            }
+            &[m-#{$i}],
+            &.m-#{$i} {
+                margin: $i+px;
+            }
+            &[m-l-#{$i}],
+            &.m-l-#{$i} {
+                margin-left: $i+px;
+            }
+            &[m-r-#{$i}],
+            &.m-r-#{$i} {
+                margin-right: $i+px;
+            }
+            &[m-t-#{$i}],
+            &.m-t-#{$i} {
+                margin-top: $i+px;
+            }
+            &[m-b-#{$i}],
+            &.m-b-#{$i} {
+                margin-bottom: $i+px;
+            }
+        }
+    }
+}
+
 @mixin DominantColor() {
 
     ion-header{
@@ -129,64 +176,64 @@
     }
 }
 
-@mixin background-list($list) {
-    -webkit-transition: all .2s ease .1s;
-    -moz-transition: all .2s ease .1s;
-    transition: all .2s ease .1s;
-    @each $bg in $list {
-        &.#{$bg}-home {
-            background-image:url('../assets/img/class/#{$bg}.jpg');
-            background-size: cover;
-            canvas {
-                background-repeat: no-repeat;
-                background-position-x: 36%;
-                background-size: cover;
-            }
-        }
-        &.#{$bg}-go {
-            background-position: center center;
-            background-size: cover;
-        }
-        &.#{$bg}-running {
-            background-position: right center;
-            background-size: cover;
-        }
-        @if($bg=='strengths') {
-            &.#{$bg}-home {
-                canvas {
-                    background-image: url(../assets/img/bg_canvas_dark.png);
-                }
-            }
-            &.#{$bg}-go,
-            &.#{$bg}-running {
-                background-image:url(../assets/img/transparency-dark.png),
-                url('../assets/img/class/#{$bg}.jpg');
-                p {
-                    &[explain] {
-                        border: dotted 2px rgba(0, 0, 0, .1);
-                    }
-                }
-            }
-        }
-        @else {
-            &.#{$bg}-home {
-                canvas {
-                    background-image: url(../assets/img/bg_canvas_light.png);
-                }
-            }
-            &.#{$bg}-go,
-            &.#{$bg}-running {
-                background-image:url(../assets/img/transparency.png),
-                url('../assets/img/class/#{$bg}.jpg');
-                p {
-                    &[explain] {
-                        border: dotted 2px rgba(255, 255, 255, .05);
-                    }
-                }
-            }
-        }
-    }
-}
+// @mixin background-list($list) {
+//     -webkit-transition: all .2s ease .1s;
+//     -moz-transition: all .2s ease .1s;
+//     transition: all .2s ease .1s;
+//     @each $bg in $list {
+//         &.#{$bg}-home {
+//             background-image:url('../assets/img/class/#{$bg}.jpg');
+//             background-size: cover;
+//             canvas {
+//                 background-repeat: no-repeat;
+//                 background-position-x: 36%;
+//                 background-size: cover;
+//             }
+//         }
+//         &.#{$bg}-go {
+//             background-position: center center;
+//             background-size: cover;
+//         }
+//         &.#{$bg}-running {
+//             background-position: right center;
+//             background-size: cover;
+//         }
+//         @if($bg=='strengths') {
+//             &.#{$bg}-home {
+//                 canvas {
+//                     background-image: url(../assets/img/bg_canvas_dark.png);
+//                 }
+//             }
+//             &.#{$bg}-go,
+//             &.#{$bg}-running {
+//                 background-image:url(../assets/img/transparency-dark.png),
+//                 url('../assets/img/class/#{$bg}.jpg');
+//                 p {
+//                     &[explain] {
+//                         border: dotted 2px rgba(0, 0, 0, .1);
+//                     }
+//                 }
+//             }
+//         }
+//         @else {
+//             &.#{$bg}-home {
+//                 canvas {
+//                     background-image: url(../assets/img/bg_canvas_light.png);
+//                 }
+//             }
+//             &.#{$bg}-go,
+//             &.#{$bg}-running {
+//                 background-image:url(../assets/img/transparency.png),
+//                 url('../assets/img/class/#{$bg}.jpg');
+//                 p {
+//                     &[explain] {
+//                         border: dotted 2px rgba(255, 255, 255, .05);
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
 
 @mixin toolbar-footer($list) {
     @each $bg in $list {

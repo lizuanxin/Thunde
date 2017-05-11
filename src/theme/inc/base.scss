@@ -9,6 +9,7 @@ body,
 }
 
 * {
+    @include InOutSide();
     @include ColorText();
     @include DominantColor();
     @include FontGeneration();
