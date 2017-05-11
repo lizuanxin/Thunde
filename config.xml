@@ -104,5 +104,4 @@
   <plugin name="cordova-plugin-console" spec="~1.0.7"/>
   <plugin name="cordova-plugin-device" spec="~1.1.6"/>
   <plugin name="cordova-plugin-powermanagement" spec="~1.0.5"/>
-  <icon src="resources/android/icon/drawable-xhdpi-icon.png"/>
 </widget>
