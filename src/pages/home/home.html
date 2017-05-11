@@ -1,13 +1,23 @@
 <ion-header no-shadow no-border >
   <ion-toolbar color="color-primary">
-    <ion-buttons absolute Fixed-buttons left>
+    <!--<ion-buttons absolute Fixed-buttons left>
       <button ion-button icon-only color="light" tappable>
           <ion-icon [ngClass]="app.SkinColor" app-icon>&#xe908;</ion-icon>
       </button>
     </ion-buttons>
     <ion-title text-center>
       <span ion-text color="light">{{'home_page.title'|translate}}</span>
-    </ion-title>
+    </ion-title>-->
+    <ion-row align-items-center>
+      <ion-col col-2 align-self-center text-center no-padding>
+        <button ion-button clear icon-only color="light" tappable>
+            <ion-icon [ngClass]="app.SkinColor" app-icon>&#xe908;</ion-icon>
+        </button>
+      </ion-col>
+      <ion-col col-8 align-self-center text-center text-light no-padding>
+          {{'home_page.title'|translate}}
+      </ion-col>
+    </ion-row>
   </ion-toolbar>
 </ion-header>
 

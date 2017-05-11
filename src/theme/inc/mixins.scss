@@ -111,6 +111,12 @@
     }
 }
 
+@mixin outline(){
+    &[out-line-gray]{
+        border:solid 1px color($colors,gray,base);
+    }
+}
+
 @mixin DominantColor() {
 
     ion-header{
