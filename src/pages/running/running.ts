@@ -1,6 +1,7 @@
 import {isDevMode, Component, OnInit, OnDestroy, ViewChild, AfterViewInit} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription'
 import 'rxjs/add/operator/toPromise';
+import * as View from '..'
 
 import {NavController, NavParams, ViewController, Content} from 'ionic-angular';
 // import {PowerManagement} from '../../UltraCreation/Native/PowerManagement'
@@ -82,6 +83,11 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
         this.Shell.Detach();
 
         // PowerManagement.Release();
+    }
+
+    goDownLoad()
+    {
+        this.nav.push(View.DownloadPage)
     }
 
     get CanvasClientHeight(): Object
