@@ -55,8 +55,9 @@ export class ScanDeviceComp implements OnInit, OnDestroy
         Svc.Loki.TShell.StopScan();
     }
 
-    Intensity(value): string
+    Intensity(value: number): string
     {
+        if (!value) return '';
         if (value >= -50) return '&#xe926;'
         if (value < -50 && value >= -60) return '&#xe92c;'
         if (value < -60 && value >= -70) return '&#xe92d;'
