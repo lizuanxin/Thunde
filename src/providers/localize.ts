@@ -262,21 +262,25 @@ export let translate_zh =
     profile_page:
     {
         title: '我的',
+
         faq: '常见问题',
         tou: '使用条款',
-        check_otg: 'OTG 状态',
         demo: '基本操作',
+
         app_version: '软件当前版本',
         company: '深圳瑰琦科技有限公司',
         address: '地址:',
         company_address: '深圳市南山区科技园科丰路8号金达科技中心',
         phone_number: '电话:',
         company_phone_number: '0755-86540861',
+
         no_login: '未登录',
         new_user: '新用户?',
         create: '注册',
         already_a_user: '已注册?',
         login: '登录',
+
+        check_otg: '手机供电(OTG)',
         support: '支持',
         no_support: '不支持',
     },
