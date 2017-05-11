@@ -9,13 +9,12 @@ import * as Svc from '../providers'
   template: `
     <ion-list *ngIf="Visible" [class.fadein]="DeviceList.length>0" margin-horizontal style="margin-top:13vh">
         <ng-template [ngIf]="DeviceList.length>0">
-            <ion-item *ngFor="let device of DeviceList" (click)="SelectionDevice(device.id);$event.stopPropagation()" tappable>
+            <ion-item device *ngFor="let device of DeviceList" (click)="SelectionDevice(device.id);$event.stopPropagation()" tappable>
                 <p><span ion-text color="dark">{{'home_page.title'|translate}}</span></p>
-                <ion-icon app-icon *ngIf="device.rssi<-80" item-right><span f-1-2>{{device.rssi}}</span> &#xe92f;</ion-icon>
-                <ion-icon app-icon *ngIf="device.rssi<-70 && device.rssi>=-80" item-right><span f-1-2>{{device.rssi}}</span> &#xe92e;</ion-icon>
-                <ion-icon app-icon *ngIf="device.rssi<-60 && device.rssi>=-70" item-right><span f-1-2>{{device.rssi}}</span> &#xe92d;</ion-icon>
-                <ion-icon app-icon *ngIf="device.rssi<-50 && device.rssi>=-60" item-right><span f-1-2>{{device.rssi}}</span> &#xe92c;</ion-icon>
-                <ion-icon app-icon *ngIf="device.rssi>=-50" item-right><span f-1-2>{{device.rssi}}</span> &#xe926;</ion-icon>
+                <div item-right>
+                    <ion-icon app-icon [innerHTML]="Intensity(device.rssi)"></ion-icon>
+                    <ion-icon app-icon static>&#xe926;</ion-icon>
+                </div>
             </ion-item>
         </ng-template>
         <ion-item *ngIf="DeviceList.length===0" [class.fadein]="DeviceList.length===0">
@@ -54,6 +53,15 @@ export class ScanDeviceComp implements OnInit, OnDestroy
             this.ScanSubscription = null;
         }
         Svc.Loki.TShell.StopScan();
+    }
+
+    Intensity(value): string
+    {
+        if (value >= -50) return '&#xe926;'
+        if (value < -50 && value >= -60) return '&#xe92c;'
+        if (value < -60 && value >= -70) return '&#xe92d;'
+        if (value < -70 && value >= -80) return '&#xe92e;'
+        if (value < -80) return '&#xe92f;'
     }
 
     SelectionDevice(DeviceId: string)
