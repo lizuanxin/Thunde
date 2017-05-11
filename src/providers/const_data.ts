@@ -71,7 +71,7 @@ export namespace const_data
         all: null,
         none: [],
 
-        back: [Body.shoulder, Body.neck, Body.back],
+        back: [Body.neck, Body.shoulder, Body.back],
         forelimb: [Body.upperarm, Body.forearm],
         lowerlimb: [Body.calf, Body.thigh],
         joint: [Body.ankle, Body.elbow, Body.knee, Body.wrist],
