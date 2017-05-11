@@ -43,6 +43,11 @@
         }
     }
 
+    &[text-dark],
+    &.text-dark {
+        color: color($colors, dark, base);        
+    }
+
     &[text-success],
     &.text-success {
         color: color($colors, success, base);
