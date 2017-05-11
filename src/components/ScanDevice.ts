@@ -7,7 +7,7 @@ import * as Svc from '../providers'
 @Component({
   selector: 'scan-device',
   template: `
-    <ion-list *ngIf="Visible" [class.fadein]="DeviceList.length>0" margin>
+    <ion-list *ngIf="Visible" [class.fadein]="DeviceList.length>0" margin-horizontal style="margin-top:13vh">
         <ng-template [ngIf]="DeviceList.length>0">
             <ion-item *ngFor="let device of DeviceList" (click)="SelectionDevice(device.id);$event.stopPropagation()" tappable>
                 <p><span ion-text color="dark">{{'home_page.title'|translate}}</span></p>
