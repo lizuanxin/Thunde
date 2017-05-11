@@ -1,12 +1,10 @@
-<ion-header no-shadow no-border [ngStyle]="{'min-height':TopArea}">
+<ion-header no-shadow no-border>
     <ion-toolbar transparent>
-        <ion-grid>
-            <ion-row>
-                <ion-col center col-4 offset-4 text-center>
-                    <ion-icon color="color-primary" app-icon style="font-size:20vw">&#xe908;</ion-icon>
-                </ion-col>
-            </ion-row>
-        </ion-grid>
+        <ion-row align-items-center no-padding [ngStyle]="{'min-height':TopArea}">
+            <ion-col center col-4 offset-4 text-center>
+                <ion-icon color="color-primary" app-icon style="font-size:20vw">&#xe908;</ion-icon>
+            </ion-col>
+        </ion-row>
     </ion-toolbar>
 </ion-header>
 <ion-content padding-left padding-right [ngClass]="app.Skin()" id="OuterHtml" [ngStyle]="{'position':'relative'}">
