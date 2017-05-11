@@ -42,10 +42,6 @@ export class ScanDeviceComp implements OnInit, OnDestroy
             else
                 this.StartScan();
         }
-        else
-        {
-            this.OnSelection.next('USB');
-        }
     }
 
     ngOnDestroy()
