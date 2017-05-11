@@ -30,6 +30,15 @@ body,
         left: 0;
         bottom: 0;
     }
+
+    &[p-swiper]{
+        position:absolute;
+        bottom:0;
+        left:0;
+        right:0; 
+        background: url(../assets/img/datumline.png) 30px center repeat-x;
+        background-size: contain;
+    }
 }
 
 ion-content {
