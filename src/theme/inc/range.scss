@@ -37,6 +37,7 @@ ion-range.range {
         }
 
         .range-knob-handle{
+            display: none;
             .range-knob{
                 border:none;
                 box-shadow: 0 0 10px rgba(0,0,0,.2);
