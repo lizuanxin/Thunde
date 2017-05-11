@@ -16,9 +16,9 @@ export namespace const_data
     export const BodyParts: Array<IBodyPart> =
     [
         {Id: '{00000000-0000-4000-2000-000000000001}', Name: 'neck',
-            Icon: 0xE91F, Desc: JSON.stringify([0xE914,0xE946])},
+            Icon: 0xE91F, Desc: JSON.stringify([0xE914])},
         {Id: '{00000000-0000-4000-2000-000000000002}', Name: 'shoulder',
-            Icon: 0xE91A, Desc: JSON.stringify([0xE932])},
+            Icon: 0xE91A, Desc: JSON.stringify([0xE946, 0xE932])},
         {Id: '{00000000-0000-4000-2000-000000000003}', Name: 'back',
             Icon: 0xE904, Desc: JSON.stringify([0xE943])},
         {Id: '{00000000-0000-4000-2000-000000000004}', Name: 'waist',
@@ -71,7 +71,7 @@ export namespace const_data
         all: null,
         none: [],
 
-        back: [Body.neck, Body.shoulder, Body.back],
+        back: [Body.shoulder, Body.neck, Body.back],
         forelimb: [Body.upperarm, Body.forearm],
         lowerlimb: [Body.calf, Body.thigh],
         joint: [Body.ankle, Body.elbow, Body.knee, Body.wrist],
