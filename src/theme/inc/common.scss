@@ -97,31 +97,6 @@
     }
 }
 
-div {
-    &[out-line],
-    .out-line {
-        @include square(none, 0);
-        &[radius],&.radius{
-            border-radius: 5%;
-        }
-    }
-    &[Dev-Mask]{
-
-        display: flex;
-        position:absolute;
-
-        z-index:99;
-        top:0;
-        left:0;
-        right:0;
-        bottom:0;
-        background-color:rgba(0,0,0,.5);
-        ion-list{
-            width:100%;
-        }
-    }
-}
-
 .radian {
     position: absolute;
     top: 0;

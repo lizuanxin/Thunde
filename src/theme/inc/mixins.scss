@@ -317,21 +317,23 @@ $darkColor) {
     background-image: -webkit-linear-gradient($direction,$startColor,$endColor);
 }
 
-@mixin square($outlineStyle,
-$outlinewidth) {
+@mixin square ($width:100%, $outlineStyle:none, $outlineWidth:0, $borderRadius:0) 
+{
     position: relative;
-    width: 100%;
+    margin:auto;
+    width: $width;
     height: 0;
     line-height: 0;
     overflow: hidden;
     margin: 0;
     padding-left: 0;
     padding-right: 0;
-    padding-bottom: 50%;
-    padding-top: 50%;
+    padding-bottom: $width/2;
+    padding-top: $width/2;
     text-align: center;
     border-style: $outlineStyle;
-    border-width: $outlinewidth;
+    border-width: $outlineWidth;
+    border-radius: $borderRadius;
 }
 
 @mixin scale($s1:1.2) {

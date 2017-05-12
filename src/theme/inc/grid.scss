@@ -65,17 +65,10 @@ ion-row {
     &.row-body {
         ion-col {
             div.button{
-                display: block;
-                margin: auto;
-                width: 76%;
-                padding-top: 38%;
-                padding-bottom: 38%;
-                height: 0;
-                line-height: 0;
-                border-radius: 50%;
                 background-color: transparent;
-                color: color($colors, light, base);
-                border: solid 1px color($colors, light, base);
+                color: color($colors, light, base);               
+                // border-color: color($colors, light, base);
+                @include square(76%,solid,1px,50%);
                 font-size: 8vw;
             }
             &.active {
