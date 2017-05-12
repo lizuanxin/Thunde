@@ -164,15 +164,13 @@ export let translate_en =
         sit_ups: 'Sit-ups',
 
     /* recommend */
-        recommend1: '办公室肩颈活力',
-        recommend2: '加班后肩颈疼痛',
-        recommend3: '低头族肩颈放松'
+        recommend1: '办公室肩颈活力按摩',
+        recommend2: '加班后肩颈疼痛舒缓按摩',
+        recommend3: '低头族肩颈放松按摩'
     },
 
     shoulder_neck:
     {
-        massage: '按摩',
-        soothing_massage: '舒缓按摩',
         position: '肩部|颈部'
     },
 
@@ -364,15 +362,13 @@ export let translate_zh =
         sit_ups: '仰卧起坐',
 
     /* recommend */
-        recommend1: '办公室肩颈活力',
-        recommend2: '加班后肩颈疼痛',
-        recommend3: '低头族肩颈放松'
+        recommend1: '办公室肩颈活力按摩',
+        recommend2: '加班后肩颈疼痛舒缓按摩',
+        recommend3: '低头族肩颈放松按摩'
     },
 
     shoulder_neck:
     {
-        massage: '按摩',
-        soothing_massage: '舒缓按摩',
         position: '肩部|颈部'
     },
 

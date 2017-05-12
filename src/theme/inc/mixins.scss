@@ -31,7 +31,11 @@
     &.high-light {
         text-shadow: 1px 1px 0px rgba(255, 255, 255, .7);
     }
-    
+
+    &[text-strong]{
+        font-weight:bold;
+    }
+        
     &[text-shadow] {
         text-shadow: 1px 1px 1px #202020;
     }

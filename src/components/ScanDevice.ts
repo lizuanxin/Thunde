@@ -12,8 +12,10 @@ import * as Svc from '../providers'
             <ion-item device *ngFor="let device of DeviceList" (click)="SelectionDevice(device.id);$event.stopPropagation()" tappable>
                 <p><span ion-text color="dark">{{'home_page.title'|translate}}</span></p>
                 <div item-right>
-                    <ion-icon app-icon [innerHTML]="Intensity(device.rssi)"></ion-icon>
-                    <ion-icon app-icon static>&#xe926;</ion-icon>
+                    <div inner-icon>
+                        <ion-icon app-icon [innerHTML]="Intensity(device.rssi)"></ion-icon>
+                        <ion-icon app-icon static>&#xe926;</ion-icon>
+                    </div>                    
                 </div>
             </ion-item>
         </ng-template>
@@ -57,6 +59,8 @@ export class ScanDeviceComp implements OnInit, OnDestroy
 
     Intensity(value: number): string
     {
+        console.log(value);
+        
         if (!value) return '';
         if (value >= -50) return '&#xe926;'
         if (value < -50 && value >= -60) return '&#xe92c;'

@@ -129,20 +129,23 @@ ion-list.list {
 ion-item,
 ion-item-divider {
     &[device]{
-        div[item-right]{
-            position:relative;
-            width:20px;
-            height:20px;
-            margin:0;
-            font-size:2rem;
-            ion-icon{
-                position:absolute;
-                z-index:1;
-                &[static]{
-                    z-index:0;
-                    color:#ddd;
+        [item-right]{            
+            margin:0;            
+            [inner-icon]{
+                position:relative;
+                width:20px;
+                height:20px;
+                font-size:2rem;
+                ion-icon{
+                    position:absolute;
+                    z-index:1;
+                    &[static]{
+                        z-index:0;
+                        color:#ddd;
+                    }
                 }
             }
+            
         }
     }
     &.item {
