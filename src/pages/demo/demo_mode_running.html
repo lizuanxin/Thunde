@@ -22,24 +22,20 @@
               {{TickingDownHint}}
           </ion-col>
           <ion-col>
-              <ion-range min="0" max="100" [ngModel]="InitRange" color="secondary" style="padding:0"  disabled progress-bar>                  
+              <ion-range min="0" max="100" [ngModel]="InitRange" color="secondary" style="padding:0"  disabled progress-bar>
               </ion-range>
           </ion-col>
           <ion-col col-3 text-center>
               {{TotalMinute}}
-          </ion-col>  
+          </ion-col>
         </ion-row>
       </div>
     </ng-template>
     <ng-template [ngIf]="Finish">
-        <div text-light v-m style="height:100%;">
-            <div text-center>
-                <h2>{{'hint.congratulations'|translate}}</h2>
-                <p padding>{{'demo_play_page.demo_play_finish'|translate}}</p>
-                <!--<p><ion-icon app-icon text-light style="font-size:50vw">&#xe938;</ion-icon></p>-->
-            </div>
-        </div>
-    </ng-template>
+    <div v-m style="height:100%;">
+        <ion-icon app-icon color="color-primary-light" style="font-size:20vh">&#xe95c;</ion-icon>
+    </div>
+  </ng-template>
 </ion-content>
 <ion-footer no-border>
   <ion-toolbar visible transparent>
