@@ -165,7 +165,16 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
                 */
             }
             else
+            {
                 this.Finish = true;
+                if (TypeInfo.Assigned(this.ShellNotifySubscription))
+                {
+                    this.ShellNotifySubscription.unsubscribe();
+                    this.ShellNotifySubscription = null;
+                }
+
+                this.Shell.Shutdown();
+            }
         }
     }
 
