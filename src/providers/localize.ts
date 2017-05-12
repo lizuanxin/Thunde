@@ -334,7 +334,7 @@ export let translate_zh =
     {
         sore: '酸痛缓解',
         pain: '疼痛缓解',
-        han: '韩氏止痛',
+        han: '韩式按摩',
         knock: '敲打',
         press: '按压',
         twist: '搓',
