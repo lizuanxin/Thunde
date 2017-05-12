@@ -73,7 +73,7 @@
 
 }
 
-@mixin InOutSide($maxsize:30) {
+@mixin InOutSide($maxsize:50) {
     @for $i from 5 through $maxsize {
         @if($i%5==0) {
             &[p-#{$i}],&.p-#{$i} {
