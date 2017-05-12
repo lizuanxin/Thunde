@@ -35,7 +35,7 @@
     &[text-strong]{
         font-weight:bold;
     }
-        
+
     &[text-shadow] {
         text-shadow: 1px 1px 1px #202020;
     }
@@ -76,45 +76,66 @@
 @mixin InOutSide($maxsize:30) {
     @for $i from 5 through $maxsize {
         @if($i%5==0) {
-            &[p-#{$i}],
-            &.p-#{$i} {
+            &[p-#{$i}],&.p-#{$i} {
                 padding: $i+px;
             }
-            &[p-l-#{$i}],
-            &.p-l-#{$i} {
+            &[p-l-#{$i}],&.p-l-#{$i} {
                 padding-left: $i+px;
             }
-            &[p-r-#{$i}],
-            &.p-r-#{$i} {
+            &[p-r-#{$i}],&.p-r-#{$i} {
                 padding-right: $i+px;
             }
-            &[p-t-#{$i}],
-            &.p-t-#{$i} {
+            &[p-t-#{$i}],&.p-t-#{$i} {
                 padding-top: $i+px;
             }
-            &[p-b-#{$i}],
-            &.p-b-#{$i} {
+            &[p-b-#{$i}],&.p-b-#{$i} {
                 padding-bottom: $i+px;
             }
-            &[m-#{$i}],
-            &.m-#{$i} {
+            &[m-#{$i}],&.m-#{$i} {
                 margin: $i+px;
             }
-            &[m-l-#{$i}],
-            &.m-l-#{$i} {
+            &[m-l-#{$i}],&.m-l-#{$i} {
                 margin-left: $i+px;
             }
-            &[m-r-#{$i}],
-            &.m-r-#{$i} {
+            &[m-r-#{$i}],&.m-r-#{$i} {
                 margin-right: $i+px;
             }
-            &[m-t-#{$i}],
-            &.m-t-#{$i} {
+            &[m-t-#{$i}],&.m-t-#{$i} {
                 margin-top: $i+px;
             }
-            &[m-b-#{$i}],
-            &.m-b-#{$i} {
+            &[m-b-#{$i}],&.m-b-#{$i} {
                 margin-bottom: $i+px;
+            }
+
+            &[n-p-#{$i}],&.n-p-#{$i} {
+                padding: -$i+px;
+            }
+            &[n-p-l-#{$i}],&.n-p-l-#{$i} {
+                padding-left: -$i+px;
+            }
+            &[n-p-r-#{$i}],&.n-p-r-#{$i} {
+                padding-right: -$i+px;
+            }
+            &[n-p-t-#{$i}],&.n-p-t-#{$i} {
+                padding-top: -$i+px;
+            }
+            &[n-p-b-#{$i}],&.n-p-b-#{$i} {
+                padding-bottom: -$i+px;
+            }
+            &[n-m-#{$i}],&.n-m-#{$i} {
+                margin: -$i+px;
+            }
+            &[n-m-l-#{$i}],&.n-m-l-#{$i} {
+                margin-left: -$i+px;
+            }
+            &[n-m-r-#{$i}],&.n-m-r-#{$i} {
+                margin-right: -$i+px;
+            }
+            &[n-m-t-#{$i}],&.n-m-t-#{$i} {
+                margin-top: -$i+px;
+            }
+            &[n-m-b-#{$i}],&.n-m-b-#{$i} {
+                margin-bottom: -$i+px;
             }
         }
     }
