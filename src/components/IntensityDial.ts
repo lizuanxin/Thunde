@@ -288,7 +288,7 @@ export class TContentCanvas
 
     private SetFontSize(size: number, iconFont: boolean = false): string
     {
-        return (this.Canvas.width * size + 'px ' + (iconFont ? 'Thundericons' : 'arial')).toString();
+        return (this.Canvas.width * size + 'px ' + (iconFont ? 'Thundericons' : 'brandontext_normal')).toString();
     }
 
     private _Max: number = 60;
