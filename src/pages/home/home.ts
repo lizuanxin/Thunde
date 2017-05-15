@@ -30,8 +30,8 @@ export class HomePage implements OnInit
 
         this.Tabs.push(new TTabItem(255, Svc.const_data.Category.recommend));
         this.Tabs.push(new TTabItem(0, Svc.const_data.Category.relax));
-        // this.Tabs.push(new TTabItem(1, Svc.const_data.Category.muscle_training));
-        // this.Tabs.push(new TTabItem(2, Svc.const_data.Category.fat_burning));
+        this.Tabs.push(new TTabItem(1, Svc.const_data.Category.muscle_training));
+        this.Tabs.push(new TTabItem(2, Svc.const_data.Category.fat_burning));
 
         let ProfileTab = new TTabItem(65536, 0xE94c)
         this.Tabs.push(ProfileTab);

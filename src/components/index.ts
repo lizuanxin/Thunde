@@ -7,6 +7,7 @@ import {SwiperComp} from './Swiper'
 import {FileListDialComp} from './FileListDial';
 import {FileListBodyComp} from './FileListBody';
 import {FileListCardComp} from './FileListCard';
+import {FileDurationComp} from './FileDuration'
 
 import {ScanDeviceComp} from './ScanDevice';
 import {IntensityDialComp} from './IntensityDial';
@@ -20,12 +21,12 @@ import {FileListSlideComp} from './FileListSlide';
         TranslateModule,
     ],
     exports: [
-        SwiperComp, FileListDialComp, FileListBodyComp, FileListCardComp, FileListSlideComp,
+        SwiperComp, FileListDialComp, FileListBodyComp, FileListCardComp, FileListSlideComp, FileDurationComp,
         ScanDeviceComp, IntensityDialComp,
         ProfileComp
     ],
     declarations: [
-        SwiperComp, FileListDialComp, FileListBodyComp, FileListCardComp, FileListSlideComp,
+        SwiperComp, FileListDialComp, FileListBodyComp, FileListCardComp, FileListSlideComp, FileDurationComp,
         ScanDeviceComp, IntensityDialComp,
         ProfileComp
     ],
