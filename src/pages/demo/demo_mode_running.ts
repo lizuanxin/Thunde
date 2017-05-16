@@ -173,7 +173,7 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
                     this.ShellNotifySubscription = null;
                 }
 
-                this.Shell.Shutdown();
+                this.Shell.StopOutput();
             }
         }
     }
@@ -304,7 +304,7 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
             this.ShellNotifySubscription = null;
         }
 
-        this.Shell.Shutdown();
+        this.Shell.StopOutput();
 
         setTimeout(() =>
         {
