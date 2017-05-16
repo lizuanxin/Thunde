@@ -79,8 +79,11 @@ export class TShell extends TAbstractShell
     {
         this.StopTicking();
 
-        this.Proxy.Detach();
-        this.Proxy = null;
+        if (TypeInfo.Assigned(this.Proxy))
+        {
+            this.Proxy.Detach();
+            this.Proxy = null;
+        }
     }
 
     Connect(): Promise<void>
@@ -133,7 +136,7 @@ export class TShell extends TAbstractShell
 
     static StartScan(): Subject<Array<BLE.IScanDiscovery>>
     {
-        BLE.TGatt.BrowserFakeDevice = true;
+        //BLE.TGatt.BrowserFakeDevice = true;
         return BLE.TGattScaner.Start([], this.ScanFilter, BLE_SCAN_TIMEOUT);
     }
 
@@ -183,7 +186,8 @@ export class TShell extends TAbstractShell
 /** shell functions */
     Shutdown(): Promise<void>
     {
-        return this.Execute('>shdn', 500).catch(err => console.log('shutdown :' + err.message));
+        return this.StopOutput();
+        //return this.Execute('>shdn', REQUEST_TIMEOUT).catch(err => console.log('shutdown.err:' + err.message));
     }
 
     Reset()
