@@ -8,10 +8,9 @@ import * as Svc from '../providers';
                 <ion-item>
                     <ion-row item-left>
                         <ion-col col-12 margin-top>
-                            <p style="font-size:4.5vw"><span ion-text color="dark">{{f.Name_LangId|translate}}</span></p>
+                            <p style="font-size:4.5vw"><span ion-text color="dark">{{app.IconFont(f.Icon)}}{{f.Name_LangId|translate}}</span></p>
                         </ion-col>
                         <ion-col col-12>
-                            <p><span f-1-2 ion-text color="dark">{{'shoulder_neck.position'| translate}}</span></p>
                             <p><span f-1-2>{{f.DurationMinute.toString()}}{{'hint.min'|translate}}</span></p>
                         </ion-col>
                     </ion-row>
