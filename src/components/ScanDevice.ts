@@ -29,14 +29,19 @@ export class ScanDeviceComp implements OnInit, OnDestroy
 {
     constructor(private app: Svc.TApplication)
     {
-
     }
 
     ngOnInit()
     {
         Svc.Loki.TShell.FakeDevice = isDevMode();
+        console.log("FakeDevice:" + Svc.Loki.TShell.FakeDevice);
 
-        if (! Svc.Loki.TShell.IsUsbPlugin)
+        if (Svc.Loki.TShell.IsUsbPlugin)
+        {
+            Svc.Loki.TShell.StartOTG();
+            this.OnSelection.emit('USB');
+        }
+        else
         {
             if (this.app.IsAndroid)
                 Svc.Loki.TShell.EnableBLE().then(() => this.StartScan())
