@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, ElementRef} from '@angular/core'
+import {Component, Input, Output, EventEmitter} from '@angular/core'
 import * as Svc from '../providers';
 
 @Component({selector: 'filelist-card', template: `
@@ -21,7 +21,7 @@ import * as Svc from '../providers';
 `})
 export class FileListCardComp
 {
-    constructor(private Elements: ElementRef, private app: Svc.TApplication)
+    constructor(private app: Svc.TApplication)
     {
     }
 
@@ -50,7 +50,7 @@ export class FileListCardComp
 `})
 export class FileListRecommendComp
 {
-    constructor(private Elements: ElementRef, private app: Svc.TApplication)
+    constructor(private app: Svc.TApplication)
     {
     }
 
