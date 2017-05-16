@@ -65,7 +65,7 @@ export class FileListRecommendComp
             return '加班后肩颈疼痛舒缓按摩';
 
             case '{00000000-0000-4000-4100-0000000FF003}':
-            return '头族肩颈放松按摩';
+            return '低头族肩颈放松按摩';
         }
     }
 
