@@ -253,7 +253,7 @@ class TContentCanvas
     }
 
     IconFont = new UITypes.TFont('Thundericons', 10, UITypes.TFontStyle.Normal, UITypes.TFontWeight.Bold);
-    FileNameFont = new UITypes.TFont('brandontext_normal', 16, UITypes.TFontStyle.Normal, UITypes.TFontWeight.Bold);
+    FileNameFont = new UITypes.TFont('microsoft yahei', 14, UITypes.TFontStyle.Normal, UITypes.TFontWeight.Normal);
     FileDescFont = new UITypes.TFont('brandontext_normal', 8, UITypes.TFontStyle.Italic);
     MinuteFont = new UITypes.TFont('brandontext_normal', 8);
 
