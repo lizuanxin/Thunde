@@ -1,11 +1,14 @@
 import {isDevMode, Component, OnInit, OnDestroy, ViewChild, AfterViewInit} from '@angular/core';
+import {NavController, NavParams, ViewController, Content} from 'ionic-angular';
+
 import {Subscription} from 'rxjs/Subscription'
 import 'rxjs/add/operator/toPromise';
-import * as View from '..'
+import {TypeInfo} from "../../UltraCreation/Core/TypeInfo";
 
-import {NavController, NavParams, ViewController, Content} from 'ionic-angular';
-// import {PowerManagement} from '../../UltraCreation/Native/PowerManagement'
+import * as View from '..'
 import * as Svc from '../../providers';
+// import {PowerManagement} from '../../UltraCreation/Native/PowerManagement'
+
 
 @Component({selector: 'page-running', templateUrl: 'running.html'})
 export class RunningPage implements OnInit, OnDestroy, AfterViewInit
@@ -63,7 +66,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
                     if (this.Ticking >= this.ScriptFile.Duration)
                     {
                         this.Finish = true;
-                        this.Shell.Shutdown();
+                        this.Shell.StopOutput();
                     }
                     break;
                 }
@@ -79,7 +82,12 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     ngOnDestroy(): void
     {
-        this.ShellNotifySubscription.unsubscribe();
+        if (TypeInfo.Assigned(this.ShellNotifySubscription))
+        {
+            this.ShellNotifySubscription.unsubscribe();
+            this.ShellNotifySubscription = null;
+        }
+
         this.Shell.Detach();
 
         // PowerManagement.Release();
@@ -156,18 +164,22 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     Shutdown(): void
     {
-        if (this.Finish)
+        if (TypeInfo.Assigned(this.ShellNotifySubscription))
         {
-            setTimeout(() =>
+            this.ShellNotifySubscription.unsubscribe();
+            this.ShellNotifySubscription = null;
+        }
+
+        if (! this.Finish)
+        {
+            this.Shell.StopOutput();
+        }
+
+        setTimeout(() =>
             {
                 if (this.view === this.nav.getActive())
                     this.nav.pop();
             }, 300);
-        }
-        else
-        {
-            this.Shell.Shutdown();
-        }
     }
 
     private Start()
