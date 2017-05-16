@@ -5,15 +5,17 @@ import * as Svc from '../providers';
     <div margin>
         <ion-card card-list-default *ngFor="let f of FileList">
             <ion-card-content (tap)="OnSelection.emit(f)" tappable>
+                <ion-item>
                     <ion-row align-items-center justify-content-center>
-                        <ion-col col-5 text-center>
+                        <ion-col col-4 text-center>
                             <ion-icon app-icon style="font-size:25vw">{{app.IconFont(f.Icon)}}</ion-icon>
                         </ion-col>
-                        <ion-col>
+                        <ion-col offset-1>
                             <h2 style="font-size:4.5vw"><span ion-text color="dark">{{f.Name_LangId|translate}}</span></h2>
                             <p><span f-1-2>{{f.DurationMinute.toString()}}{{'hint.min'|translate}}</span></p>
                         </ion-col>
                     </ion-row>
+                </ion-item>
             </ion-card-content>
         </ion-card>
     </div>
