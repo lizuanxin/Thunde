@@ -164,14 +164,9 @@ export let translate_en =
         sit_ups: 'Sit-ups',
 
     /* recommend */
-        recommend1: '办公室肩颈活力按摩',
-        recommend2: '加班后肩颈疼痛舒缓按摩',
-        recommend3: '低头族肩颈放松按摩'
-    },
-
-    shoulder_neck:
-    {
-        position: '肩部|颈部'
+        recommend1: 'Sore therapy',
+        recommend2: 'Pain therapy',
+        recommend3: 'Shoudler Deep-therapy'
     },
 
     tou_page:
@@ -362,14 +357,9 @@ export let translate_zh =
         sit_ups: '仰卧起坐',
 
     /* recommend */
-        recommend1: '办公室肩颈活力按摩',
-        recommend2: '加班后肩颈疼痛舒缓按摩',
-        recommend3: '低头族肩颈放松按摩'
-    },
-
-    shoulder_neck:
-    {
-        position: '肩部|颈部'
+        recommend1: '酸痛缓解',
+        recommend2: '疼痛缓解',
+        recommend3: '肩部深度缓解'
     },
 
     tou_page:

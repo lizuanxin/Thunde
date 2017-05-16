@@ -187,14 +187,15 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
                         this.Downloading = false;
                     });
             })
-            .then(() => this.app.HideLoading())
             .then(() => this.Shell.StartScriptFile(this.ScriptFile.Name))
+            .then(() => this.app.HideLoading())
             .catch(err=>
             {
                 this.app.HideLoading()
                     .then(() => this.app.ShowHintId(err.message))
                     .then(() => isDevMode() ? null : this.ClosePage());
-            });
+            })
+            .then(() => this.app.EnableHardwareBackButton());
     }
 
     private UpdateBatteryLevel()

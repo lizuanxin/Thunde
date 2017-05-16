@@ -95,6 +95,7 @@ export class HomePage implements OnInit
         let params = this.navParams.data;
         params.ScriptFile = ScriptFile;
 
+        this.app.DisableHardwareBackButton();
         this.app.ShowLoading()
             .then(() => this.DeviceScanning = true);
     }
