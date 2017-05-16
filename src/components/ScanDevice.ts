@@ -15,7 +15,7 @@ import * as Svc from '../providers'
                     <div inner-icon>
                         <ion-icon app-icon [innerHTML]="Intensity(device.rssi)"></ion-icon>
                         <ion-icon app-icon static>&#xe926;</ion-icon>
-                    </div>                    
+                    </div>
                 </div>
             </ion-item>
         </ng-template>
@@ -59,14 +59,19 @@ export class ScanDeviceComp implements OnInit, OnDestroy
 
     Intensity(value: number): string
     {
-        console.log(value);
-        
-        if (!value) return '';
-        if (value >= -50) return '&#xe926;'
-        if (value < -50 && value >= -60) return '&#xe92c;'
-        if (value < -60 && value >= -70) return '&#xe92d;'
-        if (value < -70 && value >= -80) return '&#xe92e;'
-        if (value < -80) return '&#xe92f;'
+        if (! value)
+            return '';
+
+        if (value >= -50)
+            return '&#xe926;'
+        if (value < -50 && value >= -60)
+            return '&#xe92c;'
+        if (value < -60 && value >= -70)
+            return '&#xe92d;'
+        if (value < -70 && value >= -80)
+            return '&#xe92e;'
+        if (value < -80)
+            return '&#xe92f;'
     }
 
     SelectionDevice(DeviceId: string)
