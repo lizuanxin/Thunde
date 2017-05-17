@@ -7,7 +7,8 @@ import 'rxjs/add/operator/toPromise';
 import {TypeInfo, Exception, EAbort} from '../UltraCreation/Core'
 import {TUtf8Encoding} from '../UltraCreation/Encoding'
 import {THashMd5} from '../UltraCreation/Hash'
-import {TAssetService, TScriptFile} from './asset'
+
+import {TScriptFile} from './asset'
 import {TApplication} from './application'
 
 import * as Loki from './loki/file';
@@ -95,7 +96,7 @@ export function HttpRequest(Url: string,
 @Injectable()
 export class TDistributeService
 {
-    constructor (private Asset: TAssetService, private app: TApplication)
+    constructor (private app: TApplication)
     {
         console.log('TDistributeService construct');
     }
@@ -106,7 +107,8 @@ export class TDistributeService
 
         if (! TypeInfo.Assigned(ScriptFile.Content))
         {
-            let FilePath = './assets/loki/' + ScriptFile.Name.toLowerCase() + '.lok'
+            let FilePath = './assets/loki/' + ScriptFile.Name + '.lok';
+
             Read = HttpRequest(FilePath, 'GET', 'text')
                 .then(val => ScriptFile.Content = val);
         }
@@ -132,10 +134,7 @@ export class TDistributeService
                 ScriptFile.Duration = Math.trunc(((LokiFile.TimeEst() / 1000) + 30) / 60 * 60);
             }
 
-            if (ScriptFile.IsEditing)
-                return this.Asset.Save(ScriptFile).then(() => RetVal);
-            else
-                return Promise.resolve(RetVal);
+            return RetVal;
         });
     }
 

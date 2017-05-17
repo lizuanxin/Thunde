@@ -123,7 +123,7 @@ export namespace const_data
             Category_Id: Category.relax.Id, Mode_Id: null, Name: 'joint',
             BodyParts: BodyCategory.joint},
         {Id: '{00000000-0000-4000-4000-000000000002}', Author: 'UltraCreation Team',
-            Category_Id: Category.relax.Id, Mode_Id: null, Name: 'shoudler',
+            Category_Id: Category.relax.Id, Mode_Id: null, Name: 'shoulder',
             BodyParts: [Body.shoulder]},
         {Id: '{00000000-0000-4000-4000-000000000003}', Author: 'UltraCreation Team',
             Category_Id: Category.relax.Id, Mode_Id: null, Name: 'upperarm',

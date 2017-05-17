@@ -142,7 +142,7 @@ export let translate_en =
         twist: 'Twist',
         knead: 'Knead',
 
-        shoudler: 'Shoudler Deep-therapy',
+        shoulder: 'Shoulder Deep-therapy',
         upperarm: 'Upperarm Deep-therapy',
         waist: 'Waist Deep-therapy',
         leg: 'Leg Deep-therapy',
@@ -166,7 +166,7 @@ export let translate_en =
     /* recommend */
         recommend1: 'Sore therapy',
         recommend2: 'Pain therapy',
-        recommend3: 'Shoudler Deep-therapy'
+        recommend3: 'Shoulder Deep-therapy'
     },
 
     tou_page:
@@ -336,7 +336,7 @@ export let translate_zh =
         knead: '揉',
 
         joint: '关节深度缓解',
-        shoudler: '肩部深度缓解',
+        shoulder: '肩部深度缓解',
         upperarm: '上臂深度缓解',
         waist: '腰部深度缓解',
         soles: '足底深度缓解',

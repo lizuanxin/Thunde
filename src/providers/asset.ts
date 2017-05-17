@@ -5,6 +5,7 @@ import {TBase64Encoding} from '../UltraCreation/Encoding'
 import {TSqlQuery, TSqliteStorage} from '../UltraCreation/Storage';
 
 import {const_data, IBodyPart, ICategory, IScriptFile, Loki} from '.'
+import {TDistributeService} from './distribute';
 
 module Queries
 {
@@ -25,7 +26,7 @@ module Queries
 @Injectable()
 export class TAssetService
 {
-    constructor ()
+    constructor(private Distribute: TDistributeService)
     {
         this.Storage = new TSqliteStorage(const_data.DatabaseName, this.IdGenerator);
         console.log('TAssetService construct');
@@ -115,6 +116,7 @@ export class TAssetService
             F.Assign(DataSet.Curr);
             F.BodyParts = FileBodyList.get(F.Id);
 
+            /*
             if ((! TypeInfo.Assigned(F.Duration) || F.Duration === 0) && TypeInfo.Assigned(F.Content))
             {
                 let LokiFile = new Loki.TFile();
@@ -124,6 +126,14 @@ export class TAssetService
                 F.Duration = Math.trunc(((LokiFile.TimeEst() / 1000) + 30) / 60) * 60;
                 this.Save(F);
             }
+            */
+            this.Distribute.ReadScriptFile(F)
+                .then(() =>
+                {
+                    if (F.IsEditing)
+                        return this.Save(F)
+                })
+                .catch(err => console.log(err.message));
 
             DataSet.Next();
         }
