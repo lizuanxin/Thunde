@@ -14,7 +14,7 @@ export class FaqPage implements OnInit
 
     ngOnInit()
     {
-        this.Distribute.ReadJsonFile('faq')
+        this.Distribute.ReadFAQ('faq')
             .then(values => this.Items = values)
             .catch(err => console.log(err.message));
     }

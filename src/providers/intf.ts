@@ -23,7 +23,7 @@ export interface IBodyPart extends IObject
 export interface IScriptFile extends IObject
 {
     Author: string;
-    Content: string;
+    Content?: string;
 
     Category_Id: string;
     Mode_Id: string;

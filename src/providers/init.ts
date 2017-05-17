@@ -132,10 +132,16 @@ export namespace Initialization
             else
                 Icon = null;
 
+            let Content: any;
+            if (TypeInfo.Assigned(iter.Content))
+                Content = iter.Content
+            else
+                Content = null;
+
             // Id, ObjectName, Name, Desc, ExtraProp
             queries.push(new TSqlQuery(InsertAsset, [iter.Id, 'ScriptFile', iter.Name, iter.Name + '_desc', null]));
             // Id, Category_Id, Mode_Id, Body_Id, Author, Content
-            queries.push(new TSqlQuery(InsertScriptFile, [iter.Id, Icon, iter.Category_Id, iter.Mode_Id, iter.Author, iter.Content]));
+            queries.push(new TSqlQuery(InsertScriptFile, [iter.Id, Icon, iter.Category_Id, iter.Mode_Id, iter.Author, Content]));
 
             if (! iter.BodyParts)
             {
