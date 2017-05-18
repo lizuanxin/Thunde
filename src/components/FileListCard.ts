@@ -12,7 +12,14 @@ import * as Svc from '../providers';
                         </ion-col>
                         <ion-col offset-1>
                             <h2 style="font-size:4.5vw"><span ion-text color="dark">{{f.Name_LangId|translate}}</span></h2>
-                            <p><span f-1-2>{{f.DurationMinute.toString()}}{{'hint.min'|translate}}</span></p>
+                            <ion-row align-items-center justify-content-center>
+                                <ion-col col-3>
+                                    <div style="width:6vw; height:6vw"><file-duration [Duration]="f.DurationMinute"></file-duration></div>
+                                </ion-col>
+                                <ion-col align-self-center>
+                                    <span color="dark" style="font-size:2.0vw;">{{f.DurationMinute.toString()}}{{'hint.min'|translate}}</span>
+                                </ion-col>
+                            </ion-row>
                         </ion-col>
                     </ion-row>
                 </ion-item>
