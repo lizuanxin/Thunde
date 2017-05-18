@@ -127,13 +127,10 @@ export class TAssetService
                 this.Save(F);
             }
             */
-            this.Distribute.ReadScriptFile(F)
-                .then(() =>
-                {
-                    if (F.IsEditing)
-                        return this.Save(F)
-                })
-                .catch(err => console.log(err.message));
+
+            await this.Distribute.ReadScriptFile(F);
+            if (F.IsEditing)
+                this.Save(F).catch(err => console.log(err.message));
 
             DataSet.Next();
         }

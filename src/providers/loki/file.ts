@@ -457,10 +457,15 @@ export class TBlock extends TPersistable
                 RetVal += 'R' + this.Repeat.toString(DigitBase).toLowerCase();
             if (this.Interval !== DEF_INTERVAL)
                 RetVal += 'I' + this.Interval.toString(DigitBase).toLowerCase();
-            if (this.Freq !== DEF_FREQ)
-                RetVal += 'F' + this.Freq.toString(DigitBase).toLowerCase();
             if (this.Pulse !== DEF_Pulse)
                 RetVal += 'P' + this.Pulse.toString(DigitBase).toLowerCase();
+            if (this.Freq !== DEF_FREQ)
+            {
+                if (this.Freq === Math.trunc(this.Freq))
+                    RetVal += 'F' + this.Freq.toString(DigitBase).toLowerCase();
+                else
+                    RetVal += 'T' + Math.trunc(this.Freq * 10).toString(DigitBase).toLowerCase();
+            }
             if (this.Cluster !== DEF_CLUSTER)
                 RetVal += 'C' + this.Cluster.toString(DigitBase).toLowerCase();
         }
@@ -470,10 +475,15 @@ export class TBlock extends TPersistable
                 RetVal += 'R' + this.Repeat.toString(DigitBase).toLowerCase();
             if (this.Interval !== Prev.Interval)
                 RetVal += 'I' + this.Interval.toString(DigitBase).toLowerCase();
-            if (this.Freq !== Prev.Freq)
-                RetVal += 'F' + this.Freq.toString(DigitBase).toLowerCase();
             if (this.Pulse !== Prev.Pulse)
                 RetVal += 'P' + this.Pulse.toString(DigitBase).toLowerCase();
+            if (this.Freq !== Prev.Freq)
+            {
+                if (this.Freq === Math.trunc(this.Freq))
+                    RetVal += 'F' + this.Freq.toString(DigitBase).toLowerCase();
+                else
+                    RetVal += 'T' + Math.trunc(this.Freq * 10).toString(DigitBase).toLowerCase();
+            }
             if (this.Cluster !== Prev.Cluster)
                 RetVal += 'C' + this.Cluster.toString(DigitBase).toLowerCase();
         }
