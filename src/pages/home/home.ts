@@ -89,9 +89,11 @@ export class HomePage implements OnInit
 
         if (TypeInfo.Assigned(Tab.CategoryId) && ! TypeInfo.Assigned(Tab.FileList))
         {
-            this.Asset.FileList(Tab.CategoryId)
+            this.app.ShowLoading()
+                .then(() => this.Asset.FileList(Tab.CategoryId))
                 .then(List => Tab.FileList = List)
-                .catch(err => console.log(err));
+                .catch(err => console.log(err))
+                .then(() => this.app.HideLoading());
         };
     }
 

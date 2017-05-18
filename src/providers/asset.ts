@@ -130,7 +130,10 @@ export class TAssetService
 
             await this.Distribute.ReadScriptFile(F);
             if (F.IsEditing)
+            {
+                console.log('saving: ' + F.Name);
                 this.Save(F).catch(err => console.log(err.message));
+            }
 
             DataSet.Next();
         }
