@@ -17,7 +17,7 @@ import * as Svc from '../providers';
                                     <div style="width:6vw; height:6vw"><file-duration [Duration]="f.DurationMinute"></file-duration></div>
                                 </ion-col>
                                 <ion-col align-self-center>
-                                    <span color="dark" style="font-size:2.0vw;">{{f.DurationMinute.toString()}}{{'hint.min'|translate}}</span>
+                                    <span color="dark" style="font-size:1.2rem;">{{f.DurationMinute.toString()}}{{'hint.min'|translate}}</span>
                                 </ion-col>
                             </ion-row>
                         </ion-col>

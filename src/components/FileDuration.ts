@@ -13,7 +13,6 @@ export class FileDurationComp
     ngAfterViewInit()
     {
         this.Canvas = this.Elements.nativeElement.children[0] as HTMLCanvasElement;
-        console.log(this.Elements.nativeElement.parentElement);
 
         let rect = this.Elements.nativeElement.parentElement.getBoundingClientRect();
         let width = rect.width * window.devicePixelRatio;
@@ -39,8 +38,6 @@ export class FileDurationComp
 
     @Input() set Duration(Value: number)
     {
-        console.log("Duration.Value:" + Value);
-
         this.Time = Value;
 
         if(TypeInfo.Assigned(this.Ctx))
