@@ -11,7 +11,7 @@ import {PowerManagement} from '../../UltraCreation/Native/PowerManagement'
 
 import * as Svc from '../../providers';
 
-const DEMO_MODES: string[] = ["FRICTION", "KNEADING", "PRESSURE"];
+const DEMO_MODES: string[] = ["demo_friction", "demo_kneading", "demo_pressure"];
 const DEMO_MODES_TIMES: number[] = [45, 70, 80];
 
 @Component({selector: "page-demo_mode_running", templateUrl: "demo_mode_running.html"})
@@ -112,37 +112,36 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 
         Load.then(() =>
         {
-            let RetVal = this.ReadLocalFile(DEMO_MODES[Index]);
-            let Md5 = THashMd5.Get(RetVal).Print();
-
-            this.Shell.CatFile(DEMO_MODES[Index], RetVal, Md5)
-                .then(progress =>
+            let FilePath = './assets/loki/' + DEMO_MODES[Index] + '.lok';
+            Svc.HttpRequest(FilePath, 'GET', 'text')
+                .then(Content =>
                 {
-                    this.Downloading = true;
-                    progress.subscribe(next => this.Ticking =  DEMO_MODES_TIMES[Index]* next, err => {}, () => {});
+                    let RetVal = TUtf8Encoding.Instance.Encode(Content);
+                    let Md5 = THashMd5.Get(RetVal).Print();
 
-                    return progress.toPromise()
-                        .then(() =>
+                    this.Shell.CatFile(DEMO_MODES[Index], RetVal, Md5)
+                        .then(progress =>
                         {
-                            this.Ticking = 0;
-                            this.Downloading = false;
+                            this.Downloading = true;
+                            progress.subscribe(next => this.Ticking =  DEMO_MODES_TIMES[Index]* next, err => {}, () => {});
+
+                            return progress.toPromise()
+                                .then(() =>
+                                {
+                                    this.Ticking = 0;
+                                    this.Downloading = false;
+                                });
+                        })
+                        .then(() => this.Shell.StartScriptFile(DEMO_MODES[Index]))
+                        .then(() => setTimeout(this.app.HideLoading(), 1000))
+                        .catch(err =>
+                        {
+                            this.app.HideLoading()
+                                .then(() => this.app.ShowHintId(err.message))
+                                .then(() => this.ClosePage());
                         });
-                })
-                .then(() => this.Shell.StartScriptFile(DEMO_MODES[Index]))
-                .then(() => setTimeout(this.app.HideLoading(), 1000))
-                .catch(err =>
-                {
-                    this.app.HideLoading()
-                        .then(() => this.app.ShowHintId(err.message))
-                        .then(() => this.ClosePage());
                 });
         });
-    }
-
-    ReadLocalFile(FileName: string): Uint8Array
-    {
-        let Content = Svc.const_data.DemoModes[FileName];
-        return TUtf8Encoding.Instance.Encode(Content);
     }
 
     NextMode()
