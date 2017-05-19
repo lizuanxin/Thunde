@@ -79,9 +79,9 @@ export let translate_en =
         strength: 'Intensity Control',
         skip: 'Skip',
 
-        friction_info: 'You will feel a friction effect, a tingling sensation. By sending a very fast signal to your brain, we will block the transmission of the "pain message" alleviating your pain rapidly.',
-        kneading_info: 'Such stimulation kneads and deeply relaxes your muscles. We use this effect to relax your muscles and promptly relieve tension.',
-        pressure_info: 'This effect is the most used by physiotherapists during massage. A pacifying and relaxing sensation when the therapist’s hand glides over the skin. With respect to the intensity, the sensation will first be felt on the skin and, increasing the intensity, you will feel muscular tensions disappearing.',
+        demo_friction_info: 'You will feel a friction effect, a tingling sensation. By sending a very fast signal to your brain, we will block the transmission of the "pain message" alleviating your pain rapidly.',
+        demo_kneading_info: 'Such stimulation kneads and deeply relaxes your muscles. We use this effect to relax your muscles and promptly relieve tension.',
+        demo_pressure_info: 'This effect is the most used by physiotherapists during massage. A pacifying and relaxing sensation when the therapist’s hand glides over the skin. With respect to the intensity, the sensation will first be felt on the skin and, increasing the intensity, you will feel muscular tensions disappearing.',
         demo_play_finish: 'Discover the hitting and contraction effects in the long list of programs'
     },
 
@@ -286,9 +286,9 @@ export let translate_zh =
         strength: '强度控制',
         skip:'跳过',
 
-        friction_info: '这是一段麻醉痛感效果的按摩模式。小摩线会传送一种非常快速的信息至你大脑，从而阻断“痛感信息”的传输，达到缓解疼痛的效果。它是100%天然且适用于任何疼痛的缓解方法',
-        kneading_info: '这是一种揉捏且深层放松你肌肉的模式，小摩线用它来帮助你迅速的释放肌肉紧张感。这个按摩动作在长期被用于”痉挛”的临床理疗。',
-        pressure_info: '这个动作是理疗师在按摩中用到最多的，当他用力按在你感到酸痛紧张的肌肉部位时，你瞬间放松感到平静。特别在大力度下，身体肌肉压力会有种瞬间释放感。建议你尝试在大量运动后使用，帮助代谢肌肉产生的乳酸聚积，迅速摆脱运动后的肌肉酸痛。',
+        demo_friction_info: '这是一段麻醉痛感效果的按摩模式。小摩线会传送一种非常快速的信息至你大脑，从而阻断“痛感信息”的传输，达到缓解疼痛的效果。它是100%天然且适用于任何疼痛的缓解方法',
+        demo_kneading_info: '这是一种揉捏且深层放松你肌肉的模式，小摩线用它来帮助你迅速的释放肌肉紧张感。这个按摩动作在长期被用于”痉挛”的临床理疗。',
+        demo_pressure_info: '这个动作是理疗师在按摩中用到最多的，当他用力按在你感到酸痛紧张的肌肉部位时，你瞬间放松感到平静。特别在大力度下，身体肌肉压力会有种瞬间释放感。建议你尝试在大量运动后使用，帮助代谢肌肉产生的乳酸聚积，迅速摆脱运动后的肌肉酸痛。',
         demo_play_finish: '更多体感和完整的按摩程序，请在主菜单中查找体验'
     },
 
