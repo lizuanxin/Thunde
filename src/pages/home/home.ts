@@ -94,7 +94,7 @@ export class HomePage implements OnInit
                 .then(List => Tab.FileList = List)
                 .catch(err => console.log(err))
                 .then(() => this.app.HideLoading());
-        };
+        }
     }
 
     SelectFile(ScriptFile: Svc.TScriptFile)
