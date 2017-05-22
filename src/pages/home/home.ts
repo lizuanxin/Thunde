@@ -28,7 +28,7 @@ export class HomePage implements OnInit
         if (isDevMode())
             console.log('develope mode....');
 
-        this.Tabs.push(new TTabItem(255, Svc.const_data.Category.recommend));
+        // this.Tabs.push(new TTabItem(255, Svc.const_data.Category.recommend));
         this.Tabs.push(new TTabItem(0, Svc.const_data.Category.relax));
         this.Tabs.push(new TTabItem(1, Svc.const_data.Category.muscle_training));
         this.Tabs.push(new TTabItem(2, Svc.const_data.Category.fat_burning));
@@ -85,7 +85,8 @@ export class HomePage implements OnInit
 
     SelectTab(Tab: TTabItem): void
     {
-        this.ActiveTab = Tab;
+        if (! TypeInfo.Assigned(this.ActiveTab))
+            this.ActiveTab = Tab;
 
         if (TypeInfo.Assigned(Tab.CategoryId) && ! TypeInfo.Assigned(Tab.FileList))
         {
@@ -93,8 +94,11 @@ export class HomePage implements OnInit
                 .then(() => this.Asset.FileList(Tab.CategoryId))
                 .then(List => Tab.FileList = List)
                 .catch(err => console.log(err))
-                .then(() => this.app.HideLoading());
+                .then(() => this.app.HideLoading())
+                .then(() => this.ActiveTab = Tab)
         }
+        else
+            this.ActiveTab = Tab;
     }
 
     SelectFile(ScriptFile: Svc.TScriptFile)

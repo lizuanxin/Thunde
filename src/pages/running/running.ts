@@ -54,7 +54,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
                 case Svc.Loki.TShellNotify.Intensity:
                     this.Intensity = this.Shell.Intensity;
-                    console.log("ngOnInit.ngOnInit.Intensity" + this.Intensity);
+                    console.log('Intensity: ' + this.Intensity);
                     break;
 
                 case Svc.Loki.TShellNotify.Battery:

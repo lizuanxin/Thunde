@@ -42,7 +42,6 @@ export class FileListBodyComp implements OnInit
             {
                 Svc.Loki.TFile.DEBUG_FILETIME = true;
                 let l = new Svc.Loki.TFile();
-                console.log(f.Content);
 
                 l.LoadFrom(f.Content);
                 console.log(l.TimeEst());
