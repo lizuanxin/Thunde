@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {IonicPageModule} from 'ionic-angular';
 import {TranslateModule} from '../UltraCreation/ng-ion/translate'
 
-import {SwiperComp} from '../UltraCreation/ng-ion/Swiper'
+import {SwiperComp} from '../UltraCreation/ng-ion/swiper'
 
 import {FileListDialComp} from './filelist/FileListDial';
 import {FileListBodyComp} from './filelist/FileListBody';

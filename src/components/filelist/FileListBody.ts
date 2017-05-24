@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild, Input, Output, EventEmitter} from '@angular/core';
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
-import {SwiperComp} from '../../UltraCreation/ng-ion/Swiper'
+import {SwiperComp} from '../../UltraCreation/ng-ion/swiper'
 
 import * as Svc from '../../providers'
 
