@@ -1,5 +1,5 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core'
-import * as Svc from '../providers';
+import * as Svc from '../../providers';
 
 @Component({selector: 'filelist-card', template: `
     <div margin>

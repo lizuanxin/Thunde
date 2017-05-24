@@ -1,5 +1,5 @@
 import {Component, OnInit, Output, EventEmitter} from '@angular/core';
-import * as Svc from '../providers'
+import * as Svc from '../../providers'
 
 @Component({selector: 'profile', templateUrl: 'Profile.html'})
 export class ProfileComp implements OnInit

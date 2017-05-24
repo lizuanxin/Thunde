@@ -2,7 +2,8 @@ import {NgModule, ErrorHandler} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular'
-import {TranslateModule} from "../UltraCreation/ng-ion/translate";
+import {TranslateModule} from '../UltraCreation/ng-ion/translate';
+import {ProfileModule} from '../pages/profile'
 
 import {MyApp} from './app.component';
 
@@ -31,6 +32,7 @@ let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
         BrowserModule,
         IonicModule.forRoot(MyApp, config),
         TranslateModule.forRoot(),
+        ProfileModule,
         Cmp.ComponentsModule
     ],
     bootstrap: [IonicApp],
