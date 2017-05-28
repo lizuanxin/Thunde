@@ -1,6 +1,6 @@
 import {isDevMode, Component, OnInit} from '@angular/core';
+import {NavParams} from 'ionic-angular';
 
-import {NavController, NavParams} from 'ionic-angular';
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo'
 import * as View from '..'
 import * as Svc from '../../providers';
@@ -8,8 +8,8 @@ import * as Svc from '../../providers';
 @Component({selector: 'page-home', templateUrl: 'home.html'})
 export class HomePage implements OnInit
 {
-    constructor(private nav: NavController, private navParams: NavParams,
-        private app: Svc.TApplication, private Asset: Svc.TAssetService, private Distribute: Svc.TDistributeService)
+    constructor(private app: Svc.TApplication, private navParams: NavParams,
+        private Asset: Svc.TAssetService, private Distribute: Svc.TDistributeService)
     {
         this.app.Platform.ready()
             .then(() =>
@@ -60,19 +60,6 @@ export class HomePage implements OnInit
         this.app.EnableHardwareBackButton();
     }
 
-    ProfileSwitch(id: string)
-    {
-        switch(id)
-        {
-        case 'faq':
-            return this.ShowFAQ();
-        case 'demo':
-            return this.ShowDemo();
-        case 'tou':
-            this.ShowTOU();
-        }
-    }
-
     ActiveSwitch(): string
     {
         switch(this.ActiveTab.Index)
@@ -121,23 +108,13 @@ export class HomePage implements OnInit
             params.DeviceId = DeviceId;
 
             this.app.ShowLoading()
-                .then(() => this.nav.push(View.RunningPage, params))
+                .then(() => this.app.Nav.push(View.RunningPage, params))
         }
-    }
-
-    private ShowFAQ(): Promise<any>
-    {
-        return this.nav.push(View.FaqPage)
-    }
-
-    private ShowDemo(): Promise<any>
-    {
-        return this.nav.push(View.DemoPage)
     }
 
     private ShowTOU(): Promise<any>
     {
-        return this.nav.push(View.TouPage);
+        return this.app.Nav.push(View.TouPage);
     }
 
     private Tabs: Array<TTabItem> = [];

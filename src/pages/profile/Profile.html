@@ -1,13 +1,13 @@
 <ion-list inset list-init list-gray out-line>
-    <ion-item detail-none (click)="OnSelection.emit('demo')" tappable>
+    <ion-item detail-none (click)="ShowDemo()" tappable>
         {{'profile_page.demo'|translate}}
         <ion-note item-right><ion-icon>&#xf3d1;</ion-icon></ion-note>
     </ion-item>
-    <ion-item detail-none (click)="OnSelection.emit('faq')" tappable>
+    <ion-item detail-none (click)="ShowFaq()" tappable>
         {{'profile_page.faq'|translate}}
         <ion-note item-right><ion-icon>&#xf3d1;</ion-icon></ion-note>
     </ion-item>
-    <ion-item detail-none (click)="OnSelection.emit('tou')" tappable>
+    <ion-item detail-none (click)="ShwoTOU()" tappable>
         {{'profile_page.tou'|translate}}
         <ion-note item-right><ion-icon>&#xf3d1;</ion-icon></ion-note>
     </ion-item>

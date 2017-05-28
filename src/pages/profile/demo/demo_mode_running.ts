@@ -1,15 +1,15 @@
 import {Component, OnInit, AfterViewInit, OnDestroy} from '@angular/core';
-import {NavController, NavParams, ViewController} from 'ionic-angular';
+import {NavParams, ViewController} from 'ionic-angular';
 
 import {Subscription} from 'rxjs/Subscription'
 import 'rxjs/add/operator/toPromise';
 
-import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
-import {TUtf8Encoding} from '../../UltraCreation/Encoding/Utf8';
-import {THashMd5} from '../../UltraCreation/Hash/Md5';
-import {PowerManagement} from '../../UltraCreation/Native/PowerManagement'
+import {TypeInfo} from '../../../UltraCreation/Core/TypeInfo';
+import {TUtf8Encoding} from '../../../UltraCreation/Encoding/Utf8';
+import {THashMd5} from '../../../UltraCreation/Hash/Md5';
+import {PowerManagement} from '../../../UltraCreation/Native/PowerManagement'
 
-import * as Svc from '../../providers';
+import * as Svc from '../../../providers';
 
 const DEMO_MODES: string[] = ["demo_friction", "demo_kneading", "demo_pressure"];
 const DEMO_MODES_TIMES: number[] = [45, 70, 80];
@@ -17,7 +17,7 @@ const DEMO_MODES_TIMES: number[] = [45, 70, 80];
 @Component({selector: "page-demo_mode_running", templateUrl: "demo_mode_running.html"})
 export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 {
-    constructor(public nav: NavController, private navParams: NavParams, private view: ViewController,
+    constructor(private navParams: NavParams, private view: ViewController,
         public app: Svc.TApplication, private AssetSvc: Svc.TAssetService)
     {
         this.SetModeInfo(DEMO_MODES[this.CurrentRunningIndex]);
@@ -72,7 +72,7 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     ngAfterViewInit(): void
     {
-        this.nav.remove(1, this.view.index - 1, {animate: false})
+        this.app.Nav.remove(1, this.view.index - 1, {animate: false})
             .then(() => this.Start());
     }
 
@@ -290,8 +290,8 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 
         setTimeout(() =>
         {
-            if (this.view === this.nav.getActive() && this.view.index !== 0)
-                this.nav.pop();
+            if (this.view === this.app.Nav.getActive() && this.view.index !== 0)
+                this.app.Nav.pop();
         }, 300);
     }
 
@@ -307,8 +307,8 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
 
         setTimeout(() =>
         {
-            if (this.view === this.nav.getActive() && this.view.index !== 0)
-                this.nav.pop();
+            if (this.view === this.app.Nav.getActive() && this.view.index !== 0)
+                this.app.Nav.pop();
         }, 300);
     }
 

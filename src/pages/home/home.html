@@ -18,7 +18,7 @@
     <filelist-body *ngSwitchCase="0" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-body>
     <filelist-card *ngSwitchCase="1" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-card>
     <filelist-dial *ngSwitchCase="2" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-dial>
-    <profile *ngSwitchCase="65536" (OnSelection)="ProfileSwitch($event)"></profile>
+    <profile *ngSwitchCase="65536"></profile>
 </ion-content>
 
 <ion-footer no-shadow no-border>

@@ -1,14 +1,12 @@
 import {Component, OnInit} from "@angular/core";
-import {NavController} from 'ionic-angular';
 
-import {TypeInfo} from '../../UltraCreation/Core'
-
-import * as Svc from '../../providers';
+import {TypeInfo} from '../../../UltraCreation/Core'
+import * as Svc from '../../../providers';
 
 @Component({selector: 'page-faq', templateUrl: 'faq.html'})
 export class FaqPage implements OnInit
 {
-    constructor(public navCtrl: NavController, public app: Svc.TApplication, private Distribute: Svc.TDistributeService)
+    constructor(private app: Svc.TApplication, private Distribute: Svc.TDistributeService)
     {
     }
 
@@ -29,7 +27,7 @@ export class FaqPage implements OnInit
         if (TypeInfo.Assigned(this.Selected))
             this.Selected = null;
         else
-            this.navCtrl.pop();
+            this.app.Nav.pop();
     }
 
     Items: Array<IFaq> = [];

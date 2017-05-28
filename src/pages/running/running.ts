@@ -1,5 +1,5 @@
 import {isDevMode, Component, OnInit, OnDestroy, ViewChild, AfterViewInit} from '@angular/core';
-import {NavController, NavParams, ViewController, Content} from 'ionic-angular';
+import {NavParams, ViewController, Content} from 'ionic-angular';
 
 import {Subscription} from 'rxjs/Subscription'
 import 'rxjs/add/operator/toPromise';
@@ -13,8 +13,8 @@ import * as Svc from '../../providers';
 @Component({selector: 'page-running', templateUrl: 'running.html'})
 export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 {
-    constructor(public nav: NavController, private navParams: NavParams, private view: ViewController,
-        private app: Svc.TApplication, private Asset: Svc.TAssetService, private Distibute: Svc.TDistributeService)
+    constructor(private app: Svc.TApplication, private navParams: NavParams, private view: ViewController,
+        private Asset: Svc.TAssetService, private Distibute: Svc.TDistributeService)
     {
         this.ScriptFile = navParams.get('ScriptFile');
         let DeviceId = navParams.get('DeviceId');
@@ -76,7 +76,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     ngAfterViewInit()
     {
-        this.nav.remove(1, this.view.index - 1, {animate: false})
+        this.app.Nav.remove(1, this.view.index - 1, {animate: false})
             .then(() => this.Start());
     }
 
@@ -95,7 +95,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     goDownLoad()
     {
-        this.nav.push(View.DownloadPage)
+        this.app.Nav.push(View.DownloadPage)
     }
 
     get CanvasClientHeight(): Object
@@ -177,8 +177,8 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
         setTimeout(() =>
             {
-                if (this.view === this.nav.getActive())
-                    this.nav.pop();
+                if (this.view === this.app.Nav.getActive())
+                    this.app.Nav.pop();
             }, 300);
     }
 
@@ -230,8 +230,8 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
         setTimeout(() =>
         {
-            if (this.view === this.nav.getActive())
-                this.nav.pop();
+            if (this.view === this.app.Nav.getActive())
+                this.app.Nav.pop();
         }, 300);
     }
 

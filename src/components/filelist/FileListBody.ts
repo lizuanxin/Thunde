@@ -38,7 +38,7 @@ export class FileListBodyComp implements OnInit
         /*
         for (let f of this._FileList)
         {
-            if ( f.Name === 'waist')
+            if (f.Name === 'waist')
             {
                 Svc.Loki.TFile.DEBUG_FILETIME = true;
                 let l = new Svc.Loki.TFile();

@@ -1,9 +1,9 @@
 import {Component, AfterViewInit, ElementRef, ViewChild} from '@angular/core';
 
-import {NavController, NavParams} from 'ionic-angular';
-import {TypeInfo} from '../../UltraCreation/Core';
+import {NavParams} from 'ionic-angular';
 
-import * as Svc from '../../providers';
+import {TypeInfo} from '../../../UltraCreation/Core';
+import * as Svc from '../../../providers';
 import * as View from '../demo/demo_mode_running';
 
 const ID = {'tips1':0, 'tips2':1, 'tips3':2, 'electrode':3, 'power':4, 'switch':5, 'strength':6,
@@ -13,7 +13,7 @@ const ID = {'tips1':0, 'tips2':1, 'tips3':2, 'electrode':3, 'power':4, 'switch':
 @Component({selector: 'page-demo', templateUrl: 'demo.html'})
 export class DemoPage implements AfterViewInit
 {
-    constructor(public nav: NavController, private navParams: NavParams, public app: Svc.TApplication)
+    constructor(private app: Svc.TApplication, private navParams: NavParams)
     {
     }
 
@@ -38,7 +38,7 @@ export class DemoPage implements AfterViewInit
             params.DeviceId = DeviceId;
 
             this.app.ShowLoading()
-                .then(() => this.nav.push(View.DemoModeRunningPage, params))
+                .then(() => this.app.Nav.push(View.DemoModeRunningPage, params))
         }
     }
 
@@ -192,7 +192,6 @@ export class DemoPage implements AfterViewInit
         }
         Animation();
     }
-
 
     TypeMode: number = 0;
 

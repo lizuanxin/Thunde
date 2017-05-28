@@ -30,6 +30,6 @@ import {IntensityDialComp} from './IntensityDial';
     entryComponents: [
     ]
 })
-export class ComponentsModule
+export class ComponentModule
 {
 }

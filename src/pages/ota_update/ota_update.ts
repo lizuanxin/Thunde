@@ -1,6 +1,6 @@
 import {Component, AfterViewInit, OnDestroy} from '@angular/core';
 
-import {NavController, NavParams, ViewController} from 'ionic-angular';
+import {NavParams, ViewController} from 'ionic-angular';
 import {PowerManagement} from '../../UltraCreation/Native/PowerManagement'
 import * as Svc from '../../providers';
 
@@ -34,7 +34,7 @@ import * as Svc from '../../providers';
 })
 export class OtaUpdatePage implements AfterViewInit, OnDestroy
 {
-    constructor(private app: Svc.TApplication, private nav: NavController, private navParams: NavParams, private view: ViewController)
+    constructor(private app: Svc.TApplication, private navParams: NavParams, private view: ViewController)
     {
         this.Shell = navParams.get('Shell')
         this.Firmware = navParams.get('Firmware');
@@ -47,7 +47,7 @@ export class OtaUpdatePage implements AfterViewInit, OnDestroy
 
     ngAfterViewInit()
     {
-        this.nav.remove(1, this.view.index - 1, {animate: false})
+        this.app.Nav.remove(1, this.view.index - 1, {animate: false})
             .then(() => this.Start());
     }
 
@@ -66,7 +66,7 @@ export class OtaUpdatePage implements AfterViewInit, OnDestroy
                 Progress.subscribe(next => this.Percent = Math.trunc(next * 100), err => {}, () => {});
                 return Progress.toPromise();
             })
-            .then(() => this.nav.pop())
+            .then(() => this.app.Nav.pop())
             .catch(err =>
             {
                 if (err instanceof Svc.Loki.EUSBRestarting)
@@ -82,9 +82,9 @@ export class OtaUpdatePage implements AfterViewInit, OnDestroy
                 else
                 {
                     if (this.Percent >= 100)    // last packet may never received
-                        this.nav.pop();
+                        this.app.Nav.pop();
                     else
-                        this.app.ShowHintId(err.message).then(() => this.nav.pop());
+                        this.app.ShowHintId(err.message).then(() => this.app.Nav.pop());
                 }
             });
     }

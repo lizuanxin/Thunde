@@ -13,7 +13,7 @@ import * as USBSerial from '../../UltraCreation/Native/UsbSerialOTG';
 
 const REQUEST_TIMEOUT = 3000;
 
-const BLE_FILTER_NAMES: string[] = ['uctenqt3', 'thunderbolt', 'uctenqt1', 'quintic ble', 'ble hw1.0.0', '.blt'];
+const BLE_FILTER_NAMES: string[] = ['uctenqt3', 'thunderbolt', 'uctenqt1', 'quintic ble', 'ble hw1.0.0', '.blt', 'bluetensx'];
 const BLE_SCAN_TIMEOUT = 60000;
 const BLE_CONNECTION_TIMEOUT = 5000;
 
@@ -544,14 +544,17 @@ export class TShell extends TAbstractShell
             return;
         }
 
-        this.VersionRequest()
-            .then(() => {})
-            .catch(err => {});
-        /*
-        this.BatteryRequest()
-            .then(() => {})
-            .catch(err => {});
-        */
+        if (this.OnNotify.observers.length !== 0)
+        {
+            this.VersionRequest()
+                .then(() => {})
+                .catch(err => {});
+            /*
+            this.BatteryRequest()
+                .then(() => {})
+                .catch(err => {});
+            */
+        }
     }
 
     // @private called from Proxy
