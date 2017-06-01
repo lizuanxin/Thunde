@@ -83,11 +83,12 @@ export class HomePage implements OnInit
                 .catch(err => console.log(err))
                 .then(() => this.app.HideLoading())
                 .then(() => this.ActiveTab = Tab)
+                .catch(err => console.log(err))
         }
         else
         {
             this.ActiveTab = Tab;
-            this.app.HideLoading();
+            this.app.HideLoading().catch(err => console.log(err));
         }
     }
 
@@ -98,7 +99,8 @@ export class HomePage implements OnInit
 
         this.app.DisableHardwareBackButton();
         this.app.ShowLoading()
-            .then(() => this.DeviceScanning = true);
+            .then(() => this.DeviceScanning = true)
+            .catch(err => console.log(err.message));
     }
 
     DeviceSelection(DeviceId?: string)
@@ -112,7 +114,10 @@ export class HomePage implements OnInit
 
             this.app.ShowLoading()
                 .then(() => this.app.Nav.push(View.RunningPage, params))
+                .catch(err => console.log(err.message));
         }
+        else
+            this.app.HideLoading().catch(err => console.log(err.message));
     }
 
     private ShowTOU(): Promise<any>
