@@ -75,30 +75,32 @@ export class ScanDeviceComp implements OnInit, OnDestroy
 
     SelectionDevice(DeviceId: string)
     {
-        this.StopScan();
-        let Shell = Svc.Loki.TShell.Get(DeviceId);
+        this.StopScan().then(() =>
+        {
+            let Shell = Svc.Loki.TShell.Get(DeviceId);
 
-        if (isDevMode())
-        {
-            this.app.ShowLoading()
-                .then(() => Shell.Connect())
-                .then(() => Shell.StopOutput())
-                .catch(err => console.log(err.message))
-                .then(() => this.OnSelection.next(DeviceId));
-        }
-        else
-        {
-            this.app.ShowLoading()
-                .then(() => Shell.Connect())
-                .then(() => Shell.StopOutput())
-                .then(() => this.OnSelection.next(DeviceId))
-                .catch(err=>
-                {
-                    this.app.HideLoading()
-                        .then(() => this.app.ShowHintId(err.message))
-                    this.OnSelection.next(null);
-                })
-        }
+            if (isDevMode())
+            {
+                this.app.ShowLoading()
+                    .then(() => Shell.Connect())
+                    .then(() => Shell.StopOutput())
+                    .catch(err => console.log(err.message))
+                    .then(() => this.OnSelection.next(DeviceId));
+            }
+            else
+            {
+                this.app.ShowLoading()
+                    .then(() => Shell.Connect())
+                    .then(() => Shell.StopOutput())
+                    .then(() => this.OnSelection.next(DeviceId))
+                    .catch(err=>
+                    {
+                        this.app.HideLoading()
+                            .then(() => this.app.ShowHintId(err.message))
+                        this.OnSelection.next(null);
+                    })
+            }
+        });
     }
 
     private StartScan()
@@ -111,10 +113,7 @@ export class ScanDeviceComp implements OnInit, OnDestroy
             () =>
             {
                 if (TypeInfo.Assigned(this.ScanSubscription))
-                {
-                    this.StopScan();
-                    setTimeout(() => this.StartScan(), 0);
-                }
+                    this.StopScan().then(() => setTimeout(() => this.StartScan(), 0));
             });
 
         if (isDevMode())
@@ -142,14 +141,14 @@ export class ScanDeviceComp implements OnInit, OnDestroy
         }
     }
 
-    private StopScan()
+    private StopScan(): Promise<void>
     {
         if (TypeInfo.Assigned(this.ScanSubscription))
         {
             this.ScanSubscription.unsubscribe();
             this.ScanSubscription = null;
         }
-        Svc.Loki.TShell.StopScan().catch(err => console.log(err.message));
+        return Svc.Loki.TShell.StopScan().catch(err => console.log(err.message));
     }
 
     @Output() OnSelection = new EventEmitter<string>();
