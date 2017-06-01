@@ -85,7 +85,10 @@ export class HomePage implements OnInit
                 .then(() => this.ActiveTab = Tab)
         }
         else
+        {
             this.ActiveTab = Tab;
+            this.app.HideLoading();
+        }
     }
 
     SelectFile(ScriptFile: Svc.TScriptFile)

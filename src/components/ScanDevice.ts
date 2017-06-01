@@ -53,13 +53,7 @@ export class ScanDeviceComp implements OnInit, OnDestroy
     ngOnDestroy()
     {
         console.log('scan-device destroy');
-
-        if (TypeInfo.Assigned(this.ScanSubscription))
-        {
-            this.ScanSubscription.unsubscribe();
-            this.ScanSubscription = null;
-        }
-        Svc.Loki.TShell.StopScan();
+        this.StopScan();
     }
 
     Intensity(value: number): string
@@ -81,6 +75,7 @@ export class ScanDeviceComp implements OnInit, OnDestroy
 
     SelectionDevice(DeviceId: string)
     {
+        this.StopScan();
         let Shell = Svc.Loki.TShell.Get(DeviceId);
 
         if (isDevMode())
@@ -102,7 +97,7 @@ export class ScanDeviceComp implements OnInit, OnDestroy
                     this.app.HideLoading()
                         .then(() => this.app.ShowHintId(err.message))
                     this.OnSelection.next(null);
-                });
+                })
         }
     }
 
@@ -116,15 +111,19 @@ export class ScanDeviceComp implements OnInit, OnDestroy
             () =>
             {
                 if (TypeInfo.Assigned(this.ScanSubscription))
+                {
+                    this.StopScan();
                     setTimeout(() => this.StartScan(), 0);
+                }
             });
 
         if (isDevMode())
         {
             setTimeout(() =>
             {
-                this.Visible = true;
-                this.app.HideLoading();
+                this.app.HideLoading()
+                    .then(() => this.Visible = true)
+                    .catch(err => console.log(err.message));
             }, 500);
         }
         else
@@ -133,13 +132,24 @@ export class ScanDeviceComp implements OnInit, OnDestroy
             {
                 if (this.DeviceList.length !== 1)
                 {
-                    this.Visible = true;
-                    this.app.HideLoading();
+                    this.app.HideLoading()
+                        .then(() => this.Visible = true)
+                        .catch(err => console.log(err.message));
                 }
                 else
                     this.SelectionDevice(this.DeviceList[0].id);
             }, 2000);
         }
+    }
+
+    private StopScan()
+    {
+        if (TypeInfo.Assigned(this.ScanSubscription))
+        {
+            this.ScanSubscription.unsubscribe();
+            this.ScanSubscription = null;
+        }
+        Svc.Loki.TShell.StopScan().catch(err => console.log(err.message));
     }
 
     @Output() OnSelection = new EventEmitter<string>();
