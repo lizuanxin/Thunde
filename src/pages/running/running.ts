@@ -3,7 +3,7 @@ import {NavParams, ViewController, Content} from 'ionic-angular';
 
 import {Subscription} from 'rxjs/Subscription'
 import 'rxjs/add/operator/toPromise';
-import {TypeInfo} from "../../UltraCreation/Core/TypeInfo";
+import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 
 import * as View from '..'
 import * as Svc from '../../providers';
@@ -63,11 +63,9 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
                 case Svc.Loki.TShellNotify.Ticking:
                     this.Ticking = this.Shell.Ticking;
+
                     if (this.Ticking >= this.ScriptFile.Duration)
-                    {
-                        this.Finish = true;
                         this.Shell.StopOutput();
-                    }
                     break;
                 }
             },
@@ -82,12 +80,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     ngOnDestroy(): void
     {
-        if (TypeInfo.Assigned(this.ShellNotifySubscription))
-        {
-            this.ShellNotifySubscription.unsubscribe();
-            this.ShellNotifySubscription = null;
-        }
-
+        this.UnsubscribeShellNotify();
         this.Shell.Detach();
 
         // PowerManagement.Release();
@@ -164,22 +157,10 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     Shutdown(): void
     {
-        if (TypeInfo.Assigned(this.ShellNotifySubscription))
-        {
-            this.ShellNotifySubscription.unsubscribe();
-            this.ShellNotifySubscription = null;
-        }
+        this.UnsubscribeShellNotify();
 
-        if (! this.Finish)
-        {
-            this.Shell.StopOutput();
-        }
-
-        setTimeout(() =>
-            {
-                if (this.view === this.app.Nav.getActive())
-                    this.app.Nav.pop();
-            }, 300);
+        this.Shell.StopOutput().catch(err => console.log(err))
+            .then(() => this.ClosePage());
     }
 
     private Start()
@@ -204,35 +185,46 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
             .catch(err=>
             {
                 this.app.HideLoading()
-                    .then(() => this.app.ShowHintId(err.message))
+                    .then(() => this.app.ShowError(err))
                     .then(() => isDevMode() ? null : this.ClosePage());
             })
             .then(() => this.app.EnableHardwareBackButton());
     }
 
-    private UpdateBatteryLevel()
+    private UpdateBatteryLevel(): void
     {
         this.BatteryLevel = this.Shell.BatteryLevel;
     }
 
-    private Close(MessageId: string)
+    private Close(MessageId: string): void
     {
-        if (MessageId !== '')
-            this.app.ShowHintId(MessageId).then(() => this.ClosePage());
-        else
-            this.ClosePage();
+        this.UnsubscribeShellNotify();
+        this.ClosePage();
+
+        // ignore multi notify messages
+        if (! TypeInfo.Assigned(this.ClosingTimerId) && MessageId !== '')
+            this.app.ShowError(MessageId);
     }
 
-    private ClosePage()
+    private ClosePage(): void
     {
-        if (this.Finish)
+        if (TypeInfo.Assigned(this.ClosingTimerId))
             return;
 
-        setTimeout(() =>
+        this.ClosingTimerId = setTimeout(() =>
         {
             if (this.view === this.app.Nav.getActive())
                 this.app.Nav.pop();
         }, 300);
+    }
+
+    private UnsubscribeShellNotify(): void
+    {
+        if (TypeInfo.Assigned(this.ShellNotifySubscription))
+        {
+            this.ShellNotifySubscription.unsubscribe();
+            this.ShellNotifySubscription = null;
+        }
     }
 
     @ViewChild(Content) content: Content;
@@ -242,10 +234,10 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
     Ticking: number = 0;
     Intensity: number = 0;
     BatteryLevel: number = 0;
-    Finish: boolean = false;
 
     private Shell: Svc.Loki.TShell;
     private ShellNotifySubscription: Subscription;
     private Adjusting: Promise<any> = null;
-    private Downloading: boolean = false;
+    private Downloading = false;
+    private ClosingTimerId: any;
 }

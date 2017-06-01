@@ -1,5 +1,4 @@
 import {Injectable, Injector} from '@angular/core';
-import {Toast} from 'ionic-angular/components/toast/toast';
 
 import {TSqliteStorage} from '../UltraCreation/Storage';
 import {TAppController} from '../UltraCreation/ng-ion/appcontroller'
@@ -48,7 +47,7 @@ export class TApplication extends TAppController
                     if (now - ts > 500)
                     {
                         if (now - ts > 3000)
-                            this.ShowHintId('back_twice_exit', 'bottom', 1500);
+                            this.ShowError('back_twice_exit', 1500, 'bottom');
                         ts = now;
                     }
                     else
@@ -104,14 +103,12 @@ export class TApplication extends TAppController
         return super.ShowLoading({spinner: 'crescent', content: Msg, cssClass: 'loading-s1'});
     }
 
-    ShowHintId(Id: string, Position: 'top' | 'bottom' | 'middle' = 'middle', Duration = 3000): Promise<Toast>
+    ShowError(err: any,
+        duration: number = 3000, position: 'top' | 'bottom' | 'middle' = 'middle'): Promise<void>
     {
-        let msg = this.Translate('hint.' + Id) as string;
-
-        if (msg !== '')
-            return this.ShowToast({message: msg, position: Position, cssClass: 'toast-s1', duration: Duration});
-        else
-            return Promise.resolve(null);
+        return super.ShowError(err, {
+            duration: duration, position: position,
+            style: 'toast-s1',  prefix_lang: 'hint.'});
     }
 
     Skin(Page: string): string

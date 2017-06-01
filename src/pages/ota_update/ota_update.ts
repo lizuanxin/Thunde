@@ -84,7 +84,7 @@ export class OtaUpdatePage implements AfterViewInit, OnDestroy
                     if (this.Percent >= 100)    // last packet may never received
                         this.app.Nav.pop();
                     else
-                        this.app.ShowHintId(err.message).then(() => this.app.Nav.pop());
+                        this.app.ShowError(err).then(() => this.app.Nav.pop());
                 }
             });
     }

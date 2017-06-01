@@ -137,7 +137,7 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
                         .catch(err =>
                         {
                             this.app.HideLoading()
-                                .then(() => this.app.ShowHintId(err.message))
+                                .then(() => this.app.ShowError(err))
                                 .then(() => this.ClosePage());
                         });
                 });
@@ -278,7 +278,7 @@ export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
     private Close(MessageId: string)
     {
         if (MessageId !== '')
-            this.app.ShowHintId(MessageId).then(() => this.ClosePage());
+            this.app.ShowError(MessageId).then(() => this.ClosePage());
         else
             this.ClosePage();
     }

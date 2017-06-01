@@ -96,7 +96,7 @@ export class ScanDeviceComp implements OnInit, OnDestroy
                     .catch(err=>
                     {
                         this.app.HideLoading()
-                            .then(() => this.app.ShowHintId(err.message))
+                            .then(() => this.app.ShowError(err))
                         this.OnSelection.next(null);
                     })
             }
