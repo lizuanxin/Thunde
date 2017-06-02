@@ -1,7 +1,7 @@
 import {Component, OnInit, Input, Output, EventEmitter, ElementRef} from '@angular/core';
-import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
+import {TypeInfo} from '../../../UltraCreation/Core/TypeInfo';
 
-import * as Svc from '../../providers';
+import * as Svc from '../../../providers';
 
 @Component({selector: 'filelist-slide', template: '<canvas style="width:100%" tappable></canvas>'})
 export class FileListSlideComp implements OnInit

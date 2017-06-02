@@ -1,12 +1,12 @@
 import {Component, AfterViewInit, OnDestroy} from '@angular/core';
 
 import {NavParams, ViewController} from 'ionic-angular';
-import {PowerManagement} from '../../UltraCreation/Native/PowerManagement'
-import * as Svc from '../../providers';
+import {PowerManagement} from '../../../UltraCreation/Native/PowerManagement'
+import * as Svc from '../../../providers';
 
 @Component({
-    selector: 'ota-update',
-    templateUrl: 'ota_update.html',
+    selector: 'page-ota',
+    templateUrl: 'ota.html',
     styles: [
         `
         .progress-outer
@@ -32,7 +32,7 @@ import * as Svc from '../../providers';
         `
     ]
 })
-export class OtaUpdatePage implements AfterViewInit, OnDestroy
+export class OtaPage implements AfterViewInit, OnDestroy
 {
     constructor(private app: Svc.TApplication, private navParams: NavParams, private view: ViewController)
     {

@@ -31,19 +31,20 @@ let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
         BrowserModule,
         IonicModule.forRoot(MyApp, config),
         TranslateModule.forRoot(),
+
         Cmp.ComponentModule,
-        View.ProfileModule,
+        View.TensModule, View.ProfileModule,
     ],
     bootstrap: [IonicApp],
 
     declarations: [
         MyApp,
-        View.HomePage, View.RunningPage, View.OtaUpdatePage, View.DownloadPage
+        View.HomePage
     ],
 
     entryComponents: [
         MyApp,
-        View.HomePage, View.RunningPage, View.OtaUpdatePage, View.DownloadPage
+        View.HomePage,
     ],
 
     providers: [

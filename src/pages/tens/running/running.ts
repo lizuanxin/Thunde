@@ -3,10 +3,10 @@ import {NavParams, ViewController, Content} from 'ionic-angular';
 
 import {Subscription} from 'rxjs/Subscription'
 import 'rxjs/add/operator/toPromise';
-import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
+import {TypeInfo} from '../../../UltraCreation/Core/TypeInfo';
 
 import * as View from '..'
-import * as Svc from '../../providers';
+import * as Svc from '../../../providers';
 // import {PowerManagement} from '../../UltraCreation/Native/PowerManagement'
 
 

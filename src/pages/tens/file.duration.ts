@@ -1,7 +1,7 @@
 import {Component, Input, ElementRef} from '@angular/core'
-import {TypeInfo} from "../UltraCreation/Core/TypeInfo";
+import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 
-import * as Svc from '../providers/application';
+import * as Svc from '../../providers/application';
 
 @Component({selector: 'file-duration', template: '<canvas style="width:100%; heigth:100%"></canvas>'})
 export class FileDurationComp

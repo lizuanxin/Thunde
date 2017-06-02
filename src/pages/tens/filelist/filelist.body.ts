@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewChild, Input, Output, EventEmitter} from '@angular/core';
-import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
-import {SwiperComp} from '../../UltraCreation/ng-ion/swiper'
+import {TypeInfo} from '../../../UltraCreation/Core/TypeInfo';
+import {SwiperComp} from '../../../UltraCreation/ng-ion/swiper'
 
-import * as Svc from '../../providers'
+import * as Svc from '../../../providers'
 
-@Component({selector: 'filelist-body', templateUrl: `FileListBody.html`})
+@Component({selector: 'filelist-body', templateUrl: 'filelist.body.html'})
 export class FileListBodyComp implements OnInit
 {
     constructor(private app: Svc.TApplication)

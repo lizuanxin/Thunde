@@ -1,9 +1,9 @@
 import {Component, OnInit, OnDestroy, DoCheck, Input, Output, EventEmitter, ElementRef} from '@angular/core'
 
-import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
-import {UITypes} from '../../UltraCreation/Graphic';
+import {TypeInfo} from '../../../UltraCreation/Core/TypeInfo';
+import {UITypes} from '../../../UltraCreation/Graphic';
 
-import * as Svc from '../../providers';
+import * as Svc from '../../../providers';
 
 const SHOWING_ITEM_COUNT = 6;
 
