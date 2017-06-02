@@ -4,7 +4,7 @@ import {TranslateModule} from '../UltraCreation/ng-ion/translate'
 
 
 import {ScanDeviceComp} from './ScanDevice';
-import {IntensityDialComp} from './IntensityDial';
+import {IntensityDialComp} from './intensity.dial';
 
 @NgModule({
     imports: [
