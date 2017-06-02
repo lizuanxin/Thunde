@@ -5,7 +5,7 @@ import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
 import * as Svc from '../providers'
 
 @Component({
-  selector: 'scan-device',
+  selector: 'scan-ble',
   template: `
     <ion-list *ngIf="Visible" [class.fadein]="DeviceList.length>0" margin-horizontal style="margin-top:13vh">
         <ng-template [ngIf]="DeviceList.length>0">
@@ -25,7 +25,7 @@ import * as Svc from '../providers'
     </ion-list>
     `
 })
-export class ScanDeviceComp implements OnInit, OnDestroy
+export class ScanBleComp implements OnInit, OnDestroy
 {
     constructor(private app: Svc.TApplication)
     {
@@ -52,7 +52,7 @@ export class ScanDeviceComp implements OnInit, OnDestroy
 
     ngOnDestroy()
     {
-        console.log('scan-device destroy');
+        console.log('scan.ble destroy');
         this.StopScan();
     }
 

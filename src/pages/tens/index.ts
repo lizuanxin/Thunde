@@ -5,17 +5,18 @@ import {TranslateModule} from '../../UltraCreation/ng-ion/translate'
 import {ComponentModule} from '../../components'
 
 import {SwiperComp} from '../../UltraCreation/ng-ion/swiper'
-
 import {FileListDialComp} from './filelist/filelist.dail';
 import {FileListBodyComp} from './filelist/filelist.body';
 import {FileListCardComp, FileListRecommendComp} from './filelist/filelist.card';
 import {FileListSlideComp} from './filelist/filelist.slide';
-
 import {FileDurationComp} from './file.duration'
 
 import {RunningPage} from './running/running'
 import {OtaPage} from './ota/ota'
 import {DownloadPage} from './download/download'
+
+import {DemoPage} from './demo/demo'
+import {DemoRunningPage} from './demo/demo.running'
 
 @NgModule({
     imports: [
@@ -32,13 +33,15 @@ import {DownloadPage} from './download/download'
         SwiperComp, FileListDialComp, FileListBodyComp, FileListCardComp, FileListSlideComp, FileListRecommendComp,
         FileDurationComp,
         RunningPage, OtaPage, DownloadPage,
+        DemoPage, DemoRunningPage
     ],
     entryComponents: [
-        RunningPage, OtaPage, DownloadPage
+        RunningPage, OtaPage, DownloadPage,
+        DemoPage, DemoRunningPage
     ]
 })
 export class TensModule
 {
 }
 
-export {RunningPage, OtaPage, DownloadPage}
+export {RunningPage, OtaPage, DownloadPage, DemoPage, DemoRunningPage}

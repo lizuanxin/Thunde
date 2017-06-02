@@ -3,9 +3,9 @@ import * as Svc from '../../providers'
 
 import {TouPage} from './tou/tou'
 import {FaqPage} from './faq/faq'
-import {DemoPage} from './demo/demo'
+import {DemoPage} from '..'
 
-@Component({selector: 'profile', templateUrl: 'Profile.html'})
+@Component({selector: 'page-profile', templateUrl: 'profile.html'})
 export class ProfilePage implements OnInit
 {
     constructor(private app: Svc.TApplication)

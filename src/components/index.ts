@@ -2,8 +2,7 @@ import {NgModule} from '@angular/core';
 import {IonicPageModule} from 'ionic-angular';
 import {TranslateModule} from '../UltraCreation/ng-ion/translate'
 
-
-import {ScanDeviceComp} from './ScanDevice';
+import {ScanBleComp} from './scan.ble';
 import {IntensityDialComp} from './intensity.dial';
 
 @NgModule({
@@ -12,10 +11,10 @@ import {IntensityDialComp} from './intensity.dial';
         TranslateModule,
     ],
     exports: [
-        ScanDeviceComp, IntensityDialComp,
+        ScanBleComp, IntensityDialComp,
     ],
     declarations: [
-        ScanDeviceComp, IntensityDialComp,
+        ScanBleComp, IntensityDialComp,
     ],
     entryComponents: [
     ]

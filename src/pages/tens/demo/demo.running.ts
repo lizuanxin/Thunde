@@ -14,8 +14,8 @@ import * as Svc from '../../../providers';
 const DEMO_MODES: string[] = ["demo_friction", "demo_kneading", "demo_pressure"];
 const DEMO_MODES_TIMES: number[] = [45, 70, 80];
 
-@Component({selector: "page-demo_mode_running", templateUrl: "demo_mode_running.html"})
-export class DemoModeRunningPage implements OnInit, AfterViewInit, OnDestroy
+@Component({selector: "page-demo.running", templateUrl: "demo.running.html"})
+export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 {
     constructor(private navParams: NavParams, private view: ViewController,
         public app: Svc.TApplication, private AssetSvc: Svc.TAssetService)

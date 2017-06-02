@@ -18,7 +18,7 @@
     <filelist-body *ngSwitchCase="0" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-body>
     <filelist-card *ngSwitchCase="1" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-card>
     <filelist-dial *ngSwitchCase="2" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-dial>
-    <profile *ngSwitchCase="65536"></profile>
+    <page-profile *ngSwitchCase="65536"></page-profile>
 </ion-content>
 
 <ion-footer no-shadow no-border>
@@ -35,5 +35,5 @@
 </ion-footer>
 
 <ion-backdrop my-backdrop *ngIf="DeviceScanning" (click)="DeviceScanning=false;app.EnableHardwareBackButton();">
-    <scan-device (OnSelection)="DeviceSelection($event)"></scan-device>
+    <scan-ble (OnSelection)="DeviceSelection($event)"></scan-ble>
 </ion-backdrop>
