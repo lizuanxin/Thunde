@@ -1,0 +1,37 @@
+<ion-list inset list-init list-gray out-line>
+    <ion-item detail-none (click)="ShowDemo()" tappable>
+        {{'profile_page.demo'|translate}}
+        <ion-note item-right><ion-icon>&#xf3d1;</ion-icon></ion-note>
+    </ion-item>
+    <ion-item detail-none (click)="ShowFaq()" tappable>
+        {{'profile_page.faq'|translate}}
+        <ion-note item-right><ion-icon>&#xf3d1;</ion-icon></ion-note>
+    </ion-item>
+    <ion-item detail-none (click)="ShwoTOU()" tappable>
+        {{'profile_page.tou'|translate}}
+        <ion-note item-right><ion-icon>&#xf3d1;</ion-icon></ion-note>
+    </ion-item>
+</ion-list>
+
+<ion-list inset list-init list-gray out-line>
+    <ion-item detail-none>
+        {{'profile_page.check_otg'|translate}}
+        <ion-note item-right>
+            <div [ngClass]="{'text-success':IsSupportedOTG,'text-danger':!IsSupportedOTG}">
+                <span ion-text f-1-2>{{'profile_page.'+(IsSupportedOTG ? 'support' : 'no_support')|translate}}</span>
+                <ion-icon f-2-4>{{IsSupportedOTG ? '&#xf2bc;' : '&#xf2c0;'}}</ion-icon>
+            </div>
+        </ion-note>
+        <!--<ion-icon [ngStyle]="{ color: IsSupportedOTG ? '#4b7efa' : 'red',marginRight:0,fontSize:'2rem', paddingTop:'7px', paddingRight:'6px'}" item-right>&#xf1f7;</ion-icon>-->
+    </ion-item>
+    <ion-item detail-none>
+         {{'profile_page.app_version'|translate}}
+        <ion-note item-right>v1.1.0</ion-note>
+    </ion-item>
+</ion-list>
+
+<ion-list no-line inset list-init >
+    <ion-item detail-none text-center>
+        <ion-note>{{'profile_page.company'|translate}}</ion-note>
+    </ion-item>
+</ion-list>
