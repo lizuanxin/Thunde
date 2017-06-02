@@ -1,8 +1,8 @@
 import {isDevMode, Component, OnInit, OnDestroy, Output, EventEmitter} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription'
 
-import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
-import * as Svc from '../providers'
+import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
+import * as Svc from '../../providers'
 
 @Component({
   selector: 'scan-ble',

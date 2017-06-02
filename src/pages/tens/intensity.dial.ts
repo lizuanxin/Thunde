@@ -1,7 +1,7 @@
 import {Component, OnInit, Input, Output, EventEmitter, ElementRef} from '@angular/core'
-import {TypeInfo} from "../UltraCreation/Core/TypeInfo";
+import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 
-import * as Svc from '../providers/application';
+import * as Svc from '../../providers/application';
 
 @Component({selector: 'intensity-dial', template: '<canvas style="width:100%" tappable></canvas>'})
 export class IntensityDialComp implements OnInit

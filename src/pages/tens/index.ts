@@ -11,6 +11,9 @@ import {FileListCardComp, FileListRecommendComp} from './filelist/filelist.card'
 import {FileListSlideComp} from './filelist/filelist.slide';
 import {FileDurationComp} from './file.duration'
 
+import {ScanBleComp} from './scan.ble';
+import {IntensityDialComp} from './intensity.dial';
+
 import {RunningPage} from './running/running'
 import {OtaPage} from './ota/ota'
 import {DownloadPage} from './download/download'
@@ -27,11 +30,13 @@ import {DemoRunningPage} from './demo/demo.running'
     exports: [
         SwiperComp,
         FileListDialComp, FileListBodyComp, FileListCardComp, FileListSlideComp, FileListRecommendComp,
-        FileDurationComp,
+        FileDurationComp, IntensityDialComp,
+        ScanBleComp,
     ],
     declarations: [
         SwiperComp, FileListDialComp, FileListBodyComp, FileListCardComp, FileListSlideComp, FileListRecommendComp,
-        FileDurationComp,
+        FileDurationComp, IntensityDialComp,
+        ScanBleComp,
         RunningPage, OtaPage, DownloadPage,
         DemoPage, DemoRunningPage
     ],
