@@ -47,7 +47,7 @@ export class TApplication extends TAppController
                     if (now - ts > 500)
                     {
                         if (now - ts > 3000)
-                            this.ShowError('back_twice_exit', 1500, 'bottom');
+                            this.ShowToast(this.Translate('hint.back_twice_exit'));
                         ts = now;
                     }
                     else
@@ -98,9 +98,20 @@ export class TApplication extends TAppController
         }
     }
 
-    ShowLoading(Msg?: string): Promise<any>
+    ShowToast(MsgOrConfig: string | Object): Promise<any>
     {
-        return super.ShowLoading({spinner: 'crescent', content: Msg, cssClass: 'loading-s1'});
+        if (MsgOrConfig instanceof Object)
+            return super.ShowToast(MsgOrConfig)
+        else
+            return super.ShowToast({message: MsgOrConfig, position: 'center', cssClass: 'toast-s1', duration: 1500});
+    }
+
+    ShowLoading(MsgOrConfig?: string | Object): Promise<any>
+    {
+        if (MsgOrConfig instanceof Object)
+            return super.ShowLoading(MsgOrConfig)
+        else
+            return super.ShowLoading({spinner: 'crescent', content: MsgOrConfig, cssClass: 'loading-s1'});
     }
 
     ShowError(err: any,

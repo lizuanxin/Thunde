@@ -199,11 +199,12 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
     private Close(MessageId: string): void
     {
         this.UnsubscribeShellNotify();
-        this.ClosePage();
 
         // ignore multi notify messages
         if (! TypeInfo.Assigned(this.ClosingTimerId) && MessageId !== '')
             this.app.ShowError(MessageId);
+
+        this.ClosePage();
     }
 
     private ClosePage(): void
