@@ -103,11 +103,10 @@ ion-row {
                 height: 0;
                 line-height: 0;
                 background: transparent;
-                display: block;
+                display: flex;
                 color: #a1a1a1;
-                ion-icon {
-                    margin-top: -5px;
-                }
+                align-items: center;
+                justify-content: center;
             }
         }
     }

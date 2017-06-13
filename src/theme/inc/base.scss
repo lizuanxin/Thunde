@@ -107,8 +107,8 @@ ion-menu {
             border-radius: 6px 0 0 6px;
             display: -ms-flexbox;
             display: -webkit-flex;
-            display: flex;
-            background: url(/assets/img/swipe-border.png) right top repeat-y;
+            display: flex; 
+            background: url(../assets/img/swipe-border.png) right top repeat-y;
             background-size:contain;
         }
         .big-icon{
