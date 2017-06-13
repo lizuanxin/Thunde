@@ -11,8 +11,8 @@ export * from './init';
 import * as BLE from '../UltraCreation/Native/BluetoothLE';
 export {BLE};
 */
-import {IScanDiscovery} from '../UltraCreation/Native/BluetoothLE';
-export {IScanDiscovery}
+import {IScanDiscovery, TGatt} from '../UltraCreation/Native/BluetoothLE';
+export {IScanDiscovery, TGatt}
 
 import * as Loki from './loki';
 export {Loki};
