@@ -28,7 +28,7 @@ export class TAssetService
 {
     constructor(private Distribute: TDistributeService)
     {
-        this.Storage = new TSqliteStorage(const_data.DatabaseName, this.IdGenerator);
+        this.Storage = new TSqliteStorage(const_data.DatabaseName);
         console.log('TAssetService construct');
     }
 
@@ -199,15 +199,6 @@ export class TAssetService
         }
     }
 
-    private IdGenerator(KeyProps: Array<string>, Obj: IPersistable): Promise<void>
-    {
-        if ( ! (Obj instanceof TAsset))
-            return Promise.reject(new Error('Object is not a Asset'));
-
-       (Obj as any)['Id'] = TGuid.Generate();
-        return Promise.resolve();
-    }
-
     private static _Categories: Array<TCategory> = [];
 
     private Storage: TSqliteStorage;
@@ -234,6 +225,15 @@ export class TAsset extends TPersistable implements IAsset
     }
 
     /* IPersistable */
+
+    GenerateKeyProps(...args: any[]): Promise<void>
+    {
+        if (! TypeInfo.Assigned(this.Id))
+            this.Id = TGuid.Generate();
+
+        return Promise.resolve();
+    }
+
     DefineKeyProps(KeyProps: Array<string>): void
     {
         KeyProps.push('Id');
