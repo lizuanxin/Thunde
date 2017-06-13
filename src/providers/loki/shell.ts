@@ -45,20 +45,31 @@ export class TShell extends TAbstractShell
     /// @override
     static Get(DeviceId: string): TShell
     {
-        if (DeviceId === 'USB')
+        if (TShell.ShellCacheMap.has(DeviceId))
         {
-            return new this(this.UsbProxy);
+            return TShell.ShellCacheMap.get(DeviceId);
         }
         else
         {
-            let Proxy = TProxyBLEShell.Get(DeviceId, BLE_CONNECTION_TIMEOUT) as TProxyBLEShell;
-            return new this(Proxy);
+            if (DeviceId === 'USB')
+            {
+                TShell.ShellCacheMap.set(DeviceId, new this(this.UsbProxy, DeviceId));
+                return TShell.ShellCacheMap.get(DeviceId);
+            }
+            else
+            {
+                let Proxy = TProxyBLEShell.Get(DeviceId, BLE_CONNECTION_TIMEOUT) as TProxyBLEShell;
+                TShell.ShellCacheMap.set(DeviceId, new this(Proxy, DeviceId));
+                return TShell.ShellCacheMap.get(DeviceId);
+            }
         }
     }
 
+    private static ShellCacheMap = new Map<string, TShell>();
+
     static LinearTable: TLinearTable = '4v';
 
-    constructor (private Proxy: IProxyShell)
+    constructor (private Proxy: IProxyShell, private DeviceId: string)
     {
         super(0);
         Proxy.Owner = this;
@@ -84,6 +95,8 @@ export class TShell extends TAbstractShell
             this.Proxy.Detach();
             this.Proxy = null;
         }
+
+        TShell.ShellCacheMap.delete(this.DeviceId);
     }
 
     Connect(): Promise<void>
@@ -210,7 +223,7 @@ export class TShell extends TAbstractShell
     {
         let Cmd: string = '>sdef ' + FileName;
         if (Idx !== 0)
-            Cmd = Cmd + FileName + '=' + Idx;
+            Cmd = Cmd + '=' + Idx;
 
         return this.Execute(Cmd, REQUEST_TIMEOUT, Line =>
         {
@@ -222,7 +235,13 @@ export class TShell extends TAbstractShell
     ListDefaultFile(): Promise<Array<string>>
     {
         return this.RequestStart(TListDefaultFile, REQUEST_TIMEOUT)
-            .then(Request => Request.toPromise() as Promise<Array<string>>);
+            .then(Request =>
+            {
+                let Value =  Request.toPromise() as Promise<Array<string>>;
+                Value.then(Files => this.DefaultFileList = Files);
+
+                return Value;
+            });
     }
 
     StartScriptFile(FileName: string): Promise<void>
@@ -262,9 +281,16 @@ export class TShell extends TAbstractShell
 
     ClearFileSystem(ExcludeFiles: string[]): Promise<void>
     {
-        return this.ListDefaultFile()
-            .then(Files =>
+        let Files = null;
+        if (TypeInfo.Assigned(this.DefaultFileList))
+            Files = Promise.resolve(this.DefaultFileList);
+        else
+            Files = this.ListDefaultFile();
+
+        return Files.then(Files =>
             {
+                console.log("ClearFileSystem.Files:" + JSON.stringify(Files));
+
                 for (let f of Files)
                 {
                     if (f.indexOf('test_', 0) === -1)
@@ -276,6 +302,23 @@ export class TShell extends TAbstractShell
             .then(Request => Request.toPromise())
             .then(() => {});
     }
+
+    // ClearFileSystem(ExcludeFiles: string[]): Promise<void>
+    // {
+    //     return this.ListDefaultFile()
+    //         .then(Files =>
+    //         {
+    //             for (let f of Files)
+    //             {
+    //                 if (f.indexOf('test_', 0) === -1)
+    //                     ExcludeFiles.push(f);
+    //             }
+
+    //             return this.RequestStart(TClearFileSystemRequest, REQUEST_TIMEOUT, ExcludeFiles);
+    //         })
+    //         .then(Request => Request.toPromise())
+    //         .then(() => {});
+    // }
 
     SetIntensity(Value: number): Promise<number>
     {
@@ -370,6 +413,16 @@ export class TShell extends TAbstractShell
     get BatteryLevel(): number
     {
         return this._BatteryLevel;
+    }
+
+    set DefaultFileList(Files: Array<string>)
+    {
+        this._DefaultFileList = Files;
+    }
+
+    get DefaultFileList(): Array<string>
+    {
+        return this._DefaultFileList;
     }
 
     private StatusRequest(): Promise<void>
@@ -517,8 +570,8 @@ export class TShell extends TAbstractShell
         if (Proxy !== this.Proxy)
             return Promise.reject(new EAbort());
 
-        return this.StatusRequest()
-            //.then(() => this.BatteryRequest())
+        return this.ListDefaultFile()
+            .then((any) => this.StatusRequest())
             .then(() => this.VersionRequest())
             .then(() =>
             {
@@ -623,6 +676,7 @@ export class TShell extends TAbstractShell
     private _DefaultFileMd5: string;
     private _LastFileMd5: string;
 
+    private _DefaultFileList: Array<string>;
     private static UsbProxy: TProxyUsbShell;
 }
 
