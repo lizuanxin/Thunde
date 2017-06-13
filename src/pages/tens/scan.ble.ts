@@ -33,7 +33,6 @@ export class ScanBleComp implements OnInit, OnDestroy
 
     ngOnInit()
     {
-        Svc.Loki.TShell.FakeDevice = isDevMode();
         console.log("FakeDevice:" + Svc.Loki.TShell.FakeDevice);
 
         if (Svc.Loki.TShell.IsUsbPlugin)
