@@ -18,7 +18,7 @@
         <div><ion-icon app-icon #key>&#xe921;</ion-icon></div>
         <div><ion-icon #body app-icon>&#xe91f;</ion-icon></div>
     </div>
-    <div absolute style="z-index:1;left:30px;bottom:30px" (click)="nav.pop()" tappable>{{'demo_play_page.skip'|translate}}</div>
+    <div absolute style="z-index:1;left:30px;bottom:30px" (click)="app.Nav.pop()" tappable>{{'demo_play_page.skip'|translate}}</div>
     <div text-center #ready class="animation" [ngStyle]="{opacity:0}">
         <button clear  [ngStyle]="{fontSize:'4.2em',overflow:'visible'}" (click)="Go()" tappable>
             <ion-icon app-icon color="color-primary">&#xe929;</ion-icon>
