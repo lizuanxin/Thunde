@@ -185,8 +185,14 @@ section{
 ion-backdrop{
     &[my-backdrop]{
         z-index:99;
-        opacity:1;        
-        background-color:rgba(0,0,0,.5);        
+        opacity:1;
+        background-color:rgba(0,0,0,.5);
+    }
+
+    &[my-backdrop-deep]{
+        z-index:99;
+        opacity:1;
+        background-color:rgba(0,0,0,.8);
     }
 }
 
