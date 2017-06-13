@@ -1,12 +1,28 @@
-<ion-header>
+<div style="padding-top:5.6vh; color: white">
+    <ion-buttons left>
+        <button ion-button icon-only clear color="light" (click)="Dismiss(0)" [ngStyle]="{'margin':'0 6px','padding':'0 2px','min-width':'44px'}">
+            <ion-icon app-icon>&#xe92b;</ion-icon>
+        </button>
+    </ion-buttons>
+    <ion-row *ngIf="Datas" justify-content-center align-item-center style="margin-top:4vh;">
+        <ion-col col-12 text-center>
+            <span>'{{Datas.CurrentFile.Name_LangId|translate}}' {{'download_page.set_default_file'|translate}} </span>
+        </ion-col>
+        <ion-col *ngIf="DefaultFileList.length < 3" col-12 align-self-end text-end style="padding:0 14vw">
+            <button ion-button color="color-primary" f-1-0 (click)="SetDefaultFile('')">{{'download_page.set'|translate}}</button>
+        </ion-col>
+    </ion-row>
+    <ion-row justify-content-center align-item-center style="padding:0 14vw; margin-top:4vh;" *ngFor="let f of DefaultFileList" >
+        <ion-col col-12>
+            <ion-row justify-content-center align-item-center>
+                <ion-col col-8 align-self-start text-start style="margin: auto">
+                    <span f-1-6 style="text-align: left">{{f.Description}}</span>
+                </ion-col>
+                <ion-col col-4 align-self-end text-end style="margin: auto">
+                    <button ion-button style="text-align: right" color="color-primary" f-1-6 (click)="SetDefaultFile(f.FileName)">{{'download_page.replace'|translate}}</button>
+                </ion-col>
+            </ion-row>
+        </ion-col>
+    </ion-row>
+</div>
 
-  <ion-navbar>
-    <ion-title>download</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content padding>
-
-</ion-content>
