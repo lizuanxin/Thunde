@@ -5,10 +5,7 @@ import {Subscription} from 'rxjs/Subscription'
 import 'rxjs/add/operator/toPromise';
 import {TypeInfo} from '../../../UltraCreation/Core/TypeInfo';
 
-import * as View from '..'
 import * as Svc from '../../../providers';
-// import {PowerManagement} from '../../UltraCreation/Native/PowerManagement'
-
 
 @Component({selector: 'page-running', templateUrl: 'running.html'})
 export class RunningPage implements OnInit, OnDestroy, AfterViewInit
@@ -24,7 +21,12 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     ngOnInit()
     {
-        // PowerManagement.Acquire();
+        console.log("files:" + JSON.stringify(this.Shell.DefaultFileList));
+
+        //当前文件不存在默认模式中时才可以设置
+        if (TypeInfo.Assigned(this.Shell.DefaultFileList) &&
+            this.Shell.DefaultFileList.indexOf(this.ScriptFile.Name) !== -1)
+            this.ShowButton = false;
 
         this.ShellNotifySubscription = this.Shell.OnNotify.subscribe(
             Notify =>
@@ -65,7 +67,11 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
                     this.Ticking = this.Shell.Ticking;
 
                     if (this.Ticking >= this.ScriptFile.Duration)
+                    {
                         this.Shell.StopOutput();
+                        this.Finish = true;
+                    }
+
                     break;
                 }
             },
@@ -82,13 +88,22 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
     {
         this.UnsubscribeShellNotify();
         this.Shell.Detach();
-
-        // PowerManagement.Release();
     }
 
-    goDownLoad()
+    SetDefaultFiles()
     {
-        this.app.Nav.push(View.DownloadPage)
+        this.app.DisableHardwareBackButton();
+        this.DefaultFilesDatas = {FileNames: this.Shell.DefaultFileList, CurrentFile: this.ScriptFile, DeviceId: this.navParams.get('DeviceId')};
+        this.SetDefaultFile = true;
+    }
+
+    SetDefaultDone(Value: number)
+    {
+        if (Value === 1)
+            this.ShowButton = false;
+
+        this.SetDefaultFile = false;
+        this.app.EnableHardwareBackButton();
     }
 
     get CanvasClientHeight(): Object
@@ -111,7 +126,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
         if (Sec === 0)
             Time += '00';
         else if (Sec < 10)
-            Time += Sec + '0';
+            Time += '0' + Sec;
         else
             Time += Sec + '';
 
@@ -159,8 +174,18 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
     {
         this.UnsubscribeShellNotify();
 
-        this.Shell.StopOutput().catch(err => console.log(err))
-            .then(() => this.ClosePage());
+        this.Shell.StopOutput().catch(err => console.error(err))
+            .then(() =>
+            {
+                if (! TypeInfo.Assigned(this.ClosingTimerId))
+                {
+                    setTimeout(() =>
+                    {
+                        if (this.view === this.app.Nav.getActive())
+                            this.app.Nav.pop();
+                    }, 300);
+                }
+            });
     }
 
     private Start()
@@ -209,7 +234,8 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     private ClosePage(): void
     {
-        if (TypeInfo.Assigned(this.ClosingTimerId))
+        this.SetDefaultFile = false;
+        if (this.Finish || TypeInfo.Assigned(this.ClosingTimerId))
             return;
 
         this.ClosingTimerId = setTimeout(() =>
@@ -236,6 +262,11 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
     Intensity: number = 0;
     BatteryLevel: number = 0;
 
+    ShowButton: boolean = true;
+    Finish: boolean = false;
+
+    DefaultFilesDatas: {FileNames: Array<string>, CurrentFile: Svc.TScriptFile, DeviceId: string};
+    private SetDefaultFile: boolean = false;
     private Shell: Svc.Loki.TShell;
     private ShellNotifySubscription: Subscription;
     private Adjusting: Promise<any> = null;

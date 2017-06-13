@@ -6,7 +6,7 @@
         </button>
     </ion-buttons>
     <ion-buttons right>
-        <button ion-button icon-only color="light" [ngStyle]="{'margin':'0 6px','padding':'0 2px','min-width':'44px'}" (click)="nav.popToRoot()" tappable>
+        <button ion-button icon-only color="light" [ngStyle]="{'margin':'0 6px','padding':'0 2px','min-width':'44px'}" (click)="app.Nav.popToRoot()" tappable>
             <ion-icon app-icon>&#xe936;</ion-icon>
         </button>
     </ion-buttons>
@@ -18,9 +18,18 @@
 
 <ion-content no-scroll padding [ngClass]="app.Skin('light')">
  <ng-template [ngIf]="! Finish">
-     <h2 text-center f-2-4 padding-vertical style="border-bottom:solid 1px #F2F2F2">{{ScriptFile.Name_LangId|translate}}
-        <!--<button clear float-right (click)="goDownLoad()" tappable><ion-icon app-icon color="color-primary-light" f-2-0>&#xe94a;</ion-icon></button>-->
-     </h2>
+     <ion-row justify-content-center align-item-center style="border-bottom:solid 1px #F2F2F2">
+         <ion-col col-2>
+         </ion-col>
+         <ion-col col-8 align-self-center text-center style="margin: auto">
+            <span f-2-4>{{ScriptFile.Name_LangId|translate}}</span>
+         </ion-col>
+         <ion-col col-2 align-self-end text-end style="margin: auto">
+            <button *ngIf="ShowButton" clear (click)="SetDefaultFiles()" tappable>
+                <ion-icon app-icon color="color-primary-light" style="font-size: 8vw">&#xe94a;</ion-icon>
+            </button>
+        </ion-col>
+     </ion-row>
     <ion-row>
         <ion-col col-12 text-right n-m-b-30>
             <span ion-text color="gray">{{TotalMinute}}</span>
@@ -58,3 +67,7 @@
         </ion-row>
     </ion-toolbar>
 </ion-footer>
+
+<ion-backdrop my-backdrop-deep style="" *ngIf="SetDefaultFile">
+    <download-default-file [Value]="DefaultFilesDatas" (OnDismiss)="SetDefaultDone($event)"></download-default-file>
+</ion-backdrop>
