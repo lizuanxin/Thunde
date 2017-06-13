@@ -201,6 +201,14 @@ export let translate_en =
             <li> Be sure the skin clean and dry, and no damage before use</li>
             <li> When using this product or massage program for the first time, be sure to start with low intensity and adapt gradually</li>
         </ul></div>`,
+    },
+
+    download_page:
+    {
+        title: "Download default files",
+        set_default_file: " Can be set to the default file",
+        set: "set",
+        replace: "replace"
     }
 }
 
@@ -394,5 +402,13 @@ export let translate_zh =
             <li>如果出现皮肤敏感，请停用本产品</li>
             <li>建议第一次使用本产品或某一按摩文件从较低强度开始逐渐适应</li>
         </ul>`,
+    },
+
+    download_page:
+    {
+        title: "下载默认运行文件",
+        set_default_file: " 可以设置为默认模式",
+        set: "设置",
+        replace: "替换"
     }
 }
