@@ -11,10 +11,13 @@ export class MyApp
 {
     constructor(app: Svc.TApplication)
     {
-        app.Platform.ready().then(() =>
+        app.Platform.ready().then((PlatformName) =>
         {
             StatusBar.hide();
             SplashScreen.show();
+
+            if (PlatformName === 'dom')
+                Svc.TGatt.BrowserFakeDevice = true;
 
             if (app.IsIos)
                 StatusBar.styleBlackTranslucent();
