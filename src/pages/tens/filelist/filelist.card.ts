@@ -2,29 +2,34 @@ import {Component, Input, Output, EventEmitter} from '@angular/core'
 import * as Svc from '../../../providers';
 
 @Component({selector: 'filelist-card', template: `
-    <div margin>
-        <ion-card card-list-default *ngFor="let f of FileList">
-            <ion-card-content (tap)="OnSelection.emit(f)" tappable>
-                <ion-item>
-                    <ion-row align-items-center justify-content-center>
-                        <ion-col col-4 text-center>
-                            <ion-icon app-icon style="font-size:25vw">{{app.IconFont(f.Icon)}}</ion-icon>
-                        </ion-col>
-                        <ion-col offset-1>
-                            <h2 style="font-size:4.5vw"><span ion-text color="dark">{{f.Name_LangId|translate}}</span></h2>
-                            <ion-row align-items-center justify-content-center>
-                                <ion-col col-3>
-                                    <div style="width:6vw; height:6vw"><file-duration [Duration]="f.DurationMinute"></file-duration></div>
-                                </ion-col>
-                                <ion-col align-self-center>
-                                    <span color="dark" style="font-size:1.2rem;">{{f.DurationMinute.toString()}}{{'hint.min'|translate}}</span>
-                                </ion-col>
-                            </ion-row>
-                        </ion-col>
-                    </ion-row>
-                </ion-item>
-            </ion-card-content>
-        </ion-card>
+    <div class="card-view">
+        <ion-row align-items-center justify-content-center *ngFor="let f of FileList">
+            <ion-col col-12 (tap)="OnSelection.emit(f)">
+                <ion-row align-items-center justify-content-center class="card-item">
+                    <ion-col col-4 text-center class="wave-edge">
+                        <ion-icon app-icon color="light" class="big-icon">{{app.IconFont(f.Icon)}}</ion-icon>
+                    </ion-col>
+                    <ion-col col-5 align-self-center padding-left>
+                            <span ion-text color="dark" class="block-text">{{f.Name_LangId|translate}}</span>
+                            <span class="little-text">{{f.DurationMinute.toString()}}{{'hint.min'|translate}}</span>
+                    </ion-col>
+                    <ion-col col-3 align-self-center text-center>
+                        <ion-row align-items-center justify-content-center>
+                            <ion-col col-12 align-self-center text-center>
+                                <ion-icon *ngIf="f.Id === '{00000000-0000-4000-4100-000000004001}'" app-icon class="border-icon">&#xe970;</ion-icon>
+                                <ion-icon *ngIf="f.Id === '{00000000-0000-4000-4100-000000004002}'" app-icon class="border-icon">&#xe959;</ion-icon>
+                                <ion-icon *ngIf="f.Id === '{00000000-0000-4000-4100-000000004003}'" app-icon class="border-icon">&#xe9a4;</ion-icon>
+                            </ion-col>
+                            <ion-col col-12 style="height:3vh">
+                            </ion-col>
+                            <ion-col col-12 align-self-center text-center>
+                                <ion-icon app-icon class="nav-icon">&#xe92b;</ion-icon>
+                            </ion-col>
+                        </ion-row>
+                    </ion-col>
+                </ion-row>
+            </ion-col>
+        </ion-row>
     </div>`})
 export class FileListCardComp
 {
