@@ -237,12 +237,11 @@ export class TShell extends TAbstractShell
     ListDefaultFile(): Promise<Array<string>>
     {
         return this.RequestStart(TListDefaultFile, REQUEST_TIMEOUT)
-            .then(Request =>
+            .then(Request => Request.toPromise() as Promise<Array<string>>)
+            .then(List =>
             {
-                let Value =  Request.toPromise() as Promise<Array<string>>;
-                Value.then(Files => this.DefaultFileList = Files);
-
-                return Value;
+                this._DefaultFileList = List;
+                return List;
             });
     }
 
@@ -281,9 +280,10 @@ export class TShell extends TAbstractShell
         return this.Execute('>fmt BBFS', REQUEST_TIMEOUT, Line => this.IsStatusRetVal(Line));
     }
 
+    /*
     ClearFileSystem(ExcludeFiles: string[]): Promise<void>
     {
-        let Files = null;
+        let Files: Promise<string[]>;
         if (TypeInfo.Assigned(this.DefaultFileList))
             Files = Promise.resolve(this.DefaultFileList);
         else
@@ -304,23 +304,29 @@ export class TShell extends TAbstractShell
             .then(Request => Request.toPromise())
             .then(() => {});
     }
+    */
 
-    // ClearFileSystem(ExcludeFiles: string[]): Promise<void>
-    // {
-    //     return this.ListDefaultFile()
-    //         .then(Files =>
-    //         {
-    //             for (let f of Files)
-    //             {
-    //                 if (f.indexOf('test_', 0) === -1)
-    //                     ExcludeFiles.push(f);
-    //             }
+    ClearFileSystem(ExcludeFiles: string[]): Promise<void>
+    {
+        return this.RequestStart(TClearFileSystemRequest, REQUEST_TIMEOUT, ExcludeFiles.concat(this.DefaultFileList))
+            .then(Request => Request.toPromise())
+            .then(() => {});
+        /*
+        return this.ListDefaultFile()
+            .then(Files =>
+            {
+                for (let f of Files)
+                {
+                    if (f.indexOf('test_', 0) === -1)
+                        ExcludeFiles.push(f);
+                }
 
-    //             return this.RequestStart(TClearFileSystemRequest, REQUEST_TIMEOUT, ExcludeFiles);
-    //         })
-    //         .then(Request => Request.toPromise())
-    //         .then(() => {});
-    // }
+                return this.RequestStart(TClearFileSystemRequest, REQUEST_TIMEOUT, ExcludeFiles);
+            })
+            .then(Request => Request.toPromise())
+            .then(() => {});
+        */
+    }
 
     SetIntensity(Value: number): Promise<number>
     {
@@ -417,11 +423,6 @@ export class TShell extends TAbstractShell
         return this._BatteryLevel;
     }
 
-    set DefaultFileList(Files: Array<string>)
-    {
-        this._DefaultFileList = Files;
-    }
-
     get DefaultFileList(): Array<string>
     {
         return this._DefaultFileList;
@@ -464,9 +465,10 @@ export class TShell extends TAbstractShell
             .catch(err => console.log(err.message));
     }
 
-    /*
     private BatteryRequest(): Promise<number>
     {
+        return Promise.resolve(5000);
+        /*
         let strs: string[];
 
         return this.Execute('>bat', REQUEST_TIMEOUT,
@@ -488,8 +490,8 @@ export class TShell extends TAbstractShell
                 setTimeout(() => this.OnNotify.next(TShellNotify.Battery), 0);
                 return this._BatteryLevel;
             })
+        */
     }
-    */
 
     private IntensityRequest(): Promise<number>
     {
@@ -601,14 +603,18 @@ export class TShell extends TAbstractShell
 
         if (this.OnNotify.observers.length !== 0)
         {
-            this.VersionRequest()
-                .then(() => {})
-                .catch(err => {});
-            /*
-            this.BatteryRequest()
-                .then(() => {})
-                .catch(err => {});
-            */
+            if (! TypeInfo.Assigned(this._BatteryLevel))
+            {
+                this.BatteryRequest()
+                    .then(() =>
+                    {
+                        if (! TypeInfo.Assigned(this._BatteryLevel))
+                            return this.VersionRequest();
+                    })
+                    .catch(err => {});
+            }
+            else
+                this.VersionRequest().catch(err => {});
         }
     }
 
