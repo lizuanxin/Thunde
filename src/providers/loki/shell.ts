@@ -45,6 +45,8 @@ export class TShell extends TAbstractShell
     /// @override
     static Get(DeviceId: string): TShell
     {
+        console.log("exit:" + TShell.ShellCacheMap.has(DeviceId));
+
         if (TShell.ShellCacheMap.has(DeviceId))
         {
             return TShell.ShellCacheMap.get(DeviceId);
