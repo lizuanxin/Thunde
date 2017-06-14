@@ -1,15 +1,16 @@
 import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/toPromise';
 
-import {TypeInfo, EAbort} from '../../UltraCreation/Core';
+import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
+import {EAbort} from '../../UltraCreation/Core/Exception';
 import {TUtf8Encoding} from '../../UltraCreation/Encoding/Utf8';
 import {THashCrc16} from '../../UltraCreation/Hash';
-
 import {TAbstractShell, TShellRequest, ERequestTimeout, EDisconnected} from '../../UltraCreation/Native/Abstract.Shell'
-export {ERequestTimeout};
 
 import * as BLE from '../../UltraCreation/Native/BluetoothLE';
 import * as USBSerial from '../../UltraCreation/Native/UsbSerialOTG';
+
+export {ERequestTimeout};
 
 const REQUEST_TIMEOUT = 3000;
 
@@ -45,31 +46,28 @@ export class TShell extends TAbstractShell
     /// @override
     static Get(DeviceId: string): TShell
     {
-        console.log("exit:" + TShell.ShellCacheMap.has(DeviceId));
+        // console.log("exit:" + TShell.ShellCacheMap.has(DeviceId));
 
-        if (TShell.ShellCacheMap.has(DeviceId))
-        {
-            return TShell.ShellCacheMap.get(DeviceId);
-        }
-        else
+        let RetVal = this.Cached.get(DeviceId);
+
+        if (! TypeInfo.Assigned(RetVal))
         {
             if (DeviceId === 'USB')
-            {
-                TShell.ShellCacheMap.set(DeviceId, new this(this.UsbProxy, DeviceId));
-                return TShell.ShellCacheMap.get(DeviceId);
-            }
+                RetVal = new this(this.UsbProxy, DeviceId);
             else
-            {
-                let Proxy = TProxyBLEShell.Get(DeviceId, BLE_CONNECTION_TIMEOUT) as TProxyBLEShell;
-                TShell.ShellCacheMap.set(DeviceId, new this(Proxy, DeviceId));
-                return TShell.ShellCacheMap.get(DeviceId);
-            }
+                RetVal = new this(TProxyBLEShell.Get(DeviceId, BLE_CONNECTION_TIMEOUT) as TProxyBLEShell, DeviceId);
+
+            this.Cached.set(DeviceId, RetVal);
         }
+        return RetVal;
     }
 
-    private static ShellCacheMap = new Map<string, TShell>();
-
     static LinearTable: TLinearTable = '4v';
+
+    private static Cached = new Map<string, TShell>();
+    private static UsbProxy: TProxyUsbShell;
+
+/* Instance */
 
     constructor (private Proxy: IProxyShell, private DeviceId: string)
     {
@@ -78,6 +76,7 @@ export class TShell extends TAbstractShell
     }
 
 /* TAbstractShell */
+
     Attach(): void
     {
         this.Proxy.Attach();
@@ -98,7 +97,7 @@ export class TShell extends TAbstractShell
             this.Proxy = null;
         }
 
-        TShell.ShellCacheMap.delete(this.DeviceId);
+        // TShell.Cached.delete(this.DeviceId);
     }
 
     Connect(): Promise<void>
@@ -122,6 +121,7 @@ export class TShell extends TAbstractShell
     }
 
 /* USB only */
+
     static StartOTG(): USBSerial.OTG
     {
         this.UsbProxy = new TProxyUsbShell();
@@ -134,6 +134,7 @@ export class TShell extends TAbstractShell
     }
 
 /** BLE only */
+
     static EnableBLE(): Promise<boolean>
     {
         return BLE.Enable();
@@ -199,6 +200,7 @@ export class TShell extends TAbstractShell
     }
 
 /** shell functions */
+
     Shutdown(): Promise<void>
     {
         return this.StopOutput();
@@ -279,32 +281,6 @@ export class TShell extends TAbstractShell
     {
         return this.Execute('>fmt BBFS', REQUEST_TIMEOUT, Line => this.IsStatusRetVal(Line));
     }
-
-    /*
-    ClearFileSystem(ExcludeFiles: string[]): Promise<void>
-    {
-        let Files: Promise<string[]>;
-        if (TypeInfo.Assigned(this.DefaultFileList))
-            Files = Promise.resolve(this.DefaultFileList);
-        else
-            Files = this.ListDefaultFile();
-
-        return Files.then(Files =>
-            {
-                console.log("ClearFileSystem.Files:" + JSON.stringify(Files));
-
-                for (let f of Files)
-                {
-                    if (f.indexOf('test_', 0) === -1)
-                        ExcludeFiles.push(f);
-                }
-
-                return this.RequestStart(TClearFileSystemRequest, REQUEST_TIMEOUT, ExcludeFiles);
-            })
-            .then(Request => Request.toPromise())
-            .then(() => {});
-    }
-    */
 
     ClearFileSystem(ExcludeFiles: string[]): Promise<void>
     {
@@ -568,6 +544,7 @@ export class TShell extends TAbstractShell
     }
 
 /* proxy to shell */
+
     // @private called from Proxy
     _DeviceConnected(Proxy: IProxyShell): Promise<void>
     {
@@ -685,7 +662,6 @@ export class TShell extends TAbstractShell
     private _LastFileMd5: string;
 
     private _DefaultFileList: Array<string>;
-    private static UsbProxy: TProxyUsbShell;
 }
 
 /* IProxyShell */
@@ -738,6 +714,7 @@ export class TProxyBLEShell extends BLE.TShell implements IProxyShell
 }
 
 /** Proxy to USB Shell */
+
 export class TProxyUsbShell extends USBSerial.TShell implements IProxyShell
 {
     constructor()
