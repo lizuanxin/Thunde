@@ -38,7 +38,17 @@ export class ScanBleComp implements OnInit, OnDestroy
         if (Svc.Loki.TShell.IsUsbPlugin)
         {
             Svc.Loki.TShell.StartOTG();
-            this.OnSelection.emit('USB');
+            let Shell = Svc.Loki.TShell.Get('USB');
+            this.app.ShowLoading()
+                    .then(() => Shell.Connect())
+                    .then(() => Shell.StopOutput())
+                    .then(() => this.OnSelection.emit('USB'))
+                    .catch(err =>
+                    {
+                        this.app.HideLoading()
+                            .then(() => this.app.ShowError(err));
+                        this.OnSelection.emit(null);
+                    });
         }
         else
         {
@@ -83,20 +93,25 @@ export class ScanBleComp implements OnInit, OnDestroy
                 this.app.ShowLoading()
                     .then(() => Shell.Connect())
                     .then(() => Shell.StopOutput())
-                    .catch(err => console.log(err.message))
-                    .then(() => this.OnSelection.next(DeviceId));
+                    .then(() => this.OnSelection.emit(DeviceId))
+                    .catch(err =>
+                    {
+                        this.app.HideLoading()
+                            .then(() => this.app.ShowError(err));
+                        this.OnSelection.emit(null);
+                    });
             }
             else
             {
                 this.app.ShowLoading()
                     .then(() => Shell.Connect())
                     .then(() => Shell.StopOutput())
-                    .then(() => this.OnSelection.next(DeviceId))
+                    .then(() => this.OnSelection.emit(DeviceId))
                     .catch(err=>
                     {
                         this.app.HideLoading()
-                            .then(() => this.app.ShowError(err))
-                        this.OnSelection.next(null);
+                            .then(() => this.app.ShowError(err));
+                        this.OnSelection.emit(null);
                     })
             }
         });
