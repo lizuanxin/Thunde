@@ -38,6 +38,7 @@
         "ionic-plugin-keyboard": "^2.2.1",
         "ionicons": "3.0.0",
         "net.ekuwang.cordova.plugin.statusbar": "https://github.com/ekuwang/cordova-plugin-statusbar.git",
+        "object-keys": "^0.2.0",
         "rxjs": "5.1.1",
         "sw-toolbox": "^3.6.0",
         "swiper": "^3.4.2",
