@@ -52,6 +52,8 @@ export class FileListBodyComp implements OnInit
         */
     }
 
+    @Input() DefaultFiles: Array<string>;
+
     @Output() OnSelection = new EventEmitter<Svc.TScriptFile>();
 
     SelectBodyCategory(b: TBodyCategory)
