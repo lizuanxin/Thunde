@@ -12,7 +12,7 @@
     font-family: 'Thundericons';
     font-variant: normal;
     text-transform: none;
-    line-height: 1;  
+    line-height: 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -288,4 +288,7 @@ ion-icon {
 }
 .icon-me:before {
   content: "\e94c";
+}
+.icon-favourite:before {
+  content: "\e916";
 }
