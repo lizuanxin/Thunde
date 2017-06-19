@@ -6,7 +6,7 @@
         </button>
     </ion-buttons>
     <ion-buttons right>
-        <button ion-button icon-only color="light" [ngStyle]="{'margin':'0 6px','padding':'0 2px','min-width':'44px'}" (click)="app.Nav.popToRoot()" tappable>
+        <button ion-button icon-only color="light" [ngStyle]="{'margin':'0 6px','padding':'0 2px','min-width':'44px'}" (click)="Home()" tappable>
             <ion-icon app-icon>&#xe936;</ion-icon>
         </button>
     </ion-buttons>
@@ -68,6 +68,6 @@
     </ion-toolbar>
 </ion-footer>
 
-<ion-backdrop my-backdrop-deep style="" *ngIf="SetDefaultFile">
+<ion-backdrop my-backdrop-deep *ngIf="SetDefaultFile">
     <download-default-file [Value]="DefaultFilesDatas" (OnDismiss)="SetDefaultDone($event)"></download-default-file>
 </ion-backdrop>
