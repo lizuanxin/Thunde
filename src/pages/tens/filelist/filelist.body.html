@@ -37,6 +37,7 @@
                 <div class="swiper-slide" *ngFor="let f of FilteredFiles" [ngStyle]="SetStyle(3)">
                     {{f.Name_LangId|translate}}
                     <span class="timer">{{f.DurationMinute.toString()}}{{'hint.min'|translate}}</span>
+                    <ion-icon *ngIf="DefaultFiles && DefaultFiles.indexOf(f.Name) !== -1" app-icon style="font-size:4.8vw; margin-left:1vw">&#xe916;</ion-icon>
                 </div>
             </div>
             <div class="swiper-pagination" style="left:10%"></div>
