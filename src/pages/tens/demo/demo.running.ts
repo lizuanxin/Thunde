@@ -23,7 +23,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
         this.SetModeInfo(DEMO_MODES[this.CurrentRunningIndex]);
 
         let DeviceId = navParams.get('DeviceId');
-        this.Shell = Svc.Loki.TShell.Get(DeviceId);
+        this.Shell = app.GetShell(DeviceId);
     }
 
     ngOnInit()
