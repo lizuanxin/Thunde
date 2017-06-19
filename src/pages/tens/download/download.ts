@@ -64,7 +64,6 @@ export class DownloadPage implements OnDestroy
 
     Dismiss(Value: number)
     {
-        this.app.HideLoading();
         this.OnDismiss.emit(Value);
     }
 
@@ -107,7 +106,7 @@ export class DownloadPage implements OnDestroy
                 console.log("DefaultFileList:" + JSON.stringify(this.DefaultFileList));
             }
 
-            this.Shell = Svc.Loki.TShell.Get(this.Datas.DeviceId);
+            this.Shell = this.app.GetShell(this.Datas.DeviceId);
             this.AddNotify();
         }
     }
