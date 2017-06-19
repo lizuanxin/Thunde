@@ -32,6 +32,7 @@ export class FileListDialComp implements OnInit, OnDestroy, DoCheck
             this.Content.NewFileList(this.FileList);
     }
 
+    @Input() DefaultFiles: Array<string>;
     @Input() FileList: Svc.TScriptFileList
     @Output() OnSelection = new EventEmitter<Svc.TScriptFile>();
 
