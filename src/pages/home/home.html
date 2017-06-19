@@ -9,15 +9,18 @@
       <ion-col col-8 f-2-0 align-self-center text-center text-light no-padding>
           {{'home_page.title'|translate}}
       </ion-col>
+      <ion-col *ngIf="app.IsRunning" col-2 align-self-center text-center text-light no-padding (click)="Resume()">
+          {{app.BackgroundTickingDownHint}}
+      </ion-col>
     </ion-row>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [ngSwitch]="ActiveTab.Index" no-scroll color="light" [ngClass]="app.Skin(ActiveSwitch())">
     <filelist-recommend *ngSwitchCase="255" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-recommend>
-    <filelist-body *ngSwitchCase="0" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-body>
-    <filelist-card *ngSwitchCase="1" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-card>
-    <filelist-dial *ngSwitchCase="2" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-dial>
+    <filelist-body *ngSwitchCase="0" [FileList]="ActiveTab.FileList" [DefaultFiles]="DefaultFiles" (OnSelection)="SelectFile($event)"></filelist-body>
+    <filelist-card *ngSwitchCase="1" [FileList]="ActiveTab.FileList" [DefaultFiles]="DefaultFiles" (OnSelection)="SelectFile($event)"></filelist-card>
+    <filelist-dial *ngSwitchCase="2" [FileList]="ActiveTab.FileList" [DefaultFiles]="DefaultFiles" (OnSelection)="SelectFile($event)"></filelist-dial>
     <page-profile *ngSwitchCase="65536"></page-profile>
 </ion-content>
 

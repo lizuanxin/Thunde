@@ -31,7 +31,7 @@ export class HomePage implements OnInit
         // this.Tabs.push(new TTabItem(255, Svc.const_data.Category.recommend));
         this.Tabs.push(new TTabItem(0, Svc.const_data.Category.relax));
         this.Tabs.push(new TTabItem(1, Svc.const_data.Category.muscle_training));
-        this.Tabs.push(new TTabItem(2, Svc.const_data.Category.fat_burning));
+        // this.Tabs.push(new TTabItem(2, Svc.const_data.Category.fat_burning));
 
         let ProfileTab = new TTabItem(65536, 0xE94c)
         this.Tabs.push(ProfileTab);
@@ -58,6 +58,25 @@ export class HomePage implements OnInit
     ionViewWillEnter()
     {
         this.app.EnableHardwareBackButton();
+        this.Asset.GetKey(Svc.const_data.DEFAULT_FILES)
+            .then((Files: Array<string>) => this.DefaultFiles = Files)
+            .catch(err => console.log("ionViewWillEnter:" + err.message));
+    }
+
+    Resume()
+    {
+        let ResumeData = this.app.ResumeRunningDatas;
+        if (TypeInfo.Assigned(ResumeData))
+        {
+            let params = this.navParams.data;
+            params.Resume = true;
+            params.DeviceId = ResumeData.DeviceId;
+            params.ScriptFile = ResumeData.ScriptFile;
+
+            this.app.ShowLoading()
+                .then(() => this.app.Nav.push(View.RunningPage, params))
+                .catch(err => console.log(err.message));
+        }
     }
 
     ActiveSwitch(): string
@@ -79,7 +98,10 @@ export class HomePage implements OnInit
         {
             this.app.ShowLoading()
                 .then(() => this.Asset.FileList(Tab.CategoryId))
-                .then(List => Tab.FileList = List)
+                .then(List =>
+                {
+                    Tab.FileList = List;
+                })
                 .catch(err => console.log(err))
                 .then(() => this.app.HideLoading())
                 .then(() => this.ActiveTab = Tab)
@@ -111,6 +133,7 @@ export class HomePage implements OnInit
         {
             let params = this.navParams.data;
             params.DeviceId = DeviceId;
+            params.Resume = false;
 
             this.app.ShowLoading()
                 .then(() => this.app.Nav.push(View.RunningPage, params))
@@ -125,6 +148,7 @@ export class HomePage implements OnInit
         return this.app.Nav.push(View.TouPage);
     }
 
+    private DefaultFiles: Array<string> = []
     private Tabs: Array<TTabItem> = [];
     private ActiveTab: TTabItem;
 
