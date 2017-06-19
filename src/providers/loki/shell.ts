@@ -16,7 +16,7 @@ const REQUEST_TIMEOUT = 3000;
 
 const BLE_FILTER_NAMES: string[] = ['uctenqt3', 'thunderbolt', 'uctenqt1', 'quintic ble', 'ble hw1.0.0', '.blt', 'bluetensx'];
 const BLE_SCAN_TIMEOUT = 60000;
-const BLE_CONNECTION_TIMEOUT = 5000;
+export const BLE_CONNECTION_TIMEOUT = 5000;
 
 const FILE_CLEAR_EXCLUDES = ['DefaultFile', 'BLE_Name'];
 const FILE_CLEAR_SIZE_LESS_THAN = 4096;
@@ -43,33 +43,30 @@ export type TShellNotifyEvent = Subject<TShellNotify>;
 
 export class TShell extends TAbstractShell
 {
-    /// @override
-    static Get(DeviceId: string): TShell
-    {
-        // console.log("exit:" + TShell.ShellCacheMap.has(DeviceId));
+    // /// @override
+    // static Get(DeviceId: string): TShell
+    // {
+    //     let RetVal = this.Cached.get(DeviceId);
 
-        let RetVal = this.Cached.get(DeviceId);
+    //     if (! TypeInfo.Assigned(RetVal))
+    //     {
+    //         if (DeviceId === 'USB')
+    //             RetVal = new this(this.UsbProxy, DeviceId);
+    //         else
+    //             RetVal = new this(TProxyBLEShell.Get(DeviceId, BLE_CONNECTION_TIMEOUT) as TProxyBLEShell, DeviceId);
 
-        if (! TypeInfo.Assigned(RetVal))
-        {
-            if (DeviceId === 'USB')
-                RetVal = new this(this.UsbProxy, DeviceId);
-            else
-                RetVal = new this(TProxyBLEShell.Get(DeviceId, BLE_CONNECTION_TIMEOUT) as TProxyBLEShell, DeviceId);
-
-            this.Cached.set(DeviceId, RetVal);
-        }
-        return RetVal;
-    }
+    //         this.Cached.set(DeviceId, RetVal);
+    //     }
+    //     return RetVal;
+    // }
 
     static LinearTable: TLinearTable = '4v';
 
-    private static Cached = new Map<string, TShell>();
-    private static UsbProxy: TProxyUsbShell;
+    static UsbProxy: TProxyUsbShell;
 
 /* Instance */
 
-    constructor (private Proxy: IProxyShell, private DeviceId: string)
+    constructor (private Proxy: IProxyShell, public DeviceId: string)
     {
         super(0);
         Proxy.Owner = this;
@@ -96,8 +93,6 @@ export class TShell extends TAbstractShell
             this.Proxy.Detach();
             this.Proxy = null;
         }
-
-        // TShell.Cached.delete(this.DeviceId);
     }
 
     Connect(): Promise<void>
@@ -404,7 +399,7 @@ export class TShell extends TAbstractShell
         return this._DefaultFileList;
     }
 
-    private StatusRequest(): Promise<void>
+    StatusRequest(): Promise<void>
     {
         return this.Execute('>stat', REQUEST_TIMEOUT, Line => (Line.indexOf('tick', 0) !== -1 || Line.indexOf('md5', 0) !== -1))
             .then(Line =>
