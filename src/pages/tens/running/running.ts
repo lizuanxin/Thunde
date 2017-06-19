@@ -13,16 +13,18 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
     constructor(private app: Svc.TApplication, private navParams: NavParams, private view: ViewController,
         private Asset: Svc.TAssetService, private Distibute: Svc.TDistributeService)
     {
+        this.FromResume = navParams.get('Resume');
         this.ScriptFile = navParams.get('ScriptFile');
-        let DeviceId = navParams.get('DeviceId');
 
-        this.Shell = Svc.Loki.TShell.Get(DeviceId);
+        let DeviceId = navParams.get('DeviceId');
+        this.Shell = app.GetShell(DeviceId);
     }
 
     ngOnInit()
     {
         console.log("files:" + JSON.stringify(this.Shell.DefaultFileList));
-
+        this.Asset.SetKey(Svc.const_data.DEFAULT_FILES, this.Shell.DefaultFileList)
+            .catch(err => console.error(err.message));
         //当前文件不存在默认模式中时才可以设置
         if (TypeInfo.Assigned(this.Shell.DefaultFileList) &&
             this.Shell.DefaultFileList.indexOf(this.ScriptFile.Name) !== -1)
@@ -81,13 +83,27 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
     ngAfterViewInit()
     {
         this.app.Nav.remove(1, this.view.index - 1, {animate: false})
-            .then(() => this.Start());
+            .then(() =>
+            {
+                if (this.FromResume)
+                    this.ResumeRunning();
+                else
+                    this.Start();
+            });
     }
 
     ngOnDestroy(): void
     {
         this.UnsubscribeShellNotify();
-        this.Shell.Detach();
+        if (! this.NeedResume)
+            this.app.Destory(this.navParams.get('DeviceId'));
+    }
+
+    Home()
+    {
+        this.NeedResume = true;
+        this.app.SetRunningBackground(this.Shell.DeviceId, this.ScriptFile);
+        this.ClosePage();
     }
 
     SetDefaultFiles()
@@ -99,11 +115,17 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     SetDefaultDone(Value: number)
     {
-        if (Value === 1)
-            this.ShowButton = false;
-
         this.SetDefaultFile = false;
         this.app.EnableHardwareBackButton();
+
+        if (Value === 1)
+        {
+            this.ShowButton = false;
+
+            this.Shell.ListDefaultFile()
+            .then(Files => this.Asset.SetKey(Svc.const_data.DEFAULT_FILES, Files))
+            .catch(err => console.error(err.message));
+        }
     }
 
     get CanvasClientHeight(): Object
@@ -188,6 +210,17 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
             });
     }
 
+    private ResumeRunning()
+    {
+        return this.Shell.StatusRequest()
+            .then(() =>
+            {
+                this.Intensity = this.Shell.Intensity;
+                return this.app.HideLoading();
+            })
+            .catch(err => console.log(err.message));
+    }
+
     private Start()
     {
         return this.Shell.ClearFileSystem([this.ScriptFile.Name])
@@ -267,6 +300,8 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     DefaultFilesDatas: {FileNames: Array<string>, CurrentFile: Svc.TScriptFile, DeviceId: string};
     private SetDefaultFile: boolean = false;
+    private NeedResume: boolean = false;
+    private FromResume: boolean = false;
     private Shell: Svc.Loki.TShell;
     private ShellNotifySubscription: Subscription;
     private Adjusting: Promise<any> = null;
