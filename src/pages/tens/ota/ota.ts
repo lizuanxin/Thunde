@@ -74,7 +74,7 @@ export class OtaPage implements AfterViewInit, OnDestroy
                     setTimeout(() =>
                     {
                         Svc.Loki.TShell.StartOTG();
-                        this.Shell = Svc.Loki.TShell.Get('USB');
+                        this.Shell = this.app.GetShell('USB');
                     }, 1500);
 
                     setTimeout(() => this.Start(), 3000);
