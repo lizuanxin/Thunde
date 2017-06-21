@@ -92,7 +92,7 @@
         <variable name="BLUETOOTH_USAGE_DESCRIPTION" value="Simulate Serial Communication" />
     </plugin>
     <plugin name="cordova-plugin-console" spec="^1.0.7" />
-    <plugin name="cordova-plugin-crosswalk-webview" spec="^2.1.0">
+    <plugin name="cordova-plugin-crosswalk-webview" spec="2.1.0">
         <variable name="XWALK_VERSION" value="21+" />
         <variable name="XWALK_LITEVERSION" value="xwalk_core_library_canary:17+" />
         <variable name="XWALK_COMMANDLINE" value="--disable-pull-to-refresh-effect" />
