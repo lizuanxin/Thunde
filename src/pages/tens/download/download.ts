@@ -1,8 +1,5 @@
 import {Component, OnDestroy, Input, Output, EventEmitter} from '@angular/core';
-import {NavParams, ViewController} from 'ionic-angular';
-
 import {Subscription} from 'rxjs/Subscription'
-import 'rxjs/add/operator/toPromise';
 
 import {TypeInfo} from '../../../UltraCreation/Core/TypeInfo';
 import * as Svc from '../../../providers';
@@ -10,8 +7,7 @@ import * as Svc from '../../../providers';
 @Component({selector: 'download-default-file', templateUrl: 'download.html'})
 export class DownloadPage implements OnDestroy
 {
-    constructor(private navParams: NavParams, private view: ViewController,
-        public app: Svc.TApplication, private AssetSvc: Svc.TAssetService)
+    constructor(public app: Svc.TApplication)
     {
     }
 

@@ -8,7 +8,7 @@ import {DemoPage} from '..'
 @Component({selector: 'page-profile', templateUrl: 'profile.html'})
 export class ProfilePage implements OnInit
 {
-    constructor(private app: Svc.TApplication)
+    constructor(public app: Svc.TApplication)
     {
     }
 

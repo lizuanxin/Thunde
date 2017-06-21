@@ -6,14 +6,14 @@ import * as Svc from '../../../providers';
 @Component({selector: 'filelist-slide', template: '<canvas style="width:100%" tappable></canvas>'})
 export class FileListSlideComp implements OnInit
 {
-    constructor(private Elements: ElementRef, private app: Svc.TApplication)
+    constructor(public app: Svc.TApplication, private Elements: ElementRef)
     {
     }
 
     ngOnInit()
     {
         let Canvas = this.Elements.nativeElement.children[0] as HTMLCanvasElement;
-        this.Content = new TContentCanvas(Canvas, this.app, this.OnDataSelelcted);
+        this.Content = new TContentCanvas(this.app, Canvas, this.OnDataSelelcted);
     }
 
     @Input()
@@ -38,7 +38,7 @@ export class FileListSlideComp implements OnInit
 
 class TContentCanvas
 {
-    constructor(private Canvas: HTMLCanvasElement, private app: Svc.TApplication,
+    constructor(private app: Svc.TApplication, private Canvas: HTMLCanvasElement,
         private OnSelection: EventEmitter<number>)
     {
         this.Canvas.addEventListener("touchstart", this.TouchHandler.bind(this));

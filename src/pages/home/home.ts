@@ -8,8 +8,8 @@ import * as Svc from '../../providers';
 @Component({selector: 'page-home', templateUrl: 'home.html'})
 export class HomePage implements OnInit
 {
-    constructor(private app: Svc.TApplication, private navParams: NavParams,
-        private Asset: Svc.TAssetService, private Distribute: Svc.TDistributeService)
+    constructor(public app: Svc.TApplication, private navParams: NavParams,
+        private Asset: Svc.TAssetService)
     {
         this.app.Platform.ready()
             .then(() =>

@@ -13,7 +13,7 @@ const ID = {'tips1':0, 'tips2':1, 'tips3':2, 'electrode':3, 'power':4, 'switch':
 @Component({selector: 'page-demo', templateUrl: 'demo.html'})
 export class DemoPage implements AfterViewInit
 {
-    constructor(private app: Svc.TApplication, private navParams: NavParams)
+    constructor(public app: Svc.TApplication, private navParams: NavParams)
     {
     }
 

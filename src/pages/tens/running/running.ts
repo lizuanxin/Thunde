@@ -10,7 +10,7 @@ import * as Svc from '../../../providers';
 @Component({selector: 'page-running', templateUrl: 'running.html'})
 export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 {
-    constructor(private app: Svc.TApplication, private navParams: NavParams, private view: ViewController,
+    constructor(public app: Svc.TApplication, private navParams: NavParams, private view: ViewController,
         private Asset: Svc.TAssetService, private Distibute: Svc.TDistributeService)
     {
         this.FromResume = navParams.get('Resume');

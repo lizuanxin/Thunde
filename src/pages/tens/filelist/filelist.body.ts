@@ -7,7 +7,7 @@ import * as Svc from '../../../providers'
 @Component({selector: 'filelist-body', templateUrl: 'filelist.body.html'})
 export class FileListBodyComp implements OnInit
 {
-    constructor(private app: Svc.TApplication)
+    constructor(public app: Svc.TApplication)
     {
     }
 

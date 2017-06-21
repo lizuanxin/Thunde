@@ -6,7 +6,7 @@ import * as Svc from '../../../providers';
 @Component({selector: 'page-faq', templateUrl: 'faq.html'})
 export class FaqPage implements OnInit
 {
-    constructor(private app: Svc.TApplication, private Distribute: Svc.TDistributeService)
+    constructor(public app: Svc.TApplication, private Distribute: Svc.TDistributeService)
     {
     }
 

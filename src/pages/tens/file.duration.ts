@@ -6,7 +6,7 @@ import * as Svc from '../../providers/application';
 @Component({selector: 'file-duration', template: '<canvas style="width:100%; heigth:100%"></canvas>'})
 export class FileDurationComp
 {
-    constructor(private Elements: ElementRef, private app: Svc.TApplication)
+    constructor(public app: Svc.TApplication, private Elements: ElementRef)
     {
     }
 

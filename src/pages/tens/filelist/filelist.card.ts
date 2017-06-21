@@ -36,7 +36,7 @@ import * as Svc from '../../../providers';
     </div>`})
 export class FileListCardComp
 {
-    constructor(private app: Svc.TApplication)
+    constructor(public app: Svc.TApplication)
     {
     }
 
@@ -69,7 +69,7 @@ export class FileListCardComp
 `})
 export class FileListRecommendComp
 {
-    constructor(private app: Svc.TApplication)
+    constructor(public app: Svc.TApplication)
     {
     }
 

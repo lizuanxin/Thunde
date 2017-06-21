@@ -6,7 +6,7 @@ import * as Svc from '../../providers/application';
 @Component({selector: 'intensity-dial', template: '<canvas style="width:100%" tappable></canvas>'})
 export class IntensityDialComp implements OnInit
 {
-    constructor(private Elements: ElementRef, private app: Svc.TApplication)
+    constructor(public app: Svc.TApplication, private Elements: ElementRef)
     {
         this.Image = new Image();
         this.Image.src = "assets/img/bg_dial.png";
@@ -15,7 +15,7 @@ export class IntensityDialComp implements OnInit
     ngOnInit()
     {
         let Canvas = this.Elements.nativeElement.children[0] as HTMLCanvasElement;
-        this.Content = new TContentCanvas(Canvas, this.app, this.OnValueChanged, this.Image);
+        this.Content = new TContentCanvas(this.app, Canvas, this.OnValueChanged, this.Image);
     }
 
     @Input()
@@ -42,7 +42,7 @@ export class IntensityDialComp implements OnInit
 
 export class TContentCanvas
 {
-    constructor(private Canvas: HTMLCanvasElement, private app: Svc.TApplication,
+    constructor(private app: Svc.TApplication, private Canvas: HTMLCanvasElement,
         private OnValueChanged: EventEmitter<number>, private Image: HTMLImageElement)
     {
         this.Canvas.addEventListener("touchstart", this.TouchHandler.bind(this));

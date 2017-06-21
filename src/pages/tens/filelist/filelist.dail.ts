@@ -10,14 +10,14 @@ const SHOWING_ITEM_COUNT = 6;
 @Component({selector: 'filelist-dial', template: '<canvas style="width:100%" tappable></canvas>'})
 export class FileListDialComp implements OnInit, OnDestroy, DoCheck
 {
-    constructor(private Elements: ElementRef, private app: Svc.TApplication)
+    constructor(public app: Svc.TApplication, private Elements: ElementRef)
     {
     }
 
     ngOnInit()
     {
         let Canvas = this.Elements.nativeElement.children[0] as HTMLCanvasElement;
-        this.Content = new TContentCanvas(Canvas, this.app, this.OnSelection);
+        this.Content = new TContentCanvas(this.app, Canvas, this.OnSelection);
     }
 
     ngOnDestroy(): void
@@ -43,7 +43,7 @@ export class FileListDialComp implements OnInit, OnDestroy, DoCheck
 
 class TContentCanvas
 {
-    constructor(private Canvas: HTMLCanvasElement, private app: Svc.TApplication,
+    constructor(private app: Svc.TApplication,private Canvas: HTMLCanvasElement,
         private OnSelection: EventEmitter<Svc.TScriptFile>)
     {
         Canvas.addEventListener("touchstart", this.TouchHandler.bind(this));
