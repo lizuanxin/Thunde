@@ -92,7 +92,6 @@ export class FileListBodyComp implements OnInit
                     }
                 }
             }
-
             this.FileSwiper.Update();
         }
 
@@ -101,7 +100,8 @@ export class FileListBodyComp implements OnInit
 
     SelectionFile(ev: any)
     {
-        let f = this._FilteredFiles[this.FileSwiper.Instance.activeIndex];
+        let f = this._FilteredFiles[this.FileSwiper.ActiveIndex];
+        console.log(f);
         this.OnSelection.next(f);
     }
 

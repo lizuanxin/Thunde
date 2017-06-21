@@ -38,7 +38,7 @@ export class FileListSlideComp implements OnInit
 
 class TContentCanvas
 {
-    constructor(private app: Svc.TApplication, private Canvas: HTMLCanvasElement,
+    constructor(public app: Svc.TApplication, private Canvas: HTMLCanvasElement,
         private OnSelection: EventEmitter<number>)
     {
         this.Canvas.addEventListener("touchstart", this.TouchHandler.bind(this));

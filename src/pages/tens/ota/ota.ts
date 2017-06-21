@@ -34,7 +34,7 @@ import * as Svc from '../../../providers';
 })
 export class OtaPage implements AfterViewInit, OnDestroy
 {
-    constructor(public app: Svc.TApplication, private navParams: NavParams, private view: ViewController)
+    constructor(public app: Svc.TApplication, private view: ViewController, navParams: NavParams)
     {
         this.Shell = navParams.get('Shell')
         this.Firmware = navParams.get('Firmware');
