@@ -41,6 +41,7 @@
         "rxjs": "5.4.0",
         "sw-toolbox": "^3.6.0",
         "swiper": "^3.4.2",
+        "ultracreation-usb-android": "git+https://github.com/disword/ultracreation-usb-android.git",
         "zone.js": "0.8.12"
     },
     "devDependencies": {
@@ -78,7 +79,8 @@
                 "XWALK_MODE": "embedded",
                 "XWALK_MULTIPLEAPK": "true"
             },
-            "es6-promise-plugin": {}
+            "es6-promise-plugin": {},
+            "ultracreation-usb-android": {}
         }
     }
 }
