@@ -49,7 +49,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
                     break;
 
                 case Svc.Loki.TShellNotify.Stopped:
-                    this.NextMode();
+                    this.Close('');
                     break;
 
                 case Svc.Loki.TShellNotify.Intensity:
@@ -58,6 +58,8 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 
                 case Svc.Loki.TShellNotify.Ticking:
                     this.Ticking = this.Shell.Ticking;
+                    if (this.Ticking >= this.CurrentFileDuration - 2)
+                        this.NextMode();
                     break;
                 }
             },
@@ -102,7 +104,6 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
     {
         this.app.ShowLoading().then(() =>
         {
-            //let FilePath = './assets/loki/' + DEMO_MODES[Index] + '.lok';
             let ScriptFile = new Svc.TScriptFile();
             ScriptFile.Name = DEMO_MODES[Index];
             this.Distibute.ReadScriptFile(ScriptFile).then(() =>
@@ -147,10 +148,6 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
                     this.SetModeInfo(DEMO_MODES[this.CurrentRunningIndex]);
                     this.StartMode(this.CurrentRunningIndex, true);
                 });
-                /*
-                // this.Shell.StopTicking(); // 提前执行 防止 函数重复调用
-
-                */
             }
             else
             {
