@@ -199,20 +199,15 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     private ResumeRunning()
     {
-        return this.Shell.StatusRequest()
-            .then(() =>
-            {
-                this.Intensity = this.Shell.Intensity;
-                return this.app.HideLoading();
-            })
-            .catch(err => console.log(err.message));
+        this.Intensity = this.Shell.Intensity;
+        return this.app.HideLoading();
     }
 
     private Start()
     {
         return this.Shell.ClearFileSystem([this.ScriptFile.Name])
             .then(() => this.Distibute.ReadScriptFile(this.ScriptFile))
-            .then(buf => this.Shell.CatFile(this.ScriptFile.Name, buf, this.ScriptFile.Md5))
+            .then(() => this.Shell.CatFile(this.ScriptFile))
             .then(progress =>
             {
                 this.Downloading = true;
@@ -225,7 +220,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
                         this.Downloading = false;
                     });
             })
-            .then(() => this.Shell.StartScriptFile(this.ScriptFile.Name, this.ScriptFile.Duration))
+            .then(() => this.Shell.StartScriptFile(this.ScriptFile))
             .then(() => this.app.HideLoading())
             .catch(err=>
             {

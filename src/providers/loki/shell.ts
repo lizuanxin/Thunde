@@ -37,9 +37,20 @@ const DEF_LINEAR_TABLE = '4v';
 export class EUSBRestarting extends EAbort
     {}
 
+/* TShell */
+
 export enum TShellNotify
     {Shutdown, Disconnected, NoLoad, Stopped, Intensity, HardwareError, LowBattery, Battery, Ticking};
 export type TShellNotifyEvent = Subject<TShellNotify>;
+
+interface IScriptFile
+{
+    Name?: string;
+    Md5?: string;
+    Content?: string;
+    ContentBuffer?: Uint8Array;
+    Duration?: number;
+};
 
 export class TShell extends TAbstractShell
 {
@@ -60,11 +71,10 @@ export class TShell extends TAbstractShell
         return RetVal;
     }
 
+    static Cached = new Map<string, TShell>();
     static LinearTable: TLinearTable = '4v';
-
     static UsbProxy: TProxyUsbShell;
 
-    static Cached = new Map<string, TShell>();
 /* Instance */
 
     constructor (private Proxy: IProxyShell, public DeviceId: string)
@@ -245,27 +255,28 @@ export class TShell extends TAbstractShell
             });
     }
 
-    StartScriptFile(FileName: string, RunningFileDuration: number): Promise<void>
+    StartScriptFile(s: IScriptFile): Promise<void>
     {
-        return this.Execute('>ssta ' + FileName, REQUEST_TIMEOUT, Line => this.IsStatusRetVal(Line))
+        return this.Execute('>ssta ' + s.Name, REQUEST_TIMEOUT, Line => this.IsStatusRetVal(Line))
             .then(() => setTimeout(() => this.IntensityRequest().catch(err => {}), 300))
             .then(() =>
             {
-                this._RunningFileDuration = RunningFileDuration;
+                this._RunningFileDuration = s.Duration;
                 this.StartTicking();
             });
     }
 
-    StartOutput(RunningFileDuration: number)
+    /*
+    StartOutput()
     {
         return this.Execute('>osta', REQUEST_TIMEOUT, Line => this.IsStatusRetVal(Line))
             .then(() => setTimeout(() => this.IntensityRequest().catch(err => {}), 300))
             .then(() =>
             {
-                this._RunningFileDuration = RunningFileDuration;
                 this.StartTicking();
             });
     }
+    */
 
     StopOutput()
     {
@@ -273,9 +284,9 @@ export class TShell extends TAbstractShell
             .then(() => this.StopTicking());
     }
 
-    CatFile(FileName: string, FileBuffer: Uint8Array, Md5: string): Promise<Subject<number>>
+    CatFile(s: IScriptFile): Promise<Subject<number>>
     {
-        return this.RequestStart(TCatRequest, REQUEST_TIMEOUT, FileName, FileBuffer, Md5);
+        return this.RequestStart(TCatRequest, REQUEST_TIMEOUT, s.Name, s.ContentBuffer, s.Md5);
     }
 
     RemoveFile(FileName: string): Promise<void>
@@ -448,7 +459,7 @@ export class TShell extends TAbstractShell
         return this._DefaultFileList;
     }
 
-    StatusRequest(): Promise<void>
+    private StatusRequest(): Promise<void>
     {
         return this.Execute('>stat', REQUEST_TIMEOUT, Line => (Line.indexOf('tick', 0) !== -1 || Line.indexOf('md5', 0) !== -1))
             .then(Line =>
@@ -467,16 +478,12 @@ export class TShell extends TAbstractShell
                                 this.StartTicking(ticking);
                             break;
 
-                        case "dmd5":
-                            this._DefaultFileMd5 = keyvalue[1];
-                            break;
-
-                        case "lmd5":
-                            this._LastFileMd5 = keyvalue[1];
-                            break;
-
                         case "str":
                             this._Intensity = parseInt(keyvalue[1]);
+                            break;
+
+                        case "dmd5":
+                        case "lmd5":
                             break;
                         }
                     }
@@ -696,16 +703,16 @@ export class TShell extends TAbstractShell
 
     OnNotify: TShellNotifyEvent = new Subject<TShellNotify>();
 
-    private _RunningFileDuration: number = 0;
-    private _Ticking: number = 0;
-    private TickIntervalId: any = null;
-
     private _Version: number;
+    private _BatteryLevel: number = 0;
+
+    private _RunningFileDuration: number = 0;
+
     private _Intensity: number = 0;
     private IntensityInterval = 0;
-    private _BatteryLevel: number = 0;
-    private _DefaultFileMd5: string;
-    private _LastFileMd5: string;
+
+    private _Ticking: number = 0;
+    private TickIntervalId: any = null;
 
     private _DefaultFileList: Array<string>;
 }

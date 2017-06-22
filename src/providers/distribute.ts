@@ -101,8 +101,11 @@ export class TDistributeService
         console.log('TDistributeService construct');
     }
 
-    ReadScriptFile(ScriptFile: TScriptFile): Promise<Uint8Array>
+    ReadScriptFile(ScriptFile: TScriptFile): Promise<void>
     {
+        if (TypeInfo.Assigned(ScriptFile.ContentBuffer))
+            return Promise.resolve()
+
         let Read: Promise<void>;
 
         if (! TypeInfo.Assigned(ScriptFile.Content))
@@ -117,24 +120,23 @@ export class TDistributeService
 
         return Read.then(() =>
         {
-            let RetVal = TUtf8Encoding.Instance.Encode(ScriptFile.Content);
+            let ContentBuffer = TUtf8Encoding.Instance.Encode(ScriptFile.Content);
+            ScriptFile.ContentBuffer = ContentBuffer;
 
             if (! TypeInfo.Assigned(ScriptFile.Md5))
             {
                 ScriptFile.Edit();
-                ScriptFile.Md5 = THashMd5.Get(RetVal).Print();
+                ScriptFile.Md5 = THashMd5.Get(ContentBuffer).Print();
             }
 
             if (! TypeInfo.Assigned(ScriptFile.Duration) || ScriptFile.Duration === 0)
             {
                 let LokiFile = new Loki.TFile();
-                LokiFile.LoadFrom(RetVal);
+                LokiFile.LoadFrom(ContentBuffer);
 
                 ScriptFile.Edit();
                 ScriptFile.Duration = Math.trunc(((LokiFile.TimeEst() / 1000) + 30) / 60 * 60);
             }
-
-            return RetVal;
         });
     }
 

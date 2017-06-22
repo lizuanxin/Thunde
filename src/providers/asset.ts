@@ -322,6 +322,28 @@ export class TScriptFile extends TAsset implements IScriptFile
         return Math.trunc((this.Duration + 30) / 60);
     }
 
+    get DurationString(): string
+    {
+        let Time = '00:00';
+        let Min = Math.trunc(this.Duration / 60);
+        if (Min === 0)
+            Time = '00:';
+        else if (Min < 10)
+            Time = '0' + Min + ':';
+        else
+            Time = Min + ':';
+
+        let Sec = this.Duration % 60;
+        if (Sec === 0)
+            Time += '00';
+        else if (Sec < 10)
+            Time += '0' + Sec;
+        else
+            Time += Sec + '';
+
+        return Time;
+    }
+
    /**
      *  https://en.wikipedia.org/wiki/Degree_(angle)
      *  https://en.wikipedia.org/wiki/Radian
@@ -376,11 +398,13 @@ export class TScriptFile extends TAsset implements IScriptFile
     Category_Id: string = null;
     Mode_Id: string = null;
 
-    Content: string = null;
     Md5: string = null;
     Duration: number = null;
     Author: string = null;
     Professional: boolean = null;
+
+    Content: string = null;
+    ContentBuffer: Uint8Array;
 
     BodyParts: Array<IBodyPart> = [];
     Details: Array<TScriptFileDesc> = [];

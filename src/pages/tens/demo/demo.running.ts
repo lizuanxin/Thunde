@@ -100,41 +100,36 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     private StartMode(Index: number, Loading: boolean)
     {
-        let Load: Promise<any> = Promise.resolve();
-        if(Loading) // 解决第一次显示loading 时闪烁的问题
-            Load = this.app.ShowLoading();
-
-        Load.then(() =>
+        this.app.ShowLoading().then(() =>
         {
             //let FilePath = './assets/loki/' + DEMO_MODES[Index] + '.lok';
             let ScriptFile = new Svc.TScriptFile();
             ScriptFile.Name = DEMO_MODES[Index];
-            this.Distibute.ReadScriptFile(ScriptFile)
-                .then(buf =>
-                {
-                    this.CurrentFileDuration = ScriptFile.Duration;
-                    this.Shell.CatFile(DEMO_MODES[Index], buf, ScriptFile.Md5)
-                        .then(progress =>
-                        {
-                            this.Downloading = true;
-                            progress.subscribe(next => this.Ticking =  ScriptFile.Duration* next, err => {}, () => {});
+            this.Distibute.ReadScriptFile(ScriptFile).then(() =>
+            {
+                this.CurrentFileDuration = ScriptFile.Duration;
+                this.Shell.CatFile(ScriptFile)
+                    .then(progress =>
+                    {
+                        this.Downloading = true;
+                        progress.subscribe(next => this.Ticking =  ScriptFile.Duration* next, err => {}, () => {});
 
-                            return progress.toPromise()
-                                .then(() =>
-                                {
-                                    this.Ticking = 0;
-                                    this.Downloading = false;
-                                });
-                        })
-                        .then(() => this.Shell.StartScriptFile(DEMO_MODES[Index], ScriptFile.Duration))
-                        .then(() => setTimeout(this.app.HideLoading(), 1000))
-                        .catch(err =>
-                        {
-                            this.app.HideLoading()
-                                .then(() => this.app.ShowError(err))
-                                .then(() => this.ClosePage());
-                        });
-                });
+                        return progress.toPromise()
+                            .then(() =>
+                            {
+                                this.Ticking = 0;
+                                this.Downloading = false;
+                            });
+                    })
+                    .then(() => this.Shell.StartScriptFile(ScriptFile))
+                    .then(() => setTimeout(this.app.HideLoading(), 1000))
+                    .catch(err =>
+                    {
+                        this.app.HideLoading()
+                            .then(() => this.app.ShowError(err))
+                            .then(() => this.ClosePage());
+                    });
+            });
         });
     }
 
