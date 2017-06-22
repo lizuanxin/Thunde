@@ -43,27 +43,28 @@ export type TShellNotifyEvent = Subject<TShellNotify>;
 
 export class TShell extends TAbstractShell
 {
-    // /// @override
-    // static Get(DeviceId: string): TShell
-    // {
-    //     let RetVal = this.Cached.get(DeviceId);
+    /// @override
+    static Get(DeviceId: string): TShell
+    {
+        let RetVal = this.Cached.get(DeviceId);
 
-    //     if (! TypeInfo.Assigned(RetVal))
-    //     {
-    //         if (DeviceId === 'USB')
-    //             RetVal = new this(this.UsbProxy, DeviceId);
-    //         else
-    //             RetVal = new this(TProxyBLEShell.Get(DeviceId, BLE_CONNECTION_TIMEOUT) as TProxyBLEShell, DeviceId);
+        if (! TypeInfo.Assigned(RetVal))
+        {
+            if (DeviceId === 'USB')
+                RetVal = new this(this.UsbProxy, DeviceId);
+            else
+                RetVal = new this(TProxyBLEShell.Get(DeviceId, BLE_CONNECTION_TIMEOUT) as TProxyBLEShell, DeviceId);
 
-    //         this.Cached.set(DeviceId, RetVal);
-    //     }
-    //     return RetVal;
-    // }
+            this.Cached.set(DeviceId, RetVal);
+        }
+        return RetVal;
+    }
 
     static LinearTable: TLinearTable = '4v';
 
     static UsbProxy: TProxyUsbShell;
 
+    static Cached = new Map<string, TShell>();
 /* Instance */
 
     constructor (private Proxy: IProxyShell, public DeviceId: string)
@@ -93,6 +94,8 @@ export class TShell extends TAbstractShell
             this.Proxy.Detach();
             this.Proxy = null;
         }
+
+        TShell.Cached.delete(this.DeviceId);
     }
 
     Connect(): Promise<void>
@@ -242,18 +245,26 @@ export class TShell extends TAbstractShell
             });
     }
 
-    StartScriptFile(FileName: string): Promise<void>
+    StartScriptFile(FileName: string, RunningFileDuration: number): Promise<void>
     {
         return this.Execute('>ssta ' + FileName, REQUEST_TIMEOUT, Line => this.IsStatusRetVal(Line))
             .then(() => setTimeout(() => this.IntensityRequest().catch(err => {}), 300))
-            .then(() => this.StartTicking());
+            .then(() =>
+            {
+                this._RunningFileDuration = RunningFileDuration;
+                this.StartTicking();
+            });
     }
 
-    StartOutput()
+    StartOutput(RunningFileDuration: number)
     {
         return this.Execute('>osta', REQUEST_TIMEOUT, Line => this.IsStatusRetVal(Line))
             .then(() => setTimeout(() => this.IntensityRequest().catch(err => {}), 300))
-            .then(() => this.StartTicking());
+            .then(() =>
+            {
+                this._RunningFileDuration = RunningFileDuration;
+                this.StartTicking();
+            });
     }
 
     StopOutput()
@@ -371,6 +382,44 @@ export class TShell extends TAbstractShell
         }
         else
             return 0;
+    }
+
+    get RunningFileDuration()
+    {
+        return this._RunningFileDuration;
+    }
+
+    get TickingDownHint(): string
+    {
+        let RetVal = "";
+
+        if (this._RunningFileDuration !== 0)
+        {
+            let TickingDown = this._RunningFileDuration - this.Ticking;
+
+            if (TickingDown > 0)
+            {
+                let Min = Math.trunc((TickingDown) / 60);
+                let Sec = TickingDown % 60;
+
+                if (Sec < 0)
+                {
+                    if (Min > 0)
+                        Sec += 60;
+                    else
+                        Sec = 0;
+                }
+
+                if (Min > 0)
+                    RetVal = (Min < 10 ? '0' : '') + Min.toString() + ':' + (Sec < 10 ? '0' : '') + Sec.toString();
+                else
+                    RetVal = '00:' + (Sec < 10 ? '0' : '') + Sec.toString();
+            }
+            else
+                RetVal = '00:00';
+        }
+
+        return RetVal;
     }
 
     get Version(): number
@@ -517,6 +566,7 @@ export class TShell extends TAbstractShell
 
     StopTicking(): void
     {
+        this._RunningFileDuration = 0;
         this._Ticking = 0;
 
         if (TypeInfo.Assigned(this.TickIntervalId))
@@ -646,6 +696,7 @@ export class TShell extends TAbstractShell
 
     OnNotify: TShellNotifyEvent = new Subject<TShellNotify>();
 
+    private _RunningFileDuration: number = 0;
     private _Ticking: number = 0;
     private TickIntervalId: any = null;
 

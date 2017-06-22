@@ -5,20 +5,17 @@ import {Subscription} from 'rxjs/Subscription'
 import 'rxjs/add/operator/toPromise';
 
 import {TypeInfo} from '../../../UltraCreation/Core/TypeInfo';
-import {TUtf8Encoding} from '../../../UltraCreation/Encoding/Utf8';
-import {THashMd5} from '../../../UltraCreation/Hash/Md5';
 import {PowerManagement} from '../../../UltraCreation/Native/PowerManagement'
 
 import * as Svc from '../../../providers';
 
 const DEMO_MODES: string[] = ["demo_friction", "demo_kneading", "demo_pressure"];
-const DEMO_MODES_TIMES: number[] = [45, 70, 80];
 
 @Component({selector: "page-demo.running", templateUrl: "demo.running.html"})
 export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 {
     constructor(private navParams: NavParams, private view: ViewController,
-        public app: Svc.TApplication, private AssetSvc: Svc.TAssetService)
+        public app: Svc.TApplication, private AssetSvc: Svc.TAssetService, private Distibute: Svc.TDistributeService)
     {
         this.SetModeInfo(DEMO_MODES[this.CurrentRunningIndex]);
 
@@ -52,7 +49,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
                     break;
 
                 case Svc.Loki.TShellNotify.Stopped:
-                    this.Close('');
+                    this.NextMode();
                     break;
 
                 case Svc.Loki.TShellNotify.Intensity:
@@ -61,9 +58,6 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 
                 case Svc.Loki.TShellNotify.Ticking:
                     this.Ticking = this.Shell.Ticking;
-
-                    if (DEMO_MODES_TIMES[this.CurrentRunningIndex] - this.Ticking <= 2)
-                        this.NextMode();
                     break;
                 }
             },
@@ -87,7 +81,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
         }
 
         this.app.HideLoading();
-        this.Shell.Detach();
+        this.app.Destory();
     }
 
     SetModeInfo(runningIndex: string)
@@ -112,18 +106,18 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 
         Load.then(() =>
         {
-            let FilePath = './assets/loki/' + DEMO_MODES[Index] + '.lok';
-            Svc.HttpRequest(FilePath, 'GET', 'text')
-                .then(Content =>
+            //let FilePath = './assets/loki/' + DEMO_MODES[Index] + '.lok';
+            let ScriptFile = new Svc.TScriptFile();
+            ScriptFile.Name = DEMO_MODES[Index];
+            this.Distibute.ReadScriptFile(ScriptFile)
+                .then(buf =>
                 {
-                    let RetVal = TUtf8Encoding.Instance.Encode(Content);
-                    let Md5 = THashMd5.Get(RetVal).Print();
-
-                    this.Shell.CatFile(DEMO_MODES[Index], RetVal, Md5)
+                    this.CurrentFileDuration = ScriptFile.Duration;
+                    this.Shell.CatFile(DEMO_MODES[Index], buf, ScriptFile.Md5)
                         .then(progress =>
                         {
                             this.Downloading = true;
-                            progress.subscribe(next => this.Ticking =  DEMO_MODES_TIMES[Index]* next, err => {}, () => {});
+                            progress.subscribe(next => this.Ticking =  ScriptFile.Duration* next, err => {}, () => {});
 
                             return progress.toPromise()
                                 .then(() =>
@@ -132,7 +126,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
                                     this.Downloading = false;
                                 });
                         })
-                        .then(() => this.Shell.StartScriptFile(DEMO_MODES[Index]))
+                        .then(() => this.Shell.StartScriptFile(DEMO_MODES[Index], ScriptFile.Duration))
                         .then(() => setTimeout(this.app.HideLoading(), 1000))
                         .catch(err =>
                         {
@@ -193,34 +187,44 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     get TickingDownHint(): string
     {
-        let TickingDown = this.Downloading ? DEMO_MODES_TIMES[this.CurrentRunningIndex] : DEMO_MODES_TIMES[this.CurrentRunningIndex] - this.Ticking -1;
+        // let TickingDown = this.Downloading ? DEMO_MODES_TIMES[this.CurrentRunningIndex] : DEMO_MODES_TIMES[this.CurrentRunningIndex] - this.Ticking -1;
 
-        if (TickingDown > 0)
-        {
-            let Min = Math.trunc((TickingDown) / 60);
+        // if (TickingDown > 0)
+        // {
+        //     let Min = Math.trunc((TickingDown) / 60);
 
-            let Sec = TickingDown % 60;
-            if (Sec < 0)
-            {
-                if (Min > 0)
-                    Sec += 60;
-                else
-                    Sec = 0;
-            }
+        //     let Sec = TickingDown % 60;
+        //     if (Sec < 0)
+        //     {
+        //         if (Min > 0)
+        //             Sec += 60;
+        //         else
+        //             Sec = 0;
+        //     }
 
-            if (Min > 0)
-                return (Min < 10 ? '0' : '') + Min.toString() + ':' + (Sec < 10 ? '0' : '') + Sec.toString();
-            else
-                return '00:' + (Sec < 10 ? '0' : '') + Sec.toString();
-        }
-        else
-            return '00:00';
+        //     if (Min > 0)
+        //         return (Min < 10 ? '0' : '') + Min.toString() + ':' + (Sec < 10 ? '0' : '') + Sec.toString();
+        //     else
+        //         return '00:' + (Sec < 10 ? '0' : '') + Sec.toString();
+        // }
+        // else
+        //     return '00:00';
+
+        let Hint = "";
+
+        if (TypeInfo.Assigned(this.Shell))
+            Hint = this.Shell.TickingDownHint;
+
+        if (Hint === "")
+            Hint = this.TotalMinute;
+
+        return Hint;
     }
 
     get TotalMinute(): string
     {
         let Time = '00:00';
-        let Min = Math.trunc((DEMO_MODES_TIMES[this.CurrentRunningIndex]) / 60);
+        let Min = Math.trunc(this.CurrentFileDuration / 60);
         if (Min === 0)
             Time = '00:';
         else if (Min < 10)
@@ -228,7 +232,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
         else
             Time = Min + ':';
 
-        let Sec = DEMO_MODES_TIMES[this.CurrentRunningIndex] % 60;
+        let Sec = this.CurrentFileDuration % 60;
         if (Sec === 0)
             Time += '00';
         else if (Sec < 10)
@@ -239,14 +243,9 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
         return Time;
     }
 
-    get CurrentMinute(): string
-    {
-        return Math.trunc((DEMO_MODES_TIMES[this.CurrentRunningIndex]) / 60).toString();
-    }
-
     get InitRange(): number
     {
-        return (this.Ticking / (DEMO_MODES_TIMES[this.CurrentRunningIndex])) * 100;
+        return this.Ticking / this.CurrentFileDuration * 100;
     }
 
     get TextStyle(): Object
@@ -322,6 +321,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
     ModeGif: string;
     ModeInfo: string;
 
+    private CurrentFileDuration: number = 0;
     private Adjusting: Promise<any> = null;
     private Shell: Svc.Loki.TShell;
     private ShellNotifySubscription: Subscription;

@@ -6,7 +6,7 @@ import {TAppController} from '../UltraCreation/ng-ion/appcontroller'
 import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
 import * as USBSerial from '../UltraCreation/Native/UsbSerialOTG';
 
-import {TShell, TShellNotify, TProxyBLEShell, BLE_CONNECTION_TIMEOUT} from './loki/shell';
+import {TShell, TShellNotify} from './loki/shell';
 import {TScriptFile} from './asset';
 
 import {translate_en, translate_zh} from './localize'
@@ -178,122 +178,47 @@ export class TApplication extends TAppController
             return 'dark';
     }
 
-    // SHell
+    // Shell
 
     GetShell(DeviceId: string): TShell
     {
-        return this.ShellManager.GetShell(DeviceId);
+        let Shell = TShell.Get(DeviceId);
+
+        this.ClearResumeDatas();
+
+        if (TypeInfo.Assigned(this.CurrentRunningShell))
+        {
+            if (this.CurrentRunningShell.DeviceId !== DeviceId)
+            {
+                this.CurrentRunningShell.Detach();
+                this.CurrentRunningShell = Shell;
+            }
+        }
+        else
+            this.CurrentRunningShell = Shell;
+
+        console.log("Shell:" + Shell +　"  CurrentShell:" + this.CurrentRunningShell);
+        return this.CurrentRunningShell;
     }
 
     SetRunningBackground(DeviceId: string, ScriptFile: TScriptFile)
     {
-        this.ShellManager.SetRunningBackground(DeviceId, ScriptFile);
-    }
-
-    get ResumeRunningDatas(): {DeviceId: string, ScriptFile: TScriptFile}
-    {
-        return this.ShellManager.ResumeRunningDatas;
-    }
-
-    Destory(DeviceId: string)
-    {
-        this.ShellManager.DestoryShell(DeviceId);
-    }
-
-    get IsRunning(): boolean
-    {
-        return this.ShellManager.IsRunning;
-    }
-
-    get BackgroundTickingDownHint(): string
-    {
-        return this.ShellManager.TickingDownHint;
-    }
-
-    private ShellManager: TShellManager = new TShellManager();
-
-    public Skins: Array<string>;
-    private deep = ['abstract', 'BlackRed', 'spots'];
-    private warm = ['strengths'];
-    private HardwareBackButtonDisabled = false;
-
-    private static AcceptedTerms: boolean = false;
-    private static SkinName: string = 'skin';
-    private static Storage: TSqliteStorage;
-}
-
-class TShellManager
-{
-    constructor()
-    {}
-
-    /// @override
-    GetShell(DeviceId: string): TShell
-    {
-        let RetVal = this.Cached.get(DeviceId);
-
-        if (! TypeInfo.Assigned(RetVal))
-        {
-            if (DeviceId === 'USB')
-                RetVal = new TShell(TShell.UsbProxy, DeviceId);
-            else
-                RetVal = new TShell(TProxyBLEShell.Get(DeviceId, BLE_CONNECTION_TIMEOUT) as TProxyBLEShell, DeviceId);
-
-            this.Cached.set(DeviceId, RetVal);
-        }
-
-        this.ClearResumeDatas();
-        return RetVal;
-    }
-
-    ClearResumeDatas()
-    {
-        this.Running = false;
-        this.Ticking = 0;
-        this.Resume = null;
-        if (TypeInfo.Assigned(this.Listenter))
-        {
-            this.Listenter.unsubscribe();
-            this.Listenter = null;
-        }
-    }
-
-    get ResumeRunningDatas(): {DeviceId: string, ScriptFile: TScriptFile}
-    {
-        console.log("ResumeRunning");
-        let RetVal = null;
-        if (TypeInfo.Assigned(this.Resume) && this.Resume.ScriptFile.Duration - this.Ticking > 10)
-        {
-            if (this.Cached.has(this.Resume.DeviceId))
-            {
-                RetVal = this.Resume;
-            }
-        }
-
-        this.ClearResumeDatas();
-        return RetVal;
-    }
-
-    SetRunningBackground(DeviceId: string, ScriptFile: TScriptFile)
-    {
-        if (TypeInfo.Assigned(this.Resume))
-        {
-            if (this.Resume.DeviceId === 'USB' && DeviceId === 'USB')
-            {
-                this.ClearResumeDatas();
-            }
-            else if (this.Resume.DeviceId !== DeviceId)
-            {
-                this.DestoryShell(this.Resume.DeviceId);
-            }
-        }
+        // if (TypeInfo.Assigned(this.Resume))
+        // {
+        //     if (this.Resume.DeviceId === 'USB' && DeviceId === 'USB')
+        //     {
+        //         this.ClearResumeDatas();
+        //     }
+        //     else if (this.Resume.DeviceId !== DeviceId)
+        //     {
+        //         this.Destory(this.Resume.DeviceId);
+        //     }
+        // }
 
         this.Resume = {DeviceId: DeviceId, ScriptFile: ScriptFile};
-        this.Running = true;
 
         let that = this;
-        let Shell = this.Cached.get(DeviceId);
-        this.Listenter = Shell.OnNotify.subscribe(
+        this.Listenter = this.CurrentRunningShell.OnNotify.subscribe(
             Notify =>
             {
                 switch(Notify)
@@ -318,10 +243,12 @@ class TShellManager
                     break;
 
                 case TShellNotify.Ticking:
-                    this.Ticking = Shell.Ticking;
-                    if (this.Ticking >= ScriptFile.Duration)
+                    console.log("Resume.Ticking:" + this.CurrentRunningShell.Ticking);
+
+                    if (this.CurrentRunningShell.Ticking >= ScriptFile.Duration)
                     {
-                        Shell.StopOutput()
+                        this.ClearResumeDatas();
+                        this.CurrentRunningShell.StopOutput()
                             .catch(err => console.log(err.message))
                             .then(() => OnEvent('file_finish'));
                     }
@@ -333,63 +260,246 @@ class TShellManager
         function OnEvent(Message: string)
         {
             console.log("OnEvent.Message:" + Message);
-            that.DestoryShell(DeviceId);
+            that.ClearResumeDatas();
+            that.Destory();
         }
     }
 
-    DestoryShell(DeviceId: string)
+    get ResumeRunningDatas(): {DeviceId: string, ScriptFile: TScriptFile}
     {
-        console.log("DestoryShell.DeviceId:" + DeviceId + "  exsit:" + this.Cached.has(DeviceId));
+        console.log("ResumeRunning");
+        let RetVal = null;
+        if (TypeInfo.Assigned(this.Resume) &&
+            TypeInfo.Assigned(this.CurrentRunningShell) &&
+            this.Resume.ScriptFile.Duration - this.CurrentRunningShell.Ticking > 10)
+        {
+            RetVal = this.Resume;
+        }
+
         this.ClearResumeDatas();
+        return RetVal;
+    }
 
-        let Shell = this.Cached.get(DeviceId);
-        if (TypeInfo.Assigned(Shell))
-            Shell.Detach();
+    Destory()
+    {
+        if (TypeInfo.Assigned(this.CurrentRunningShell))
+        {
+            this.CurrentRunningShell.Detach();
+            this.CurrentRunningShell = null;
+        }
+    }
 
-        this.Cached.delete(DeviceId);
+    private ClearResumeDatas()
+    {
+        this.Resume = null;
+        if (TypeInfo.Assigned(this.Listenter))
+        {
+            this.Listenter.unsubscribe();
+            this.Listenter = null;
+        }
     }
 
     get IsRunning(): boolean
     {
-        return this.Running;
+        let Running = false;
+        if (TypeInfo.Assigned(this.CurrentRunningShell))
+            Running = this.CurrentRunningShell.RunningFileDuration === 0 ? false : true;
+
+        return Running;
     }
 
-    get TickingDownHint(): string
+    get BackgroundTickingDownHint(): string
     {
-        let RetVal = "";
+        let Hint = "";
 
-        if (this.IsRunning)
-        {
-            let TickingDown = this.Resume.ScriptFile.Duration - this.Ticking;
+        if (TypeInfo.Assigned(this.CurrentRunningShell))
+            Hint = this.CurrentRunningShell.TickingDownHint;
 
-            if (TickingDown > 0)
-            {
-                let Min = Math.trunc((TickingDown) / 60);
-                let Sec = TickingDown % 60;
-
-                if (Sec < 0)
-                {
-                    if (Min > 0)
-                        Sec += 60;
-                    else
-                        Sec = 0;
-                }
-
-                if (Min > 0)
-                    RetVal = (Min < 10 ? '0' : '') + Min.toString() + ':' + (Sec < 10 ? '0' : '') + Sec.toString();
-                else
-                    RetVal = '00:' + (Sec < 10 ? '0' : '') + Sec.toString();
-            }
-            else
-                RetVal = '00:00';
-        }
-
-        return RetVal;
+        return Hint;
     }
 
     private Listenter: Subscription;
-    private Cached = new Map<string, TShell>();
-    private Ticking: number = 0;
-    private Running: boolean = false;
     private Resume: {DeviceId: string, ScriptFile: TScriptFile};
+    private CurrentRunningShell: TShell;
+
+    public Skins: Array<string>;
+    private deep = ['abstract', 'BlackRed', 'spots'];
+    private warm = ['strengths'];
+    private HardwareBackButtonDisabled = false;
+
+    private static AcceptedTerms: boolean = false;
+    private static SkinName: string = 'skin';
+    private static Storage: TSqliteStorage;
 }
+
+// class TShellManager
+// {
+//     constructor()
+//     {}
+
+//     /// @override
+//     GetShell(DeviceId: string): TShell
+//     {
+//         let RetVal = this.Cached.get(DeviceId);
+
+//         if (! TypeInfo.Assigned(RetVal))
+//         {
+//             if (DeviceId === 'USB')
+//                 RetVal = new TShell(TShell.UsbProxy, DeviceId);
+//             else
+//                 RetVal = new TShell(TProxyBLEShell.Get(DeviceId, BLE_CONNECTION_TIMEOUT) as TProxyBLEShell, DeviceId);
+
+//             this.Cached.set(DeviceId, RetVal);
+//         }
+
+//         this.ClearResumeDatas();
+//         return RetVal;
+//     }
+
+//     ClearResumeDatas()
+//     {
+//         this.Running = false;
+//         this.Ticking = 0;
+//         this.Resume = null;
+//         if (TypeInfo.Assigned(this.Listenter))
+//         {
+//             this.Listenter.unsubscribe();
+//             this.Listenter = null;
+//         }
+//     }
+
+//     get ResumeRunningDatas(): {DeviceId: string, ScriptFile: TScriptFile}
+//     {
+//         console.log("ResumeRunning");
+//         let RetVal = null;
+//         if (TypeInfo.Assigned(this.Resume) && this.Resume.ScriptFile.Duration - this.Ticking > 10)
+//         {
+//             if (this.Cached.has(this.Resume.DeviceId))
+//             {
+//                 RetVal = this.Resume;
+//             }
+//         }
+
+//         this.ClearResumeDatas();
+//         return RetVal;
+//     }
+
+//     SetRunningBackground(DeviceId: string, ScriptFile: TScriptFile)
+//     {
+//         if (TypeInfo.Assigned(this.Resume))
+//         {
+//             if (this.Resume.DeviceId === 'USB' && DeviceId === 'USB')
+//             {
+//                 this.ClearResumeDatas();
+//             }
+//             else if (this.Resume.DeviceId !== DeviceId)
+//             {
+//                 this.DestoryShell(this.Resume.DeviceId);
+//             }
+//         }
+
+//         this.Resume = {DeviceId: DeviceId, ScriptFile: ScriptFile};
+//         this.Running = true;
+
+//         let that = this;
+//         let Shell = this.Cached.get(DeviceId);
+//         this.Listenter = Shell.OnNotify.subscribe(
+//             Notify =>
+//             {
+//                 switch(Notify)
+//                 {
+//                 case TShellNotify.Shutdown:
+//                     OnEvent('shutdown');
+//                     break;
+//                 case TShellNotify.Disconnected:
+//                     OnEvent('disconnected');
+//                     break;
+//                 case TShellNotify.LowBattery:
+//                     OnEvent('low_battery');
+//                     break;
+//                 case TShellNotify.HardwareError:
+//                     OnEvent('hardware_error');
+//                     break;
+//                 case TShellNotify.Stopped:
+//                     OnEvent('');
+//                     break;
+//                 case TShellNotify.NoLoad:
+//                     OnEvent('no_load');
+//                     break;
+
+//                 case TShellNotify.Ticking:
+//                     this.Ticking = Shell.Ticking;
+//                     if (this.Ticking >= ScriptFile.Duration)
+//                     {
+//                         Shell.StopOutput()
+//                             .catch(err => console.log(err.message))
+//                             .then(() => OnEvent('file_finish'));
+//                     }
+//                     break;
+//                 }
+//             },
+//             err => console.log(err.message));
+
+//         function OnEvent(Message: string)
+//         {
+//             console.log("OnEvent.Message:" + Message);
+//             that.DestoryShell(DeviceId);
+//         }
+//     }
+
+//     DestoryShell(DeviceId: string)
+//     {
+//         console.log("DestoryShell.DeviceId:" + DeviceId + "  exsit:" + this.Cached.has(DeviceId));
+//         this.ClearResumeDatas();
+
+//         let Shell = this.Cached.get(DeviceId);
+//         if (TypeInfo.Assigned(Shell))
+//             Shell.Detach();
+
+//         this.Cached.delete(DeviceId);
+//     }
+
+//     get IsRunning(): boolean
+//     {
+//         return this.Running;
+//     }
+
+//     get TickingDownHint(): string
+//     {
+//         let RetVal = "";
+
+//         if (this.IsRunning)
+//         {
+//             let TickingDown = this.Resume.ScriptFile.Duration - this.Ticking;
+
+//             if (TickingDown > 0)
+//             {
+//                 let Min = Math.trunc((TickingDown) / 60);
+//                 let Sec = TickingDown % 60;
+
+//                 if (Sec < 0)
+//                 {
+//                     if (Min > 0)
+//                         Sec += 60;
+//                     else
+//                         Sec = 0;
+//                 }
+
+//                 if (Min > 0)
+//                     RetVal = (Min < 10 ? '0' : '') + Min.toString() + ':' + (Sec < 10 ? '0' : '') + Sec.toString();
+//                 else
+//                     RetVal = '00:' + (Sec < 10 ? '0' : '') + Sec.toString();
+//             }
+//             else
+//                 RetVal = '00:00';
+//         }
+
+//         return RetVal;
+//     }
+
+//     private Listenter: Subscription;
+//     private Cached = new Map<string, TShell>();
+//     private Ticking: number = 0;
+//     private Running: boolean = false;
+//     private Resume: {DeviceId: string, ScriptFile: TScriptFile};
+// }

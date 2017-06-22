@@ -96,7 +96,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
     {
         this.UnsubscribeShellNotify();
         if (! this.NeedResume)
-            this.app.Destory(this.navParams.get('DeviceId'));
+            this.app.Destory();
     }
 
     Home()
@@ -157,28 +157,15 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     get TickingDownHint(): string
     {
-        let TickingDown = this.Downloading ? this.ScriptFile.Duration : this.ScriptFile.Duration - this.Ticking;
+        let Hint = "";
 
-        if (TickingDown > 0)
-        {
-            let Min = Math.trunc((TickingDown) / 60);
-            let Sec = TickingDown % 60;
+        if (TypeInfo.Assigned(this.Shell))
+            Hint = this.Shell.TickingDownHint;
 
-            if (Sec < 0)
-            {
-                if (Min > 0)
-                    Sec += 60;
-                else
-                    Sec = 0;
-            }
+        if (Hint === "")
+            Hint = this.TotalMinute;
 
-            if (Min > 0)
-                return (Min < 10 ? '0' : '') + Min.toString() + ':' + (Sec < 10 ? '0' : '') + Sec.toString();
-            else
-                return '00:' + (Sec < 10 ? '0' : '') + Sec.toString();
-        }
-        else
-            return '00:00';
+        return Hint;
     }
 
     AdjustIntensity(Value: number)
@@ -238,7 +225,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
                         this.Downloading = false;
                     });
             })
-            .then(() => this.Shell.StartScriptFile(this.ScriptFile.Name))
+            .then(() => this.Shell.StartScriptFile(this.ScriptFile.Name, this.ScriptFile.Duration))
             .then(() => this.app.HideLoading())
             .catch(err=>
             {
