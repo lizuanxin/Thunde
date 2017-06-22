@@ -56,7 +56,10 @@ export class TApplication extends TAppController
                         ts = now;
                     }
                     else
+                    {
+                        this.Destory();
                         this.Platform.exitApp();
+                    }
                 })
             })
     }
@@ -216,6 +219,7 @@ export class TApplication extends TAppController
         // }
 
         this.Resume = {DeviceId: DeviceId, ScriptFile: ScriptFile};
+        this._BackgroundRunning = true;
 
         let that = this;
         this.Listenter = this.CurrentRunningShell.OnNotify.subscribe(
@@ -243,7 +247,7 @@ export class TApplication extends TAppController
                     break;
 
                 case TShellNotify.Ticking:
-                    console.log("Resume.Ticking:" + this.CurrentRunningShell.Ticking);
+                    // console.log("Resume.Ticking:" + this.CurrentRunningShell.Ticking);
 
                     if (this.CurrentRunningShell.Ticking >= ScriptFile.Duration)
                     {
@@ -292,6 +296,8 @@ export class TApplication extends TAppController
     private ClearResumeDatas()
     {
         this.Resume = null;
+        this._BackgroundRunning = false;
+
         if (TypeInfo.Assigned(this.Listenter))
         {
             this.Listenter.unsubscribe();
@@ -301,11 +307,7 @@ export class TApplication extends TAppController
 
     get IsRunning(): boolean
     {
-        let Running = false;
-        if (TypeInfo.Assigned(this.CurrentRunningShell))
-            Running = this.CurrentRunningShell.RunningFileDuration === 0 ? false : true;
-
-        return Running;
+        return this._BackgroundRunning;
     }
 
     get BackgroundTickingDownHint(): string
@@ -318,6 +320,7 @@ export class TApplication extends TAppController
         return Hint;
     }
 
+    private _BackgroundRunning: boolean = false;
     private Listenter: Subscription;
     private Resume: {DeviceId: string, ScriptFile: TScriptFile};
     private CurrentRunningShell: TShell;
