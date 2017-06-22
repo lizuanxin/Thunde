@@ -22,12 +22,10 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     ngOnInit()
     {
-        console.log("files:" + JSON.stringify(this.Shell.DefaultFileList));
         this.Asset.SetKey(Svc.const_data.DEFAULT_FILES, this.Shell.DefaultFileList)
             .catch(err => console.error(err.message));
-        //当前文件不存在默认模式中时才可以设置
-        if (TypeInfo.Assigned(this.Shell.DefaultFileList) &&
-            this.Shell.DefaultFileList.indexOf(this.ScriptFile.Name) !== -1)
+
+        if (this.Shell.DefaultFileList.indexOf(this.ScriptFile.Name) !== -1)
             this.ShowButton = false;
 
         this.ShellNotifySubscription = this.Shell.OnNotify.subscribe(
@@ -57,7 +55,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
                     break;
 
                 case Svc.Loki.TShellNotify.Intensity:
-                    this.Intensity = this.Shell.Intensity;
+                    console.log('Intensity: ' + this.Shell.Intensity);
                     break;
 
                 case Svc.Loki.TShellNotify.Battery:
@@ -72,14 +70,12 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
                         this.Shell.StopOutput();
                         this.Finish = true;
                     }
+
                     break;
                 }
             },
             err=> console.log(err.message));
-    }
 
-    ngAfterViewInit()
-    {
         this.app.Nav.remove(1, this.view.index - 1, {animate: false})
             .then(() =>
             {
@@ -88,6 +84,11 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
                 else
                     this.Start();
             });
+    }
+
+    ngAfterViewInit()
+    {
+
     }
 
     ngOnDestroy(): void
@@ -121,8 +122,8 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
             this.ShowButton = false;
 
             this.Shell.ListDefaultFile()
-                .then(Files => this.Asset.SetKey(Svc.const_data.DEFAULT_FILES, Files))
-                .catch(err => console.error(err.message));
+            .then(Files => this.Asset.SetKey(Svc.const_data.DEFAULT_FILES, Files))
+            .catch(err => console.error(err.message));
         }
     }
 
@@ -171,8 +172,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
         if (! this.Shell.IsAttached || this.Adjusting)
             return;
 
-        this.Adjusting = this.Shell.SetIntensity(this.Intensity + Value)
-            .then(() => this.Intensity = this.Shell.Intensity)
+        this.Adjusting = this.Shell.SetIntensity(this.Shell.Intensity + Value)
             .catch(err => console.log('Adjuest Intensity: + ' + err.message))
             .then(() => this.Adjusting = null);
     }
@@ -197,8 +197,6 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     private ResumeRunning()
     {
-        this.Intensity = this.Shell.Intensity;
-        this.Ticking = this.Shell.Ticking;
         return this.app.HideLoading();
     }
 
@@ -273,7 +271,6 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
     ScriptFile: Svc.TScriptFile;
 
     Ticking: number = 0;
-    Intensity: number = 0;
     BatteryLevel: number = 0;
 
     ShowButton: boolean = true;

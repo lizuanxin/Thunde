@@ -701,6 +701,7 @@ export class TShell extends TAbstractShell
         }
     }
 
+    ScriptFile: IScriptFile;
     OnNotify: TShellNotifyEvent = new Subject<TShellNotify>();
 
     private _Version: number;
@@ -714,7 +715,7 @@ export class TShell extends TAbstractShell
     private _Ticking: number = 0;
     private TickIntervalId: any = null;
 
-    private _DefaultFileList: Array<string>;
+    private _DefaultFileList: Array<string> = [];
 }
 
 /* IProxyShell */
@@ -830,7 +831,7 @@ export class TCatRequest extends TProxyShellRequest
         Proxy.FileMd5(FileName)
             .then(value =>
             {
-                if (value === Md5)
+                if (value.toUpperCase() === Md5)
                     return Promise.reject(new EAbort());
                 else
                     return Promise.resolve();

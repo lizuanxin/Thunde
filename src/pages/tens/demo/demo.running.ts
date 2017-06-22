@@ -26,6 +26,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
     ngOnInit()
     {
         PowerManagement.Acquire();
+
         this.ShellNotifySubscription = this.Shell.OnNotify.subscribe(
             Notify =>
             {
@@ -303,10 +304,11 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
         }, 300);
     }
 
+    CurrentRunningIndex: number = 0;
+
     Finish: boolean = false;
     Downloading: boolean = false;
 
-    CurrentRunningIndex: number = 0;
     Ticking: number = 0;
     Intensity: number = 0;
 
