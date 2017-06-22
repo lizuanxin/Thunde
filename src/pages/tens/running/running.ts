@@ -58,7 +58,6 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
                 case Svc.Loki.TShellNotify.Intensity:
                     this.Intensity = this.Shell.Intensity;
-                    console.log('Intensity: ' + this.Intensity);
                     break;
 
                 case Svc.Loki.TShellNotify.Battery:
@@ -73,7 +72,6 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
                         this.Shell.StopOutput();
                         this.Finish = true;
                     }
-
                     break;
                 }
             },
@@ -123,8 +121,8 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
             this.ShowButton = false;
 
             this.Shell.ListDefaultFile()
-            .then(Files => this.Asset.SetKey(Svc.const_data.DEFAULT_FILES, Files))
-            .catch(err => console.error(err.message));
+                .then(Files => this.Asset.SetKey(Svc.const_data.DEFAULT_FILES, Files))
+                .catch(err => console.error(err.message));
         }
     }
 
@@ -200,6 +198,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
     private ResumeRunning()
     {
         this.Intensity = this.Shell.Intensity;
+        this.Ticking = this.Shell.Ticking;
         return this.app.HideLoading();
     }
 
