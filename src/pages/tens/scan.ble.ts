@@ -94,13 +94,12 @@ export class ScanBleComp implements OnInit, OnDestroy
                 this.app.ShowLoading()
                     .then(() => Shell.Connect())
                     .then(() => Shell.StopOutput())
-                    .then(() => this.OnSelection.emit(DeviceId))
                     .catch(err =>
                     {
                         this.app.HideLoading()
                             .then(() => this.app.ShowError(err));
-                        this.OnSelection.emit(null);
-                    });
+                    })
+                    .then(() => this.OnSelection.emit(DeviceId))
             }
             else
             {
