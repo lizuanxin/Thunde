@@ -38,7 +38,7 @@ export class ScanBleComp implements OnInit, OnDestroy
         if (Svc.Loki.TShell.IsUsbPlugin)
         {
             Svc.Loki.TShell.StartOTG();
-            let Shell = this.app.GetShell('USB');
+            let Shell = Svc.Loki.TShell.Get('USB');
 
             this.app.ShowLoading()
                     .then(() => Shell.Connect())
@@ -87,7 +87,7 @@ export class ScanBleComp implements OnInit, OnDestroy
     {
         this.StopScan().then(() =>
         {
-            let Shell = this.app.GetShell(DeviceId);
+            let Shell = Svc.Loki.TShell.Get(DeviceId);
 
             if (isDevMode())
             {

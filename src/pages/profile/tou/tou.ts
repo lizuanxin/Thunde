@@ -6,7 +6,7 @@ import {DemoPage} from '../..';
 @Component({selector: 'page-tou', templateUrl: 'tou.html'})
 export class TouPage implements OnInit, OnDestroy, AfterViewInit
 {
-    constructor(public app: Svc.TApplication, private AssetSvc: Svc.TAssetService)
+    constructor(public app: Svc.TApplication)
     {
     }
 

@@ -10,23 +10,35 @@ import * as Svc from '../../../providers';
 @Component({selector: 'page-running', templateUrl: 'running.html'})
 export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 {
-    constructor(public app: Svc.TApplication, private navParams: NavParams, private view: ViewController,
-        private Asset: Svc.TAssetService, private Distibute: Svc.TDistributeService)
+    constructor(public app: Svc.TApplication, private Distibute: Svc.TDistributeService,
+        private view: ViewController, navParams: NavParams)
     {
-        this.FromResume = navParams.get('Resume');
-        this.ScriptFile = navParams.get('ScriptFile');
-
-        let DeviceId = navParams.get('DeviceId');
-        this.Shell = app.GetShell(DeviceId);
+        if (navParams.get('Resume') === true)
+        {
+            this.Shell = Svc.Loki.TShell.RunningInstance;
+            this.ScriptFile = this.Shell.RefFile as Svc.TScriptFile;
+        }
+        else
+        {
+            this.ScriptFile = navParams.get('ScriptFile');
+            this.Shell = Svc.Loki.TShell.Get(navParams.get('DeviceId'));
+            this.Shell.RefFile = this.ScriptFile;
+        }
     }
 
     ngOnInit()
     {
-        this.Asset.SetKey(Svc.const_data.DEFAULT_FILES, this.Shell.DefaultFileList)
-            .catch(err => console.error(err.message));
+        if (this.Shell === Svc.Loki.TShell.RunningInstance)
+        {
+            this.app.HideLoading();
 
-        if (this.Shell.DefaultFileList.indexOf(this.ScriptFile.Name) !== -1)
-            this.ShowButton = false;
+            this.Ticking = this.Shell.Ticking;
+            this.Intensity = this.Shell.Intensity;
+        }
+        else
+            this.Start();
+
+        this.ShowDownloadBtn = this.Shell.DefaultFileList.indexOf(this.ScriptFile.Name) === -1;
 
         this.ShellNotifySubscription = this.Shell.OnNotify.subscribe(
             Notify =>
@@ -55,11 +67,12 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
                     break;
 
                 case Svc.Loki.TShellNotify.Intensity:
-                    console.log('Intensity: ' + this.Shell.Intensity);
+                    this.Intensity = this.Shell.Intensity;
+                    console.log('Intensity: ' + this.Intensity);
                     break;
 
                 case Svc.Loki.TShellNotify.Battery:
-                    this.UpdateBatteryLevel();
+                    // this.UpdateBatteryLevel();
                     break;
 
                 case Svc.Loki.TShellNotify.Ticking:
@@ -68,113 +81,32 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
                     if (this.Ticking >= this.ScriptFile.Duration)
                     {
                         this.Shell.StopOutput();
-                        this.Finish = true;
+                        this.Completed = true;
                     }
-
                     break;
                 }
             },
             err=> console.log(err.message));
-
-        this.app.Nav.remove(1, this.view.index - 1, {animate: false})
-            .then(() =>
-            {
-                if (this.FromResume)
-                    this.ResumeRunning();
-                else
-                    this.Start();
-            });
     }
 
     ngAfterViewInit()
     {
-
+        this.app.Nav.remove(1, this.view.index - 1, {animate: false});
     }
 
     ngOnDestroy(): void
     {
         this.UnsubscribeShellNotify();
-        if (! this.NeedResume)
-            this.app.Destory();
-    }
-
-    Home()
-    {
-        this.NeedResume = true;
-        this.app.SetRunningBackground(this.Shell.DeviceId, this.ScriptFile);
-        this.ClosePage();
-    }
-
-    SetDefaultFiles()
-    {
-        this.app.DisableHardwareBackButton();
-        this.DefaultFilesDatas = {FileNames: this.Shell.DefaultFileList, CurrentFile: this.ScriptFile, DeviceId: this.navParams.get('DeviceId')};
-        this.SetDefaultFile = true;
-    }
-
-    SetDefaultDone(Value: number)
-    {
-        this.SetDefaultFile = false;
-        this.app.EnableHardwareBackButton();
-
-        if (Value === 1)
-        {
-            this.ShowButton = false;
-
-            this.Shell.ListDefaultFile()
-            .then(Files => this.Asset.SetKey(Svc.const_data.DEFAULT_FILES, Files))
-            .catch(err => console.error(err.message));
-        }
     }
 
     get CanvasClientHeight(): Object
     {
-        return {height: this.content.contentHeight*0.7 + 'px'}
-    }
-
-    get TotalMinute(): string
-    {
-        let Time = '00:00';
-        let Min = Math.trunc(this.ScriptFile.Duration / 60);
-        if (Min === 0)
-            Time = '00:';
-        else if (Min < 10)
-            Time = '0' + Min + ':';
-        else
-            Time = Min + ':';
-
-        let Sec = this.ScriptFile.Duration % 60;
-        if (Sec === 0)
-            Time += '00';
-        else if (Sec < 10)
-            Time += '0' + Sec;
-        else
-            Time += Sec + '';
-
-        return Time;
-    }
-
-    get TickingDownHint(): string
-    {
-        let Hint = "";
-
-        if (TypeInfo.Assigned(this.Shell))
-            Hint = this.Shell.TickingDownHint;
-
-        if (Hint === "")
-            Hint = this.TotalMinute;
-
-        return Hint;
+        return {height: this.content.contentHeight * 0.7 + 'px'}
     }
 
     AdjustIntensity(Value: number)
     {
-        if (! this.Shell.IsAttached || this.Adjusting)
-            return;
-
-        this.Adjusting = this.Shell.SetIntensity(this.Shell.Intensity + Value)
-            .catch(err => console.log('Adjuest Intensity: + ' + err.message))
-            .then(() => this.Adjusting = null);
+        this.Shell.SetIntensity(this.Intensity + Value);
     }
 
     Shutdown(): void
@@ -192,17 +124,14 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
                             this.app.Nav.pop();
                     }, 300);
                 }
-            });
-    }
-
-    private ResumeRunning()
-    {
-        return this.app.HideLoading();
+            })
+            .then(() => this.Shell.Detach())
+            .catch(err => console.error(err))
     }
 
     private Start()
     {
-        return this.Shell.ClearFileSystem([this.ScriptFile.Name])
+        this.app.ShowLoading()
             .then(() => this.Distibute.ReadScriptFile(this.ScriptFile))
             .then(() => this.Shell.CatFile(this.ScriptFile))
             .then(progress =>
@@ -219,23 +148,15 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
             })
             .then(() => this.Shell.StartScriptFile(this.ScriptFile))
             .then(() => this.app.HideLoading())
-            .catch(err=>
-            {
-                this.app.HideLoading()
-                    .then(() => this.app.ShowError(err))
-                    .then(() => isDevMode() ? null : this.ClosePage());
-            })
+            .catch(err=> this.app.ShowError(err).then(() => isDevMode() ? null : this.ClosePage()))
+            .then(() => this.app.HideLoading())
             .then(() => this.app.EnableHardwareBackButton());
-    }
-
-    private UpdateBatteryLevel(): void
-    {
-        this.BatteryLevel = this.Shell.BatteryLevel;
     }
 
     private Close(MessageId: string): void
     {
         this.UnsubscribeShellNotify();
+        this.Shell.Detach();
 
         // ignore multi notify messages
         if (! TypeInfo.Assigned(this.ClosingTimerId) && MessageId !== '')
@@ -246,8 +167,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     private ClosePage(): void
     {
-        this.SetDefaultFile = false;
-        if (this.Finish || TypeInfo.Assigned(this.ClosingTimerId))
+        if (this.Completed || TypeInfo.Assigned(this.ClosingTimerId))
             return;
 
         this.ClosingTimerId = setTimeout(() =>
@@ -269,20 +189,16 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
     @ViewChild(Content) content: Content;
 
     ScriptFile: Svc.TScriptFile;
-
     Ticking: number = 0;
-    BatteryLevel: number = 0;
+    Intensity: number = 0;
 
-    ShowButton: boolean = true;
-    Finish: boolean = false;
+    ShowDownloadBtn: boolean = true;
+    ShowDownload: boolean = false;
+    Completed: boolean = false;
 
-    DefaultFilesDatas: {FileNames: Array<string>, CurrentFile: Svc.TScriptFile, DeviceId: string};
-    private SetDefaultFile: boolean = false;
-    private NeedResume: boolean = false;
-    private FromResume: boolean = false;
-    private Shell: Svc.Loki.TShell;
+    Shell: Svc.Loki.TShell;
     private ShellNotifySubscription: Subscription;
-    private Adjusting: Promise<any> = null;
+
     private Downloading = false;
     private ClosingTimerId: any;
 }

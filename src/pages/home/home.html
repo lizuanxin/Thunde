@@ -9,8 +9,8 @@
       <ion-col col-8 f-2-0 align-self-center text-center text-light no-padding>
           {{'home_page.title'|translate}}
       </ion-col>
-      <ion-col *ngIf="app.IsRunning" col-2 align-self-center text-center text-light no-padding (click)="Resume()">
-          {{app.BackgroundTickingDownHint}}
+      <ion-col *ngIf="IsStillRunning" col-2 align-self-center text-center text-light no-padding (click)="Resume()">
+          {{TickingDownHint}}
       </ion-col>
     </ion-row>
   </ion-toolbar>

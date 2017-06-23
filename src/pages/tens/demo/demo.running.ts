@@ -14,13 +14,13 @@ const DEMO_MODES: string[] = ["demo_friction", "demo_kneading", "demo_pressure"]
 @Component({selector: "page-demo.running", templateUrl: "demo.running.html"})
 export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 {
-    constructor(private navParams: NavParams, private view: ViewController,
-        public app: Svc.TApplication, private AssetSvc: Svc.TAssetService, private Distibute: Svc.TDistributeService)
+    constructor(public app: Svc.TApplication, private Distibute: Svc.TDistributeService,
+        private view: ViewController, navParams: NavParams)
     {
         this.SetModeInfo(DEMO_MODES[this.CurrentRunningIndex]);
 
         let DeviceId = navParams.get('DeviceId');
-        this.Shell = app.GetShell(DeviceId);
+        this.Shell = Svc.Loki.TShell.Get(DeviceId);
     }
 
     ngOnInit()
@@ -84,7 +84,6 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
         }
 
         this.app.HideLoading();
-        this.app.Destory();
     }
 
     SetModeInfo(runningIndex: string)
@@ -97,42 +96,40 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     private Start()
     {
+        this.app.ShowLoading();
+
         this.Shell.ClearFileSystem(DEMO_MODES)
             .then(() => this.StartMode(0, false))
     }
 
     private StartMode(Index: number, Loading: boolean)
     {
-        this.app.ShowLoading().then(() =>
-        {
-            let ScriptFile = new Svc.TScriptFile();
-            ScriptFile.Name = DEMO_MODES[Index];
-            this.Distibute.ReadScriptFile(ScriptFile).then(() =>
-            {
-                this.CurrentFileDuration = ScriptFile.Duration;
-                this.Shell.CatFile(ScriptFile)
-                    .then(progress =>
-                    {
-                        this.Downloading = true;
-                        progress.subscribe(next => this.Ticking =  ScriptFile.Duration* next, err => {}, () => {});
+        let ScriptFile = new Svc.TScriptFile();
+        ScriptFile.Name = DEMO_MODES[Index];
 
-                        return progress.toPromise()
-                            .then(() =>
-                            {
-                                this.Ticking = 0;
-                                this.Downloading = false;
-                            });
-                    })
-                    .then(() => this.Shell.StartScriptFile(ScriptFile))
-                    .then(() => setTimeout(this.app.HideLoading(), 1000))
-                    .catch(err =>
+        this.Distibute.ReadScriptFile(ScriptFile)
+            .then(() => this.CurrentFileDuration = ScriptFile.Duration)
+            .then(() => this.Shell.CatFile(ScriptFile))
+            .then(progress =>
+            {
+                this.Downloading = true;
+                progress.subscribe(next => this.Ticking =  ScriptFile.Duration* next, err => {}, () => {});
+
+                return progress.toPromise()
+                    .then(() =>
                     {
-                        this.app.HideLoading()
-                            .then(() => this.app.ShowError(err))
-                            .then(() => this.ClosePage());
+                        this.Ticking = 0;
+                        this.Downloading = false;
                     });
+            })
+            .then(() => this.Shell.StartScriptFile(ScriptFile))
+            .then(() => this.app.HideLoading())
+            .catch(err =>
+            {
+                this.app.HideLoading()
+                    .then(() => this.app.ShowError(err))
+                    .then(() => this.ClosePage());
             });
-        });
     }
 
     NextMode()
@@ -258,13 +255,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     AdjustIntensity(Value: number)
     {
-        if (! this.Shell.IsAttached || this.Adjusting)
-            return;
-
-        this.Adjusting = this.Shell.SetIntensity(this.Intensity + Value)
-            .then(() => this.Intensity = this.Shell.Intensity)
-            .catch(err => console.log('Adjuest Intensity: + ' + err.message))
-            .then(() => this.Adjusting = null);
+        this.Shell.SetIntensity(this.Intensity + Value);
     }
 
     private Close(MessageId: string)
@@ -316,7 +307,6 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
     ModeInfo: string;
 
     private CurrentFileDuration: number = 0;
-    private Adjusting: Promise<any> = null;
     private Shell: Svc.Loki.TShell;
     private ShellNotifySubscription: Subscription;
 }

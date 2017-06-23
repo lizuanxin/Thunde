@@ -1,10 +1,10 @@
-import {Component, OnInit, Input, Output, EventEmitter, ElementRef} from '@angular/core'
+import {Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ElementRef} from '@angular/core'
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 
 import * as Svc from '../../providers/application';
 
 @Component({selector: 'intensity-dial', template: '<canvas style="width:100%" tappable></canvas>'})
-export class IntensityDialComp implements OnInit
+export class IntensityDialComp implements OnInit, AfterViewInit
 {
     constructor(public app: Svc.TApplication, private Elements: ElementRef)
     {
@@ -18,16 +18,17 @@ export class IntensityDialComp implements OnInit
         this.Content = new TContentCanvas(this.app, Canvas, this.OnValueChanged, this.Image);
     }
 
-    @Input()
-    set Value(v: number)
+    ngAfterViewInit()
     {
-        if (this._Value === v)
-            return;
-        else
-            this._Value = v;
+        setTimeout(() => this.Content.Paint(this._Value));
+    }
+
+    @Input() set Value(v: number)
+    {
+        this._Value = v;
 
         if (this._Min <= Math.trunc(v) && Math.trunc(v) <= this._Max && TypeInfo.Assigned(this.Content))
-            this.Content.Paint(this._Value);
+            setTimeout(() => this.Content.Paint(this._Value));
     }
 
     @Output() OnValueChanged = new EventEmitter<number>(true);
@@ -42,7 +43,7 @@ export class IntensityDialComp implements OnInit
 
 export class TContentCanvas
 {
-    constructor(private app: Svc.TApplication, private Canvas: HTMLCanvasElement,
+    constructor(public app: Svc.TApplication, private Canvas: HTMLCanvasElement,
         private OnValueChanged: EventEmitter<number>, private Image: HTMLImageElement)
     {
         this.Canvas.addEventListener("touchstart", this.TouchHandler.bind(this));

@@ -68,64 +68,10 @@ export class TShell extends TAbstractShell
 
             this.Cached.set(DeviceId, RetVal);
         }
+        else
+            console.log('shell cache hit');
+
         return RetVal;
-    }
-
-    static Cached = new Map<string, TShell>();
-    static LinearTable: TLinearTable = '4v';
-    static UsbProxy: TProxyUsbShell;
-
-/* Instance */
-
-    constructor (private Proxy: IProxyShell, public DeviceId: string)
-    {
-        super(0);
-        Proxy.Owner = this;
-    }
-
-/* TAbstractShell */
-
-    Attach(): void
-    {
-        this.Proxy.Attach();
-    }
-
-    get IsAttached(): boolean
-    {
-        return TypeInfo.Assigned(this.Proxy) && this.Proxy.IsAttached;
-    }
-
-    Detach(): void
-    {
-        this.StopTicking();
-
-        if (TypeInfo.Assigned(this.Proxy))
-        {
-            this.Proxy.Detach();
-            this.Proxy = null;
-        }
-
-        TShell.Cached.delete(this.DeviceId);
-    }
-
-    Connect(): Promise<void>
-    {
-        return this.Proxy.Connect();
-    }
-
-    Disconnect(): Promise<void>
-    {
-        return this.Proxy.Disconnect();
-    }
-
-    Execute(Cmd: string, Timeout: number = 0, IsResponseCallback?: (Line: string) => boolean): Promise<any>
-    {
-        return this.Proxy.Execute(Cmd, Timeout, IsResponseCallback);
-    }
-
-    RequestStart(RequestClass: typeof TShellRequest, Timeout: number = 0, ...args: any[]): Promise<TShellRequest>
-    {
-        return this.Proxy.RequestStart(RequestClass, Timeout, this, ...args);
     }
 
 /* USB only */
@@ -207,6 +153,83 @@ export class TShell extends TAbstractShell
         return BLE_FILTER_NAMES.indexOf(name) !== -1;
     }
 
+    static RunningInstance: TShell;
+    static DefaultFileList: Array<string> = []
+    static Cached = new Map<string, TShell>();
+    static LinearTable: TLinearTable = '4v';
+    static UsbProxy: TProxyUsbShell;
+
+/* Instance */
+
+    constructor (private Proxy: IProxyShell, public DeviceId: string)
+    {
+        super(0);
+        Proxy.Owner = this;
+    }
+
+    OnNotify: TShellNotifyEvent = new Subject<TShellNotify>();
+    RefFile: IScriptFile;
+
+    private _Version: number;
+    private _BatteryLevel: number = 0;
+
+    private _Intensity: number = 0;
+    private IntensityTick = 0;
+    private IntensityChanging: Promise<void>;
+
+    private _Ticking: number = 0;
+    private TickIntervalId: any = null;
+
+    private _DefaultFileList: Array<string> = [];
+
+/* TAbstractShell */
+
+    Attach(): void
+    {
+        this.Proxy.Attach();
+    }
+
+    get IsAttached(): boolean
+    {
+        return TypeInfo.Assigned(this.Proxy) && this.Proxy.IsAttached;
+    }
+
+    Detach(): void
+    {
+        (this.constructor as typeof TShell).Cached.delete(this.DeviceId);
+
+        this.RefFile = null;
+        this.StopTicking();
+
+        if (TypeInfo.Assigned(this.Proxy))
+        {
+            this.Proxy.Detach();
+            this.Proxy = null;
+        }
+
+        console.log('Shell detached');
+    }
+
+    Connect(): Promise<void>
+    {
+        return this.Proxy.Connect();
+    }
+
+    Disconnect(): Promise<void>
+    {
+        return this.Proxy.Disconnect();
+    }
+
+    Execute(Cmd: string, Timeout: number = 0, IsResponseCallback?: (Line: string) => boolean): Promise<any>
+    {
+        return this.Proxy.Execute(Cmd, Timeout, IsResponseCallback);
+    }
+
+    RequestStart(RequestClass: typeof TShellRequest, Timeout: number = 0, ...args: any[]): Promise<TShellRequest>
+    {
+        return this.Proxy.RequestStart(RequestClass, Timeout, this, ...args);
+    }
+
 /** shell functions */
 
     Shutdown(): Promise<void>
@@ -231,7 +254,7 @@ export class TShell extends TAbstractShell
             .then(Line => Line.replace('AT+NAME', '').replace('btnm=', ''));
     }
 
-    SetDefaultFile(FileName: string, Idx: number = 0): Promise<string>
+    SetDefaultFile(FileName: string, Idx: number = 0): Promise<void>
     {
         let Cmd: string = '>sdef ' + FileName;
         if (Idx !== 0)
@@ -241,6 +264,13 @@ export class TShell extends TAbstractShell
         {
             let strs = Line.split('=');
             return strs.length >= 1 && strs[0] === 'sdef';
+        })
+        .then(() =>
+        {
+            if (Idx < this.DefaultFileList.length)
+                this.DefaultFileList[Idx] = FileName;
+            else
+                this.DefaultFileList.push(FileName);
         });
     }
 
@@ -251,6 +281,7 @@ export class TShell extends TAbstractShell
             .then(List =>
             {
                 this._DefaultFileList = List;
+                (this.constructor as typeof TShell).DefaultFileList = List;
                 return List;
             });
     }
@@ -258,12 +289,13 @@ export class TShell extends TAbstractShell
     StartScriptFile(s: IScriptFile): Promise<void>
     {
         return this.Execute('>ssta ' + s.Name, REQUEST_TIMEOUT, Line => this.IsStatusRetVal(Line))
-            .then(() => setTimeout(() => this.IntensityRequest().catch(err => {}), 300))
             .then(() =>
             {
-                this._RunningFileDuration = s.Duration;
-                this.StartTicking();
-            });
+                this.RefFile = s;
+                (this.constructor as typeof TShell).RunningInstance = this;
+            })
+            .then(() => setTimeout(() => this.IntensityRequest().catch(err => {}), 200))
+            .then(() => this.StartTicking());
     }
 
     /*
@@ -286,6 +318,7 @@ export class TShell extends TAbstractShell
 
     CatFile(s: IScriptFile): Promise<Subject<number>>
     {
+        this.RefFile = s;
         return this.RequestStart(TCatRequest, REQUEST_TIMEOUT, s.Name, s.ContentBuffer, s.Md5);
     }
 
@@ -304,29 +337,19 @@ export class TShell extends TAbstractShell
         return this.RequestStart(TClearFileSystemRequest, REQUEST_TIMEOUT, ExcludeFiles.concat(this.DefaultFileList))
             .then(Request => Request.toPromise())
             .then(() => {});
-        /*
-        return this.ListDefaultFile()
-            .then(Files =>
-            {
-                for (let f of Files)
-                {
-                    if (f.indexOf('test_', 0) === -1)
-                        ExcludeFiles.push(f);
-                }
-
-                return this.RequestStart(TClearFileSystemRequest, REQUEST_TIMEOUT, ExcludeFiles);
-            })
-            .then(Request => Request.toPromise())
-            .then(() => {});
-        */
     }
 
-    SetIntensity(Value: number): Promise<number>
+    SetIntensity(Value: number): void
     {
+        if (! this.IsAttached)
+            return;
         if (this._Intensity === 0 || Value < 1 || Value > 60)
-            return Promise.resolve(this._Intensity);
+            return;
 
-        return this.Execute('>str ' + Value, REQUEST_TIMEOUT,
+        if (TypeInfo.Assigned(this.IntensityChanging))
+            return;
+
+        this.IntensityChanging = this.Execute('>str ' + Value, REQUEST_TIMEOUT,
             Line =>
             {
                 let strs = Line.split('=');
@@ -351,7 +374,9 @@ export class TShell extends TAbstractShell
             {
                 setTimeout(() => this.OnNotify.next(TShellNotify.Intensity), 0);
                 return this._Intensity;
-            });
+            })
+            .catch(err => console.log(err.message))
+            .then(() => this.IntensityChanging = null)
     }
 
     SetLinearTable(n : TLinearTable): Promise<void>
@@ -395,18 +420,13 @@ export class TShell extends TAbstractShell
             return 0;
     }
 
-    get RunningFileDuration()
-    {
-        return this._RunningFileDuration;
-    }
-
     get TickingDownHint(): string
     {
         let RetVal = "";
 
-        if (this._RunningFileDuration !== 0)
+        if (TypeInfo.Assigned(this.RefFile))
         {
-            let TickingDown = this._RunningFileDuration - this.Ticking;
+            let TickingDown = this.RefFile.Duration - this.Ticking;
 
             if (TickingDown > 0)
             {
@@ -441,12 +461,6 @@ export class TShell extends TAbstractShell
     get Intensity(): number
     {
         return this._Intensity;
-    }
-
-    set Intensity(Value: number)
-    {
-        this.SetIntensity(Value)
-            .catch(err =>console.log('set Intensity() ', err.message));
     }
 
     get BatteryLevel(): number
@@ -525,8 +539,9 @@ export class TShell extends TAbstractShell
         let dt = new Date();
         let strs: string[];
 
-        if (dt.getTime() - this.IntensityInterval < 500)
+        if (dt.getTime() - this.IntensityTick < 300)
             return Promise.resolve(this.Intensity);
+        this.IntensityTick = dt.getTime();
 
         return this.Execute('>str', REQUEST_TIMEOUT,
             Line =>
@@ -573,8 +588,10 @@ export class TShell extends TAbstractShell
 
     StopTicking(): void
     {
-        this._RunningFileDuration = 0;
         this._Ticking = 0;
+
+        if ((this.constructor as typeof TShell).RunningInstance === this)
+            (this.constructor as typeof TShell).RunningInstance = null;
 
         if (TypeInfo.Assigned(this.TickIntervalId))
         {
@@ -701,21 +718,6 @@ export class TShell extends TAbstractShell
         }
     }
 
-    ScriptFile: IScriptFile;
-    OnNotify: TShellNotifyEvent = new Subject<TShellNotify>();
-
-    private _Version: number;
-    private _BatteryLevel: number = 0;
-
-    private _RunningFileDuration: number = 0;
-
-    private _Intensity: number = 0;
-    private IntensityInterval = 0;
-
-    private _Ticking: number = 0;
-    private TickIntervalId: any = null;
-
-    private _DefaultFileList: Array<string> = [];
 }
 
 /* IProxyShell */

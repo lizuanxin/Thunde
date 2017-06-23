@@ -58,25 +58,29 @@ export class HomePage implements OnInit
     ionViewWillEnter()
     {
         this.app.EnableHardwareBackButton();
-        this.Asset.GetKey(Svc.const_data.DEFAULT_FILES)
-            .then((Files: Array<string>) => this.DefaultFiles = Files)
-            .catch(err => console.log("ionViewWillEnter:" + err.message));
+
+        this.Asset.GetKey('def_filelist')
+            .then(ary => this.DefaultFiles = ary as string[])
+            .catch(err => {});
+    }
+
+    get IsStillRunning(): boolean
+    {
+        return TypeInfo.Assigned(Svc.Loki.TShell.RunningInstance)
+    }
+
+    get TickingDownHint(): string
+    {
+        return Svc.Loki.TShell.RunningInstance.TickingDownHint;
     }
 
     Resume()
     {
-        let ResumeData = this.app.ResumeRunningDatas;
-        if (TypeInfo.Assigned(ResumeData))
-        {
-            let params = this.navParams.data;
-            params.Resume = true;
-            params.DeviceId = ResumeData.DeviceId;
-            params.ScriptFile = ResumeData.ScriptFile;
-
-            this.app.ShowLoading()
-                .then(() => this.app.Nav.push(View.RunningPage, params))
-                .catch(err => console.log(err.message));
-        }
+        if (! TypeInfo.Assigned(Svc.Loki.TShell.RunningInstance))
+            return
+        this.app.ShowLoading()
+            .then(() => this.app.Nav.push(View.RunningPage, {Resume: true}))
+            .catch(err => console.log(err.message));
     }
 
     ActiveSwitch(): string
@@ -136,6 +140,12 @@ export class HomePage implements OnInit
             params.Resume = false;
 
             this.app.ShowLoading()
+                .then(() =>
+                {
+                    let Shell = Svc.Loki.TShell.Get(DeviceId);
+                    this.Asset.SetKey('def_filelist', Shell.DefaultFileList)
+                        .catch(err =>console.log(err.message));
+                })
                 .then(() => this.app.Nav.push(View.RunningPage, params))
                 .catch(err => console.log(err.message));
         }

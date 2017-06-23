@@ -41,6 +41,7 @@ export let translate_en =
         read: 'Read',
         play: 'Play',
         go: 'Go',
+        shutdown: 'Shutdown'
     },
 
     home_page:
@@ -253,6 +254,7 @@ export let translate_zh =
         confirm: '了解了',
         create: '创建',
         read: '看看',
+        shutdown: '关闭'
     },
 
     home_page:

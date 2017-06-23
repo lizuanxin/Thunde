@@ -7,110 +7,40 @@ import * as Svc from '../../../providers';
 @Component({selector: 'download-default-file', templateUrl: 'download.html'})
 export class DownloadPage implements OnDestroy
 {
-    constructor(public app: Svc.TApplication)
+    constructor(public app: Svc.TApplication, private Asset: Svc.TAssetService)
     {
     }
 
     ngOnDestroy(): void
     {
-        if (TypeInfo.Assigned(this.ShellNotifySubscription))
-        {
-            this.ShellNotifySubscription.unsubscribe();
-            this.ShellNotifySubscription = null;
-        }
-
-        this.app.HideLoading();
     }
 
-    private Close(MessageId: string)
+    Replace(FileName: string)
     {
-        if (MessageId !== '')
-            this.app.ShowError(MessageId).then(() => this.Dismiss(1));
-        else
-            this.Dismiss(1);
-    }
+        let Idx = this.FileList.indexOf(FileName);
+        if (Idx < 0 || Idx > 2)
+            Idx = 0;
 
-    private AddNotify()
-    {
-        this.ShellNotifySubscription = this.Shell.OnNotify.subscribe(
-            Notify =>
-            {
-                switch(Notify)
-                {
-                case Svc.Loki.TShellNotify.Shutdown:
-                    this.Close('shutdown');
-                    break;
-                case Svc.Loki.TShellNotify.Disconnected:
-                    this.Close('disconnected');
-                    break;
-                case Svc.Loki.TShellNotify.LowBattery:
-                    this.Close('low_battery');
-                    break;
-                case Svc.Loki.TShellNotify.HardwareError:
-                    this.Close('hardware_error');
-                    break;
-
-                case Svc.Loki.TShellNotify.Stopped:
-                    this.Close('');
-                    break;
-                }
-            },
-            err=> console.log(err.message));
-    }
-
-    Dismiss(Value: number)
-    {
-        this.OnDismiss.emit(Value);
-    }
-
-    SetDefaultFile(Value: string)
-    {
         this.app.ShowLoading()
-            .then(loading =>
-            {
-                let Index = 0;
-                if (TypeInfo.Assigned(this.Datas.FileNames))
-                    Index = this.Datas.FileNames.indexOf(Value);
-
-                if (Index === -1 || Index >= 3)
-                    Index = 0;
-
-                console.log("CurrentFile.Name:" + this.Datas.CurrentFile.Name + "  Value:" + Value);
-
-                this.Shell.SetDefaultFile(this.Datas.CurrentFile.Name, Index)
-                    .catch(err => console.error(err))
-                    .then(() => this.Dismiss(1))
-            });
+            .then(() => this._Shell.SetDefaultFile(this.RefFile.Name, Idx))
+            .catch(err => console.error(err))
+            .then(() => this.app.HideLoading())
     }
 
-    @Input() set Value(Datas)
+    @Input() set Shell(v: Svc.Loki.TShell)
     {
-        console.log("datas:" + JSON.stringify(Datas));
+        this._Shell = v;
 
-        if (TypeInfo.Assigned(Datas) && this.Datas !== Datas)
-        {
-            this.Datas = Datas;
-            if (TypeInfo.Assigned(this.Datas.FileNames))
-            {
-                this.DefaultFileList = [];
-                Svc.const_data.ScriptFile.forEach(File =>
-                    {
-                        if (this.Datas.FileNames.indexOf(File.Name) !== -1)
-                            this.DefaultFileList.push({FileName: File.Name, Description: this.app.Translate("scriptfile." + File.Name)})
-                    });
+        this.FileList = v.DefaultFileList;
+        this.RefFile = v.RefFile as Svc.TScriptFile;
 
-                console.log("DefaultFileList:" + JSON.stringify(this.DefaultFileList));
-            }
-
-            this.Shell = this.app.GetShell(this.Datas.DeviceId);
-            this.AddNotify();
-        }
+        console.log(this.FileList);
     }
 
-    @Output() OnDismiss = new EventEmitter<number>()
+    @Output() OnClose = new EventEmitter<void>()
 
-    private DefaultFileList: Array<{FileName: string, Description: string}> = [];
-    private Datas: {FileNames: Array<string>, CurrentFile: Svc.TScriptFile, DeviceId: string};
-    private Shell: Svc.Loki.TShell;
+    private _Shell: Svc.Loki.TShell;
     private ShellNotifySubscription: Subscription;
+    private FileList: Array<string>;
+    private RefFile: Svc.TScriptFile;
 }
