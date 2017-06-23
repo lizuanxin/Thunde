@@ -4,7 +4,10 @@ import {TSqliteStorage} from '../UltraCreation/Storage';
 import {TAppController} from '../UltraCreation/ng-ion/appcontroller'
 
 import * as USBSerial from '../UltraCreation/Native/UsbSerialOTG';
+import {TypeInfo} from '../UltraCreation/Core/TypeInfo'
+
 import {translate_en, translate_zh} from './localize'
+import {TShell} from './loki/shell'
 
 @Injectable()
 export class TApplication extends TAppController
@@ -51,7 +54,15 @@ export class TApplication extends TAppController
                         ts = now;
                     }
                     else
+                    {
+                        if (TypeInfo.Assigned(TShell.RunningInstance))
+                        {
+                            TShell.RunningInstance.Detach();
+                            TShell.RunningInstance = null;
+                        }
+
                         this.Platform.exitApp();
+                    }
                 })
             })
     }
