@@ -207,11 +207,15 @@ Profile ER Diagram
     // Assets
         'CREATE TABLE IF NOT EXISTS Asset(' +
             'Id VARCHAR(38) NOT NULL PRIMARY KEY,' +
-            'ObjectName VARCHAR(20) NOT NULL,' +
-            'Name VARCHAR(50) NOT NULL,' +
-            'Desc VARCHAR(50), ' +
-            'ExtraProp TEXT);',                 // extra properties persist in json
+            'ObjectName VARCHAR(50) NOT NULL,' +
+            'Name VARCHAR(100) NOT NULL,' +
+            "Owner VARCHAR(38) NULL," +
+            "Desc TEXT," +
+            'ExtraProp TEXT,' +                 // extra properties persist in json
+            'Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP);',
         'CREATE INDEX IF NOT EXISTS IDX_Asset_ObjectName ON Asset(ObjectName, Name);',
+        'CREATE INDEX IF NOT EXISTS IDX_Asset_Name ON Asset(Name);',
+        'CREATE INDEX IF NOT EXISTS IDX_Asset_Owner ON Asset(Owner);',
 
         'CREATE TABLE IF NOT EXISTS Mode(' +
             'Id VARCHAR(38) NOT NULL PRIMARY KEY,' +
