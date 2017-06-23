@@ -10,12 +10,18 @@ export class DownloadPage
 
     Replace(FileName: string)
     {
-        let Idx = this.FileList.indexOf(FileName);
+        let Idx: number;
+        if (this.FileList.length < 3)
+            Idx = this.FileList.length;
+        else
+            Idx = this.FileList.indexOf(FileName);
+
         if (Idx < 0 || Idx > 2)
             Idx = 0;
 
         this.app.ShowLoading()
             .then(() => this._Shell.SetDefaultFile(this.RefFile.Name, Idx))
+            .then(() => this.FileList = this._Shell.DefaultFileList.filter(Iter => Iter.length > 0))
             .catch(err => console.error(err))
             .then(() => this.app.HideLoading())
     }
@@ -24,7 +30,7 @@ export class DownloadPage
     {
         this._Shell = v;
 
-        this.FileList = v.DefaultFileList;
+        this.FileList = v.DefaultFileList.filter(Iter => Iter.length > 0);
         this.RefFile = v.RefFile as Svc.TScriptFile;
 
         console.log(this.FileList);

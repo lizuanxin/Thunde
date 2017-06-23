@@ -68,5 +68,5 @@
 </ion-footer>
 
 <ion-backdrop my-backdrop-deep *ngIf="ShowDownload">
-    <download-default-file [Shell]="Shell" (OnClose)="ShowDownload=false"></download-default-file>
+    <download-default-file [Shell]="Shell" (OnClose)="HideDownload()"></download-default-file>
 </ion-backdrop>

@@ -66,7 +66,7 @@ export class HomePage implements OnInit
                 .catch(err => {});
         }
         else
-            this.Asset.SetKey('def_filelist', this.DefaultFiles);
+            this.Asset.SetKey('def_filelist', this.DefaultFiles).catch(err => {});
 
         this.app.EnableHardwareBackButton();
     }
@@ -85,6 +85,7 @@ export class HomePage implements OnInit
     {
         if (! TypeInfo.Assigned(Svc.Loki.TShell.RunningInstance))
             return
+
         this.app.ShowLoading()
             .then(() => this.app.Nav.push(View.RunningPage, {Resume: true}))
             .catch(err => console.log(err.message));

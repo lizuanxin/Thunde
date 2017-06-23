@@ -129,6 +129,12 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
             .catch(err => console.error(err))
     }
 
+    HideDownload()
+    {
+        this.ShowDownload = false;
+        this.ShowDownloadBtn = this.Shell.DefaultFileList.indexOf(this.ScriptFile.Name) === -1;
+    }
+
     private Start()
     {
         this.app.ShowLoading()
