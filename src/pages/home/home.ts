@@ -57,11 +57,18 @@ export class HomePage implements OnInit
 
     ionViewWillEnter()
     {
-        this.app.EnableHardwareBackButton();
+        this.DefaultFiles = Svc.Loki.TShell.DefaultFileList;
 
-        this.Asset.GetKey('def_filelist')
-            .then(ary => this.DefaultFiles = ary as string[])
-            .catch(err => {});
+        if (this.DefaultFiles.length === 0)
+        {
+            this.Asset.GetKey('def_filelist')
+                .then(ary => this.DefaultFiles = ary as string[])
+                .catch(err => {});
+        }
+        else
+            this.Asset.SetKey('def_filelist', this.DefaultFiles);
+
+        this.app.EnableHardwareBackButton();
     }
 
     get IsStillRunning(): boolean
@@ -140,12 +147,6 @@ export class HomePage implements OnInit
             params.Resume = false;
 
             this.app.ShowLoading()
-                .then(() =>
-                {
-                    let Shell = Svc.Loki.TShell.Get(DeviceId);
-                    this.Asset.SetKey('def_filelist', Shell.DefaultFileList)
-                        .catch(err =>console.log(err.message));
-                })
                 .then(() => this.app.Nav.push(View.RunningPage, params))
                 .catch(err => console.log(err.message));
         }

@@ -1,9 +1,7 @@
 import {Injectable, Injector} from '@angular/core';
-import {Subscription} from 'rxjs/Subscription';
 
 import {TSqliteStorage} from '../UltraCreation/Storage';
 import {TAppController} from '../UltraCreation/ng-ion/appcontroller'
-import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
 
 import * as USBSerial from '../UltraCreation/Native/UsbSerialOTG';
 import {translate_en, translate_zh} from './localize'

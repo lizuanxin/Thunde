@@ -1,17 +1,10 @@
-import {Component, OnDestroy, Input, Output, EventEmitter} from '@angular/core';
-import {Subscription} from 'rxjs/Subscription'
-
-import {TypeInfo} from '../../../UltraCreation/Core/TypeInfo';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import * as Svc from '../../../providers';
 
 @Component({selector: 'download-default-file', templateUrl: 'download.html'})
-export class DownloadPage implements OnDestroy
+export class DownloadPage
 {
-    constructor(public app: Svc.TApplication, private Asset: Svc.TAssetService)
-    {
-    }
-
-    ngOnDestroy(): void
+    constructor(public app: Svc.TApplication)
     {
     }
 
@@ -40,7 +33,6 @@ export class DownloadPage implements OnDestroy
     @Output() OnClose = new EventEmitter<void>()
 
     private _Shell: Svc.Loki.TShell;
-    private ShellNotifySubscription: Subscription;
     private FileList: Array<string>;
     private RefFile: Svc.TScriptFile;
 }

@@ -197,8 +197,6 @@ export class TShell extends TAbstractShell
     Detach(): void
     {
         (this.constructor as typeof TShell).Cached.delete(this.DeviceId);
-
-        this.RefFile = null;
         this.StopTicking();
 
         if (TypeInfo.Assigned(this.Proxy))
