@@ -4,8 +4,8 @@ import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 import {TSqlQuery, TSqliteStorage} from '../../UltraCreation/Storage';
 
 import {TDistributeService} from '../distribute';
-import {const_data, IBodyPart, ICategory, IScriptFile, Loki} from '..'
-import {TBodyPart, TCategory, TScriptFile, TScriptFileDesc} from './asset.scriptfile'
+import {const_data, IBodyPart, Loki} from '..'
+import {TCategory, TScriptFile, TScriptFileDesc} from './asset.scriptfile'
 
 module Queries
 {
@@ -119,18 +119,6 @@ export class TAssetService
             F.Assign(DataSet.Curr);
             F.BodyParts = FileBodyList.get(F.Id);
 
-            /*
-            if ((! TypeInfo.Assigned(F.Duration) || F.Duration === 0) && TypeInfo.Assigned(F.Content))
-            {
-                let LokiFile = new Loki.TFile();
-                LokiFile.LoadFrom(F.Content);
-
-                F.Edit();
-                F.Duration = Math.trunc(((LokiFile.TimeEst() / 1000) + 30) / 60) * 60;
-                this.Save(F);
-            }
-            */
-
             await this.Distribute.ReadScriptFile(F);
             if (F.IsEditing)
             {
@@ -203,7 +191,6 @@ export class TAssetService
     }
 
     private static _Categories: Array<TCategory> = [];
-
     private Storage: TSqliteStorage;
     private _FileBodyList = new Map<string, Array<IBodyPart>>();
 }

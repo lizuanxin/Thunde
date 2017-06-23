@@ -1,12 +1,11 @@
 import {TLangAsset} from './asset.types'
 
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
-import {TGuid} from '../../UltraCreation/Core/Guid'
 import {HexConv} from '../../UltraCreation/Core/Conv'
 import {TBase64Encoding} from '../../UltraCreation/Encoding'
-import {IPersistable, TPersistable, TPersistPropRule} from '../../UltraCreation/Core/Persistable'
+import {TPersistPropRule} from '../../UltraCreation/Core/Persistable'
 
-import {const_data, IBodyPart, ICategory, IScriptFile} from '..'
+import {IBodyPart, ICategory, IScriptFile} from '..'
 
 /*　TBody */
 
