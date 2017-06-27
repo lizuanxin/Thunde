@@ -68,8 +68,20 @@ export class TShell extends TAbstractShell
 
             this.Cached.set(DeviceId, RetVal);
         }
-        else
-            console.log('shell cache hit');
+
+        console.log('shell cache hit.RunningInstance:' + this.RunningInstance);
+        if (TypeInfo.Assigned(this.RunningInstance) && this.RunningInstance !== RetVal)
+        {
+            if (this.RunningInstance.IsAttached)
+            {
+                this.RunningInstance.StopOutput()
+                    .then(() => this.RunningInstance.Detach())
+                    .catch(err => console.log(err.message))
+                    .then(() => this.RunningInstance = null);
+            }
+            else
+                this.RunningInstance = null;
+        }
 
         return RetVal;
     }
@@ -196,16 +208,31 @@ export class TShell extends TAbstractShell
 
     Detach(): void
     {
-        (this.constructor as typeof TShell).Cached.delete(this.DeviceId);
-        this.StopTicking();
-
-        if (TypeInfo.Assigned(this.Proxy))
+        if (TypeInfo.Assigned(TShell.RunningInstance) && TShell.RunningInstance !== this)
         {
-            this.Proxy.Detach();
-            this.Proxy = null;
+            TShell.RunningInstance.StopTicking();
+
+            if (TypeInfo.Assigned(TShell.RunningInstance.Proxy))
+            {
+                TShell.RunningInstance.Proxy.Detach();
+                TShell.RunningInstance.Proxy = null;
+            }
+
+            TShell.RunningInstance = null;
+        }
+        else
+        {
+            this.StopTicking();
+
+            if (TypeInfo.Assigned(this.Proxy))
+            {
+                this.Proxy.Detach();
+                this.Proxy = null;
+            }
         }
 
-        console.log('Shell detached');
+        TShell.Cached.delete(this.DeviceId);
+        console.log('Shell detached.DeviceId:' + this.DeviceId);
     }
 
     Connect(): Promise<void>
@@ -310,8 +337,8 @@ export class TShell extends TAbstractShell
 
     StopOutput()
     {
-        return this.Execute('>osto', REQUEST_TIMEOUT, Line => this.IsStatusRetVal(Line))
-            .then(() => this.StopTicking());
+        this.StopTicking();
+        return this.Execute('>osto', REQUEST_TIMEOUT, Line => this.IsStatusRetVal(Line));
     }
 
     CatFile(s: IScriptFile): Promise<Subject<number>>
@@ -587,9 +614,6 @@ export class TShell extends TAbstractShell
     StopTicking(): void
     {
         this._Ticking = 0;
-
-        if ((this.constructor as typeof TShell).RunningInstance === this)
-            (this.constructor as typeof TShell).RunningInstance = null;
 
         if (TypeInfo.Assigned(this.TickIntervalId))
         {
