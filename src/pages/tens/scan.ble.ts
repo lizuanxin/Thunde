@@ -3,6 +3,7 @@ import {Subscription} from 'rxjs/Subscription'
 
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 import * as Svc from '../../providers'
+import * as BLE from '../../UltraCreation/Native/BluetoothLE';
 
 @Component({
   selector: 'scan-ble',
@@ -41,15 +42,15 @@ export class ScanBleComp implements OnInit, OnDestroy
             let Shell = Svc.Loki.TShell.Get('USB');
 
             this.app.ShowLoading()
-                    .then(() => Shell.Connect())
-                    .then(() => Shell.StopOutput())
-                    .then(() => this.OnSelection.emit('USB'))
-                    .catch(err =>
-                    {
-                        this.app.HideLoading()
-                            .then(() => this.app.ShowError(err));
-                        this.OnSelection.emit(null);
-                    });
+                .then(() => Shell.Connect())
+                .then(() => Shell.StopOutput())
+                .then(() => this.OnSelection.emit('USB'))
+                .catch(err =>
+                {
+                    this.app.HideLoading()
+                        .then(() => this.app.ShowError(err));
+                    this.OnSelection.emit(null);
+                });
         }
         else
         {
@@ -122,8 +123,8 @@ export class ScanBleComp implements OnInit, OnDestroy
         this.ScanSubscription = Svc.Loki.TShell.StartScan().subscribe(
             next =>
                 this.DeviceList = next,
-            (err) =>
-                console.error(err),
+            err =>
+                console.error(err.message),
             () =>
             {
                 if (TypeInfo.Assigned(this.ScanSubscription))
