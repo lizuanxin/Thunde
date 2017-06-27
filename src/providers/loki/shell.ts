@@ -211,8 +211,8 @@ export class TShell extends TAbstractShell
             this.Proxy = null;
         }
 
-        (this.constructor as typeof TShell).Cached.delete(this.DeviceId);
-        console.log('Shell detached.DeviceId:' + this.DeviceId);
+        if ((this.constructor as typeof TShell).Cached.delete(this.DeviceId))
+            console.log('Shell detached.DeviceId:' + this.DeviceId);
     }
 
     Connect(): Promise<void>

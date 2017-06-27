@@ -69,19 +69,20 @@ export class HomePage implements OnInit
             this.Asset.SetKey('def_filelist', this.DefaultFiles).catch(err => {});
 
         this.app.EnableHardwareBackButton();
+        this.CheckIsStillRunning();
     }
 
-    get IsStillRunning(): boolean
+    private CheckIsStillRunning()
     {
-        return TypeInfo.Assigned(Svc.Loki.TShell.RunningInstance);
+        this.IsStillRunning = TypeInfo.Assigned(Svc.Loki.TShell.RunningInstance);
+        if (this.IsStillRunning)
+            setTimeout(() => this.CheckIsStillRunning(), 500);
     }
 
     get TickingDownHint(): string
     {
-        if (this.IsStillRunning)
+        if (TypeInfo.Assigned(Svc.Loki.TShell.RunningInstance))
             return Svc.Loki.TShell.RunningInstance.TickingDownHint;
-        else
-            return '';
     }
 
     Resume()
@@ -168,6 +169,7 @@ export class HomePage implements OnInit
     private ActiveTab: TTabItem;
 
     private DeviceScanning = false;
+    private IsStillRunning = false;
 }
 
 class TTabItem
