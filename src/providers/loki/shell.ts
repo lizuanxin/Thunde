@@ -69,18 +69,13 @@ export class TShell extends TAbstractShell
             this.Cached.set(DeviceId, RetVal);
         }
 
-        console.log('shell cache hit.RunningInstance:' + this.RunningInstance);
         if (TypeInfo.Assigned(this.RunningInstance) && this.RunningInstance !== RetVal)
         {
-            if (this.RunningInstance.IsAttached)
-            {
-                this.RunningInstance.StopOutput()
-                    .then(() => this.RunningInstance.Detach())
-                    .catch(err => console.log(err.message))
-                    .then(() => this.RunningInstance = null);
-            }
-            else
-                this.RunningInstance = null;
+            let Instance = this.RunningInstance;
+            Instance.StopOutput()
+                .then(() => Instance.Detach())
+                .catch(err => console.log(err.message))
+                .then(() => this.RunningInstance = null);
         }
 
         return RetVal;
@@ -208,30 +203,15 @@ export class TShell extends TAbstractShell
 
     Detach(): void
     {
-        if (TypeInfo.Assigned(TShell.RunningInstance) && TShell.RunningInstance !== this)
+        this.StopTicking();
+
+        if (TypeInfo.Assigned(this.Proxy))
         {
-            TShell.RunningInstance.StopTicking();
-
-            if (TypeInfo.Assigned(TShell.RunningInstance.Proxy))
-            {
-                TShell.RunningInstance.Proxy.Detach();
-                TShell.RunningInstance.Proxy = null;
-            }
-
-            TShell.RunningInstance = null;
-        }
-        else
-        {
-            this.StopTicking();
-
-            if (TypeInfo.Assigned(this.Proxy))
-            {
-                this.Proxy.Detach();
-                this.Proxy = null;
-            }
+            this.Proxy.Detach();
+            this.Proxy = null;
         }
 
-        TShell.Cached.delete(this.DeviceId);
+        (this.constructor as typeof TShell).Cached.delete(this.DeviceId);
         console.log('Shell detached.DeviceId:' + this.DeviceId);
     }
 
@@ -614,6 +594,7 @@ export class TShell extends TAbstractShell
     StopTicking(): void
     {
         this._Ticking = 0;
+        (this.constructor as typeof TShell).RunningInstance = null;
 
         if (TypeInfo.Assigned(this.TickIntervalId))
         {
@@ -657,6 +638,7 @@ export class TShell extends TAbstractShell
     {
         if (Proxy !== this.Proxy)
             return;
+
         this._DeviceNotification(Proxy, ['NOTIFY', 'disconnect'])
     }
 
@@ -697,6 +679,41 @@ export class TShell extends TAbstractShell
 
         switch(Params[1])
         {
+        case 'disconnect':
+            // this.StopTicking();
+            this.OnNotify.next(TShellNotify.Disconnected);
+            this.Detach();
+            break;
+
+        case 'shutdown':
+            // this.StopTicking();
+            this.OnNotify.next(TShellNotify.Shutdown);
+            this.Detach();
+            break;
+
+        case 'noload':
+            // this.StopTicking();
+            this.OnNotify.next(TShellNotify.NoLoad);
+            this.Detach();
+            break;
+
+        case 'low': // battery':
+            // this.StopTicking();
+            this.OnNotify.next(TShellNotify.LowBattery);
+            this.Detach();
+            break;
+
+        case 'error': // stop':
+            // this.StopTicking();
+            this.OnNotify.next(TShellNotify.HardwareError);
+            this.Detach();
+            break;
+
+        case 'stop':
+            this.StopTicking();
+            this.OnNotify.next(TShellNotify.Stopped);
+            break;
+
         case 'strength':
             this._Intensity = parseInt(Params[2]);
             if (this._Intensity >= 0)
@@ -708,38 +725,8 @@ export class TShell extends TAbstractShell
             {
                 // continue to shutdown
             }
-        case 'shutdown':
-            this.StopTicking();
-            this.OnNotify.next(TShellNotify.Shutdown);
-            break;
-
-        case 'disconnect':
-            this.StopTicking();
-            this.OnNotify.next(TShellNotify.Disconnected);
-            break;
-
-        case 'noload':
-            this.StopTicking();
-            this.OnNotify.next(TShellNotify.NoLoad);
-            break;
-
-        case 'low': // battery':
-            this.StopTicking();
-            this.OnNotify.next(TShellNotify.LowBattery);
-            break;
-
-        case 'error': // stop':
-            this.StopTicking();
-            this.OnNotify.next(TShellNotify.HardwareError);
-            break;
-
-        case 'stop':
-            this.StopTicking();
-            this.OnNotify.next(TShellNotify.Stopped);
-            break;
         }
     }
-
 }
 
 /* IProxyShell */

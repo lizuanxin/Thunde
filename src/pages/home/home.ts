@@ -73,18 +73,21 @@ export class HomePage implements OnInit
 
     get IsStillRunning(): boolean
     {
-        return TypeInfo.Assigned(Svc.Loki.TShell.RunningInstance)
+        return TypeInfo.Assigned(Svc.Loki.TShell.RunningInstance);
     }
 
     get TickingDownHint(): string
     {
-        return Svc.Loki.TShell.RunningInstance.TickingDownHint;
+        if (this.IsStillRunning)
+            return Svc.Loki.TShell.RunningInstance.TickingDownHint;
+        else
+            return '';
     }
 
     Resume()
     {
-        if (! TypeInfo.Assigned(Svc.Loki.TShell.RunningInstance))
-            return
+        if (! this.IsStillRunning)
+            return;
 
         this.app.ShowLoading()
             .then(() => this.app.Nav.push(View.RunningPage, {Resume: true}))

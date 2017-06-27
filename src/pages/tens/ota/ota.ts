@@ -54,6 +54,7 @@ export class OtaPage implements AfterViewInit, OnDestroy
     ngOnDestroy()
     {
         PowerManagement.Release();
+
         this.Shell.Detach();
         this.app.HideLoading();
     }
