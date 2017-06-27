@@ -3,7 +3,6 @@ import {Subscription} from 'rxjs/Subscription'
 
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 import * as Svc from '../../providers'
-import * as BLE from '../../UltraCreation/Native/BluetoothLE';
 
 @Component({
   selector: 'scan-ble',
