@@ -1,12 +1,12 @@
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 import {TAbstractShell} from '../../UltraCreation/Native/Abstract.Shell';
 
-import {TConnectablePerpherial, PerpherialFactory} from './asset.perpherial';
+import {TConnectablePeripheral, PeripheralFactory} from './asset.peripheral';
 import {TShell} from '../loki/shell';
 
-/* TTensPerpherial */
+/* TTensPeripheral */
 
-export class TTensPerpherial extends TConnectablePerpherial
+export class TTensPeripheral extends TConnectablePeripheral
 {
     /// @override
     static ClassName = 'Tens';
@@ -32,7 +32,7 @@ export class TTensPerpherial extends TConnectablePerpherial
 
 /* TBluetens */
 
-export class TBluetens extends TConnectablePerpherial
+export class TBluetens extends TConnectablePeripheral
 {
     /// @override
     static ClassName = 'Bluetens';
@@ -56,5 +56,5 @@ export class TBluetens extends TConnectablePerpherial
     }
 };
 
-PerpherialFactory.Register(TTensPerpherial);
-PerpherialFactory.Register(TBluetens);
+PeripheralFactory.Register(TTensPeripheral);
+PeripheralFactory.Register(TBluetens);

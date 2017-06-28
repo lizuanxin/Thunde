@@ -119,6 +119,9 @@ export class ScanBleComp implements OnInit, OnDestroy
 
     private StartScan()
     {
+        if (TypeInfo.Assigned(Svc.Loki.TShell.RunningInstance))
+            return this.SelectionDevice(Svc.Loki.TShell.RunningInstance.DeviceId);
+
         this.ScanSubscription = Svc.Loki.TShell.StartScan().subscribe(
             next =>
                 this.DeviceList = next,

@@ -11,37 +11,37 @@ import {TLV, VALUE_TYPE} from './tlv.types'
 export const PERPHERIAL_TIMEOUT = 6000;
 const ULTRACREATION_AD_FLAG = 0xFFBC;
 
-/* TPerpherial */
+/* TPeripheral */
 
-export class TPerpherial extends TAsset
+export class TPeripheral extends TAsset
 {
     static ClassName: string = '';
     static ProductName: string = '';
-    static AdName: string[] = [];       // perpherial discover adversting name(s)
+    static AdName: string[] = [];       // peripheral discover adversting name(s)
     static AdFlag = ULTRACREATION_AD_FLAG;
 
-    static IsImaginative = false;       // perpherial is pure imaginative no physically exist
-    static IsVisible = true;            // perpherial is visiable to discover UI
+    static IsImaginative = false;       // peripheral is pure imaginative no physically exist
+    static IsVisible = true;            // peripheral is visiable to discover UI
 
 /* Instance */
     constructor()
     {
         super('');
 
-        let Type = (this.constructor as typeof TPerpherial);
+        let Type = (this.constructor as typeof TPeripheral);
 
-        this.ObjectName = 'Perpherial.' + Type.ClassName;
+        this.ObjectName = 'Peripheral.' + Type.ClassName;
         this.Name = Type.ProductName;
     }
 
     get IsImaginative()
     {
-        return (this.constructor as typeof TPerpherial).IsImaginative;
+        return (this.constructor as typeof TPeripheral).IsImaginative;
     }
 
     get IsVisible()
     {
-        return (this.constructor as typeof TPerpherial).IsVisible;
+        return (this.constructor as typeof TPeripheral).IsVisible;
     }
 
     get IsObjectSaved()
@@ -80,7 +80,7 @@ export class TPerpherial extends TAsset
 
         if (! IsOnline)
         {
-            PerpherialFactory.UpdateAggregate(this, []);
+            PeripheralFactory.UpdateAggregate(this, []);
             // notify disconnect
             this.OnValueUpdate.next(null);
         }
@@ -134,7 +134,7 @@ export class TPerpherial extends TAsset
 
     async Repack(Stream: TStream): Promise<void>
     {
-        await Stream.WriteUint16((this.constructor as typeof TPerpherial).AdFlag);
+        await Stream.WriteUint16((this.constructor as typeof TPeripheral).AdFlag);
         await Stream.WriteUint16(this.Version);
         await Stream.WriteUint24(parseInt('0x' + this.Id) % 16777216);
 
@@ -147,14 +147,14 @@ export class TPerpherial extends TAsset
     LastActivity = new Date().getTime();
 
     ValueHash = new Map<number, TLV>();
-    Status = new TPerpherialStatus();
+    Status = new TPeripheralStatus();
 
     OnValueUpdate = new Subject<TLV | null>();
 };
 
-/* TPerpherialStatus */
+/* TPeripheralStatus */
 
-export class TPerpherialStatus
+export class TPeripheralStatus
 {
     IsOnline?: boolean;
     RSSI?: number;
@@ -162,25 +162,25 @@ export class TPerpherialStatus
     IsBusying?: boolean;
 }
 
-/* TAggregatePerpherial */
+/* TAggregatePeripheral */
 
-export abstract class TAggregatePerpherial extends TPerpherial
+export abstract class TAggregatePeripheral extends TPeripheral
 {
-    static AggregateType: typeof TPerpherial;
+    static AggregateType: typeof TPeripheral;
     static AggregatedTimeout = PERPHERIAL_TIMEOUT;
-    /// @override: the aggregate perpherial usually to be pure imaginative
+    /// @override: the aggregate peripheral usually to be pure imaginative
     static IsImaginative = true;
 
 /* Instance */
-    /// @override & overload: aggregate perpherial can only aggregate persistent types
-    UpdateTLValues(ValueList: Array<TLV>, Ref: TPerpherial): Array<TLV>
+    /// @override & overload: aggregate peripheral can only aggregate persistent types
+    UpdateTLValues(ValueList: Array<TLV>, Ref: TPeripheral): Array<TLV>
     {
         let Now = new Date().getTime();
-        let AggregatedTimeout = (this.constructor as typeof TAggregatePerpherial).AggregatedTimeout;
+        let AggregatedTimeout = (this.constructor as typeof TAggregatePeripheral).AggregatedTimeout;
 
         this.Refs.add(Ref);
         // remove discover timeouts
-        let Timeouts: Array<TPerpherial> = [];
+        let Timeouts: Array<TPeripheral> = [];
         this.Refs.forEach(Iter =>
         {
             if (Now - Iter.LastActivity > AggregatedTimeout)
@@ -201,15 +201,15 @@ export abstract class TAggregatePerpherial extends TPerpherial
     }
 
     /// @override: derived class must to implements to update OnAggregateUpdate && OnValueChanged subject
-    protected abstract UpdateValue(v: TLV | null, Ref: TPerpherial, Now: number, Timeouts: Array<TPerpherial>);
+    protected abstract UpdateValue(v: TLV | null, Ref: TPeripheral, Now: number, Timeouts: Array<TPeripheral>);
 
-    protected Refs = new Set<TPerpherial>();
+    protected Refs = new Set<TPeripheral>();
     OnAggregateUpdate = new Subject<any>();
 }
 
-/* TConnectablePerpherial */
+/* TConnectablePeripheral */
 
-export abstract class TConnectablePerpherial extends TPerpherial
+export abstract class TConnectablePeripheral extends TPeripheral
 {
     abstract get Shell(): TAbstractShell
 
@@ -224,67 +224,67 @@ export abstract class TConnectablePerpherial extends TPerpherial
     }
 }
 
-/* TProxyPerpherial */
+/* TProxyPeripheral */
 
-export abstract class TProxyPerpherial extends TConnectablePerpherial
+export abstract class TProxyPeripheral extends TConnectablePeripheral
 {
-    ProxyTo: TPerpherial;
+    ProxyTo: TPeripheral;
 }
 
-/* PerpherialFactory */
+/* PeripheralFactory */
 
-export class PerpherialFactory
+export class PeripheralFactory
 {
-    static Register(PerpherialClass: typeof TPerpherial)
+    static Register(PeripheralClass: typeof TPeripheral)
     {
-        if (! TypeInfo.Assigned(PerpherialClass.ClassName) || PerpherialClass.ClassName === '')
-            throw new ENotImplemented('Perpherial must implement the ClassName')
+        if (! TypeInfo.Assigned(PeripheralClass.ClassName) || PeripheralClass.ClassName === '')
+            throw new ENotImplemented('Peripheral must implement the ClassName')
 
-        let ObjectName = 'Perpherial.' + PerpherialClass.ClassName;
-        this.Repository.set(ObjectName, PerpherialClass);
+        let ObjectName = 'Peripheral.' + PeripheralClass.ClassName;
+        this.Repository.set(ObjectName, PeripheralClass);
 
-        console.log('PerpherialFactory: ' + ObjectName + ' registered')
+        console.log('PeripheralFactory: ' + ObjectName + ' registered')
     }
 
-    static GetCached(Id: string): TPerpherial
+    static GetCached(Id: string): TPeripheral
     {
         return this.Cached.get(Id);
     }
 
-    static Cache(Perpherial: TPerpherial): void
+    static Cache(Peripheral: TPeripheral): void
     {
-        this.Cached.set(Perpherial.Id, Perpherial);
+        this.Cached.set(Peripheral.Id, Peripheral);
 
-        if (Perpherial instanceof TAggregatePerpherial)
-            this.CachedAggregate.push(Perpherial);
+        if (Peripheral instanceof TAggregatePeripheral)
+            this.CachedAggregate.push(Peripheral);
     }
 
     static Uncache(Id: string): boolean
-    static Uncache(Perpherial: TPerpherial): boolean
-    static Uncache(Perpherial: TPerpherial | string): boolean
+    static Uncache(Peripheral: TPeripheral): boolean
+    static Uncache(Peripheral: TPeripheral | string): boolean
     {
-        if (TypeInfo.IsString(Perpherial))
-            return this.Cached.delete(Perpherial);
+        if (TypeInfo.IsString(Peripheral))
+            return this.Cached.delete(Peripheral);
         else
-            return this.Cached.delete(Perpherial.Id);
+            return this.Cached.delete(Peripheral.Id);
     }
 
-    static ExistsClass(Cls: typeof TPerpherial): boolean
+    static ExistsClass(Cls: typeof TPeripheral): boolean
     static ExistsClass(ClassName: string): boolean
-    static ExistsClass(NameOrCls: string | typeof TPerpherial): boolean
+    static ExistsClass(NameOrCls: string | typeof TPeripheral): boolean
     {
-        let PerpherialClass: typeof TPerpherial;
+        let PeripheralClass: typeof TPeripheral;
         if (TypeInfo.IsString(NameOrCls))
-            PerpherialClass = this.Repository.get('Perpherial.' + NameOrCls);
+            PeripheralClass = this.Repository.get('Peripheral.' + NameOrCls);
         else
-            PerpherialClass = NameOrCls
+            PeripheralClass = NameOrCls
 
-        return TypeInfo.Assigned(PerpherialClass) && this.CachedClass.has(PerpherialClass);
+        return TypeInfo.Assigned(PeripheralClass) && this.CachedClass.has(PeripheralClass);
     }
 
-    static Get(Id: string, Cls: typeof TPerpherial): any | null
-    static Get(Id: string, ObjectName: string): TPerpherial | null
-    static Get(Id: string, NameOrCls: string | typeof TPerpherial): TPerpherial | null
+    static Get(Id: string, Cls: typeof TPeripheral): any | null
+    static Get(Id: string, ObjectName: string): TPeripheral | null
+    static Get(Id: string, NameOrCls: string | typeof TPeripheral): TPeripheral | null
     {
         let Obj = this.Cached.get(Id);
 
@@ -294,17 +294,17 @@ export class PerpherialFactory
             if (TypeInfo.IsString(NameOrCls))
                 ObjectName = NameOrCls;
             else
-                ObjectName = 'Perpherial.' + NameOrCls.ClassName;
+                ObjectName = 'Peripheral.' + NameOrCls.ClassName;
 
-            let PerpherialClass = this.Repository.get(ObjectName);
+            let PeripheralClass = this.Repository.get(ObjectName);
 
-            if (TypeInfo.Assigned(PerpherialClass))
+            if (TypeInfo.Assigned(PeripheralClass))
             {
-                Obj = new PerpherialClass();
+                Obj = new PeripheralClass();
                 Obj.Id = Id;
 
                 this.Cache(Obj);
-                this.CachedClass.add(PerpherialClass);
+                this.CachedClass.add(PeripheralClass);
             }
             else
                 Obj = null;
@@ -313,7 +313,7 @@ export class PerpherialFactory
         return Obj;
     }
 
-    static GetFromAd(AdName: string, data: Uint8Array, ScanId: string): TPerpherial | null
+    static GetFromAd(AdName: string, data: Uint8Array, ScanId: string): TPeripheral | null
     {
         let ad = 0;
         let ver = 0;
@@ -335,52 +335,52 @@ export class PerpherialFactory
             }
         };
 
-        let Perpherial: TPerpherial = this.Cached.get(id);
+        let Peripheral: TPeripheral = this.Cached.get(id);
 
-        if (! TypeInfo.Assigned(Perpherial))
+        if (! TypeInfo.Assigned(Peripheral))
         {
-            let Repository = PerpherialFactory.Repository.entries();
+            let Repository = PeripheralFactory.Repository.entries();
             for (let Iter = Repository.next(); ! Iter.done; Iter = Repository.next())
             {
-                let PerpherialClass = Iter.value[1] as (typeof TPerpherial);
+                let PeripheralClass = Iter.value[1] as (typeof TPeripheral);
 
-                if ((PerpherialClass.AdFlag !== ULTRACREATION_AD_FLAG && PerpherialClass.AdFlag === ad)
-                    || (PerpherialClass.AdName.indexOf(AdName) !== -1))
+                if ((PeripheralClass.AdFlag !== ULTRACREATION_AD_FLAG && PeripheralClass.AdFlag === ad)
+                    || (PeripheralClass.AdName.indexOf(AdName) !== -1))
                 {
-                    Perpherial = new PerpherialClass();
-                    Perpherial.Id = id;
-                    Perpherial.Name = PerpherialClass.ProductName;
+                    Peripheral = new PeripheralClass();
+                    Peripheral.Id = id;
+                    Peripheral.Name = PeripheralClass.ProductName;
 
-                    this.Cache(Perpherial);
-                    this.CachedClass.add(PerpherialClass);
+                    this.Cache(Peripheral);
+                    this.CachedClass.add(PeripheralClass);
                 }
             }
         }
 
-        if (TypeInfo.Assigned(Perpherial))
+        if (TypeInfo.Assigned(Peripheral))
         {
-            Perpherial.Id = id;
-            Perpherial.Version = ver;
+            Peripheral.Id = id;
+            Peripheral.Version = ver;
 
-            if (Perpherial instanceof TConnectablePerpherial)
-                Perpherial.ConnectId = connect_id;
+            if (Peripheral instanceof TConnectablePeripheral)
+                Peripheral.ConnectId = connect_id;
 
-            let Updated = Perpherial.UpdateTLValues(TLV.Decode(data, 7, 1, 1));
+            let Updated = Peripheral.UpdateTLValues(TLV.Decode(data, 7, 1, 1));
             if (Updated.length > 0)
-               this.UpdateAggregate(Perpherial, Updated);
+               this.UpdateAggregate(Peripheral, Updated);
 
-            return Perpherial;
+            return Peripheral;
         }
         else
             return null;
     }
 
-    static UpdateAggregate(Ref: TPerpherial, ValueList: Array<TLV>)
+    static UpdateAggregate(Ref: TPeripheral, ValueList: Array<TLV>)
     {
-        let Type = Ref.constructor as typeof TPerpherial;
+        let Type = Ref.constructor as typeof TPeripheral;
         this.CachedAggregate.forEach(Iter =>
         {
-            let AggregateType = Iter.constructor as typeof TAggregatePerpherial;
+            let AggregateType = Iter.constructor as typeof TAggregatePeripheral;
 
             if (AggregateType.AggregateType === Type)
                 Iter.UpdateTLValues(ValueList, Ref);
@@ -391,18 +391,18 @@ export class PerpherialFactory
     {
         let RetVal: string[] = [];
 
-        let Repository = PerpherialFactory.Repository.values();
+        let Repository = PeripheralFactory.Repository.values();
         for (let Iter = Repository.next(); ! Iter.done; Iter = Repository.next())
         {
-            let PerpherialClass = Iter.value as (typeof TPerpherial)
-            RetVal = RetVal.concat(PerpherialClass.AdName);
+            let PeripheralClass = Iter.value as (typeof TPeripheral)
+            RetVal = RetVal.concat(PeripheralClass.AdName);
         }
         return RetVal;
     }
 
-    private static Cached = new Map<string, TPerpherial>();
-    private static CachedAggregate = new Array<TAggregatePerpherial>();
-    private static CachedClass = new Set<typeof TPerpherial>();
+    private static Cached = new Map<string, TPeripheral>();
+    private static CachedAggregate = new Array<TAggregatePeripheral>();
+    private static CachedClass = new Set<typeof TPeripheral>();
 
-    static Repository = new Map<string, typeof TPerpherial>();
+    static Repository = new Map<string, typeof TPeripheral>();
 }
