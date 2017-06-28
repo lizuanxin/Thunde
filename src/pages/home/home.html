@@ -1,16 +1,31 @@
 <ion-header no-shadow no-border >
   <ion-toolbar color="color-primary">
     <ion-row align-items-center>
-      <ion-col col-2 align-self-center text-center no-padding>
+      <ion-col col-3 align-self-center text-center no-padding>
         <button ion-button clear icon-only color="light" tappable>
             <ion-icon [ngClass]="app.SkinColor" app-icon>&#xe908;</ion-icon>
         </button>
       </ion-col>
-      <ion-col col-8 f-2-0 align-self-center text-center text-light no-padding>
+      <ion-col col-6 f-2-0 align-self-center text-center text-light no-padding>
           {{'home_page.title'|translate}}
       </ion-col>
-      <ion-col *ngIf="IsStillRunning" col-2 align-self-center text-center text-light no-padding (click)="Resume()">
-          {{TickingDownHint}}
+      <ion-col *ngIf="IsStillRunning" col-3 align-self-center text-center text-light no-padding (click)="Resume()">
+          <div style="display: flex; flex-wrap:wrap; align-items:center; justify-content: start">
+              <div style="display:flex;">
+                  {{TickingDownHint}}
+              </div>
+              <div style="display:flex; margin-left:1vw">
+                <div class="loader">
+                    <div class="line-scale-pulse-out">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+              </div>
+          </div>
       </ion-col>
     </ion-row>
   </ion-toolbar>
