@@ -11,10 +11,7 @@
       </ion-col>
       <ion-col *ngIf="IsStillRunning" col-3 align-self-center text-center text-light no-padding (click)="Resume()">
           <div style="display: flex; flex-wrap:wrap; align-items:center; justify-content: start">
-              <div style="display:flex; width:40px">
-                  {{TickingDownHint}}
-              </div>
-              <div style="display:flex; margin-left:1vw">
+              <div style="display:flex;">
                 <div class="loader">
                     <div class="line-scale-pulse-out">
                         <div></div>
@@ -24,6 +21,9 @@
                         <div></div>
                     </div>
                 </div>
+              </div>
+              <div style="display:flex; margin-left:2vw">
+                  {{TickingDownHint}}
               </div>
           </div>
       </ion-col>
