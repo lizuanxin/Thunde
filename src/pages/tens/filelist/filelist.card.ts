@@ -25,7 +25,7 @@ import * as Svc from '../../../providers';
                             </ion-col>
                             <ion-col col-12 style="height:1.4vh">
                             </ion-col>
-                            <ion-col col-12 align-self-center text-center>
+                            <ion-col col-12 align-self-center text-center style="background-color:transparent">
                                 <ion-icon app-icon class="nav-icon">&#xe929;</ion-icon>
                             </ion-col>
                         </ion-row>
