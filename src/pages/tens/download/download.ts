@@ -20,7 +20,7 @@ export class DownloadPage
             Idx = 0;
 
         this.app.ShowLoading()
-            .then(() => this._Shell.SetDefaultFile(this.RefFile.Name, Idx))
+            .then(() => this._Shell.SetDefaultFile(this.RefFile.Name as string, Idx))
             .then(() => this.FileList = this._Shell.DefaultFileList.filter(Iter => Iter.length > 0))
             .catch(err => console.error(err))
             .then(() => this.app.HideLoading())
