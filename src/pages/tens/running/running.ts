@@ -189,7 +189,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
         if (TypeInfo.Assigned(this.ShellNotifySubscription))
         {
             this.ShellNotifySubscription.unsubscribe();
-            this.ShellNotifySubscription = null;
+            this.ShellNotifySubscription = undefined;
         }
     }
 
@@ -204,7 +204,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
     Completed: boolean = false;
 
     Shell: Svc.Loki.TShell;
-    private ShellNotifySubscription: Subscription;
+    private ShellNotifySubscription: Subscription | undefined;
 
     private Downloading = false;
     private ClosingTimerId: any;

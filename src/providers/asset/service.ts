@@ -150,8 +150,7 @@ export class TAssetService
                     this._FileBodyList.set(DataSet.Curr.ScriptFile_Id, new Array<IBodyPart>());
                     entry = this._FileBodyList.get(DataSet.Curr.ScriptFile_Id);
                 }
-                else
-                    entry.push(DataSet.Curr);
+                entry.push(DataSet.Curr);
 
                 DataSet.Next();
             }
