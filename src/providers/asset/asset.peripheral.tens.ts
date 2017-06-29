@@ -26,7 +26,7 @@ export class TTensPeripheral extends TConnectablePeripheral
         if (TypeInfo.Assigned(this.ConnectId))
             return TShell.Get(this.ConnectId);
         else
-            return TShell.Get(this.Id);
+            return TShell.Get(this.Id as string);
     }
 };
 
@@ -52,7 +52,7 @@ export class TBluetens extends TConnectablePeripheral
         if (TypeInfo.Assigned(this.ConnectId))
             return TShell.Get(this.ConnectId);
         else
-            return TShell.Get(this.Id);
+            return TShell.Get(this.Id as string);
     }
 };
 

@@ -11,7 +11,7 @@ export namespace Initialization
 {
     export function Execute(): Promise<void>
     {
-        const db_version = '24';
+        const db_version = '25';
         let Storage = new TSqliteStorage(const_data.DatabaseName);
 
         let DevOrProd: Promise<any>;

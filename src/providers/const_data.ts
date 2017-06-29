@@ -67,8 +67,8 @@ export namespace const_data
 
     export const BodyCategory =
     {
-        all: null,
-        none: [],
+        all: null as any,
+        none: [] as any[],
 
         back: [Body.shoulder, Body.neck, Body.back],
         forelimb: [Body.upperarm, Body.forearm],

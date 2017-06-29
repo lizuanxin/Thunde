@@ -65,15 +65,20 @@ export class TScriptFile extends TLangAsset implements IScriptFile
             return '';
     }
 
+    get DurationSecond(): number
+    {
+        return this.Duration ? this.Duration : 0;
+    }
+
     get DurationMinute(): number
     {
-        return Math.trunc(((this.Duration ? this.Duration : 0) + 30) / 60);
+        return Math.trunc((this.DurationSecond + 30) / 60);
     }
 
     get DurationString(): string
     {
         let Time = '00:00';
-        let Min = Math.trunc((this.Duration ? this.Duration : 0) / 60);
+        let Min = Math.trunc(this.DurationSecond / 60);
 
         if (Min === 0)
             Time = '00:';
@@ -82,7 +87,7 @@ export class TScriptFile extends TLangAsset implements IScriptFile
         else
             Time = Min + ':';
 
-        let Sec = (this.Duration ? this.Duration : 0) % 60;
+        let Sec = this.DurationSecond % 60;
         if (Sec === 0)
             Time += '00';
         else if (Sec < 10)
@@ -107,7 +112,7 @@ export class TScriptFile extends TLangAsset implements IScriptFile
         Radius: number, Ox: number, Oy: number)// , Turns: number[])
     {
         let RestoreFillStyle = Ctx.fillStyle;
-        let Turns = [1.75, (this.Duration ? this.Duration : 0) / 3600];
+        let Turns = [1.75, this.DurationSecond / 3600];
 
         let ColorFills = [null, Ctx.fillStyle as string];
 
@@ -148,7 +153,7 @@ export class TScriptFile extends TLangAsset implements IScriptFile
     Mode_Id: string | null= null;
 
     Md5: string | null = null;
-    Duration: number | null= null;
+    Duration: number | null = null;
     Author: string | null = null;
     Professional: boolean | null = null;
 

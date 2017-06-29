@@ -80,7 +80,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
         if (TypeInfo.Assigned(this.ShellNotifySubscription))
         {
             this.ShellNotifySubscription.unsubscribe();
-            this.ShellNotifySubscription = null;
+            this.ShellNotifySubscription = undefined;
         }
 
         this.Shell.Detach();
@@ -109,12 +109,13 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
         ScriptFile.Name = DEMO_MODES[Index];
 
         this.Distibute.ReadScriptFile(ScriptFile)
-            .then(() => this.CurrentFileDuration = ScriptFile.Duration)
+            .then(() => this.CurrentFileDuration = ScriptFile.DurationSecond)
             .then(() => this.Shell.CatFile(ScriptFile))
             .then(progress =>
             {
                 this.Downloading = true;
-                progress.subscribe(next => this.Ticking =  ScriptFile.Duration* next, err => {}, () => {});
+                progress.subscribe(
+                    (next: number) => this.Ticking =  ScriptFile.DurationSecond * next);
 
                 return progress.toPromise()
                     .then(() =>
@@ -154,7 +155,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
                 if (TypeInfo.Assigned(this.ShellNotifySubscription))
                 {
                     this.ShellNotifySubscription.unsubscribe();
-                    this.ShellNotifySubscription = null;
+                    this.ShellNotifySubscription = undefined;
                 }
 
                 this.Shell.StopOutput();
@@ -284,7 +285,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
         if (TypeInfo.Assigned(this.ShellNotifySubscription))
         {
             this.ShellNotifySubscription.unsubscribe();
-            this.ShellNotifySubscription = null;
+            this.ShellNotifySubscription = undefined;
         }
 
         this.Shell.StopOutput();
@@ -309,5 +310,5 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     private CurrentFileDuration: number = 0;
     private Shell: Svc.Loki.TShell;
-    private ShellNotifySubscription: Subscription;
+    private ShellNotifySubscription: Subscription | undefined;
 }

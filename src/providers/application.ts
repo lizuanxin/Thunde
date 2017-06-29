@@ -58,7 +58,7 @@ export class TApplication extends TAppController
                         if (TypeInfo.Assigned(TShell.RunningInstance))
                         {
                             TShell.RunningInstance.Detach();
-                            TShell.RunningInstance = null;
+                            TShell.RunningInstance = undefined;
                         }
 
                         this.Platform.exitApp();
@@ -72,7 +72,7 @@ export class TApplication extends TAppController
         this.Storage = Storage;
 
         return Storage.Get('accepted terms')
-            .then(value => this.AcceptedTerms = value ==='yes')
+            .then(value => { this.AcceptedTerms = value ==='yes'; })
             .catch(err => { })
     }
 
@@ -154,12 +154,16 @@ export class TApplication extends TAppController
     get SkinBorderColor(): string {
         if (this.warm.indexOf((this.constructor as typeof TApplication).SkinName) === -1)
             return 'border-light';
+        else
+            return '';
     }
 
     get SkinColor(): string
     {
         if (this.warm.indexOf((this.constructor as typeof TApplication).SkinName) === -1)
             return 'text-light';
+        else
+            return '';
     }
 
     get SkinShadowColor(): string

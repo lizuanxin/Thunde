@@ -136,7 +136,7 @@ class TSnap implements ISnap
     {
         let RetVal = {
             effect_freq: this.EffectiveFreqRange.Print('Hertz'),
-            cluster_freq: null,
+            cluster_freq: null as any,
             pulse_width: this.PulseRange.Print('us'),
         };
 
@@ -533,10 +533,6 @@ class TToken
         case TTokenType.BlockSingle:
             if (this._BlockDepth > 0)
                 this._BlockDepth --;
-            this._BlockDepth ++;
-            if (this._BlockDepth !== 1)
-                throw new EInvalidFile();
-            break;
         case TTokenType.BlockStart:
             this._BlockDepth ++;
             if (this._BlockDepth !== 1)

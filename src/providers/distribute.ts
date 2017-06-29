@@ -55,7 +55,7 @@ export function HttpRequest(Url: string,
     method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
     ResponseType: 'arraybuffer' | 'blob' | 'document' | 'json' | 'text' = 'json'): Promise<any>
 {
-    return Observable.create(observer =>
+    return new Observable(observer =>
     {
         let req = new XMLHttpRequest();
 
@@ -207,7 +207,7 @@ export class TDistributeService
                 .then((obj) => this._FaqTranslate = obj);
         }
         else
-            return Promise.resolve(this._FaqTranslate);
+            return Promise.resolve(this._FaqTranslate as any);
     }
 
     private _FaqTranslate: Object;

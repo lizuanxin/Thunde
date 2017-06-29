@@ -45,11 +45,11 @@ export type TShellNotifyEvent = Subject<TShellNotify>;
 
 interface IScriptFile
 {
-    Name?: string;
-    Md5?: string;
-    Content?: string;
-    ContentBuffer?: Uint8Array;
-    Duration?: number;
+    Name?: string | null;
+    Md5?: string | null;
+    Content?: string | null;
+    ContentBuffer?: Uint8Array | null;
+    Duration?: number | null;
 };
 
 export class TShell extends TAbstractShell
@@ -679,7 +679,7 @@ export class TShell extends TAbstractShell
             if (! TypeInfo.Assigned(this._BatteryLevel))
             {
                 this.BatteryRequest()
-                    .then(() =>
+                    .then((level: number)=>
                     {
                         if (! TypeInfo.Assigned(this._BatteryLevel))
                             return this.VersionRequest();
@@ -758,25 +758,25 @@ export class TShell extends TAbstractShell
 
 export interface IProxyShell extends TAbstractShell
 {
-    Owner: TShell;
+    Owner: TShell | undefined;
 }
 
 /** Proxy to BLE Shell */
 
 export class TProxyBLEShell extends BLE.TShell implements IProxyShell
 {
-    Owner: TShell;
+    Owner: TShell | undefined;
 
     /// @override
     protected AfterConnected(): Promise<void>
     {
-        return this.Owner._DeviceConnected(this);
+        return (this.Owner as TShell)._DeviceConnected(this);
     }
 
     /// @override
     protected OnDisconnected(): void
     {
-        this.Owner._DeviceDisconnected(this);
+        (this.Owner as TShell)._DeviceDisconnected(this);
         this.Owner = undefined;
         super.OnDisconnected();
     }
@@ -787,7 +787,7 @@ export class TProxyBLEShell extends BLE.TShell implements IProxyShell
         const NOTIFY = 'NOTIFY ';
 
         if (Line.substring(0, NOTIFY.length) === NOTIFY)
-            this.Owner._DeviceNotification(this, Line.split(' '));
+            (this.Owner as TShell)._DeviceNotification(this, Line.split(' '));
         else
             super.OnRead(Line);
     }
@@ -795,7 +795,7 @@ export class TProxyBLEShell extends BLE.TShell implements IProxyShell
     /// @override
     protected OnConnectionTimeout():void
     {
-        this.Owner._DeviceTimeout(this);
+        (this.Owner as TShell)._DeviceTimeout(this);
         // ignore timeout
         this.Connection.RefreshTimeout();
 
@@ -812,19 +812,20 @@ export class TProxyUsbShell extends USBSerial.TShell implements IProxyShell
         super();
     }
 
-    Owner: TShell;
+    Owner: TShell | undefined;
 
     /// @override
     protected AfterConnected(): Promise<void>
     {
-        return this.Owner._DeviceConnected(this);
+        return (this.Owner as TShell)._DeviceConnected(this);
     }
 
     /// @override
     protected OnDisconnected(): void
     {
-        this.Owner._DeviceDisconnected(this);
-        this.Owner = null;
+        (this.Owner as TShell)._DeviceDisconnected(this);
+        this.Owner = undefined;
+
         super.OnDisconnected();
     }
 
@@ -834,7 +835,7 @@ export class TProxyUsbShell extends USBSerial.TShell implements IProxyShell
         const NOTIFY = 'NOTIFY ';
 
         if (Line.substring(0, NOTIFY.length) === NOTIFY)
-            this.Owner._DeviceNotification(this, Line.split(' '));
+            (this.Owner as TShell)._DeviceNotification(this, Line.split(' '));
         else
             super.OnRead(Line);
     }
@@ -842,7 +843,7 @@ export class TProxyUsbShell extends USBSerial.TShell implements IProxyShell
     /// @override
     protected OnConnectionTimeout():void
     {
-        this.Owner._DeviceTimeout(this);
+        (this.Owner as TShell)._DeviceTimeout(this);
         super.OnConnectionTimeout();
     }
 }
@@ -926,10 +927,10 @@ export class TListDefaultFile extends TProxyShellRequest
     /// @override
     Start(Proxy: TShell): void
     {
-        this.Shell? this.Shell.PromiseSend('>sdef') : Promise.reject(new EAbort())
+        this.Shell ? this.Shell.PromiseSend('>sdef') : Promise.reject(new EAbort())
             .then(() =>
                 this.Shell? this.Shell.PromiseSend('>dump DefaultFile') : Promise.reject(new EAbort()))
-            .catch(err => console.log(err.message));
+            .catch(err => this.error(err));
     }
 
     /// @override
@@ -976,8 +977,8 @@ export class TClearFileSystemRequest extends TProxyShellRequest
         this.Proxy = Proxy;
         this.ExcludeFiles = ExcludeFiles;
 
-        this.Shell.PromiseSend('>ls')
-            .catch(err => console.log(err.message));
+        this.Shell ? this.Shell.PromiseSend('>ls') : Promise.reject(new EAbort())
+            .catch(err => this.error(err));
     }
 
     /// @override
@@ -1042,7 +1043,7 @@ export class TClearFileSystemRequest extends TProxyShellRequest
 
     private SyncDeletingNext()
     {
-        let name = this.DeletingFiles.pop();
+        let name = this.DeletingFiles.pop() as string;
 
         this.Proxy.RemoveFile(name)
             .then(() =>
@@ -1056,10 +1057,10 @@ export class TClearFileSystemRequest extends TProxyShellRequest
     }
 
     Proxy: TShell;
-    FileList: Array<{Name: string, Size: number}> = [];
+    FileList: (Array<{Name: string, Size: number}>) | null = [];
     ExcludeFiles: Array<string>;
 
-    Deleting: Subject<void> = null;
+    Deleting: Subject<void>;
     DeletingFiles = new Array<string>();
 }
 
@@ -1079,7 +1080,7 @@ export class TOTARequest extends TProxyShellRequest
         this.FirmwareSize = Firmware.byteLength;
         this.CRC = this.SplitPacket(Firmware);
 
-        this.Shell.PromiseSend('>ota -s=' + this.FirmwareSize + ' -c=' + this.CRC)
+        this.Shell ? this.Shell.PromiseSend('>ota -s=' + this.FirmwareSize + ' -c=' + this.CRC) : Promise.reject(new EAbort())
             .catch(err => this.error(err));
     }
 
@@ -1180,9 +1181,13 @@ export class TOTARequest extends TProxyShellRequest
         let View = new Uint8Array(this.PacketBuffer, Offset, Size);
 
         this.OutgoingCount += Count;
-        this.Shell.PromiseSend(View)
-            .then(value => this.next(this.LastSentOffset / this.FirmwareSize))
-            .catch(err => this.error(err));
+
+        if (TypeInfo.Assigned(this.Shell))
+        {
+            this.Shell.PromiseSend(View)
+                .then(value => this.next(this.LastSentOffset / this.FirmwareSize))
+                .catch(err => this.error(err));
+        }
     }
 
     private HandleReponse(Line: string)
@@ -1229,7 +1234,7 @@ export class TOTARequest extends TProxyShellRequest
     {
         if (! this.isStopped)
         {
-            this.Shell.RefreshConnectionTimeout();
+            this.Shell? this.Shell.RefreshConnectionTimeout() : 0;
             setTimeout(() => this.NoConnectionTimeout(), 1000);
         }
     }
