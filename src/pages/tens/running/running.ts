@@ -119,7 +119,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
             {
                 if (! TypeInfo.Assigned(this.ClosingTimerId))
                 {
-                    setTimeout(() =>
+                    this.ClosingTimerId = setTimeout(() =>
                     {
                         if (this.view === this.app.Nav.getActive())
                             this.app.Nav.pop();
@@ -207,5 +207,5 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
     private ShellNotifySubscription: Subscription | undefined;
 
     private Downloading = false;
-    private ClosingTimerId: any;
+    private ClosingTimerId: any = null;
 }

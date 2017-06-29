@@ -171,6 +171,8 @@ export class TShell extends TAbstractShell
     constructor (Proxy: IProxyShell, public DeviceId: string)
     {
         super(0);
+
+        this.Proxy = Proxy;
         Proxy.Owner = this;
     }
 
@@ -927,9 +929,8 @@ export class TListDefaultFile extends TProxyShellRequest
     /// @override
     Start(Proxy: TShell): void
     {
-        this.Shell ? this.Shell.PromiseSend('>sdef') : Promise.reject(new EAbort())
-            .then(() =>
-                this.Shell? this.Shell.PromiseSend('>dump DefaultFile') : Promise.reject(new EAbort()))
+        this.Shell.PromiseSend('>sdef')
+            .then(() => this.Shell.PromiseSend('>dump DefaultFile'))
             .catch(err => this.error(err));
     }
 
@@ -977,7 +978,7 @@ export class TClearFileSystemRequest extends TProxyShellRequest
         this.Proxy = Proxy;
         this.ExcludeFiles = ExcludeFiles;
 
-        this.Shell ? this.Shell.PromiseSend('>ls') : Promise.reject(new EAbort())
+        this.Shell.PromiseSend('>ls')
             .catch(err => this.error(err));
     }
 
@@ -1080,7 +1081,7 @@ export class TOTARequest extends TProxyShellRequest
         this.FirmwareSize = Firmware.byteLength;
         this.CRC = this.SplitPacket(Firmware);
 
-        this.Shell ? this.Shell.PromiseSend('>ota -s=' + this.FirmwareSize + ' -c=' + this.CRC) : Promise.reject(new EAbort())
+        this.Shell.PromiseSend('>ota -s=' + this.FirmwareSize + ' -c=' + this.CRC)
             .catch(err => this.error(err));
     }
 
@@ -1234,7 +1235,7 @@ export class TOTARequest extends TProxyShellRequest
     {
         if (! this.isStopped)
         {
-            this.Shell? this.Shell.RefreshConnectionTimeout() : 0;
+            this.Shell.RefreshConnectionTimeout();
             setTimeout(() => this.NoConnectionTimeout(), 1000);
         }
     }
