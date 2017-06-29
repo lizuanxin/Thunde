@@ -1,4 +1,4 @@
-import {Subject} from 'rxjs/Subject';
+import {Subject, Observable} from 'rxjs';
 import 'rxjs/add/operator/toPromise';
 
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
@@ -887,7 +887,7 @@ export class TCatRequest extends TProxyShellRequest
                 else
                     return Promise.reject(new EAbort())
             })
-            .then(Observer =>
+            .then((Observer: Observable<number>) =>
             {
                 return new Promise((resolve, reject) =>
                 {
