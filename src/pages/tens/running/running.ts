@@ -97,6 +97,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
     ngOnDestroy(): void
     {
         this.UnsubscribeShellNotify();
+        this.app.HideLoading();
     }
 
     get CanvasClientHeight(): Object
