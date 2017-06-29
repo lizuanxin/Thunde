@@ -83,6 +83,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
             this.ShellNotifySubscription = null;
         }
 
+        this.Shell.Detach();
         this.app.HideLoading();
     }
 
