@@ -67,9 +67,12 @@ export class TPeripheral extends TAsset
         return RetVal;
     }
 
-    Value(Type?: number): TLV
+    Value(Type?: number): TLV | undefined
     {
-        return this.ValueHash.get(Type);
+        if (TypeInfo.Assigned(Type))
+            return this.ValueHash.get(Type);
+        else
+            return undefined;
     }
 
     // called from disover service
@@ -106,7 +109,7 @@ export class TPeripheral extends TAsset
                 this.UpdateValue(iter);
                 Updated.push(iter);
             }
-            else if (OldValue.Timestamp !== iter.Timestamp)
+            else if ((OldValue as any).Timestamp !== iter.Timestamp)
             {
                 this.ValueHash.set(iter.Type, iter);
 
@@ -201,7 +204,7 @@ export abstract class TAggregatePeripheral extends TPeripheral
     }
 
     /// @override: derived class must to implements to update OnAggregateUpdate && OnValueChanged subject
-    protected abstract UpdateValue(v: TLV | null, Ref: TPeripheral, Now: number, Timeouts: Array<TPeripheral>);
+    protected abstract UpdateValue(v: TLV | null, Ref: TPeripheral, Now: number, Timeouts: Array<TPeripheral>): void;
 
     protected Refs = new Set<TPeripheral>();
     OnAggregateUpdate = new Subject<any>();
@@ -246,17 +249,20 @@ export class PeripheralFactory
         console.log('PeripheralFactory: ' + ObjectName + ' registered')
     }
 
-    static GetCached(Id: string): TPeripheral
+    static GetCached(Id: string): TPeripheral | undefined
     {
         return this.Cached.get(Id);
     }
 
     static Cache(Peripheral: TPeripheral): void
     {
-        this.Cached.set(Peripheral.Id, Peripheral);
+        if (TypeInfo.Assigned(Peripheral.Id))
+        {
+            this.Cached.set(Peripheral.Id, Peripheral);
 
-        if (Peripheral instanceof TAggregatePeripheral)
-            this.CachedAggregate.push(Peripheral);
+            if (Peripheral instanceof TAggregatePeripheral)
+                this.CachedAggregate.push(Peripheral);
+        }
     }
 
     static Uncache(Id: string): boolean
@@ -265,15 +271,17 @@ export class PeripheralFactory
     {
         if (TypeInfo.IsString(Peripheral))
             return this.Cached.delete(Peripheral);
-        else
+        else if (TypeInfo.Assigned(Peripheral.Id))
             return this.Cached.delete(Peripheral.Id);
+        else
+            return false;
     }
 
     static ExistsClass(Cls: typeof TPeripheral): boolean
     static ExistsClass(ClassName: string): boolean
     static ExistsClass(NameOrCls: string | typeof TPeripheral): boolean
     {
-        let PeripheralClass: typeof TPeripheral;
+        let PeripheralClass: typeof TPeripheral | undefined;
         if (TypeInfo.IsString(NameOrCls))
             PeripheralClass = this.Repository.get('Peripheral.' + NameOrCls);
         else
@@ -282,9 +290,9 @@ export class PeripheralFactory
         return TypeInfo.Assigned(PeripheralClass) && this.CachedClass.has(PeripheralClass);
     }
 
-    static Get(Id: string, Cls: typeof TPeripheral): any | null
-    static Get(Id: string, ObjectName: string): TPeripheral | null
-    static Get(Id: string, NameOrCls: string | typeof TPeripheral): TPeripheral | null
+    static Get(Id: string, Cls: typeof TPeripheral): any | undefined
+    static Get(Id: string, ObjectName: string): TPeripheral | undefined
+    static Get(Id: string, NameOrCls: string | typeof TPeripheral): TPeripheral | undefined
     {
         let Obj = this.Cached.get(Id);
 
@@ -307,7 +315,7 @@ export class PeripheralFactory
                 this.CachedClass.add(PeripheralClass);
             }
             else
-                Obj = null;
+                Obj = undefined;
         }
 
         return Obj;
@@ -335,7 +343,7 @@ export class PeripheralFactory
             }
         };
 
-        let Peripheral: TPeripheral = this.Cached.get(id);
+        let Peripheral = this.Cached.get(id);
 
         if (! TypeInfo.Assigned(Peripheral))
         {

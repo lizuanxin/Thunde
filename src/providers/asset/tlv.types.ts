@@ -104,7 +104,7 @@ class PM2d5TLV extends ParticulateMatterTLV
 
 export class TLVParser extends BasicTLVParser
 {
-    static CreateTLV(Type, Length: number): TLV
+    static CreateTLV(Type: number, Length: number): TLV
     {
         switch(Type)
         {
@@ -126,7 +126,7 @@ export class TLVParser extends BasicTLVParser
         }
     }
 
-    static TransferTLV(Instance: TLV, Type, Length: number, Value?: any)
+    static TransferTLV(Instance: TLV, Type: number, Length: number, Value?: any)
     {
         Instance.Type = Type;
         Instance.Length = Length;

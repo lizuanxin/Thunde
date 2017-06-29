@@ -74,7 +74,7 @@ export class TAssetService
         return const_data.BodyParts;
     }
 
-    Category_ById(Id: string): TCategory
+    Category_ById(Id: string): TCategory | null
     {
         for (let iter of (this.constructor as typeof TAssetService)._Categories)
         {
@@ -117,7 +117,10 @@ export class TAssetService
             RetVal.push(F);
 
             F.Assign(DataSet.Curr);
-            F.BodyParts = FileBodyList.get(F.Id);
+
+            let BodyParts = FileBodyList.get(F.Id as string);
+            if (TypeInfo.Assigned(BodyParts))
+                F.BodyParts = BodyParts;
 
             await this.Distribute.ReadScriptFile(F);
             if (F.IsEditing)
@@ -141,12 +144,14 @@ export class TAssetService
             while (! DataSet.Eof)
             {
                 let entry = this._FileBodyList.get(DataSet.Curr.ScriptFile_Id);
+
                 if (! TypeInfo.Assigned(entry))
                 {
                     this._FileBodyList.set(DataSet.Curr.ScriptFile_Id, new Array<IBodyPart>());
                     entry = this._FileBodyList.get(DataSet.Curr.ScriptFile_Id);
                 }
-                entry.push(DataSet.Curr);
+                else
+                    entry.push(DataSet.Curr);
 
                 DataSet.Next();
             }
@@ -169,7 +174,7 @@ export class TAssetService
                 DataSet.Next();
             }
         }
-        else
+        else if (TypeInfo.Assigned(ScriptFile.Content))
         {
             let f = new Loki.TFile();
             f.LoadFrom(ScriptFile.Content)

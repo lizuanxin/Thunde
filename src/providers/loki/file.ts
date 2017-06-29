@@ -48,10 +48,13 @@ export class TRange implements IRange
 
     IsEqual(to: IRange | null, Truncate?: boolean): boolean
     {
+        if (! TypeInfo.Assigned(to))
+            return false;
+
         if (! TypeInfo.Assigned(Truncate) || Truncate)
             return Math.round(this.High) === Math.round(to.High) && Math.round(this.Low) === Math.round(to.Low)
         else
-            return TypeInfo.Assigned(to) && this.High === to.High && this.Low === to.Low;
+            return this.High === to.High && this.Low === to.Low;
     }
 
     Update(Value: number): void
@@ -131,16 +134,16 @@ class TSnap implements ISnap
 
     Print(): string
     {
-        let retval = {
+        let RetVal = {
             effect_freq: this.EffectiveFreqRange.Print('Hertz'),
             cluster_freq: null,
             pulse_width: this.PulseRange.Print('us'),
         };
 
         if (! this.EffectiveFreqRange.IsEqual(this.ClusterFreqRange))
-            retval.cluster_freq = this.ClusterFreqRange.Print('Hertz');
+            (RetVal as any).cluster_freq = this.ClusterFreqRange.Print('Hertz');
 
-        return JSON.stringify(retval);
+        return JSON.stringify(RetVal);
     }
 }
 
@@ -209,9 +212,9 @@ export class TFile extends TPersistable
 
         let token = new TToken();
         let Idx = 0;
-        let Section: TSection = null;
-        let Block: TBlock = null;
-        let LastBlock: TBlock = null;
+        let Section: TSection | null = null;
+        let Block: TBlock | null = null;
+        let LastBlock: TBlock | null = null;
 
         while (Idx < File.byteLength)
         {
@@ -232,9 +235,8 @@ export class TFile extends TPersistable
                 Section = new TSection();
                 continue;
             case TTokenType.SectionEnd:
-
-                Section.Blocks.push(Block);
-                this.Sections.push(Section);
+                (Section as TSection).Blocks.push(Block as TBlock);
+                this.Sections.push(Section as TSection);
 
                 Section = null;
                 LastBlock = Block = null;
@@ -244,7 +246,7 @@ export class TFile extends TPersistable
                 if (TypeInfo.Assigned(Block))
                 {
                     LastBlock = Block;
-                    Section.Blocks.push(Block);
+                    (Section as TSection).Blocks.push(Block);
                     // console.log(Block);
                 }
                 Block = new TBlock(LastBlock);
@@ -255,7 +257,7 @@ export class TFile extends TPersistable
                 continue;
             case TTokenType.BlockEnd:
                 LastBlock = Block;
-                Section.Blocks.push(Block);
+                (Section as TSection).Blocks.push(Block as TBlock);
                 Block = null;
                 continue;
 
@@ -273,9 +275,9 @@ export class TFile extends TPersistable
             {
                 // console.log(TTokenType[token.Type] + ' ' + token.Value.toString(16));
                 if (token.BlockDepth > 0)
-                    Block.PushToken(token)
+                    (Block as TBlock).PushToken(token)
                 else
-                    Section.PushToken(token)
+                    (Section as TSection).PushToken(token)
             };
         }
     }
@@ -304,7 +306,7 @@ export class TSection extends TPersistable
     {
         let RetVal: number = 0;
 
-        let Prev: TBlock = null;
+        let Prev: TBlock | null = null;
         for (let Block of this.Blocks)
         {
             if (TFile.DEBUG_FILETIME)
@@ -367,7 +369,7 @@ export class TSection extends TPersistable
         if (this.Interval !== 0)
             RetVal += 'I' + this.Interval.toString(DigitBase).toLowerCase();
 
-        let Prev: TBlock = null;
+        let Prev: TBlock | null = null;
         for (let i = 0; i < this.Blocks.length; i ++)
         {
             RetVal += this.Blocks[i].Serialization(DigitBase, Prev);
@@ -384,7 +386,7 @@ export class TSection extends TPersistable
 
 export class TBlock extends TPersistable
 {
-    constructor(Ref?: TBlock)
+    constructor(Ref?: TBlock | null)
     {
         super();
 
@@ -531,6 +533,10 @@ class TToken
         case TTokenType.BlockSingle:
             if (this._BlockDepth > 0)
                 this._BlockDepth --;
+            this._BlockDepth ++;
+            if (this._BlockDepth !== 1)
+                throw new EInvalidFile();
+            break;
         case TTokenType.BlockStart:
             this._BlockDepth ++;
             if (this._BlockDepth !== 1)

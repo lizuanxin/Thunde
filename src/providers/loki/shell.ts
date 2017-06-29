@@ -75,7 +75,7 @@ export class TShell extends TAbstractShell
             Instance.StopOutput()
                 .then(() => Instance.Detach())
                 .catch(err => console.log(err.message))
-                .then(() => this.RunningInstance = null);
+                .then(() => this.RunningInstance = undefined);
         }
 
         return RetVal;
@@ -125,7 +125,7 @@ export class TShell extends TAbstractShell
     private static ScanFilter(Device: BLE.IScanDiscovery): boolean
     {
         let adv = Device.advertising;
-        let name: string = null;
+        let name: string | null = null;
 
         if (! TypeInfo.Assigned(Device.name))
             return false;
@@ -160,7 +160,7 @@ export class TShell extends TAbstractShell
         return BLE_FILTER_NAMES.indexOf(name) !== -1;
     }
 
-    static RunningInstance: TShell;
+    static RunningInstance: TShell | undefined;
     static DefaultFileList: Array<string> = []
     static Cached = new Map<string, TShell>();
     static LinearTable: TLinearTable = '4v';
@@ -168,7 +168,7 @@ export class TShell extends TAbstractShell
 
 /* Instance */
 
-    constructor (private Proxy: IProxyShell, public DeviceId: string)
+    constructor (Proxy: IProxyShell, public DeviceId: string)
     {
         super(0);
         Proxy.Owner = this;
@@ -177,12 +177,14 @@ export class TShell extends TAbstractShell
     OnNotify: TShellNotifyEvent = new Subject<TShellNotify>();
     RefFile: IScriptFile;
 
+    private Proxy: IProxyShell | undefined;
+
     private _Version: number;
     private _BatteryLevel: number = 0;
 
     private _Intensity: number = 0;
     private IntensityTick = 0;
-    private IntensityChanging: Promise<void>;
+    private IntensityChanging: Promise<any> | undefined;
 
     private _Ticking: number = 0;
     private TickIntervalId: any = null;
@@ -193,7 +195,8 @@ export class TShell extends TAbstractShell
 
     Attach(): void
     {
-        this.Proxy.Attach();
+        if (TypeInfo.Assigned(this.Proxy))
+            this.Proxy.Attach();
     }
 
     get IsAttached(): boolean
@@ -208,7 +211,7 @@ export class TShell extends TAbstractShell
         if (TypeInfo.Assigned(this.Proxy))
         {
             this.Proxy.Detach();
-            this.Proxy = null;
+            this.Proxy = undefined;
         }
 
         if ((this.constructor as typeof TShell).Cached.delete(this.DeviceId))
@@ -217,22 +220,34 @@ export class TShell extends TAbstractShell
 
     Connect(): Promise<void>
     {
-        return this.Proxy.Connect();
+        if (TypeInfo.Assigned(this.Proxy))
+            return this.Proxy.Connect();
+        else
+            return Promise.reject(new EAbort())
     }
 
     Disconnect(): Promise<void>
     {
-        return this.Proxy.Disconnect();
+        if (TypeInfo.Assigned(this.Proxy))
+            return this.Proxy.Disconnect();
+        else
+            return Promise.reject(new EAbort())
     }
 
-    Execute(Cmd: string, Timeout: number = 0, IsResponseCallback?: (Line: string) => boolean): Promise<any>
+    Execute(Cmd: string, Timeout: number = 0, IsResponseCallback: (Line: string) => boolean): Promise<any>
     {
-        return this.Proxy.Execute(Cmd, Timeout, IsResponseCallback);
+        if (TypeInfo.Assigned(this.Proxy))
+            return this.Proxy.Execute(Cmd, Timeout, IsResponseCallback);
+        else
+            return Promise.reject(new EAbort())
     }
 
     RequestStart(RequestClass: typeof TShellRequest, Timeout: number = 0, ...args: any[]): Promise<TShellRequest>
     {
-        return this.Proxy.RequestStart(RequestClass, Timeout, this, ...args);
+        if (TypeInfo.Assigned(this.Proxy))
+            return this.Proxy.RequestStart(RequestClass, Timeout, this, ...args);
+        else
+            return Promise.reject(new EAbort())
     }
 
 /** shell functions */
@@ -355,7 +370,7 @@ export class TShell extends TAbstractShell
             return;
 
         this.IntensityChanging = this.Execute('>str ' + Value, REQUEST_TIMEOUT,
-            Line =>
+            (Line: string): boolean =>
             {
                 let strs = Line.split('=');
                 if (strs.length === 2 && strs[0] === 'str')
@@ -372,8 +387,8 @@ export class TShell extends TAbstractShell
                         return true;
                     }
                 }
-                else
-                    return false;
+
+                return false;
             })
             .then(Line =>
             {
@@ -381,7 +396,7 @@ export class TShell extends TAbstractShell
                 return this._Intensity;
             })
             .catch(err => console.log(err.message))
-            .then(() => this.IntensityChanging = null)
+            .then(() => this.IntensityChanging = undefined)
     }
 
     SetLinearTable(n : TLinearTable): Promise<void>
@@ -431,7 +446,8 @@ export class TShell extends TAbstractShell
 
         if (TypeInfo.Assigned(this.RefFile))
         {
-            let TickingDown = this.RefFile.Duration - this.Ticking;
+            let Duration = (this.RefFile.Duration ? this.RefFile.Duration : 0);
+            let TickingDown = Duration - this.Ticking;
 
             if (TickingDown > 0)
             {
@@ -589,18 +605,16 @@ export class TShell extends TAbstractShell
         {
             setTimeout(() => this.OnNotify.next(TShellNotify.Ticking), 0);
 
-            if (TypeInfo.Assigned(this.RefFile) && this.RefFile.Duration <= this.Ticking &&
-                this.OnNotify.observers.length === 0)
-            {
+            let Duration = (this.RefFile.Duration ? this.RefFile.Duration : 0);
+            if (Duration <= this.Ticking && this.OnNotify.observers.length === 0)
                 this.Detach();
-            }
         }, 1000)
     }
 
     StopTicking(): void
     {
         this._Ticking = 0;
-        (this.constructor as typeof TShell).RunningInstance = null;
+        (this.constructor as typeof TShell).RunningInstance = undefined;
 
         if (TypeInfo.Assigned(this.TickIntervalId))
         {
@@ -635,8 +649,11 @@ export class TShell extends TAbstractShell
             .then(() =>
             {
                 let Cls = this.constructor as typeof TShell;
+
                 if (Cls.LinearTable !== DEF_LINEAR_TABLE)
                     return this.SetLinearTable(Cls.LinearTable);
+                else
+                    return;
             });
     }
 
@@ -666,8 +683,10 @@ export class TShell extends TAbstractShell
                     {
                         if (! TypeInfo.Assigned(this._BatteryLevel))
                             return this.VersionRequest();
+                        else
+                            return;
                     })
-                    .catch(err => {});
+                    .catch((err: any) => {});
             }
             else
                 this.VersionRequest().catch(err => {});
@@ -758,7 +777,7 @@ export class TProxyBLEShell extends BLE.TShell implements IProxyShell
     protected OnDisconnected(): void
     {
         this.Owner._DeviceDisconnected(this);
-        this.Owner = null;
+        this.Owner = undefined;
         super.OnDisconnected();
     }
 
@@ -854,8 +873,20 @@ export class TCatRequest extends TProxyShellRequest
                     return Promise.resolve();
             })
             .then(() => Proxy.RemoveFile(FileName))
-            .then(() => this.Shell.PromiseSend('>cat '+ FileName + ' -l=' + FileBuffer.byteLength))
-            .then(() => this.Shell.ObserveSend(FileBuffer))
+            .then(() =>
+            {
+                if (TypeInfo.Assigned(this.Shell))
+                    return this.Shell.PromiseSend('>cat '+ FileName + ' -l=' + FileBuffer.byteLength)
+                else
+                    return Promise.reject(new EAbort())
+            })
+            .then(() =>
+            {
+                if (TypeInfo.Assigned(this.Shell))
+                    return this.Shell.ObserveSend(FileBuffer)
+                else
+                    return Promise.reject(new EAbort())
+            })
             .then(Observer =>
             {
                 return new Promise((resolve, reject) =>
@@ -895,8 +926,9 @@ export class TListDefaultFile extends TProxyShellRequest
     /// @override
     Start(Proxy: TShell): void
     {
-        this.Shell.PromiseSend('>sdef')
-            .then(() => this.Shell.PromiseSend('>dump DefaultFile'))
+        this.Shell? this.Shell.PromiseSend('>sdef') : Promise.reject(new EAbort())
+            .then(() =>
+                this.Shell? this.Shell.PromiseSend('>dump DefaultFile') : Promise.reject(new EAbort()))
             .catch(err => console.log(err.message));
     }
 

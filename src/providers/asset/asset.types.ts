@@ -7,10 +7,10 @@ import {const_data} from '..';
 
 export interface IAsset extends IPersistable
 {
-    Id: string;
+    Id: string | null;
 
-    Name: string;
-    Desc: string;
+    Name: string | null;
+    Desc: string | null;
 };
 
 export class TAsset extends TPersistable implements IAsset
@@ -23,11 +23,11 @@ export class TAsset extends TPersistable implements IAsset
         (this as any)['ExtraProp'] = null;
     }
 
-    Id: string = null;
-    Name: string = null;
-    Owner: string = null;
-    Desc: string = null;
-    Timestamp: Date = null;
+    Id: string | null = null;
+    Name: string | null = null;
+    Owner: string | null = null;
+    Desc: string | null = null;
+    Timestamp: Date | null = null;
 
     ExtraProps: Map<string, any> | any = new Map<string, any>();
 

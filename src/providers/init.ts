@@ -14,7 +14,7 @@ export namespace Initialization
         const db_version = '24';
         let Storage = new TSqliteStorage(const_data.DatabaseName);
 
-        let DevOrProd: Promise<void>;
+        let DevOrProd: Promise<any>;
         if (isDevMode())
         {
             DevOrProd = Storage.ExecSQL(DestroyTableSQL).catch(() => {})
@@ -22,12 +22,12 @@ export namespace Initialization
         }
         else
         {
-            DevOrProd = Storage.ExecSQL('SELECT name FROM sqlite_master WHERE type="table" AND name="Asset"')
-                .then(result =>
+            DevOrProd = Storage.ExecQuery(new TSqlQuery('SELECT name FROM sqlite_master WHERE type="table" AND name="Asset"'))
+                .then(DataSet =>
                 {
                     // let Init = Storage.ExecSQL(DestroyTableSQL).catch(() => {});
                     let Init: Promise<any>;
-                    if (result.rows.length !== 0)
+                    if (DataSet.RecordCount !== 0)
                     {
                         Init = Storage.Get('db_version')
                             .catch(err => 'destroying')

@@ -16,7 +16,7 @@ export class TBodyPart extends TLangAsset implements IBodyPart
         super('Body');
     }
 
-    Icon: number = null;
+    Icon: number | null = null;
 }
 
 /* TCategory */
@@ -35,7 +35,7 @@ export class TCategory extends TLangAsset implements ICategory
         PropRules.push(new TPersistPropRule('Category', ['Icon']))
     }
 
-    Icon: number = null;
+    Icon: number | null = null;
     Files: Array<TScriptFile> = [];
 }
 
@@ -59,18 +59,22 @@ export class TScriptFile extends TLangAsset implements IScriptFile
 
     get Md5Name(): string
     {
-        return TBase64Encoding.Instance.EncodeToString(HexConv.HexToBin(this.Md5));
+        if (TypeInfo.Assigned(this.Md5))
+            return TBase64Encoding.Instance.EncodeToString(HexConv.HexToBin(this.Md5));
+        else
+            return '';
     }
 
     get DurationMinute(): number
     {
-        return Math.trunc((this.Duration + 30) / 60);
+        return Math.trunc(((this.Duration ? this.Duration : 0) + 30) / 60);
     }
 
     get DurationString(): string
     {
         let Time = '00:00';
-        let Min = Math.trunc(this.Duration / 60);
+        let Min = Math.trunc((this.Duration ? this.Duration : 0) / 60);
+
         if (Min === 0)
             Time = '00:';
         else if (Min < 10)
@@ -78,7 +82,7 @@ export class TScriptFile extends TLangAsset implements IScriptFile
         else
             Time = Min + ':';
 
-        let Sec = this.Duration % 60;
+        let Sec = (this.Duration ? this.Duration : 0) % 60;
         if (Sec === 0)
             Time += '00';
         else if (Sec < 10)
@@ -103,9 +107,9 @@ export class TScriptFile extends TLangAsset implements IScriptFile
         Radius: number, Ox: number, Oy: number)// , Turns: number[])
     {
         let RestoreFillStyle = Ctx.fillStyle;
-        let Turns = [1.75, this.Duration / 3600];
+        let Turns = [1.75, (this.Duration ? this.Duration : 0) / 3600];
 
-        let ColorFills: string[] = [null, Ctx.fillStyle as string];
+        let ColorFills = [null, Ctx.fillStyle as string];
 
         Ctx.beginPath();
         Ctx.moveTo(Ox, Oy);
@@ -114,7 +118,7 @@ export class TScriptFile extends TLangAsset implements IScriptFile
 
         let Alpha = Ctx.globalAlpha;
         Ctx.globalAlpha = Alpha * 0.15;
-        Ctx.fillStyle = ColorFills[1];
+        Ctx.fillStyle = ColorFills[1] as string;
         Ctx.lineWidth = 1;
         Ctx.fill();
 
@@ -131,7 +135,7 @@ export class TScriptFile extends TLangAsset implements IScriptFile
 
             if (TypeInfo.Assigned(ColorFills[i]))
             {
-                Ctx.fillStyle = ColorFills[i];
+                Ctx.fillStyle = ColorFills[i] as string;
                 Ctx.fill();
             }
         }
@@ -139,17 +143,17 @@ export class TScriptFile extends TLangAsset implements IScriptFile
         Ctx.fillStyle = RestoreFillStyle;
     }
 
-    Icon: number = null;
-    Category_Id: string = null;
-    Mode_Id: string = null;
+    Icon: number | null = null;
+    Category_Id: string | null = null;
+    Mode_Id: string | null= null;
 
-    Md5: string = null;
-    Duration: number = null;
-    Author: string = null;
-    Professional: boolean = null;
+    Md5: string | null = null;
+    Duration: number | null= null;
+    Author: string | null = null;
+    Professional: boolean | null = null;
 
-    Content: string = null;
-    ContentBuffer: Uint8Array;
+    Content: string | null = null;
+    ContentBuffer: Uint8Array | undefined;
 
     BodyParts: Array<IBodyPart> = [];
     Details: Array<TScriptFileDesc> = [];
@@ -171,9 +175,9 @@ export class TScriptFileDesc extends TLangAsset
         PropRules.push(new TPersistPropRule('ScriptFileDesc', ['ScriptFile_Id', 'Idx', 'Professional']))
     }
 
-    ScriptFile_Id: string = null;
-    Idx: number = null;
-    Professional: boolean = null;
+    ScriptFile_Id: string | null = null;
+    Idx: number | null = null;
+    Professional: boolean | null = null;
 
     BodyParts: Array<IBodyPart> = [];
 }
