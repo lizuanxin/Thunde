@@ -196,4 +196,4 @@ export class TApplication extends TAppController
     private static AcceptedTerms: boolean = false;
     private static SkinName: string = 'skin';
     private static Storage: TSqliteStorage;
-}
+};
