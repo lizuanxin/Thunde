@@ -25,13 +25,13 @@ export class FaqPage implements OnInit
     Back()
     {
         if (TypeInfo.Assigned(this.Selected))
-            this.Selected = null;
+            this.Selected = undefined;
         else
             this.app.Nav.pop();
     }
 
     Items: Array<IFaq> = [];
-    Selected: IFaq = null;
+    Selected: IFaq | undefined = undefined;
 }
 
 interface IFaq

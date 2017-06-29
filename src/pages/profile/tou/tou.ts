@@ -49,30 +49,33 @@ export class TouPage implements OnInit, OnDestroy, AfterViewInit
 
     get FadeOut(): string
     {
-        if (this.Touch.y === 0) return 'fadeOut';
+        if (this.Touch.y === 0)
+            return 'fadeOut';
     }
 
-    get OffsetY(): string
+    get OffsetY(): string | undefined
     {
-        if (this.Touch.y < 0) return;
+        if (this.Touch.y < 0)
+            return undefined;
+
         if (this.Touch.y > 70) this.Touch.y = 70;
         return this.Touch.y + 'px';
     }
 
-    private TouchHandler(e: TouchEvent)
+    private TouchHandler(e: TouchEvent): void
     {
         switch (e.type)
         {
-            case 'touchstart':
-                this.Touch.Start_Y = e.touches[0].pageY;
-                break;
-            case 'touchmove':
-                this.Touch.y = e.touches[0].pageY - this.Touch.Start_Y;
-                this.OffsetY;
-                break;
-            case 'touchend':
-                setTimeout(() => this.Touch.y = 0);
-                break;
+        case 'touchstart':
+            this.Touch.Start_Y = e.touches[0].pageY;
+            break;
+        case 'touchmove':
+            this.Touch.y = e.touches[0].pageY - this.Touch.Start_Y;
+            this.OffsetY;
+            break;
+        case 'touchend':
+            setTimeout(() => this.Touch.y = 0);
+            break;
         }
     }
 

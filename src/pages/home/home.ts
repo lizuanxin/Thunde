@@ -83,6 +83,8 @@ export class HomePage implements OnInit
     {
         if (TypeInfo.Assigned(Svc.Loki.TShell.RunningInstance))
             return Svc.Loki.TShell.RunningInstance.TickingDownHint;
+        else
+            return '';
     }
 
     Resume()
@@ -174,11 +176,11 @@ export class HomePage implements OnInit
 
 class TTabItem
 {
-    constructor (public Index: number, public IconOrCategory?: number | Svc.ICategory)
+    constructor (public Index: number, public IconOrCategory: number | Svc.ICategory)
     {
     }
 
-    get Icon(): number
+    get Icon(): number | null | undefined
     {
         if (TypeInfo.IsNumber(this.IconOrCategory))
             return this.IconOrCategory;
@@ -196,7 +198,10 @@ class TTabItem
 
     get CategoryId(): string
     {
-        return (this.IconOrCategory as Svc.ICategory).Id;
+        if (TypeInfo.IsNumber(this.IconOrCategory))
+            return '';
+        else
+            return (this.IconOrCategory as Svc.ICategory).Id as string;
     }
 
     FileList?: Svc.TScriptFileList;
