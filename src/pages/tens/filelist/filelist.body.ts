@@ -58,10 +58,11 @@ export class FileListBodyComp implements OnInit
 
     SelectBodyCategory(b: TBodyCategory)
     {
-        this.CurrBodyCategory = b;
-        this._FilteredFiles = [];
-
-        this.BodySwiper.Update();
+        if (this.CurrBodyCategory !== b)
+        {
+            this.CurrBodyCategory = b;
+            this.BodySwiper.Update();
+        }
     }
 
     UsageIconChanged(Idx: number)
@@ -92,7 +93,8 @@ export class FileListBodyComp implements OnInit
                     }
                 }
             }
-            this.FileSwiper.Update();
+
+            this.FileSwiper.Update(true, 0);
         }
 
         return this._FilteredFiles;
