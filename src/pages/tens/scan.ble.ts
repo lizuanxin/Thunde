@@ -94,11 +94,7 @@ export class ScanBleComp implements OnInit, OnDestroy
                 this.app.ShowLoading()
                     .then(() => Shell.Connect())
                     .then(() => Shell.StopOutput())
-                    .catch(err =>
-                    {
-                        this.app.HideLoading()
-                            .then(() => this.app.ShowError(err));
-                    })
+                    .catch(err => {})
                     .then(() => this.OnSelection.emit(DeviceId))
             }
             else
@@ -107,14 +103,9 @@ export class ScanBleComp implements OnInit, OnDestroy
                     .then(() => Shell.Connect())
                     .then(() => Shell.StopOutput())
                     .then(() => this.OnSelection.emit(DeviceId))
-                    .catch(err =>
-                    {
-                        this.app.HideLoading()
-                            .then(() => this.app.ShowError(err))
-                            .then(() => this.OnSelection.emit(null));
-                    })
+                    .catch(err => this.OnSelection.emit());
             }
-        });
+        })
     }
 
     private StartScan()

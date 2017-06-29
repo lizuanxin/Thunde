@@ -89,15 +89,22 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
             err=> console.log(err.message));
     }
 
-    ngAfterViewInit()
-    {
-        this.app.Nav.remove(1, this.view.index - 1, {animate: false});
-    }
-
     ngOnDestroy(): void
     {
         this.UnsubscribeShellNotify();
         this.app.HideLoading();
+    }
+
+    ngAfterViewInit()
+    {
+        CloseViews(this.app).catch(err => {});
+
+        async function CloseViews(App: Svc.TApplication): Promise<void>
+        {
+            let views = App.Nav.getViews();
+            for (let i = 1; i < views.length - 1; i ++)
+                await views[i].dismiss().catch(err => {});
+        }
     }
 
     get CanvasClientHeight(): Object
