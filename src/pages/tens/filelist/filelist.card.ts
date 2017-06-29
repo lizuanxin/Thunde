@@ -77,14 +77,14 @@ export class FileListRecommendComp
     {
         switch(FileId)
         {
-            case '{00000000-0000-4000-4100-0000000FF001}':
+        case '{00000000-0000-4000-4100-0000000FF001}':
             return '办公室肩颈活力按摩';
-
-            case '{00000000-0000-4000-4100-0000000FF002}':
+        case '{00000000-0000-4000-4100-0000000FF002}':
             return '加班后肩颈疼痛舒缓按摩';
-
-            case '{00000000-0000-4000-4100-0000000FF003}':
+        case '{00000000-0000-4000-4100-0000000FF003}':
             return '低头族肩颈放松按摩';
+        default:
+            return '';
         }
     }
 
@@ -92,18 +92,18 @@ export class FileListRecommendComp
     {
         switch(FileId)
         {
-            case '{00000000-0000-4000-4100-0000000FF001}':
+        case '{00000000-0000-4000-4100-0000000FF001}':
             return "assets/img/shoulders_recommend1.jpg";
-
-            case '{00000000-0000-4000-4100-0000000FF002}':
+        case '{00000000-0000-4000-4100-0000000FF002}':
             return "assets/img/shoulders_recommend2.jpg";
-
-            case '{00000000-0000-4000-4100-0000000FF003}':
+        case '{00000000-0000-4000-4100-0000000FF003}':
             return "assets/img/shoulders_recommend3.jpg";
+        default:
+            return '';
         }
     }
 
-    SetBackgroundImg(id): string
+    SetBackgroundImg(id: string): string
     {
         return 'url(' + this.SetImg(id) + ') right bottom no-repeat';
     }

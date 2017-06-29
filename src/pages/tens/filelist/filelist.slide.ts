@@ -58,7 +58,7 @@ class TContentCanvas
         this.Canvas.style.height = this.DisplayHeight.toString();
         this.Canvas.width  = width;
         this.Canvas.height = this.DisplayHeight;
-        this.Ctx = this.Canvas.getContext('2d');
+        this.Ctx = this.Canvas.getContext('2d') as CanvasRenderingContext2D;
 
         this.Ctx.textBaseline = 'middle';
         this.Ctx.textAlign = 'center';
@@ -157,11 +157,11 @@ class TContentCanvas
     private DrawText(value: string, option: ICanvasDrawOption)
     {
         this.Ctx.save();
-        this.Ctx.fillStyle = option.fillStyle;
-        this.Ctx.font = option.font;
-        this.Ctx.globalAlpha = option.globalAlpha;
+        this.Ctx.fillStyle = option.fillStyle as string;
+        this.Ctx.font = option.font as string;
+        this.Ctx.globalAlpha = option.globalAlpha as number;
 
-        this.Ctx.fillText(value, option.x, option.y);
+        this.Ctx.fillText(value, option.x ? option.x: 0, option.y ? option.y : 0);
         this.Ctx.restore();
     }
 
@@ -182,7 +182,7 @@ class TContentCanvas
             if (!this.Darging)
                 return;
 
-            this.ScrollingY = this.ScrollingY + (t.clientY - this.RelativeO.clientY) * 1.5 * window.devicePixelRatio;
+            this.ScrollingY = this.ScrollingY + (t.clientY - (this.RelativeO ? this.RelativeO.clientY : 0)) * 1.5 * window.devicePixelRatio;
             if (this.ScrollingY < -this.ScrollMaxY)
                 this.ScrollingY = -this.ScrollMaxY;
             if (this.ScrollingY > 0)
@@ -198,7 +198,7 @@ class TContentCanvas
         }
 
         if (ev.type === 'touchend')
-            this.RelativeO = null
+            this.RelativeO = undefined
         else
             this.RelativeO = ev.touches[0];
     }
@@ -229,7 +229,7 @@ class TContentCanvas
     private ScrollingY = 0;
     private ScrollMaxY = 0;
 
-    private RelativeO: Touch;
+    private RelativeO: Touch | undefined;
     private Darging = false;
     private Ctx: CanvasRenderingContext2D;
 

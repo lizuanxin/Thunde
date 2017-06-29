@@ -22,13 +22,13 @@ export class FileListDialComp implements OnInit, OnDestroy, DoCheck
 
     ngOnDestroy(): void
     {
-        this.Content.Disponse();
-        this.Content = null;
+        if (TypeInfo.Assigned(this.Content))
+            this.Content.Disponse();
     }
 
     ngDoCheck()
     {
-        if (TypeInfo.Assigned(this.FileList))
+        if (TypeInfo.Assigned(this.FileList) && TypeInfo.Assigned(this.Content))
             this.Content.NewFileList(this.FileList);
     }
 
@@ -36,7 +36,7 @@ export class FileListDialComp implements OnInit, OnDestroy, DoCheck
     @Input() FileList: Svc.TScriptFileList
     @Output() OnSelection = new EventEmitter<Svc.TScriptFile>();
 
-    private Content: TContentCanvas;
+    private Content: TContentCanvas | undefined;
 }
 
 /* TContentCanvas */
@@ -65,7 +65,7 @@ class TContentCanvas
         this.Padding = this.DisplayHeight / 10;
         this.ItemHeight = (this.DisplayHeight - this.Padding) / SHOWING_ITEM_COUNT;
 
-        this.Ctx = Canvas.getContext('2d');
+        this.Ctx = Canvas.getContext('2d') as CanvasRenderingContext2D;
         this.Ctx.font = this.IconFont.toString();
 
         this.Ox = 0;
@@ -196,7 +196,7 @@ class TContentCanvas
             Ctx.textBaseline = "top"
             Ctx.font = this.MinuteFont.toString();
 
-            Str = Math.trunc((ScriptFile.Duration + 30) / 60).toString() + this.app.Translate('hint.min');
+            Str = Math.trunc((ScriptFile.DurationSecond + 30) / 60).toString() + this.app.Translate('hint.min');
             TextWidth = this.Ctx.measureText('H').width;
             Ctx.fillText(Str, Canvas.width - TextWidth * 3.5, Offset);
             // minute pie
@@ -222,7 +222,7 @@ class TContentCanvas
             if (! this.Darging)
                 return;
 
-            this.ScrollingY += (t.clientY - this.RelativeO.clientY) * 1.5 * window.devicePixelRatio;
+            this.ScrollingY += (t.clientY - (this.RelativeO ? this.RelativeO.clientY : 0)) * 1.5 * window.devicePixelRatio;
 
             if (this.ScrollingY < -this.ScrollMaxY)
                 this.ScrollingY = -this.ScrollMaxY;
@@ -260,17 +260,17 @@ class TContentCanvas
 
     private Ctx: CanvasRenderingContext2D;
 
-    private Padding;
+    private Padding: number;
     private Ox: number;
     private Oy: number;
     private Radius: number;
-    private ItemHeight;
-    private DisplayHeight;
+    private ItemHeight: number;
+    private DisplayHeight: number;
 
     private FileList: Svc.TScriptFileList = [];
     private ScrollingY = 0;
     private ScrollMaxY = 0;
 
-    private RelativeO: Touch;
+    private RelativeO: Touch | null;
     private Darging = false;
 }

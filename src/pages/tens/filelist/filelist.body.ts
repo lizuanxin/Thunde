@@ -79,7 +79,7 @@ export class FileListBodyComp implements OnInit
         {
             let BodyPart = this.CurrBodyCategory.BodyPartOf(this.UsageIconIdx);
             if (! TypeInfo.Assigned(BodyPart))
-                return;
+                return this._FilteredFiles;
 
             for (let f of this._FileList)
             {
@@ -112,6 +112,7 @@ export class FileListBodyComp implements OnInit
             case 1: return { fontSize: Math.ceil(window.innerWidth * 0.40) + 'px' }
             case 2: return { height: Math.ceil(window.innerHeight * 0.28) + 'px' }
             case 3: return { fontSize: Math.ceil(window.innerWidth * 0.05) + 'px' }
+            default: return {};
         }
     }
 
@@ -137,7 +138,7 @@ class TBodyCategory
                 for (let b of arg as Array<Svc.IBodyPart>)
                 {
                     this.BodyParts.push(b);
-                    for (let icon of JSON.parse(b.Desc))
+                    for (let icon of JSON.parse(b.Desc as string))
                     {
                         this.UsageIcons.push(icon);
                         this._UsageIconBodyPart.set(icon, b)
@@ -148,7 +149,7 @@ class TBodyCategory
             {
                 this.BodyParts.push(arg as Svc.IBodyPart);
 
-                for (let icon of JSON.parse((arg as Svc.IBodyPart).Desc))
+                for (let icon of JSON.parse((arg as Svc.IBodyPart).Desc as string))
                 {
                     this.UsageIcons.push(icon);
                     this._UsageIconBodyPart.set(icon, arg as Svc.IBodyPart)
@@ -160,7 +161,7 @@ class TBodyCategory
     BodyPartOf(IconIdx: number): Svc.IBodyPart
     {
         let Icon = this.UsageIcons[IconIdx];
-        return this._UsageIconBodyPart.get(Icon);
+        return this._UsageIconBodyPart.get(Icon) as Svc.IBodyPart;
     }
 
     UsageIcons = new Array<number>();
