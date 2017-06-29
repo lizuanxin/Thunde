@@ -588,6 +588,12 @@ export class TShell extends TAbstractShell
         this.TickIntervalId = setInterval(() =>
         {
             setTimeout(() => this.OnNotify.next(TShellNotify.Ticking), 0);
+
+            if (TypeInfo.Assigned(this.RefFile) && this.RefFile.Duration <= this.Ticking &&
+                this.OnNotify.observers.length === 0)
+            {
+                this.Detach();
+            }
         }, 1000)
     }
 
