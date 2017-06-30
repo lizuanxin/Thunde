@@ -3,7 +3,7 @@ import {Injectable, Injector} from '@angular/core';
 import {TSqliteStorage} from '../UltraCreation/Storage';
 import {TAppController} from '../UltraCreation/ng-ion/appcontroller'
 
-import * as USBSerial from '../UltraCreation/Native/UsbSerialOTG';
+import * as USB from '../UltraCreation/Native/USB';
 import {TypeInfo} from '../UltraCreation/Core/TypeInfo'
 
 import {translate_en, translate_zh} from './localize'
@@ -91,7 +91,7 @@ export class TApplication extends TAppController
         if (this.IsIos)
             return Promise.resolve(true);
         else
-            return USBSerial.OTG.IsSupported();
+            return USB.OTG.IsSupported();
     }
 
     get AcceptedTerms(): boolean

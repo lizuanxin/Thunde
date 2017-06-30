@@ -8,7 +8,7 @@ import {THashCrc16} from '../../UltraCreation/Hash';
 import {TAbstractShell, TShellRequest, ERequestTimeout, EDisconnected} from '../../UltraCreation/Native/Abstract.Shell'
 
 import * as BLE from '../../UltraCreation/Native/BluetoothLE';
-import * as USBSerial from '../../UltraCreation/Native/UsbSerialOTG';
+import * as USB from '../../UltraCreation/Native/USB';
 
 export {ERequestTimeout};
 
@@ -83,10 +83,10 @@ export class TShell extends TAbstractShell
 
 /* USB only */
 
-    static StartOTG(): USBSerial.OTG
+    static StartOTG(): USB.OTG
     {
         this.UsbProxy = new TProxyUsbShell();
-        return USBSerial.OTG.Start(USB_VENDOR, USB_PRODUCT, USB_MTU, USB_MIN_WRITE_INTERVAL);
+        return USB.OTG.Start(USB_VENDOR, USB_PRODUCT, USB_MTU, USB_MIN_WRITE_INTERVAL);
     }
 
     static get IsUsbPlugin(): boolean
@@ -170,7 +170,7 @@ export class TShell extends TAbstractShell
 
     constructor (Proxy: IProxyShell, public DeviceId: string)
     {
-        super(0);
+        super();
 
         this.Proxy = Proxy;
         Proxy.Owner = this;
@@ -807,7 +807,7 @@ export class TProxyBLEShell extends BLE.TShell implements IProxyShell
 
 /** Proxy to USB Shell */
 
-export class TProxyUsbShell extends USBSerial.TShell implements IProxyShell
+export class TProxyUsbShell extends USB.TShell implements IProxyShell
 {
     constructor()
     {
