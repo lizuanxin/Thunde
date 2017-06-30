@@ -476,6 +476,33 @@ export class TShell extends TAbstractShell
         return RetVal;
     }
 
+    get DurationMinuteHint(): string
+    {
+        let Duration = 0;
+        if (TypeInfo.Assigned(this.RefFile) && TypeInfo.Assigned(this.RefFile.Duration))
+            Duration = this.RefFile.Duration;
+
+        let Time = '00:00';
+        let Min = Math.trunc(Duration / 60);
+
+        if (Min === 0)
+            Time = '00:';
+        else if (Min < 10)
+            Time = '0' + Min + ':';
+        else
+            Time = Min + ':';
+
+        let Sec = Duration % 60;
+        if (Sec === 0)
+            Time += '00';
+        else if (Sec < 10)
+            Time += '0' + Sec;
+        else
+            Time += Sec + '';
+
+        return Time;
+    }
+
     get Version(): number
     {
         return this._Version;

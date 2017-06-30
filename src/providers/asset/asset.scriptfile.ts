@@ -75,29 +75,6 @@ export class TScriptFile extends TLangAsset implements IScriptFile
         return Math.trunc((this.DurationSecond + 30) / 60);
     }
 
-    get DurationString(): string
-    {
-        let Time = '00:00';
-        let Min = Math.trunc(this.DurationSecond / 60);
-
-        if (Min === 0)
-            Time = '00:';
-        else if (Min < 10)
-            Time = '0' + Min + ':';
-        else
-            Time = Min + ':';
-
-        let Sec = this.DurationSecond % 60;
-        if (Sec === 0)
-            Time += '00';
-        else if (Sec < 10)
-            Time += '0' + Sec;
-        else
-            Time += Sec + '';
-
-        return Time;
-    }
-
    /**
      *  https://en.wikipedia.org/wiki/Degree_(angle)
      *  https://en.wikipedia.org/wiki/Radian

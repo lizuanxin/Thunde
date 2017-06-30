@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, OnDestroy, isDevMode} from '@angular/core';
+import {Component, OnInit, AfterViewInit, OnDestroy} from '@angular/core';
 import {NavParams, ViewController} from 'ionic-angular';
 
 import {Subscription} from 'rxjs/Subscription'
@@ -9,18 +9,26 @@ import {PowerManagement} from '../../../UltraCreation/Native/PowerManagement'
 
 import * as Svc from '../../../providers';
 
-const DEMO_MODES: string[] = ["demo_friction", "demo_kneading", "demo_pressure"];
+const DEMO_FILES = ["demo_friction", "demo_kneading", "demo_pressure"];
 
 @Component({selector: "page-demo.running", templateUrl: "demo.running.html"})
 export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 {
-    constructor(public app: Svc.TApplication, private Distibute: Svc.TDistributeService,
+    constructor(public app: Svc.TApplication, private Distribute: Svc.TDistributeService,
         private view: ViewController, navParams: NavParams)
     {
-        this.SetModeInfo(DEMO_MODES[this.CurrentRunningIndex]);
-
         let DeviceId = navParams.get('DeviceId');
         this.Shell = Svc.Loki.TShell.Get(DeviceId);
+
+        for (let FileName of DEMO_FILES)
+        {
+            let f = new Svc.TScriptFile();
+            f.Name = FileName;
+            this.DemoFiles.push(f);
+
+            Distribute.ReadScriptFile(f);
+        }
+        this.Shell.RefFile = this.DemoFiles[0];
     }
 
     ngOnInit()
@@ -62,7 +70,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
                     console.log("duration:" + this.Shell.RefFile.Duration);
 
                     if (this.Ticking >= this.Shell.RefFile.Duration -1)
-                        this.NextMode();
+                        this.Next();
                     break;
                 }
             },
@@ -73,6 +81,8 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     ngAfterViewInit(): void
     {
+        // this.app.Nav.remove(1, this.app.Nav.getViews().length - 2);
+        /*
         CloseViews(this.app).catch(err => {});
 
         async function CloseViews(App: Svc.TApplication): Promise<void>
@@ -81,6 +91,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
             for (let i = 1; i < views.length - 1; i ++)
                 await views[i].dismiss().catch(err => {});
         }
+        */
     }
 
     ngOnDestroy(): void
@@ -89,24 +100,6 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 
         this.UnsubscribeShellNotify();
         this.Shell.Detach();
-
-        this.app.HideLoading();
-    }
-
-    SetModeInfo(runningIndex: string)
-    {
-        let ModeName = runningIndex.toLowerCase();
-
-        this.ModeGif = 'assets/img/' + ModeName + '.gif';
-        this.ModeInfo = ModeName + '_info';
-    }
-
-    private Start()
-    {
-        this.app.ShowLoading();
-
-        this.Shell.ClearFileSystem(DEMO_MODES)
-            .then(() => this.StartMode(0))
     }
 
     private UnsubscribeShellNotify(): void
@@ -118,170 +111,84 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
         }
     }
 
-    private StartMode(Index: number)
+    private Start()
+    {
+        this.app.ShowLoading();
+
+        let ScriptFile = this.DemoFiles[0];
+        let FileName = ScriptFile.Name.toLowerCase();
+
+        this.ModeGif = 'assets/img/' + FileName + '.gif';
+        this.ModeInfo = FileName + '_info';
+
+        this.Shell.ClearFileSystem(DEMO_FILES)
+            .then(() => setTimeout(() => this.StartIndex(0)))
+            .catch(err => this.app.ShowError(err).then(() => this.ClosePage()))
+            .then(() => this.app.HideLoading());
+    }
+
+    private StartIndex(Idx: number)
     {
         this.app.DisableHardwareBackButton();
-        let ScriptFile = new Svc.TScriptFile();
-        ScriptFile.Name = DEMO_MODES[Index];
 
-        this.Distibute.ReadScriptFile(ScriptFile)
-            .then(() => this.CurrentFileDuration = ScriptFile.DurationSecond)
+        let ScriptFile = this.DemoFiles[Idx];
+        let FileName = ScriptFile.Name.toLowerCase();
+
+        this.ModeGif = 'assets/img/' + FileName + '.gif';
+        this.ModeInfo = FileName + '_info';
+
+        this.Distribute.ReadScriptFile(ScriptFile)
             .then(() => this.Shell.CatFile(ScriptFile))
-            .then(progress =>
-            {
-                this.Downloading = true;
-                progress.subscribe(
-                    (next: number) => this.Ticking =  ScriptFile.DurationSecond * next);
-
-                return progress.toPromise()
-                    .then(() =>
-                    {
-                        this.Ticking = 0;
-                        this.Downloading = false;
-                    });
-            })
+            .then(progress => progress.toPromise())
             .then(() => this.Shell.StartScriptFile(ScriptFile))
-            .then(() => this.app.HideLoading())
-            .catch(err=> this.app.ShowError(err).then(() => isDevMode() ? null : this.ClosePage()))
+            .catch(err => this.app.ShowError(err).then(() => this.ClosePage()))
             .then(() => this.app.HideLoading())
             .then(() => this.app.EnableHardwareBackButton());
     }
 
-    NextMode()
+    Next()
     {
-        if (! this.Completed)
+        this.app.ShowLoading();
+
+        if (this.CurrentIdx < 2)
         {
-            if (this.CurrentRunningIndex < 2)
-            {
-                this.CurrentRunningIndex ++;
-
-                this.Shell.StopOutput();
-                this.Ticking = 0;
-
-                this.SetModeInfo(DEMO_MODES[this.CurrentRunningIndex]);
-                this.StartMode(this.CurrentRunningIndex);
-            }
-            else
-            {
-                this.Completed = true;
-
-                this.UnsubscribeShellNotify();
-                this.Shell.StopOutput();
-            }
-        }
-    }
-
-    LastMode()
-    {
-        if (this.CurrentRunningIndex > 0 && this.CurrentRunningIndex <= 2)
-        {
-            this.CurrentRunningIndex --;
-
-            this.Shell.StopOutput(); // 提前执行 防止 函数重复调用
+            this.CurrentIdx ++;
             this.Ticking = 0;
 
-            this.SetModeInfo(DEMO_MODES[this.CurrentRunningIndex]);
-            this.StartMode(this.CurrentRunningIndex);
+            this.Shell.StopOutput()
+                .then(() => this.StartIndex(this.CurrentIdx))
+                .catch(err => this.app.ShowError(err).then(() => this.ClosePage()))
+                .then(() => this.app.HideLoading())
+        }
+        else
+        {
+            this.UnsubscribeShellNotify();
+
+            this.Shell.StopOutput()
+                .catch(err => this.app.ShowError(err).then(() => this.ClosePage()))
+                .then(() => this.app.HideLoading())
         }
     }
 
-    get TickingDownHint(): string
+    Previous()
     {
-        // let TickingDown = this.Downloading ? DEMO_MODES_TIMES[this.CurrentRunningIndex] : DEMO_MODES_TIMES[this.CurrentRunningIndex] - this.Ticking -1;
 
-        // if (TickingDown > 0)
-        // {
-        //     let Min = Math.trunc((TickingDown) / 60);
+        if (this.CurrentIdx > 0 && this.CurrentIdx <= 2)
+        {
+            this.CurrentIdx --;
+            this.Ticking = 0;
 
-        //     let Sec = TickingDown % 60;
-        //     if (Sec < 0)
-        //     {
-        //         if (Min > 0)
-        //             Sec += 60;
-        //         else
-        //             Sec = 0;
-        //     }
-
-        //     if (Min > 0)
-        //         return (Min < 10 ? '0' : '') + Min.toString() + ':' + (Sec < 10 ? '0' : '') + Sec.toString();
-        //     else
-        //         return '00:' + (Sec < 10 ? '0' : '') + Sec.toString();
-        // }
-        // else
-        //     return '00:00';
-
-        return this.Downloading ? this.TotalMinute: this.Shell.TickingDownHint;
-    }
-
-    get TotalMinute(): string
-    {
-        let Time = '00:00';
-        let Min = Math.trunc(this.CurrentFileDuration / 60);
-        if (Min === 0)
-            Time = '00:';
-        else if (Min < 10)
-            Time = '0' + Min + ':';
-        else
-            Time = Min + ':';
-
-        let Sec = this.CurrentFileDuration % 60;
-        if (Sec === 0)
-            Time += '00';
-        else if (Sec < 10)
-            Time += '0' + Sec;
-        else
-            Time += Sec + '';
-
-        return Time;
-    }
-
-    get InitRange(): number
-    {
-        return this.Ticking / this.CurrentFileDuration * 100;
-    }
-
-    get TextStyle(): Object
-    {
-        let screenHeight = window.innerHeight;
-        return { height: screenHeight * 0.15 + "px", overflowY: "scroll", padding: "0" }
-    }
-
-    PointRotate(): string
-    {
-        // 266~446
-        let initial = 266;
-        let scale = initial + Math.trunc(this.Intensity * 180 / 60) + 'deg';
-        let str = 'rotate('+ scale +')';
-        return str;
+            this.app.ShowLoading()
+                .then(() =>this.Shell.StopOutput())
+                .then(() => this.StartIndex(this.CurrentIdx))
+                .catch(err => this.app.ShowError(err).then(() => this.ClosePage()))
+                .then(() => this.app.HideLoading())
+        }
     }
 
     AdjustIntensity(Value: number)
     {
         this.Shell.SetIntensity(this.Intensity + Value);
-    }
-
-    private Close(MessageId: string): void
-    {
-        this.UnsubscribeShellNotify();
-        this.Shell.Detach();
-
-        // ignore multi notify messages
-        if (! TypeInfo.Assigned(this.ClosingTimerId) && MessageId !== '')
-            this.app.ShowError(MessageId);
-
-        this.ClosePage();
-    }
-
-    private ClosePage(): void
-    {
-        if (this.Completed || TypeInfo.Assigned(this.ClosingTimerId))
-            return;
-
-        this.ClosingTimerId = setTimeout(() =>
-        {
-            if (this.view === this.app.Nav.getActive())
-                this.app.Nav.pop();
-        }, 300);
     }
 
     Shutdown()
@@ -304,19 +211,70 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
             .catch(err => console.error(err))
     }
 
-    CurrentRunningIndex: number = 0;
+    get Progress(): number
+    {
+        let f = this.DemoFiles[this.CurrentIdx];
 
-    Completed: boolean = false;
-    Downloading: boolean = false;
+        if (TypeInfo.Assigned(f))
+            return this.Ticking / f.DurationSecond * 100
+        else
+            return 0;
+    }
 
-    Ticking: number = 0;
-    Intensity: number = 0;
+    get Completed(): boolean
+    {
+        return this.CurrentIdx < 0 || this.CurrentIdx > 2
+    }
+
+    private Close(MessageId: string): void
+    {
+        this.UnsubscribeShellNotify();
+        this.Shell.Detach();
+
+        // ignore multi notify messages
+        if (! TypeInfo.Assigned(this.ClosingTimerId) && MessageId !== '')
+            this.app.ShowError(MessageId);
+
+        this.ClosePage();
+    }
+
+    private ClosePage(): void
+    {
+        if (this.Completed || TypeInfo.Assigned(this.ClosingTimerId))
+            return;
+
+        this.ClosingTimerId = setTimeout(() =>
+        {
+            this.app.Nav.popToRoot();
+        }, 300);
+    }
+
+    get TextStyle(): Object
+    {
+        let screenHeight = window.innerHeight;
+        return { height: screenHeight * 0.15 + "px", overflowY: "scroll", padding: "0" }
+    }
+
+    PointRotate(): string
+    {
+        // 266~446
+        let initial = 266;
+        let scale = initial + Math.trunc(this.Intensity * 180 / 60) + 'deg';
+        let str = 'rotate('+ scale +')';
+        return str;
+    }
+
+    CurrentIdx: number = 0;
 
     ModeGif: string;
     ModeInfo: string;
 
-    private ClosingTimerId: any = undefined;
-    private CurrentFileDuration: number = 0;
+    Ticking: number = 0;
+    Intensity: number = 0;
+
+    private DemoFiles: Array<Svc.TScriptFile> = [];
     private Shell: Svc.Loki.TShell;
     private ShellNotifySubscription: Subscription | undefined;
+
+    private ClosingTimerId: any = undefined;
 }

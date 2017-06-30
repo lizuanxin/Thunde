@@ -97,6 +97,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     ngAfterViewInit()
     {
+        /*
         CloseViews(this.app).catch(err => {});
 
         async function CloseViews(App: Svc.TApplication): Promise<void>
@@ -105,6 +106,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
             for (let i = 1; i < views.length - 1; i ++)
                 await views[i].dismiss().catch(err => {});
         }
+        */
     }
 
     get CanvasClientHeight(): Object

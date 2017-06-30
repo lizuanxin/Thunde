@@ -38,6 +38,7 @@ export class DemoPage implements AfterViewInit
             params.DeviceId = DeviceId;
 
             this.app.ShowLoading()
+                .then(() => this.app.Nav.pop({animate: false}))
                 .then(() => this.app.Nav.push(View.DemoRunningPage, params))
         }
     }
