@@ -24,7 +24,7 @@
         "src/**/*.ts"
     ],
     "exclude": [
-        "node_modules", "**/Storage/Engine/nodejs.*.ts"
+        "node_modules", "**/nodejs.*.ts"
     ],
     "compileOnSave": false,
     "atom": {"rewriteTsconfig": false}
