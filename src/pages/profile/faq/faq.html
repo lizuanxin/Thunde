@@ -9,17 +9,17 @@
         <ion-col col-8 align-self-center text-center no-padding>
             <span ion-text style="font-size: 2.5rem" color="light">FAQ</span>
         </ion-col>
-        
+
     </ion-row>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-    <ion-list *ngIf="Selected === null" inset list-init list-gray>
+    <ion-list *ngIf="Selected === undefined" inset list-init list-gray>
         <ion-item text-wrap color="lightBlue" *ngFor="let iter of Items" (click)="Select(iter)" tappable>
           {{iter.title}}
         </ion-item>
     </ion-list>
-    <ion-row *ngIf="Selected !== null">
+    <ion-row *ngIf="Selected !== undefined">
       <ion-col padding>
           <h2 color="light">{{Selected.title}}</h2>
           <div color="light" [innerHTML]="Selected.content"></div>
