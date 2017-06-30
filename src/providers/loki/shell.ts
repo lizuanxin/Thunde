@@ -185,7 +185,6 @@ export class TShell extends TAbstractShell
     private _BatteryLevel: number = 0;
 
     private _Intensity: number = 0;
-    private IntensityTick = 0;
     private IntensityChanging: Promise<any> | undefined;
 
     private _Ticking: number = 0;
@@ -321,7 +320,8 @@ export class TShell extends TAbstractShell
                 this._Intensity = 1;
                 this.OnNotify.next(TShellNotify.Intensity);
             })
-            .then(() => this.StartTicking())
+            .then(() => this.StartTicking());
+            /*
             .then(() =>
             {
                 return new Promise<void>((resolve, reject) =>
@@ -333,6 +333,7 @@ export class TShell extends TAbstractShell
                     }, 500)
                 });
             });
+            */
     }
 
     /*
@@ -599,14 +600,10 @@ export class TShell extends TAbstractShell
         */
     }
 
+    /*
     private IntensityRequest(): Promise<number>
     {
-        let dt = new Date();
         let strs: string[];
-
-        if (dt.getTime() - this.IntensityTick < 300)
-            return Promise.resolve(this.Intensity);
-        this.IntensityTick = dt.getTime();
 
         return this.Execute('>str', REQUEST_TIMEOUT,
             Line =>
@@ -621,6 +618,7 @@ export class TShell extends TAbstractShell
                 return this._Intensity;
             })
     }
+    */
 
     private VersionRequest(): Promise<number>
     {
