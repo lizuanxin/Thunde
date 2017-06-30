@@ -81,7 +81,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
                     if (this.Ticking >= this.ScriptFile.Duration)
                     {
                         this.Shell.StopOutput()
-                            .catch(err => console.log(err.message));
+                            .catch(err => this.app.ShowError(err).then(() => this.ClosePage()))
                         this.Completed = true;
                     }
                     break;
