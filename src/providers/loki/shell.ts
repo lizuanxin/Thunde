@@ -316,8 +316,23 @@ export class TShell extends TAbstractShell
                 this.RefFile = s;
                 (this.constructor as typeof TShell).RunningInstance = this;
             })
-            .then(() => setTimeout(() => this.IntensityRequest().catch(err => {}), 200))
-            .then(() => this.StartTicking());
+            .then(() =>
+            {
+                this._Intensity = 1;
+                this.OnNotify.next(TShellNotify.Intensity);
+            })
+            .then(() => this.StartTicking())
+            .then(() =>
+            {
+                return new Promise<void>((resolve, reject) =>
+                {
+                    setTimeout(() =>
+                    {
+                        this.IntensityRequest().catch(err => {})
+                            .then(() => resolve());
+                    }, 500)
+                });
+            });
     }
 
     /*

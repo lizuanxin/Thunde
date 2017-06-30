@@ -172,7 +172,6 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     Previous()
     {
-
         if (this.CurrentIdx > 0 && this.CurrentIdx <= 2)
         {
             this.CurrentIdx --;
