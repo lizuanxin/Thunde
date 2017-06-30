@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, AfterViewInit, OnDestroy, isDevMode} from '@angular/core';
 import {NavParams, ViewController} from 'ionic-angular';
 
 import {Subscription} from 'rxjs/Subscription'
@@ -59,31 +59,37 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 
                 case Svc.Loki.TShellNotify.Ticking:
                     this.Ticking = this.Shell.Ticking;
-                    if (this.Ticking >= this.CurrentFileDuration - 2)
+                    console.log("duration:" + this.Shell.RefFile.Duration);
+
+                    if (this.Ticking >= this.Shell.RefFile.Duration -1)
                         this.NextMode();
                     break;
                 }
             },
             err=> console.log(err.message));
+
+        this.Start();
     }
 
     ngAfterViewInit(): void
     {
-        this.app.Nav.remove(1, this.view.index - 1, {animate: false})
-            .then(() => this.Start());
+        CloseViews(this.app).catch(err => {});
+
+        async function CloseViews(App: Svc.TApplication): Promise<void>
+        {
+            let views = App.Nav.getViews();
+            for (let i = 1; i < views.length - 1; i ++)
+                await views[i].dismiss().catch(err => {});
+        }
     }
 
     ngOnDestroy(): void
     {
         PowerManagement.Release();
 
-        if (TypeInfo.Assigned(this.ShellNotifySubscription))
-        {
-            this.ShellNotifySubscription.unsubscribe();
-            this.ShellNotifySubscription = undefined;
-        }
-
+        this.UnsubscribeShellNotify();
         this.Shell.Detach();
+
         this.app.HideLoading();
     }
 
@@ -100,11 +106,21 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
         this.app.ShowLoading();
 
         this.Shell.ClearFileSystem(DEMO_MODES)
-            .then(() => this.StartMode(0, false))
+            .then(() => this.StartMode(0))
     }
 
-    private StartMode(Index: number, Loading: boolean)
+    private UnsubscribeShellNotify(): void
     {
+        if (TypeInfo.Assigned(this.ShellNotifySubscription))
+        {
+            this.ShellNotifySubscription.unsubscribe();
+            this.ShellNotifySubscription = undefined;
+        }
+    }
+
+    private StartMode(Index: number)
+    {
+        this.app.DisableHardwareBackButton();
         let ScriptFile = new Svc.TScriptFile();
         ScriptFile.Name = DEMO_MODES[Index];
 
@@ -126,38 +142,30 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
             })
             .then(() => this.Shell.StartScriptFile(ScriptFile))
             .then(() => this.app.HideLoading())
-            .catch(err =>
-            {
-                this.app.HideLoading()
-                    .then(() => this.app.ShowError(err))
-                    .then(() => this.ClosePage());
-            });
+            .catch(err=> this.app.ShowError(err).then(() => isDevMode() ? null : this.ClosePage()))
+            .then(() => this.app.HideLoading())
+            .then(() => this.app.EnableHardwareBackButton());
     }
 
     NextMode()
     {
-        if (! this.Finish)
+        if (! this.Completed)
         {
             if (this.CurrentRunningIndex < 2)
             {
                 this.CurrentRunningIndex ++;
 
-                this.Shell.StopOutput().then(() =>
-                {
-                    this.Ticking = 0;
-                    this.SetModeInfo(DEMO_MODES[this.CurrentRunningIndex]);
-                    this.StartMode(this.CurrentRunningIndex, true);
-                });
+                this.Shell.StopOutput();
+                this.Ticking = 0;
+
+                this.SetModeInfo(DEMO_MODES[this.CurrentRunningIndex]);
+                this.StartMode(this.CurrentRunningIndex);
             }
             else
             {
-                this.Finish = true;
-                if (TypeInfo.Assigned(this.ShellNotifySubscription))
-                {
-                    this.ShellNotifySubscription.unsubscribe();
-                    this.ShellNotifySubscription = undefined;
-                }
+                this.Completed = true;
 
+                this.UnsubscribeShellNotify();
                 this.Shell.StopOutput();
             }
         }
@@ -169,11 +177,11 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
         {
             this.CurrentRunningIndex --;
 
-            this.Shell.StopTicking(); // 提前执行 防止 函数重复调用
+            this.Shell.StopOutput(); // 提前执行 防止 函数重复调用
             this.Ticking = 0;
 
             this.SetModeInfo(DEMO_MODES[this.CurrentRunningIndex]);
-            this.StartMode(this.CurrentRunningIndex, true);
+            this.StartMode(this.CurrentRunningIndex);
         }
     }
 
@@ -202,15 +210,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
         // else
         //     return '00:00';
 
-        let Hint = "";
-
-        if (TypeInfo.Assigned(this.Shell))
-            Hint = this.Shell.TickingDownHint;
-
-        if (Hint === "")
-            Hint = this.TotalMinute;
-
-        return Hint;
+        return this.Downloading ? this.TotalMinute: this.Shell.TickingDownHint;
     }
 
     get TotalMinute(): string
@@ -228,7 +228,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
         if (Sec === 0)
             Time += '00';
         else if (Sec < 10)
-            Time += Sec + '0';
+            Time += '0' + Sec;
         else
             Time += Sec + '';
 
@@ -260,46 +260,53 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
         this.Shell.SetIntensity(this.Intensity + Value);
     }
 
-    private Close(MessageId: string)
+    private Close(MessageId: string): void
     {
-        if (MessageId !== '')
-            this.app.ShowError(MessageId).then(() => this.ClosePage());
-        else
-            this.ClosePage();
+        this.UnsubscribeShellNotify();
+        this.Shell.Detach();
+
+        // ignore multi notify messages
+        if (! TypeInfo.Assigned(this.ClosingTimerId) && MessageId !== '')
+            this.app.ShowError(MessageId);
+
+        this.ClosePage();
     }
 
-    private ClosePage()
+    private ClosePage(): void
     {
-        if (this.Finish)
+        if (this.Completed || TypeInfo.Assigned(this.ClosingTimerId))
             return;
 
-        setTimeout(() =>
+        this.ClosingTimerId = setTimeout(() =>
         {
-            if (this.view === this.app.Nav.getActive() && this.view.index !== 0)
+            if (this.view === this.app.Nav.getActive())
                 this.app.Nav.pop();
         }, 300);
     }
 
     Shutdown()
     {
-        if (TypeInfo.Assigned(this.ShellNotifySubscription))
-        {
-            this.ShellNotifySubscription.unsubscribe();
-            this.ShellNotifySubscription = undefined;
-        }
+        this.UnsubscribeShellNotify();
 
-        this.Shell.StopOutput();
-
-        setTimeout(() =>
-        {
-            if (this.view === this.app.Nav.getActive() && this.view.index !== 0)
-                this.app.Nav.pop();
-        }, 300);
+        this.Shell.StopOutput().catch(err => console.error(err))
+            .then(() =>
+            {
+                if (! TypeInfo.Assigned(this.ClosingTimerId))
+                {
+                    this.ClosingTimerId = setTimeout(() =>
+                    {
+                        if (this.view === this.app.Nav.getActive())
+                            this.app.Nav.pop();
+                    }, 300);
+                }
+            })
+            .then(() => this.Shell.Detach())
+            .catch(err => console.error(err))
     }
 
     CurrentRunningIndex: number = 0;
 
-    Finish: boolean = false;
+    Completed: boolean = false;
     Downloading: boolean = false;
 
     Ticking: number = 0;
@@ -308,6 +315,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
     ModeGif: string;
     ModeInfo: string;
 
+    private ClosingTimerId: any = undefined;
     private CurrentFileDuration: number = 0;
     private Shell: Svc.Loki.TShell;
     private ShellNotifySubscription: Subscription | undefined;
