@@ -558,6 +558,7 @@ export class TShell extends TAbstractShell
                             this.DefaultFileMd5 = keyvalue[1].toUpperCase();
                             break;
 
+                        case "md5":
                         case "lmd5":
                             this.LastFileMd5 = keyvalue[1].toUpperCase();
                             break;
