@@ -12,6 +12,8 @@ import * as USB from '../../UltraCreation/Native/USB';
 
 export {ERequestTimeout};
 
+const FOR_BLUETENS = false;
+
 const REQUEST_TIMEOUT = 3000;
 
 const BLE_FILTER_NAMES: string[] = ['uctenqt3', 'thunderbolt', 'uctenqt1', 'quintic ble', 'ble hw1.0.0', '.blt', 'bluetensx'];
@@ -178,6 +180,8 @@ export class TShell extends TAbstractShell
 
     OnNotify: TShellNotifyEvent = new Subject<TShellNotify>();
     RefFile: IScriptFile;
+    LastFileMd5: string;
+    DefaultFileMd5: string;
 
     private Proxy: IProxyShell | undefined;
 
@@ -335,18 +339,6 @@ export class TShell extends TAbstractShell
             });
             */
     }
-
-    /*
-    StartOutput()
-    {
-        return this.Execute('>osta', REQUEST_TIMEOUT, Line => this.IsStatusRetVal(Line))
-            .then(() => setTimeout(() => this.IntensityRequest().catch(err => {}), 300))
-            .then(() =>
-            {
-                this.StartTicking();
-            });
-    }
-    */
 
     StopOutput()
     {
@@ -563,7 +555,11 @@ export class TShell extends TAbstractShell
                             break;
 
                         case "dmd5":
+                            this.DefaultFileMd5 = keyvalue[1].toUpperCase();
+                            break;
+
                         case "lmd5":
+                            this.LastFileMd5 = keyvalue[1].toUpperCase();
                             break;
                         }
                     }
@@ -690,6 +686,9 @@ export class TShell extends TAbstractShell
             .then(() => this.VersionRequest())
             .then(() =>
             {
+                if (FOR_BLUETENS)
+                    return; // bluetens has no linear table
+
                 let Cls = this.constructor as typeof TShell;
 
                 if (Cls.LinearTable !== DEF_LINEAR_TABLE)
