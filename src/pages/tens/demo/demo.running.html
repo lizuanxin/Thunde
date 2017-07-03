@@ -1,5 +1,5 @@
 <ion-content no-scroll padding [ngClass]="app.Skin('light')">
-    <ng-template [ngIf]="!Finish">
+    <ng-template [ngIf]="!Completed">
       <div>
         <ion-row margin-horizontal margin-bottom style="background:#F2F2F2">
           <ion-col col-4 offset-4>
@@ -31,7 +31,7 @@
         </ion-row>
       </div>
     </ng-template>
-    <ng-template [ngIf]="Finish">
+    <ng-template [ngIf]="Completed">
     <div v-m style="height:100%;">
         <ion-icon app-icon color="color-primary-light" style="font-size:20vh">&#xe95c;</ion-icon>
     </div>
@@ -41,13 +41,13 @@
   <ion-toolbar visible transparent>
     <ion-row n-m-t-35>
         <ion-col text-center>
-            <button ion-fab color="color-primary-light" [ngStyle]="{display:'inline-flex', marginRight:'5vw'}" *ngIf="! Finish && CurrentIdx > 0 && CurrentIdx <= 2" (click)="Previous()" tappable>
+            <button ion-fab color="color-primary-light" [ngStyle]="{display:'inline-flex', marginRight:'5vw'}" *ngIf="! Completed && CurrentIdx > 0 && CurrentIdx <= 2" (click)="Previous()" tappable>
                 <ion-icon app-icon>&#xe939;</ion-icon>
             </button>
-            <button ion-fab color="color-primary-light" [ngStyle]="{display:'inline-flex', marginLeft: CurrentIdx != 0 ?'5vw':''}" *ngIf="! Finish && CurrentIdx < 2" (click)="Next()" tappable>
+            <button ion-fab color="color-primary-light" [ngStyle]="{display:'inline-flex', marginLeft: CurrentIdx != 0 ?'5vw':''}" *ngIf="! Completed && CurrentIdx < 2" (click)="Next()" tappable>
                 <ion-icon app-icon>&#xe93a;</ion-icon>
             </button>
-            <button ion-fab color="color-primary-light" [ngStyle]="{display:'inline-flex', marginLeft: Finish ? '':'5vw'}" *ngIf="CurrentIdx >= 2" (click)="Shutdown()" tappable>
+            <button ion-fab color="color-primary-light" [ngStyle]="{display:'inline-flex', marginLeft: Completed ? '':'5vw'}" *ngIf="CurrentIdx >= 2" (click)="Shutdown()" tappable>
                 <ion-icon app-icon>&#xe93b;</ion-icon>
             </button>
         </ion-col>
