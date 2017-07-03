@@ -1,4 +1,4 @@
-import {TLangAsset} from './asset.types'
+import {TLangAsset} from '.'
 
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 import {HexConv} from '../../UltraCreation/Core/Conv'

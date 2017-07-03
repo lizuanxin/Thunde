@@ -1,7 +1,7 @@
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 import {TAbstractShell} from '../../UltraCreation/Native/Abstract.Shell';
 
-import {TConnectablePeripheral, PeripheralFactory} from './asset.peripheral';
+import {TConnectablePeripheral, PeripheralFactory} from '.';
 import {TShell} from '../loki/shell';
 
 /* TTensPeripheral */
