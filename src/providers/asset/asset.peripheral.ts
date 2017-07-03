@@ -341,6 +341,24 @@ export class PeripheralFactory
                 id = ('08:7C:BE:' +  HexConv.Uint8ToHex(data[6])+ ':' + HexConv.Uint8ToHex(data[5]) + ':' +
                     HexConv.Uint8ToHex(data[4])).toUpperCase();
             }
+            else
+            {
+                // old compatible
+                id = (HexConv.Uint8ToHex(data[5]) + ':' + HexConv.Uint8ToHex(data[4]) + ':' + HexConv.Uint8ToHex(data[3])
+                    + ':' + HexConv.Uint8ToHex(data[2]) + ':' + HexConv.Uint8ToHex(data[1]) + ':' + HexConv.Uint8ToHex(data[0])).toUpperCase();
+                /*
+                let start_idx = 6;
+                let idx = start_idx;
+                for (; idx < data.byteLength; idx ++)
+                {
+                    if (data[idx] === 0)
+                        break;
+                }
+
+                let view = new Uint8Array(data.buffer, data.byteOffset + start_idx, idx - start_idx);
+                AdName = TUtf8Encoding.Instance.Decode(view).toLowerCase();
+                */
+            }
         };
 
         let Peripheral = this.Cached.get(id);
@@ -371,7 +389,16 @@ export class PeripheralFactory
             Peripheral.Version = ver;
 
             if (Peripheral instanceof TConnectablePeripheral)
+            {
+                if (Peripheral.ConnectId !== connect_id)
+                {
+                    // for share from android <--> ios
+                    //  the ConnectId is changed due to ScanId is different
+                    //  set Timestamp to null to force discover service to store object again
+                    Peripheral.Timestamp = null;
+                }
                 Peripheral.ConnectId = connect_id;
+            }
 
             let Updated = Peripheral.UpdateTLValues(TLV.Decode(data, 7, 1, 1));
             if (Updated.length > 0)
