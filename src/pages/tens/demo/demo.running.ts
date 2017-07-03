@@ -69,7 +69,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
                     this.Ticking = this.Shell.Ticking;
                     console.log("duration:" + this.Shell.RefFile.Duration);
 
-                    if (this.Ticking >= this.Shell.RefFile.Duration -1)
+                    if (TypeInfo.Assigned(this.Shell.RefFile.Duration) && this.Ticking >= this.Shell.RefFile.Duration - 1)
                         this.Next();
                     break;
                 }
@@ -162,6 +162,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
         }
         else
         {
+            this.Completed = true;
             this.UnsubscribeShellNotify();
 
             this.Shell.StopOutput()
@@ -220,11 +221,6 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
             return 0;
     }
 
-    get Completed(): boolean
-    {
-        return this.CurrentIdx < 0 || this.CurrentIdx > 2
-    }
-
     private Close(MessageId: string): void
     {
         this.UnsubscribeShellNotify();
@@ -263,6 +259,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
         return str;
     }
 
+    Completed: boolean = false;
     CurrentIdx: number = 0;
 
     ModeGif: string;
