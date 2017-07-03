@@ -217,5 +217,5 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
     private ShellNotifySubscription: Subscription | undefined;
 
     private Downloading = false;
-    private ClosingTimerId: any = null;
+    private ClosingTimerId: any = undefined;
 }
