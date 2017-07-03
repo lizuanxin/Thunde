@@ -7,14 +7,8 @@ import {TDistributeService} from '../distribute';
 import {const_data, IBodyPart, Loki} from '..'
 import {TCategory, TScriptFile, TScriptFileDesc} from './asset.scriptfile'
 
-import {TPeripheral, PeripheralFactory} from '.'
-
-
 module Queries
 {
-    export const ListPeripheral = 'SELECT * FROM Asset WHERE ObjectName LIKE "Peripheral.%"';
-    export const RemovePeripheral = 'SELECT * FROM Asset WHERE Id = ":Id" AND ObjectName LIKE "Peripheral.%"';
-
     export const GetCategories = `SELECT Category.*, ObjectName, Name, Desc
         FROM Asset INNER JOIN Category ON Category.Id = Asset.Id`
     export const GetFileList = `SELECT ScriptFile.*, ObjectName, Asset.Name, Asset.Desc
@@ -39,6 +33,11 @@ export class TAssetService
     {
         this.Storage = new TSqliteStorage(const_data.DatabaseName);
         console.log('TAssetService construct');
+
+        /* ListPeripheral was unknown here */
+        let ListPeripheral = (this as any).ListPeripheral;
+        if (TypeInfo.Assigned(ListPeripheral) && TypeInfo.IsFunction(ListPeripheral))
+            setTimeout(() => ListPeripheral.bind(this)().catch((err: any) => console.log(err)));
     }
 
     static Initialize(Storage: TSqliteStorage): Promise<void>
@@ -203,79 +202,4 @@ export class TAssetService
     private static _Categories: Array<TCategory> = [];
     private Storage: TSqliteStorage;
     private _FileBodyList = new Map<string, Array<IBodyPart>>();
-
-
-
-
-
-
-
-
-    async ListPeripheral(): Promise<Array<TPeripheral>>
-    {
-        if (TypeInfo.Assigned(this.PeripheralList))
-            return this.PeripheralList;
-        if (TypeInfo.Assigned(this.PromisingPeripheralList))
-            return await this.PromisingPeripheralList;
-
-        this.PromisingPeripheralList = this.Storage.ExecQuery(new TSqlQuery(Queries.ListPeripheral)).then(DataSet =>
-        {
-            let RetVal = new Array<TPeripheral>();
-            while(! DataSet.Eof)
-            {
-                let Peripheral = PeripheralFactory.Get(DataSet.Curr.Id, DataSet.Curr.ObjectName)
-                if (TypeInfo.Assigned(Peripheral))
-                {
-                    Peripheral.Assign(DataSet.Curr);
-                    RetVal.push(Peripheral);
-                }
-                else
-                    console.log('Unsupported Peripheral: ' + DataSet.Curr.ObjectName);
-
-                DataSet.Next();
-            }
-
-            this.PeripheralList = RetVal;
-            this.PromisingPeripheralList = null;
-            return RetVal;
-        })
-
-        let RetVal = await this.PromisingPeripheralList
-        this.PromisingPeripheralList = null;
-        return RetVal;
-    }
-
-    async AddPeripheral(Peripheral: TPeripheral): Promise<TPeripheral>
-    {
-        if (TypeInfo.Assigned(Peripheral.Timestamp))
-            return Promise.resolve(Peripheral);
-        Peripheral.Timestamp = new Date();
-
-        await this.Storage.SaveObject(Peripheral)
-
-        /*
-        if (! TypeInfo.Assigned(this.PeripheralList.find(iter => iter === Peripheral))
-            this.PeripheralList.push(Peripheral);
-        */
-
-        this.PeripheralList.push(Peripheral);
-        return Peripheral;
-    }
-
-    async RemovePeripheral(Id: string): Promise<void>
-    async RemovePeripheral(Peripheral: TPeripheral): Promise<void>
-    async RemovePeripheral(IdOrObj: string | TPeripheral): Promise<void>
-    {
-        let Id = '';
-        if (TypeInfo.IsString(IdOrObj))
-            Id = IdOrObj;
-        else
-            Id = IdOrObj.Id;
-
-        await this.Storage.ExecSQL(Queries.RemovePeripheral, {Id: Id})
-        PeripheralFactory.Uncache(Id);
-    }
-
-    private PeripheralList: Array<TPeripheral>;
-    private PromisingPeripheralList: Promise<Array<TPeripheral>>;
 }
