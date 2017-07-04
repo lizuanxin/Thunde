@@ -200,7 +200,7 @@ export class TDistributeService
                 {
                     // fallback to english
                     if (err instanceof EHttp)
-                        return HttpRequest(WebRoot + '/assets/translate/en/'+ FileName, 'GET', 'json')
+                        return HttpRequest(WebRoot + '/assets/translate/en/'+ FileName  + '.json', 'GET', 'json')
                     else
                         return Promise.reject(err);
                 })
