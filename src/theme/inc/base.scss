@@ -104,12 +104,12 @@ ion-menu {
 .card-view{
     margin-top: 2vh;
     .card-item{
-        margin: 0.1vh 6.8vw;
+        margin: 1.4vh 6.8vw;
         background-color: color($colors, light, base);
         border-radius: 6px;
         box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
         .wave-edge{
-            min-height: 22vh;
+            min-height: 23vh;
             border-radius: 6px 0 0 6px;
             display: -ms-flexbox;
             display: -webkit-flex;

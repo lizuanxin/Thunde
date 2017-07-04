@@ -3,32 +3,28 @@ import * as Svc from '../../../providers';
 
 @Component({selector: 'filelist-card', template: `
     <div class="card-view">
-        <ion-row align-items-center justify-content-center *ngFor="let f of FileList">
-            <ion-col col-12>
-                <ion-row align-items-center justify-content-center class="card-item">
-                    <ion-col col-4 text-center class="wave-edge">
-                        <ion-icon *ngIf="f.Id === '{00000000-0000-4000-4100-000000004001}'" app-icon color="light" class="big-icon">&#xe970;</ion-icon>
-                        <ion-icon *ngIf="f.Id === '{00000000-0000-4000-4100-000000004002}'" app-icon color="light" class="big-icon">&#xe9a4;</ion-icon>
-                        <ion-icon *ngIf="f.Id === '{00000000-0000-4000-4100-000000004003}'" app-icon color="light" class="big-icon">&#xe959;</ion-icon>
+        <ion-row align-items-center justify-content-center class="card-item" *ngFor="let f of FileList">
+            <ion-col col-4 text-center class="wave-edge">
+                <ion-icon *ngIf="f.Id === '{00000000-0000-4000-4100-000000004001}'" app-icon color="light" class="big-icon">&#xe970;</ion-icon>
+                <ion-icon *ngIf="f.Id === '{00000000-0000-4000-4100-000000004002}'" app-icon color="light" class="big-icon">&#xe9a4;</ion-icon>
+                <ion-icon *ngIf="f.Id === '{00000000-0000-4000-4100-000000004003}'" app-icon color="light" class="big-icon">&#xe959;</ion-icon>
+            </ion-col>
+            <ion-col col-5 align-self-center padding-left>
+                <div style="display: flex;align-items: center;">
+                    <span ion-text color="dark" class="big-text">{{f.Name_LangId|translate}}</span>
+                    <ion-icon *ngIf="DefaultFiles && DefaultFiles.indexOf(f.Name) !== -1" app-icon class="default-file">&#xe916;</ion-icon>
+                </div>
+                <span class="little-text">{{f.DurationMinute.toString()}}{{'hint.min'|translate}}</span>
+            </ion-col>
+            <ion-col col-3 align-self-center text-center (tap)="OnSelection.emit(f)">
+                <ion-row align-items-center justify-content-center>
+                    <ion-col col-12 align-self-center text-center>
+                        <ion-icon app-icon class="border-icon">{{app.IconFont(f.Icon)}}</ion-icon>
                     </ion-col>
-                    <ion-col col-5 align-self-center padding-left>
-                        <div style="display: flex;align-items: center;">
-                            <span ion-text color="dark" class="big-text">{{f.Name_LangId|translate}}</span>
-                            <ion-icon *ngIf="DefaultFiles && DefaultFiles.indexOf(f.Name) !== -1" app-icon class="default-file">&#xe916;</ion-icon>
-                        </div>
-                        <span class="little-text">{{f.DurationMinute.toString()}}{{'hint.min'|translate}}</span>
+                    <ion-col col-12 style="height:1.4vh">
                     </ion-col>
-                    <ion-col col-3 align-self-center text-center (tap)="OnSelection.emit(f)">
-                        <ion-row align-items-center justify-content-center>
-                            <ion-col col-12 align-self-center text-center>
-                                <ion-icon app-icon class="border-icon">{{app.IconFont(f.Icon)}}</ion-icon>
-                            </ion-col>
-                            <ion-col col-12 style="height:1.4vh">
-                            </ion-col>
-                            <ion-col col-12 align-self-center text-center style="background-color:transparent">
-                                <ion-icon app-icon class="nav-icon">&#xe929;</ion-icon>
-                            </ion-col>
-                        </ion-row>
+                    <ion-col col-12 align-self-center text-center style="background-color:transparent">
+                        <ion-icon app-icon class="nav-icon">&#xe929;</ion-icon>
                     </ion-col>
                 </ion-row>
             </ion-col>
