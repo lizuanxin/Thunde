@@ -4,7 +4,7 @@ import * as Svc from '../../../providers';
 @Component({selector: 'filelist-card', template: `
     <div class="card-view">
         <ion-row align-items-center justify-content-center *ngFor="let f of FileList">
-            <ion-col col-12 (tap)="OnSelection.emit(f)">
+            <ion-col col-12>
                 <ion-row align-items-center justify-content-center class="card-item">
                     <ion-col col-4 text-center class="wave-edge">
                         <ion-icon *ngIf="f.Id === '{00000000-0000-4000-4100-000000004001}'" app-icon color="light" class="big-icon">&#xe970;</ion-icon>
@@ -18,7 +18,7 @@ import * as Svc from '../../../providers';
                         </div>
                         <span class="little-text">{{f.DurationMinute.toString()}}{{'hint.min'|translate}}</span>
                     </ion-col>
-                    <ion-col col-3 align-self-center text-center>
+                    <ion-col col-3 align-self-center text-center (tap)="OnSelection.emit(f)">
                         <ion-row align-items-center justify-content-center>
                             <ion-col col-12 align-self-center text-center>
                                 <ion-icon app-icon class="border-icon">{{app.IconFont(f.Icon)}}</ion-icon>
