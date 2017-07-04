@@ -122,12 +122,12 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
         this.ModeInfo = FileName + '_info';
 
         this.Shell.ClearFileSystem(DEMO_FILES)
-            .then(() => setTimeout(() => this.StartIndex(0)))
+            .then(() => this.StartIndex(0))
             .catch(err => this.app.ShowError(err).then(() => this.ClosePage()))
             .then(() => this.app.HideLoading());
     }
 
-    private StartIndex(Idx: number)
+    private StartIndex(Idx: number): Promise<void>
     {
         this.app.DisableHardwareBackButton();
 
@@ -137,7 +137,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
         this.ModeGif = 'assets/img/' + FileName + '.gif';
         this.ModeInfo = FileName + '_info';
 
-        this.Distribute.ReadScriptFile(ScriptFile)
+        return this.Distribute.ReadScriptFile(ScriptFile)
             .then(() => this.Shell.CatFile(ScriptFile))
             .then(progress => progress.toPromise())
             .then(() => this.Shell.StartScriptFile(ScriptFile))
@@ -148,41 +148,50 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     Next()
     {
-        this.app.ShowLoading();
+        if (TypeInfo.Assigned(this.Switching))
+            return;
 
         if (this.CurrentIdx < 2)
         {
             this.CurrentIdx ++;
             this.Ticking = 0;
 
-            this.Shell.StopOutput()
+            this.Switching = this.app.ShowLoading()
+                .then(() => this.Shell.StopOutput())
                 .then(() => this.StartIndex(this.CurrentIdx))
                 .catch(err => this.app.ShowError(err).then(() => this.ClosePage()))
                 .then(() => this.app.HideLoading())
+                .then(() => this.Switching = undefined)
         }
         else
         {
             this.Completed = true;
             this.UnsubscribeShellNotify();
 
-            this.Shell.StopOutput()
+            this.Switching = this.app.ShowLoading()
+                .then(() => this.Shell.StopOutput())
                 .catch(err => this.app.ShowError(err).then(() => this.ClosePage()))
                 .then(() => this.app.HideLoading())
+                .then(() => this.Switching = undefined)
         }
     }
 
     Previous()
     {
+        if (TypeInfo.Assigned(this.Switching))
+            return;
+
         if (this.CurrentIdx > 0 && this.CurrentIdx <= 2)
         {
             this.CurrentIdx --;
             this.Ticking = 0;
 
-            this.app.ShowLoading()
+            this.Switching = this.app.ShowLoading()
                 .then(() =>this.Shell.StopOutput())
                 .then(() => this.StartIndex(this.CurrentIdx))
                 .catch(err => this.app.ShowError(err).then(() => this.ClosePage()))
                 .then(() => this.app.HideLoading())
+                .then(() => this.Switching = undefined)
         }
     }
 
@@ -273,4 +282,5 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
     private ShellNotifySubscription: Subscription | undefined;
 
     private ClosingTimerId: any = undefined;
+    private Switching: Promise<void> | undefined;
 }
