@@ -26,7 +26,7 @@ const FILE_CLEAR_MAX_COUNT = 64;
 
 const USB_VENDOR = 0x10C4;
 const USB_PRODUCT = 0x0003;
-const USB_MTU = 20;
+const USB_MTU = 64;
 const USB_MIN_WRITE_INTERVAL = 10;
 
 const OTA_WINDOW_SIZE = 24;
@@ -683,19 +683,19 @@ export class TShell extends TAbstractShell
             return Promise.reject(new EAbort());
 
         return this.ListDefaultFile()
-            .then((any) => this.StatusRequest())
-            .then(() => this.VersionRequest())
+            .then(() =>
+                this.VersionRequest())
+            .then(ary =>
+                this.StatusRequest())
             .then(() =>
             {
                 if (FOR_BLUETENS)
                     return; // bluetens has no linear table
 
-                let Cls = this.constructor as typeof TShell;
+                let SelfType = this.constructor as typeof TShell;
 
-                if (Cls.LinearTable !== DEF_LINEAR_TABLE)
-                    return this.SetLinearTable(Cls.LinearTable);
-                else
-                    return;
+                if (SelfType.LinearTable !== DEF_LINEAR_TABLE)
+                    return this.SetLinearTable(SelfType.LinearTable);
             });
     }
 
@@ -969,9 +969,16 @@ export class TListDefaultFile extends TProxyShellRequest
     /// @override
     Start(Proxy: TShell): void
     {
-        this.Shell.PromiseSend('>sdef')
-            .then(() => this.Shell.PromiseSend('>dump DefaultFile'))
-            .catch(err => this.error(err));
+        if (FOR_BLUETENS)
+        {
+            this.Shell.PromiseSend('>sdef')
+                .catch(err => this.error(err));
+        }
+        else
+        {
+            this.Shell.PromiseSend('>dump DefaultFile')
+                .catch(err => this.error(err));
+        }
     }
 
     /// @override
