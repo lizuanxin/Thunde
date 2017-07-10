@@ -7,6 +7,25 @@ import {TPersistPropRule} from '../../UltraCreation/Core/Persistable'
 
 import {IBodyPart, ICategory, IScriptFile} from '..'
 
+
+/* TMode */
+
+export class TMode extends TLangAsset
+{
+    constructor ()
+    {
+        super('Mode');
+    }
+
+    get IconChar(): string
+    {
+        return String.fromCharCode(this.Icon);
+    }
+
+    Icon: number = null;
+    Files: Array<TScriptFile> = [];
+}
+
 /*　TBody */
 
 export class TBodyPart extends TLangAsset implements IBodyPart
@@ -14,6 +33,11 @@ export class TBodyPart extends TLangAsset implements IBodyPart
     constructor()
     {
         super('Body');
+    }
+
+    get IconChar(): string
+    {
+        return String.fromCharCode(this.Icon);
     }
 
     Icon: number | null = null;
@@ -26,6 +50,11 @@ export class TCategory extends TLangAsset implements ICategory
     constructor()
     {
         super('Category');
+    }
+
+    get IconChar(): string
+    {
+        return String.fromCharCode(this.Icon);
     }
 
     /* IPersistable */
@@ -75,7 +104,11 @@ export class TScriptFile extends TLangAsset implements IScriptFile
         return Math.trunc((this.DurationSecond + 30) / 60);
     }
 
-   /**
+    DrawDuration(Canvas: HTMLCanvasElement)
+    {
+        this.DrawMinute(Canvas, Canvas.getContext("2d", {}), ["#0095de", "#FFFFFF"]);
+    }
+    /**
      *  https://en.wikipedia.org/wiki/Degree_(angle)
      *  https://en.wikipedia.org/wiki/Radian
      *  http://www.w3schools.com/tags/canvas_arc.asp
@@ -86,12 +119,22 @@ export class TScriptFile extends TLangAsset implements IScriptFile
      *      360°        = 1 turn            = 2π
      **/
     DrawMinute(Canvas: HTMLCanvasElement, Ctx: CanvasRenderingContext2D,
-        Radius: number, Ox: number, Oy: number)// , Turns: number[])
+        ColorFills?: string[], Radius?: number, Ox?: number, Oy?: number): void
     {
+        if (! TypeInfo.Assigned(Ctx))
+            Ctx = Canvas.getContext("2d", {});
+
+        if (! TypeInfo.Assigned(ColorFills))
+            ColorFills = [null, Ctx.fillStyle as string];
+        if (! TypeInfo.Assigned(Radius))
+            Radius = Canvas.height / 2;
+        if (! TypeInfo.Assigned(Ox))
+            Ox = Radius;
+        if (! TypeInfo.Assigned(Oy))
+            Oy= Radius;
+
         let RestoreFillStyle = Ctx.fillStyle;
         let Turns = [1.75, this.DurationSecond / 3600];
-
-        let ColorFills = [null, Ctx.fillStyle as string];
 
         Ctx.beginPath();
         Ctx.moveTo(Ox, Oy);

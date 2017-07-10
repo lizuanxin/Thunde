@@ -14,35 +14,35 @@ export namespace const_data
 
     export const BodyParts: Array<IBodyPart> =
     [
-        {Id: '{00000000-0000-4000-2000-000000000001}', Name: 'neck',
+        {Id: 'neck',        Name: 'neck',
             Icon: 0xE91F, Desc: JSON.stringify([0xE914])},
-        {Id: '{00000000-0000-4000-2000-000000000002}', Name: 'shoulder',
+        {Id: 'shoulder',    Name: 'shoulder',
             Icon: 0xE91A, Desc: JSON.stringify([0xE946, 0xE932])},
-        {Id: '{00000000-0000-4000-2000-000000000003}', Name: 'back',
+        {Id: 'back',        Name: 'back',
             Icon: 0xE904, Desc: JSON.stringify([0xE943])},
-        {Id: '{00000000-0000-4000-2000-000000000004}', Name: 'waist',
+        {Id: 'waist',       Name: 'waist',
             Icon: 0xE915, Desc: JSON.stringify([0xE9FD])},
-        {Id: '{00000000-0000-4000-2000-000000000005}', Name: 'upperarm',
+        {Id: 'upperarm',    Name: 'upperarm',
             Icon: 0xE903, Desc: JSON.stringify([0xE9A4])},
-        {Id: '{00000000-0000-4000-2000-000000000006}', Name: 'elbow',
+        {Id: 'elbow',       Name: 'elbow',
             Icon: 0xE90E, Desc: JSON.stringify([0xE970])},
-        {Id: '{00000000-0000-4000-2000-000000000007}', Name: 'forearm',
+        {Id: 'forearm',     Name: 'forearm',
             Icon: 0xE910, Desc: JSON.stringify([0xEA14])},
-        {Id: '{00000000-0000-4000-2000-000000000008}', Name: 'wrist',
+        {Id: 'wrist',       Name: 'wrist',
             Icon: 0xE920, Desc: JSON.stringify([0xE95b])},
-        {Id: '{00000000-0000-4000-2000-000000000009}', Name: 'abdomen',
+        {Id: 'abdomen',     Name: 'abdomen',
             Icon: 0xE900, Desc: JSON.stringify([0xE959])},
-        {Id: '{00000000-0000-4000-2000-00000000000A}', Name: 'buttock',
+        {Id: 'buttock',     Name: 'buttock',
             Icon: 0xE905, Desc: JSON.stringify([0xE91A])},
-        {Id: '{00000000-0000-4000-2000-00000000000B}', Name: 'thigh',
+        {Id: 'thigh',       Name: 'thigh',
             Icon: 0xE91D, Desc: JSON.stringify([0xe915])},
-        {Id: '{00000000-0000-4000-2000-00000000000C}', Name: 'knee',
+        {Id: 'knee',        Name: 'knee',
             Icon: 0xE913, Desc: JSON.stringify([0xEA25])},
-        {Id: '{00000000-0000-4000-2000-00000000000D}', Name: 'calf',
+        {Id: 'calf',        Name: 'calf',
             Icon: 0xE906, Desc: JSON.stringify([0xEA58])},
-        {Id: '{00000000-0000-4000-2000-00000000000E}', Name: 'ankle',
+        {Id: 'ankle',       Name: 'ankle',
             Icon: 0xE902, Desc: JSON.stringify([0xE9B9])},
-        {Id: '{00000000-0000-4000-2000-00000000000F}', Name: 'foot',
+        {Id: 'foot',        Name: 'foot',
             Icon: 0xE90F, Desc: JSON.stringify([0xE9CB])},
     ]
 
@@ -81,10 +81,9 @@ export namespace const_data
 
     export const Categories: Array<ICategory> =
     [
-        {Id: '{00000000-0000-4000-3000-000000000001}', Icon: 0xe917, Name: 'relax'},
-        {Id: '{00000000-0000-4000-3000-000000000002}', Icon: 0xe91e, Name: 'muscle_training'},
-        {Id: '{00000000-0000-4000-3000-000000000003}', Icon: 0xe905, Name: 'fat_burning'},
-        {Id: '{00000000-0000-4000-3000-FFFFFFFFFFFF}', Icon: 0xe94b, Name: 'recommend'},
+        {Id: 'relax', Icon: 0xe917, Name: 'relax'},
+        {Id: 'muscle_training', Icon: 0xe91e, Name: 'muscle_training'},
+        {Id: 'fat_burning', Icon: 0xe905, Name: 'fat_burning'},
     ]
 
     export const Category =
@@ -92,7 +91,6 @@ export namespace const_data
         relax: Categories[0],
         muscle_training: Categories[1],
         fat_burning: Categories[2],
-        recommend: Categories[3],
     }
 
     export const ScriptFile: Array<IScriptFile> =
@@ -169,15 +167,5 @@ export namespace const_data
         {Id: '{00000000-0000-4000-4100-000000004003}', Author: 'UltraCreation Team',
             Category_Id: Category.muscle_training.Id, Mode_Id: null, Name: 'sit_ups',
             BodyParts: BodyCategory.none, Icon: 0xe949},
-
-        {Id: '{00000000-0000-4000-4100-0000000FF001}', Author: 'UltraCreation Team',
-            Category_Id: Category.recommend.Id, Mode_Id: null, Name: 'recommend1',
-            BodyParts: [Body.back], Icon: null},
-        {Id: '{00000000-0000-4000-4100-0000000FF002}', Author: 'UltraCreation Team',
-            Category_Id: Category.recommend.Id, Mode_Id: null, Name: 'recommend2',
-            BodyParts: [Body.back], Icon: null},
-        {Id: '{00000000-0000-4000-4100-0000000FF003}', Author: 'UltraCreation Team',
-            Category_Id: Category.recommend.Id, Mode_Id: null, Name: 'recommend3',
-            BodyParts: [Body.back], Icon: null},
         ]
 }

@@ -200,7 +200,7 @@ class TContentCanvas
             TextWidth = this.Ctx.measureText('H').width;
             Ctx.fillText(Str, Canvas.width - TextWidth * 3.5, Offset);
             // minute pie
-            ScriptFile.DrawMinute(Canvas, Ctx, TextWidth, Canvas.width - TextWidth * 2, Offset);
+            ScriptFile.DrawMinute(Canvas, Ctx, undefined, TextWidth, Canvas.width - TextWidth * 2, Offset);
 
             Offset += this.ItemHeight / 2;
         }

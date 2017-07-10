@@ -28,7 +28,6 @@ export class HomePage implements OnInit
         if (isDevMode())
             console.log('develope mode....');
 
-        // this.Tabs.push(new TTabItem(255, Svc.const_data.Category.recommend));
         this.Tabs.push(new TTabItem(0, Svc.const_data.Category.relax));
         this.Tabs.push(new TTabItem(1, Svc.const_data.Category.muscle_training));
         // this.Tabs.push(new TTabItem(2, Svc.const_data.Category.fat_burning));

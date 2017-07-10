@@ -7,9 +7,8 @@ import {ComponentModule} from '../../components'
 import {SwiperComp} from '../../UltraCreation/ng-ion/swiper'
 import {FileListDialComp} from './filelist/filelist.dail';
 import {FileListBodyComp} from './filelist/filelist.body';
-import {FileListCardComp, FileListRecommendComp} from './filelist/filelist.card';
+import {FileListCardComp} from './filelist/filelist.card';
 import {FileListSlideComp} from './filelist/filelist.slide';
-import {FileDurationComp} from './file.duration'
 
 import {ScanBleComp} from './scan.ble';
 import {IntensityDialComp} from './intensity.dial';
@@ -29,13 +28,13 @@ import {DemoRunningPage} from './demo/demo.running'
     ],
     exports: [
         SwiperComp,
-        FileListDialComp, FileListBodyComp, FileListCardComp, FileListSlideComp, FileListRecommendComp,
-        FileDurationComp, IntensityDialComp,
+        FileListDialComp, FileListBodyComp, FileListCardComp, FileListSlideComp,
+        IntensityDialComp,
         ScanBleComp,
     ],
     declarations: [
-        SwiperComp, FileListDialComp, FileListBodyComp, FileListCardComp, FileListSlideComp, FileListRecommendComp,
-        FileDurationComp, IntensityDialComp,
+        SwiperComp, FileListDialComp, FileListBodyComp, FileListCardComp, FileListSlideComp,
+        IntensityDialComp,
         ScanBleComp,
         RunningPage, OtaPage, DownloadPage,
         DemoPage, DemoRunningPage

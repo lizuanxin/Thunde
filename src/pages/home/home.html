@@ -32,7 +32,6 @@
 </ion-header>
 
 <ion-content [ngSwitch]="ActiveTab.Index" no-scroll color="light" [ngClass]="app.Skin(ActiveSwitch())">
-    <filelist-recommend *ngSwitchCase="255" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-recommend>
     <filelist-body *ngSwitchCase="0" [FileList]="ActiveTab.FileList" [DefaultFiles]="DefaultFiles" (OnSelection)="SelectFile($event)"></filelist-body>
     <filelist-card *ngSwitchCase="1" [FileList]="ActiveTab.FileList" [DefaultFiles]="DefaultFiles" (OnSelection)="SelectFile($event)"></filelist-card>
     <filelist-dial *ngSwitchCase="2" [FileList]="ActiveTab.FileList" [DefaultFiles]="DefaultFiles" (OnSelection)="SelectFile($event)"></filelist-dial>
