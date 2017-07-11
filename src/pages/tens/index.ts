@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 
 import {IonicPageModule} from 'ionic-angular';
-import {TranslateModule} from '../../UltraCreation/ng-ion/translate'
+import {TranslateModule} from '@ngx-translate/core'
 import {ComponentModule} from '../../components'
 
 import {SwiperComp} from '../../UltraCreation/ng-ion/swiper'
