@@ -84,6 +84,7 @@ export namespace const_data
         {Id: 'relax', Icon: 0xe917, Name: 'relax'},
         {Id: 'muscle_training', Icon: 0xe91e, Name: 'muscle_training'},
         {Id: 'fat_burning', Icon: 0xe905, Name: 'fat_burning'},
+        {Id: '{00000000-0000-4000-3000-FFFFFFFFFFFF}', Icon: 0xe94b, Name: 'recommend'},
     ]
 
     export const Category =
@@ -91,6 +92,7 @@ export namespace const_data
         relax: Categories[0],
         muscle_training: Categories[1],
         fat_burning: Categories[2],
+        recommend: Categories[3],
     }
 
     export const ScriptFile: Array<IScriptFile> =
@@ -167,5 +169,15 @@ export namespace const_data
         {Id: '{00000000-0000-4000-4100-000000004003}', Author: 'UltraCreation Team',
             Category_Id: Category.muscle_training.Id, Mode_Id: null, Name: 'sit_ups',
             BodyParts: BodyCategory.none, Icon: 0xe949},
+
+            {Id: '{00000000-0000-4000-4100-0000000FF001}', Author: 'UltraCreation Team',
+            Category_Id: Category.recommend.Id, Mode_Id: null, Name: 'recommend1',
+            BodyParts: [Body.back], Icon: null},
+        {Id: '{00000000-0000-4000-4100-0000000FF002}', Author: 'UltraCreation Team',
+            Category_Id: Category.recommend.Id, Mode_Id: null, Name: 'recommend2',
+            BodyParts: [Body.back], Icon: null},
+        {Id: '{00000000-0000-4000-4100-0000000FF003}', Author: 'UltraCreation Team',
+            Category_Id: Category.recommend.Id, Mode_Id: null, Name: 'recommend3',
+            BodyParts: [Body.back], Icon: null},
         ]
 }
