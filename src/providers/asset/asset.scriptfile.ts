@@ -203,6 +203,5 @@ export class TScriptFileDesc extends TLangAsset
     ScriptFile_Id: string | null = null;
     Idx: number | null = null;
     Professional: boolean | null = null;
-
     BodyParts: Array<IBodyPart> = [];
 }

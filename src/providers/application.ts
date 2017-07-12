@@ -1,8 +1,6 @@
 import {Injectable, Injector} from '@angular/core';
 
-import {TSqliteStorage} from '../UltraCreation/Storage';
 import {TAppController} from '../UltraCreation/ng-ion/appcontroller'
-
 import * as USB from '../UltraCreation/Native/USB';
 import {TypeInfo} from '../UltraCreation/Core/TypeInfo'
 
@@ -67,11 +65,9 @@ export class TApplication extends TAppController
             })
     }
 
-    static Initialize(Storage: TSqliteStorage): Promise<void>
+    static Initialize(): Promise<void>
     {
-        this.Storage = Storage;
-
-        return Storage.Get('accepted terms')
+        return StorageEngine.Get('accepted terms')
             .then(value => { this.AcceptedTerms = value ==='yes'; })
             .catch(err => { })
     }
@@ -103,8 +99,7 @@ export class TApplication extends TAppController
     {
         if (Value)
         {
-            let Storage = (this.constructor as typeof TApplication).Storage;
-            Storage.Set('accepted terms', 'yes')
+            StorageEngine.Set('accepted terms', 'yes')
                 .then(() => TApplication.AcceptedTerms = true);
         }
     }
@@ -195,5 +190,4 @@ export class TApplication extends TAppController
 
     private static AcceptedTerms: boolean = false;
     private static SkinName: string = 'skin';
-    private static Storage: TSqliteStorage;
 };

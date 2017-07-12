@@ -1,6 +1,7 @@
 import {isDevMode} from '@angular/core'
 import {TypeInfo, EAbort} from '../UltraCreation/Core'
-import {TSqliteStorage, TSqlQuery} from '../UltraCreation/Storage'
+import {InitializeStorage, TSqliteEngine} from '../UltraCreation/Storage/Engine/cordova.sqlite'
+import {TSqlConnection, TSqlQuery} from '../UltraCreation/Storage/Storage.sql';
 
 import {const_data} from './const_data'
 import {TApplication} from './application'
@@ -12,59 +13,61 @@ export namespace Initialization
     export function Execute(): Promise<void>
     {
         const db_version = '25';
-        let Storage = new TSqliteStorage(const_data.DatabaseName);
-
-        let DevOrProd: Promise<any>;
-        if (isDevMode())
+        return InitializeStorage(new TSqliteEngine('BluetensDB')).GetConnection().then(conn =>
         {
-            DevOrProd = Storage.ExecSQL(DestroyTableSQL).catch(() => {})
-                .then(() => Storage.ExecSQL(InitTableSQL));
-        }
-        else
-        {
-            DevOrProd = Storage.ExecQuery(new TSqlQuery('SELECT name FROM sqlite_master WHERE type="table" AND name="Asset"'))
-                .then(DataSet =>
-                {
-                    // let Init = Storage.ExecSQL(DestroyTableSQL).catch(() => {});
-                    let Init: Promise<any>;
-                    if (DataSet.RecordCount !== 0)
+            let DevOrProd: Promise<any>;
+            if (isDevMode())
+            {
+                DevOrProd = conn.ExecSQL(DestroyTableSQL).catch(() => {})
+                    .then(() => conn.ExecSQL(InitTableSQL));
+            }
+            else
+            {
+                DevOrProd = conn.ExecQuery('SELECT name FROM sqlite_master WHERE type="table" AND name="Asset"')
+                    .then(DataSet =>
                     {
-                        Init = Storage.Get('db_version')
-                            .catch(err => 'destroying')
-                            .then(Value =>
-                            {
-                                if (Value === db_version)
+                        // let Init = conn.ExecSQL(DestroyTableSQL).catch(() => {});
+                        let Init: Promise<any>;
+                        if (DataSet.RecordCount !== 0)
+                        {
+                            Init = conn.Get('db_version')
+                                .catch(err => 'destroying')
+                                .then(Value =>
                                 {
-                                    console.log('skipping init data');
-                                    return Promise.reject(new EAbort())
-                                }
-                                else
-                                    return Storage.ExecSQL(DestroyTableSQL).catch(() => {});
-                            })
-                    }
-                    else
-                        Init = Storage.ExecSQL(DestroyTableSQL).catch(() => {});
+                                    if (Value === db_version)
+                                    {
+                                        console.log('skipping init data');
+                                        return Promise.reject(new EAbort())
+                                    }
+                                    else
+                                        return conn.ExecSQL(DestroyTableSQL).catch(() => {});
+                                })
+                        }
+                        else
+                            Init = conn.ExecSQL(DestroyTableSQL).catch(() => {});
 
-                    return Init.then(() => Storage.ExecSQL(InitTableSQL));
-                })
-        }
+                        return Init.then(() => conn.ExecSQL(InitTableSQL));
+                    })
+            }
 
-        return DevOrProd
-            .then(() => Storage.ExecSQL(InitDataSQL))
-            .then(() => InitMode(Storage))
-            .then(()=> InitBody(Storage))
-            .then(()=> InitCategory(Storage))
-            .then(()=> InitScriptFile(Storage))
-            .then(() => Storage.Set('db_version', db_version))
-            .catch((err) => console.log(err.message))       // data initialization ends here
-            .then(() => TApplication.Initialize(Storage))
-            .then(()=> TAssetService.Initialize(Storage))
-            .then(() => TShell.StartOTG())
-            .then(() => Storage.EnableForeignKeysConstraint())
-            .catch((err) => console.log(err.message));
+            return DevOrProd
+                .then(() => conn.ExecSQL(InitDataSQL))
+                .then(() => InitMode(conn))
+                .then(()=> InitBody(conn))
+                .then(()=> InitCategory(conn))
+                .then(()=> InitScriptFile(conn))
+                .then(() => conn.Set('db_version', db_version))
+                .catch((err) => console.log(err.message))       // data initialization ends here
+                .then(() => conn.EnableForeignKeysConstraint())
+                .then(() => conn.Release())
+                .then(() => TApplication.Initialize())
+                .then(()=> TAssetService.Initialize())
+                .then(() => { TShell.StartOTG() })
+                .catch((err) => console.log(err.message));
+        });
     }
 
-    function InitMode(Storage: TSqliteStorage): Promise<void>
+    function InitMode(conn: TSqlConnection): Promise<void>
     {
         let queries = [];
         for (let iter of const_data.Modes)
@@ -80,10 +83,10 @@ export namespace Initialization
             queries.push(new TSqlQuery(InsertMode, [iter.Id, Icon]));
         }
 
-        return Storage.ExecQuery(queries).then(() => {});
+        return conn.ExecQuery(queries).then(() => {});
     }
 
-    function InitBody(Storage: TSqliteStorage): Promise<void>
+    function InitBody(conn: TSqlConnection): Promise<void>
     {
         let queries = [];
         for (let iter of const_data.BodyParts)
@@ -99,10 +102,10 @@ export namespace Initialization
             queries.push(new TSqlQuery(InsertBody, [iter.Id, Icon]));
         }
 
-        return Storage.ExecQuery(queries).then(() => {});
+        return conn.ExecQuery(queries).then(() => {});
     }
 
-    function InitCategory(Storage: TSqliteStorage): Promise<void>
+    function InitCategory(conn: TSqlConnection): Promise<void>
     {
         let queries = [];
         for (let iter of const_data.Categories)
@@ -118,10 +121,10 @@ export namespace Initialization
             queries.push(new TSqlQuery(InsertCategory, [iter.Id, Icon]));
         }
 
-        return Storage.ExecQuery(queries).then(() => {});
+        return conn.ExecQuery(queries).then(() => {});
     }
 
-    function InitScriptFile(Storage: TSqliteStorage): Promise<void>
+    function InitScriptFile(conn: TSqlConnection): Promise<void>
     {
         let queries = [];
         for (let iter of const_data.ScriptFile)
@@ -155,7 +158,7 @@ export namespace Initialization
             }
         }
 
-        return Storage.ExecQuery(queries).then(() => {});
+        return conn.ExecQuery(queries).then(() => {});
     }
 
 /*

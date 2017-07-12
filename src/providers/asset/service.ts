@@ -1,7 +1,7 @@
 import {Injectable}  from '@angular/core';
 
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
-import {TSqlQuery, TSqliteStorage} from '../../UltraCreation/Storage';
+import {TSqlQuery} from '../../UltraCreation/Storage';
 
 import {TDistributeService} from '../distribute';
 import {const_data, IBodyPart, Loki} from '..'
@@ -31,7 +31,6 @@ export class TAssetService
 {
     constructor(private Distribute: TDistributeService)
     {
-        this.Storage = new TSqliteStorage(const_data.DatabaseName);
         console.log('TAssetService construct');
 
         /* ListPeripheral was unknown here */
@@ -40,9 +39,9 @@ export class TAssetService
             setTimeout(() => ListPeripheral.bind(this)().catch((err: any) => console.log(err)));
     }
 
-    static Initialize(Storage: TSqliteStorage): Promise<void>
+    static Initialize(): Promise<void>
     {
-        return Storage.ExecQuery(new TSqlQuery(Queries.GetCategories))
+        return StorageEngine.ExecQuery(Queries.GetCategories)
             .then(DataSet =>
             {
                 while (! DataSet.Eof)
@@ -54,19 +53,6 @@ export class TAssetService
                     DataSet.Next();
                 }
             });
-    }
-
-    Save(Obj: TScriptFile | Array<TScriptFileDesc>): Promise<void>
-    {
-        if (Obj instanceof TScriptFile)
-            return this.Storage.SaveObject(Obj);
-        else
-        {
-            let Promises = new Array<Promise<void>>();
-            for (let i = 0; i < Obj.length; i ++)
-                Promises.push(this.Storage.SaveObject(Obj[i]));
-            return Promise.all(Promises).then(() => {});
-        }
     }
 
     get Categories(): Array<TCategory>
@@ -91,7 +77,7 @@ export class TAssetService
 
     GetKey(Key: string): Promise<string | Object>
     {
-        return this.Storage.Get(Key)
+        return StorageEngine.Get(Key)
             .then(Value =>
             {
                 if (Value.length > 0 && Value[0] === '{')
@@ -104,17 +90,18 @@ export class TAssetService
     SetKey(Key: string, Value: string | Object): Promise<void>
     {
         if (Value instanceof Object)
-            return this.Storage.Set(Key, JSON.stringify(Value))
+            return StorageEngine.Set(Key, JSON.stringify(Value))
         else
-            return this.Storage.Set(Key, Value);
+            return StorageEngine.Set(Key, Value);
     }
 
     async FileList(Category_Id: string): Promise<Array<TScriptFile>>
     {
-        let DataSet = await this.Storage.ExecQuery(new TSqlQuery(Queries.GetFileList, [Category_Id]));
+        let DataSet = await StorageEngine.ExecQuery(new TSqlQuery(Queries.GetFileList, [Category_Id]));
         let FileBodyList = await this.FileBodyList();
 
         let RetVal = new Array<TScriptFile>();
+        let Saving = new Array<TScriptFile>();
 
         while (! DataSet.Eof)
         {
@@ -129,12 +116,23 @@ export class TAssetService
 
             await this.Distribute.ReadScriptFile(F);
             if (F.IsEditing)
-            {
-                console.log('saving: ' + F.Name);
-                this.Save(F).catch(err => console.log(err.message));
-            }
+                Saving.push(F);
 
             DataSet.Next();
+        }
+
+        if (Saving.length > 0)
+        {
+            StorageEngine.GetConnection().then(conn =>
+            {
+                let Promises = new Array<Promise<void>>();
+                for (let F of Saving)
+                {
+                    console.log('saving: ' + F.Name);
+                    Promises.push(conn.SaveObject(F).catch(err => console.log(err.message)));
+                }
+                Promise.all(Promises).catch(err => {}).then(() => conn.Release());
+            })
         }
 
         return RetVal;
@@ -144,7 +142,7 @@ export class TAssetService
     {
         if (this._FileBodyList.size === 0)
         {
-            let DataSet = await this.Storage.ExecQuery(new TSqlQuery(Queries.GetFileBodyList));
+            let DataSet = await StorageEngine.ExecQuery(new TSqlQuery(Queries.GetFileBodyList));
 
             while (! DataSet.Eof)
             {
@@ -165,7 +163,7 @@ export class TAssetService
 
     async FileDesc(ScriptFile: TScriptFile): Promise<void>
     {
-        let DataSet = await this.Storage.ExecQuery(new TSqlQuery(Queries.GetFileDesc, [ScriptFile.Id]))
+        let DataSet = await StorageEngine.ExecQuery(new TSqlQuery(Queries.GetFileDesc, [ScriptFile.Id]))
         let Details = ScriptFile.Details;
 
         if (DataSet.RecordCount > 0)
@@ -193,13 +191,13 @@ export class TAssetService
                 Desc.Name = Desc.Idx.toString();
                 Desc.Desc = Snap.Print();
 
-                await this.Save(Details)
+                for (let d of Details)
+                    await StorageEngine.SaveObject(d)
                 Details.push(Desc);
             }
         }
     }
 
     private static _Categories: Array<TCategory> = [];
-    private Storage: TSqliteStorage;
     private _FileBodyList = new Map<string, Array<IBodyPart>>();
 }
