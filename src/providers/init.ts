@@ -13,7 +13,7 @@ export namespace Initialization
     export function Execute(): Promise<void>
     {
         const db_version = '25';
-        return InitializeStorage(new TSqliteEngine('BluetensDB')).GetConnection().then(conn =>
+        return InitializeStorage(new TSqliteEngine('ThunderboltDB.sqlite')).GetConnection().then(conn =>
         {
             let DevOrProd: Promise<any>;
             if (isDevMode())
