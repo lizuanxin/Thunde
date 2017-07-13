@@ -1,5 +1,4 @@
-import {isDevMode} from '@angular/core'
-import {TypeInfo, EAbort} from '../UltraCreation/Core'
+import {TypeInfo} from '../UltraCreation/Core'
 import {InitializeStorage, TSqliteEngine} from '../UltraCreation/Storage/Engine/cordova.sqlite'
 import {TSqlConnection, TSqlQuery} from '../UltraCreation/Storage/Storage.sql';
 
@@ -10,61 +9,41 @@ import {TShell} from './loki'
 
 export namespace Initialization
 {
-    export function Execute(): Promise<void>
+    export async function Execute(): Promise<void>
     {
         const db_version = '25';
-        return InitializeStorage(new TSqliteEngine('ThunderboltDB.sqlite')).GetConnection().then(conn =>
+        let conn = await InitializeStorage(new TSqliteEngine('ThunderboltDB.sqlite')).GetConnection();
+
+        let DataSet = await conn.ExecQuery('SELECT name FROM sqlite_master WHERE type="table" AND name="Asset"')
+        if (DataSet.RecordCount !== 0)
         {
-            let DevOrProd: Promise<any>;
-            if (isDevMode())
-            {
-                DevOrProd = conn.ExecSQL(DestroyTableSQL).catch(() => {})
-                    .then(() => conn.ExecSQL(InitTableSQL));
-            }
-            else
-            {
-                DevOrProd = conn.ExecQuery('SELECT name FROM sqlite_master WHERE type="table" AND name="Asset"')
-                    .then(DataSet =>
-                    {
-                        // let Init = conn.ExecSQL(DestroyTableSQL).catch(() => {});
-                        let Init: Promise<any>;
-                        if (DataSet.RecordCount !== 0)
-                        {
-                            Init = conn.Get('db_version')
-                                .catch(err => 'destroying')
-                                .then(Value =>
-                                {
-                                    if (Value === db_version)
-                                    {
-                                        console.log('skipping init data');
-                                        return Promise.reject(new EAbort())
-                                    }
-                                    else
-                                        return conn.ExecSQL(DestroyTableSQL).catch(() => {});
-                                })
-                        }
-                        else
-                            Init = conn.ExecSQL(DestroyTableSQL).catch(() => {});
+            let Value = await conn.Get('db_version').catch(err => 'destroying')
+            if (Value !== db_version)
+                await Reinit();
+        }
+        else
+            await Reinit();
 
-                        return Init.then(() => conn.ExecSQL(InitTableSQL));
-                    })
-            }
+        await conn.Release();
+        await TApplication.Initialize();
+        await TAssetService.Initialize();
+        TShell.StartOTG();
 
-            return DevOrProd
-                .then(() => conn.ExecSQL(InitDataSQL))
-                .then(() => InitMode(conn))
-                .then(()=> InitBody(conn))
-                .then(()=> InitCategory(conn))
-                .then(()=> InitScriptFile(conn))
-                .then(() => conn.Set('db_version', db_version))
-                .catch((err) => console.log(err.message))       // data initialization ends here
-                .then(() => conn.EnableForeignKeysConstraint())
-                .then(() => conn.Release())
-                .then(() => TApplication.Initialize())
-                .then(()=> TAssetService.Initialize())
-                .then(() => { TShell.StartOTG() })
-                .catch((err) => console.log(err.message));
-        });
+        async function Reinit()
+        {
+            await conn.ExecSQL(DestroyTableSQL).catch(() => {});
+            await conn.ExecSQL(InitTableSQL);
+            await conn.ExecSQL(InitDataSQL);
+
+            await InitMode(conn);
+            await InitBody(conn);
+            await InitCategory(conn);
+            await InitScriptFile(conn);
+            await conn.Set('db_version', db_version).catch((err) => console.log(err.message));
+            console.log(conn);
+
+            await conn.EnableForeignKeysConstraint();
+        }
     }
 
     function InitMode(conn: TSqlConnection): Promise<void>
