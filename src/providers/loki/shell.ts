@@ -373,7 +373,7 @@ export class TShell extends TAbstractShell
     {
         if (! this.IsAttached)
             return;
-        if (this._Intensity === 0 || Value < 1 || Value > 60)
+        if (Value < 1 || Value > 60) //this._Intensity === 0 ||
             return;
 
         if (TypeInfo.Assigned(this.IntensityChanging))
