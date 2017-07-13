@@ -39,6 +39,7 @@
 </ion-content>
 <ion-footer no-border>
   <ion-toolbar visible transparent>
+    <div absolute style="z-index:1;left:30px;bottom:30px; padding:20px 20px 0 0;font-size:5vw" (click)="Shutdown()" tappable>{{'demo_play_page.skip'|translate}}</div>
     <ion-row n-m-t-35>
         <ion-col text-center>
             <button ion-fab color="color-primary-light" [ngStyle]="{display:'inline-flex', marginRight:'5vw'}" *ngIf="! Completed && CurrentIdx > 0 && CurrentIdx <= 2" (click)="Previous()" tappable>
@@ -47,9 +48,9 @@
             <button ion-fab color="color-primary-light" [ngStyle]="{display:'inline-flex', marginLeft: CurrentIdx != 0 ?'5vw':''}" *ngIf="! Completed && CurrentIdx < 2" (click)="Next()" tappable>
                 <ion-icon app-icon>&#xe93a;</ion-icon>
             </button>
-            <button ion-fab color="color-primary-light" [ngStyle]="{display:'inline-flex', marginLeft: Completed ? '':'5vw'}" *ngIf="CurrentIdx >= 2" (click)="Shutdown()" tappable>
+            <!--<button ion-fab color="color-primary-light" [ngStyle]="{display:'inline-flex', marginLeft: Completed ? '':'5vw'}" *ngIf="CurrentIdx >= 2" (click)="Shutdown()" tappable>
                 <ion-icon app-icon>&#xe93b;</ion-icon>
-            </button>
+            </button>-->
         </ion-col>
     </ion-row>
   </ion-toolbar>

@@ -123,7 +123,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 
         this.Shell.ClearFileSystem(DEMO_FILES)
             .then(() => this.StartIndex(0))
-            .catch(err => this.app.ShowError(err).then(() => this.ClosePage()))
+            .catch(err => this.app.ShowError(err).then(() => Svc.TGatt.BrowserFakeDevice ? null : this.ClosePage()))
             .then(() => this.app.HideLoading());
     }
 
@@ -141,7 +141,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
             .then(() => this.Shell.CatFile(ScriptFile))
             .then(progress => progress.toPromise())
             .then(() => this.Shell.StartScriptFile(ScriptFile))
-            .catch(err => this.app.ShowError(err).then(() => this.ClosePage()))
+            .catch(err => this.app.ShowError(err).then(() => Svc.TGatt.BrowserFakeDevice ? null : this.ClosePage()))
             .then(() => this.app.HideLoading())
             .then(() => this.app.EnableHardwareBackButton());
     }
@@ -197,6 +197,9 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     AdjustIntensity(Value: number)
     {
+        if (! TypeInfo.Assigned(this.Intensity))
+            this.Intensity = 1;
+
         this.Shell.SetIntensity(this.Intensity + Value);
     }
 
@@ -257,15 +260,6 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
     {
         let screenHeight = window.innerHeight;
         return { height: screenHeight * 0.15 + "px", overflowY: "scroll", padding: "0" }
-    }
-
-    PointRotate(): string
-    {
-        // 266~446
-        let initial = 266;
-        let scale = initial + Math.trunc(this.Intensity * 180 / 60) + 'deg';
-        let str = 'rotate('+ scale +')';
-        return str;
     }
 
     Completed: boolean = false;
