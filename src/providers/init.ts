@@ -15,7 +15,7 @@ export namespace Initialization
         let conn = await InitializeStorage(new TSqliteEngine('ThunderboltDB.sqlite')).GetConnection();
 
         let DataSet = await conn.ExecQuery('SELECT name FROM sqlite_master WHERE type="table" AND name="Asset"')
-        if (DataSet.RecordCount !== 0)
+        if (DataSet.RecordCount === 1)
         {
             let Value = await conn.Get('db_version').catch(err => 'destroying')
             if (Value !== db_version)
@@ -25,6 +25,7 @@ export namespace Initialization
             await Reinit();
 
         await conn.Release();
+
         await TApplication.Initialize();
         await TAssetService.Initialize();
         TShell.StartOTG();
