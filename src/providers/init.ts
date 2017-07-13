@@ -11,7 +11,7 @@ export namespace Initialization
 {
     export async function Execute(): Promise<void>
     {
-        const db_version = '25';
+        const db_version = '26';
         let conn = await InitializeStorage(new TSqliteEngine('ThunderboltDB.sqlite')).GetConnection();
 
         let DataSet = await conn.ExecQuery('SELECT name FROM sqlite_master WHERE type="table" AND name="Asset"')
@@ -19,10 +19,10 @@ export namespace Initialization
         {
             let Value = await conn.Get('db_version').catch(err => 'destroying')
             if (Value !== db_version)
-                await Reinit();
+                await Reconstruct();
         }
         else
-            await Reinit();
+            await Reconstruct();
 
         await conn.Release();
 
@@ -30,8 +30,10 @@ export namespace Initialization
         await TAssetService.Initialize();
         TShell.StartOTG();
 
-        async function Reinit()
+        async function Reconstruct()
         {
+            console.log('reconstructor all data...');
+
             await conn.ExecSQL(DestroyTableSQL).catch(() => {});
             await conn.ExecSQL(InitTableSQL);
             await conn.ExecSQL(InitDataSQL);
@@ -41,8 +43,6 @@ export namespace Initialization
             await InitCategory(conn);
             await InitScriptFile(conn);
             await conn.Set('db_version', db_version).catch((err) => console.log(err.message));
-            console.log(conn);
-
             await conn.EnableForeignKeysConstraint();
         }
     }

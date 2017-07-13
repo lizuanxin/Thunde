@@ -15,8 +15,8 @@ export class TApplication extends TAppController
         super(Injector);
 
         this.Skins = this.warm.concat(this.deep);
-        this.AddLanguage('zh', translate_zh);
         this.AddLanguage('en', translate_en);
+        this.AddLanguage('zh', translate_zh);
 
         /*
         let codes = navigator.language.split('-');

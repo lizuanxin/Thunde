@@ -166,7 +166,7 @@ export class TFile extends TPersistable
         for (let Section of this.Sections)
         {
             if (TFile.DEBUG_FILETIME)
-                console.log('----section starting at: ' + Math.trunc(RetVal / 1000));
+                console.log('----section starting at: ' + Math.trunc(RetVal / 10) / 100);
 
             let Est = Section.TimeEst();
             RetVal += Est;
@@ -310,7 +310,7 @@ export class TSection extends TPersistable
         for (let Block of this.Blocks)
         {
             if (TFile.DEBUG_FILETIME)
-                console.log('   +' + Math.trunc(RetVal / 1000) + ' ' + Block.Serialization(16, Prev));
+                console.log('   +' + Math.trunc(RetVal / 10) / 100 + ' ' + Block.Serialization(16, Prev));
 
             RetVal += Block.TimeEst();
             Prev = Block;

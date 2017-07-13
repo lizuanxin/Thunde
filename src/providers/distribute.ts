@@ -135,7 +135,7 @@ export class TDistributeService
                 LokiFile.LoadFrom(ContentBuffer);
 
                 ScriptFile.Edit();
-                ScriptFile.Duration = Math.trunc(((LokiFile.TimeEst() / 1000) + 30) / 60 * 60);
+                ScriptFile.Duration = Math.trunc((LokiFile.TimeEst() + 500) / 1000);
             }
         });
     }
