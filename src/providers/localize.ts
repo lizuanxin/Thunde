@@ -143,12 +143,12 @@ export let translate_en =
         twist: 'Twist',
         knead: 'Knead',
 
-        shoulder: 'Shoulder Deep-therapy',
-        upperarm: 'Upperarm Deep-therapy',
-        waist: 'Waist Deep-therapy',
-        leg: 'Leg Deep-therapy',
-        soles: 'Soles Deep-therapy',
-        joint: 'Joint Deep-therapy',
+        shoulder: 'Shoulder',
+        upperarm: 'Upperarm',
+        waist: 'Waist',
+        leg: 'Leg',
+        soles: 'Soles',
+        joint: 'Joint',
 
     /* fat-burning */
         fb_a: 'Burning A',
@@ -167,7 +167,7 @@ export let translate_en =
     /* recommend */
         recommend1: 'Sore therapy',
         recommend2: 'Pain therapy',
-        recommend3: 'Shoulder Deep-therapy'
+        recommend3: 'Shoulder'
     },
 
     tou_page:
