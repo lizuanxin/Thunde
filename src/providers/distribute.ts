@@ -120,7 +120,7 @@ export class TDistributeService
 
         return Read.then(() =>
         {
-            let ContentBuffer = TUtf8Encoding.Instance.Encode(ScriptFile.Content);
+            let ContentBuffer = TUtf8Encoding.Encode(ScriptFile.Content);
             ScriptFile.ContentBuffer = ContentBuffer;
 
             if (! TypeInfo.Assigned(ScriptFile.Md5))

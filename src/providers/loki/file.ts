@@ -208,7 +208,7 @@ export class TFile extends TPersistable
     LoadFrom(File: string | Uint8Array)
     {
         if (TypeInfo.IsString(File))
-            File = TUtf8Encoding.Instance.Encode(File);
+            File = TUtf8Encoding.Encode(File);
 
         let token = new TToken();
         let Idx = 0;

@@ -89,7 +89,7 @@ export class TScriptFile extends TLangAsset implements IScriptFile
     get Md5Name(): string
     {
         if (TypeInfo.Assigned(this.Md5))
-            return TBase64Encoding.Instance.EncodeToString(HexConv.HexToBin(this.Md5));
+            return TBase64EncodingString(HexConv.HexToBin(this.Md5));
         else
             return '';
     }

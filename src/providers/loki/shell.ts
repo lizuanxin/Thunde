@@ -145,7 +145,7 @@ export class TShell extends TAbstractShell
                 }
 
                 view = new Uint8Array(view.buffer, view.byteOffset + 6, idx - 6);
-                name = TUtf8Encoding.Instance.Decode(view).toLowerCase();
+                name = TUtf8Encodingiew).toLowerCase();
             }
             else
                 name = Device.name.toLowerCase();
