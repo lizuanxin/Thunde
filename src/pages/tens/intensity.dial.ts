@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ElementRef} from '@angular/core'
+import {Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ElementRef} from '@angular/core';
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 
 import * as Svc from '../../providers/application';
@@ -9,7 +9,7 @@ export class IntensityDialComp implements OnInit, AfterViewInit
     constructor(public app: Svc.TApplication, private Elements: ElementRef)
     {
         this.Image = new Image();
-        this.Image.src = "assets/img/bg_dial.png";
+        this.Image.src = 'assets/img/bg_dial.png';
     }
 
     ngOnInit()
@@ -46,7 +46,7 @@ export class TContentCanvas
     constructor(public app: Svc.TApplication, private Canvas: HTMLCanvasElement,
         private OnValueChanged: EventEmitter<number>, private Image: HTMLImageElement)
     {
-        this.Canvas.addEventListener("touchstart", this.TouchHandler.bind(this));
+        this.Canvas.addEventListener('touchstart', this.TouchHandler.bind(this));
 
         let rect = this.Canvas.getBoundingClientRect();
         let width = rect.width * window.devicePixelRatio;
@@ -74,7 +74,7 @@ export class TContentCanvas
         this.Ctx.clearRect(0, 0, this.Canvas.width, this.Canvas.height);
         let width = this.Canvas.width;
 
-        let anglePiece = (this.EndAngle - this.StartAngle)/this._Max;
+        let anglePiece = (this.EndAngle - this.StartAngle) / this._Max;
 
         this.DrawBackground(this.Image, width, width)
             .then(() =>
@@ -109,7 +109,7 @@ export class TContentCanvas
                     endAngle: this.StartAngle,
                     lineWidth: width * 0.1,
                     strokeColor: '#e51e21',
-                    shadowBox: {shadowOffsetX:0, shadowOffsetY: width * 0.02, shadowBlur: width * 0.02, shadowColor:'rgba(0, 0, 0, 0.1)'}
+                    shadowBox: {shadowOffsetX: 0, shadowOffsetY: width * 0.02, shadowBlur: width * 0.02, shadowColor: 'rgba(0, 0, 0, 0.1)'}
                 });
 
                 this.DrawArc(
@@ -117,27 +117,27 @@ export class TContentCanvas
                     x: this.CenterX,
                     y: this.CenterY,
                     radius: this.Radius,
-                    startAngle: this.EndAngle%(2 * Math.PI),
+                    startAngle: this.EndAngle % (2 * Math.PI),
                     endAngle: 0.499 * Math.PI,
                     lineWidth: width * 0.1,
                     strokeColor: '#e51e21',
-                    shadowBox: {shadowOffsetX:0, shadowOffsetY: width * 0.02, shadowBlur: width * 0.02, shadowColor:'rgba(0, 0, 0, 0.1)'}
+                    shadowBox: {shadowOffsetX: 0, shadowOffsetY: width * 0.02, shadowBlur: width * 0.02, shadowColor: 'rgba(0, 0, 0, 0.1)'}
                 });
 
-                this.DrawRotateText("-", {
+                this.DrawRotateText('-', {
                     x: this.CenterX,
                     y: this.CenterY,
                     radius: this.Radius,
-                    angle: 0.5005*Math.PI + (this.StartAngle - 0.5005*Math.PI)/2,
+                    angle: 0.5005 * Math.PI + (this.StartAngle - 0.5005 * Math.PI) / 2,
                     font: this.SetFontSize(0.11),
                     fillColor: 'white'
                 });
 
-                this.DrawRotateText("+", {
+                this.DrawRotateText('+', {
                     x: this.CenterX,
                     y: this.CenterY,
                     radius: this.Radius,
-                    angle: this.EndAngle%(2 * Math.PI) + (0.4995 * Math.PI - this.EndAngle%(2 * Math.PI))/2,
+                    angle: this.EndAngle % (2 * Math.PI) + (0.4995 * Math.PI - this.EndAngle % (2 * Math.PI)) / 2,
                     font: this.SetFontSize(0.09),
                     fillColor: 'white'
                 });
@@ -194,7 +194,7 @@ export class TContentCanvas
 
             function DrawImage()
             {
-                let tempCanvas = document.createElement("canvas");
+                let tempCanvas = document.createElement('canvas');
                 tempCanvas.width = width;
                 tempCanvas.height = width;
                 let ctx2 = tempCanvas.getContext('2d');
@@ -205,7 +205,7 @@ export class TContentCanvas
                 that.Ctx.strokeStyle = that.Ctx.createPattern(tempCanvas, 'no-repeat');
                 that.Ctx.beginPath();
                 that.Ctx.lineWidth = width * 0.03;
-                that.Ctx.arc(width/2, width/2, that.Radius, that.StartAngle, that.EndAngle, false);
+                that.Ctx.arc(width / 2, width / 2, that.Radius, that.StartAngle, that.EndAngle, false);
                 that.Ctx.stroke();
 
                 that.Ctx.restore();
@@ -226,7 +226,7 @@ export class TContentCanvas
         this.Ctx.beginPath();
         this.Ctx.translate(option.x + Math.cos(option.angle) * option.radius,
             option.y + Math.sin(option.angle) * option.radius);
-        this.Ctx.rotate(Math.PI/2 + option.angle);
+        this.Ctx.rotate(Math.PI / 2 + option.angle);
         this.Ctx.fillText(value, 0, 0);
         this.Ctx.restore();
     }
@@ -309,13 +309,13 @@ interface ICanvasDrawOption
     x?: number,
     y?: number,
     radius?: number,
-    globalAlpha?:number,
-    angle?:number,
+    globalAlpha?: number,
+    angle?: number,
     startAngle?: number,
     endAngle?: number,
     lineWidth?: number,
     lineCap?: string,
-    font?:string,
+    font?: string,
     strokeColor?: any,
     fillColor?: string,
     shadowBox?:

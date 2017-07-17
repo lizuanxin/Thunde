@@ -69,7 +69,7 @@ export function HttpRequest(Url: string,
 
             if (req.status === 200 || req.status === 0)
             {
-                //console.log(req);
+                // console.log(req);
                 observer.next(req.response);
                 observer.complete();
             }
@@ -182,7 +182,7 @@ export class TDistributeService
                 if (NewVersion.length !== 3)
                     return Promise.reject(new EAbort());
 
-                let NewRev = parseInt(NewVersion[1]) * 10000 + parseInt(NewVersion[2]);
+                let NewRev = parseInt(NewVersion[1], 10) * 10000 + parseInt(NewVersion[2], 10);
                 if (NewRev <= Rev)
                     return Promise.reject(new EAbort());
 

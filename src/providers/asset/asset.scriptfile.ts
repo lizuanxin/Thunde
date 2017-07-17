@@ -89,7 +89,7 @@ export class TScriptFile extends TLangAsset implements IScriptFile
     get Md5Name(): string
     {
         if (TypeInfo.Assigned(this.Md5))
-            return TBase64EncodingString(HexConv.HexToBin(this.Md5));
+            return TBase64Encoding.EncodeToString(HexConv.HexToBin(this.Md5));
         else
             return '';
     }
@@ -106,7 +106,7 @@ export class TScriptFile extends TLangAsset implements IScriptFile
 
     DrawDuration(Canvas: HTMLCanvasElement)
     {
-        this.DrawMinute(Canvas, Canvas.getContext("2d", {}), ["#0095de", "#FFFFFF"]);
+        this.DrawMinute(Canvas, Canvas.getContext('2d', {}), ['#0095de', '#FFFFFF']);
     }
     /**
      *  https://en.wikipedia.org/wiki/Degree_(angle)
@@ -122,7 +122,7 @@ export class TScriptFile extends TLangAsset implements IScriptFile
         ColorFills?: string[], Radius?: number, Ox?: number, Oy?: number): void
     {
         if (! TypeInfo.Assigned(Ctx))
-            Ctx = Canvas.getContext("2d", {});
+            Ctx = Canvas.getContext('2d', {});
 
         if (! TypeInfo.Assigned(ColorFills))
             ColorFills = [null, Ctx.fillStyle as string];

@@ -1,4 +1,4 @@
-import {Injectable}  from '@angular/core';
+import {Injectable} from '@angular/core';
 
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 import {TSqlQuery} from '../../UltraCreation/Storage';

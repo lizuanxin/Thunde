@@ -9,9 +9,9 @@ import {PowerManagement} from '../../../UltraCreation/Native/PowerManagement'
 
 import * as Svc from '../../../providers';
 
-const DEMO_FILES = ["demo_friction", "demo_kneading", "demo_pressure"];
+const DEMO_FILES = ['demo_friction', 'demo_kneading', 'demo_pressure'];
 
-@Component({selector: "page-demo.running", templateUrl: "demo.running.html"})
+@Component({selector: 'page-demo.running', templateUrl: 'demo.running.html'})
 export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 {
     constructor(public app: Svc.TApplication, private Distribute: Svc.TDistributeService,
@@ -67,7 +67,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 
                 case Svc.Loki.TShellNotify.Ticking:
                     this.Ticking = this.Shell.Ticking;
-                    console.log("duration:" + this.Shell.RefFile.Duration);
+                    console.log('duration:' + this.Shell.RefFile.Duration);
 
                     if (TypeInfo.Assigned(this.Shell.RefFile.Duration) && this.Ticking >= this.Shell.RefFile.Duration - 1)
                         this.Next();
@@ -259,7 +259,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
     get TextStyle(): Object
     {
         let screenHeight = window.innerHeight;
-        return { height: screenHeight * 0.15 + "px", overflowY: "scroll", padding: "0" }
+        return { height: screenHeight * 0.15 + 'px', overflowY: 'scroll', padding: '0' }
     }
 
     Completed: boolean = false;

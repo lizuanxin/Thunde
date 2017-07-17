@@ -1,4 +1,5 @@
-import {Subject, Observable} from 'rxjs';
+import {Subject} from 'rxjs/Subject';
+import {Observable} from 'rxjs/Observable'
 import 'rxjs/add/operator/toPromise';
 
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
@@ -115,7 +116,7 @@ export class TShell extends TAbstractShell
 
     static StartScan(): Subject<Array<BLE.IScanDiscovery>>
     {
-        //BLE.TGatt.BrowserFakeDevice = true;
+        // BLE.TGatt.BrowserFakeDevice = true;
         return BLE.TGattScaner.Start([], this.ScanFilter, BLE_SCAN_TIMEOUT);
     }
 
@@ -145,7 +146,7 @@ export class TShell extends TAbstractShell
                 }
 
                 view = new Uint8Array(view.buffer, view.byteOffset + 6, idx - 6);
-                name = TUtf8Encodingiew).toLowerCase();
+                name = TUtf8Encoding.Decode(view).toLowerCase();
             }
             else
                 name = Device.name.toLowerCase();
@@ -260,7 +261,7 @@ export class TShell extends TAbstractShell
     Shutdown(): Promise<void>
     {
         return this.StopOutput();
-        //return this.Execute('>shdn', REQUEST_TIMEOUT).catch(err => console.log('shutdown.err:' + err.message));
+        // return this.Execute('>shdn', REQUEST_TIMEOUT).catch(err => console.log('shutdown.err:' + err.message));
     }
 
     Reset()
@@ -346,7 +347,7 @@ export class TShell extends TAbstractShell
         return this.Execute('>osto', REQUEST_TIMEOUT, Line => this.IsStatusRetVal(Line));
     }
 
-    CatFile(s: IScriptFile): Promise<Subject<number>>
+    CatFile(s: IScriptFile): Promise<Observable<number>>
     {
         this.RefFile = s;
         return this.RequestStart(TCatRequest, REQUEST_TIMEOUT, s.Name, s.ContentBuffer, s.Md5);
@@ -373,7 +374,7 @@ export class TShell extends TAbstractShell
     {
         if (! this.IsAttached)
             return;
-        if (Value < 1 || Value > 60) //this._Intensity === 0 ||
+        if (Value < 1 || Value > 60) // this._Intensity === 0 ||
             return;
 
         if (TypeInfo.Assigned(this.IntensityChanging))
@@ -385,7 +386,7 @@ export class TShell extends TAbstractShell
                 let strs = Line.split('=');
                 if (strs.length === 2 && strs[0] === 'str')
                 {
-                    this._Intensity = parseInt(strs[1]);
+                    this._Intensity = parseInt(strs[1], 10);
                     return true;
                 }
                 else if (strs.length === 1)
@@ -409,7 +410,7 @@ export class TShell extends TAbstractShell
             .then(() => this.IntensityChanging = undefined)
     }
 
-    SetLinearTable(n : TLinearTable): Promise<void>
+    SetLinearTable(n: TLinearTable): Promise<void>
     {
         let Idx = 3;
         switch(n)
@@ -452,7 +453,7 @@ export class TShell extends TAbstractShell
 
     get TickingDownHint(): string
     {
-        let RetVal = "";
+        let RetVal = '';
 
         if (TypeInfo.Assigned(this.RefFile))
         {
@@ -536,30 +537,30 @@ export class TShell extends TAbstractShell
         return this.Execute('>stat', REQUEST_TIMEOUT, Line => (Line.indexOf('tick', 0) !== -1 || Line.indexOf('md5', 0) !== -1))
             .then(Line =>
             {
-                let strs = Line.split(",");
+                let strs = Line.split(',');
                 for (let str of strs)
                 {
-                    let keyvalue = str.split("=");
+                    let keyvalue = str.split('=');
                     if (keyvalue.length > 1)
                     {
                         switch(keyvalue[0])
                         {
-                        case "tick":
-                            let ticking = parseInt(keyvalue[1]);
+                        case 'tick':
+                            let ticking = parseInt(keyvalue[1], 10);
                             if (ticking !== 0)
                                 this.StartTicking(ticking);
                             break;
 
-                        case "str":
-                            this._Intensity = parseInt(keyvalue[1]);
+                        case 'str':
+                            this._Intensity = parseInt(keyvalue[1], 10);
                             break;
 
-                        case "dmd5":
+                        case 'dmd5':
                             this.DefaultFileMd5 = keyvalue[1].toUpperCase();
                             break;
 
-                        case "md5":
-                        case "lmd5":
+                        case 'md5':
+                        case 'lmd5':
                             this.LastFileMd5 = keyvalue[1].toUpperCase();
                             break;
                         }
@@ -629,7 +630,7 @@ export class TShell extends TAbstractShell
                     keyvalue = keyvalue[1].split('.');
 
                 // 1XXXBBBB
-                this._Version = (parseInt(keyvalue[1]) * 1000 + parseInt(keyvalue[2])) * 10000 + parseInt(keyvalue[3]);
+                this._Version = (parseInt(keyvalue[1], 10) * 1000 + parseInt(keyvalue[2], 10)) * 10000 + parseInt(keyvalue[3], 10);
                 console.log('firmware version: ' + this._Version);
                 return this._Version;
             })
@@ -668,7 +669,7 @@ export class TShell extends TAbstractShell
         if (strs.length > 1)
         {
             let Status = strs[0];
-            return ! isNaN(parseInt(Status))
+            return ! isNaN(parseInt(Status, 10))
         }
         else
             return false;
@@ -782,7 +783,7 @@ export class TShell extends TAbstractShell
             break;
 
         case 'strength':
-            this._Intensity = parseInt(Params[2]);
+            this._Intensity = parseInt(Params[2], 10);
             if (this._Intensity >= 0)
             {
                 this.OnNotify.next(TShellNotify.Intensity);
@@ -1052,7 +1053,7 @@ export class TClearFileSystemRequest extends TProxyShellRequest
                 if (this.DeletingFiles.length > 0)
                 {
                     this.SyncDeletingNext();
-                    this.Deleting.toPromise()
+                    (this.Deleting as Observable<void>).toPromise()
                         .then(() => this.complete())
                         .catch(err => this.error(err));
                 }
@@ -1076,7 +1077,7 @@ export class TClearFileSystemRequest extends TProxyShellRequest
             let Name = Line.substr(0, Idx);
             if (Name.length > 0)
             {
-                let Size = parseInt(Line.substr(Idx + 1, Line.length));
+                let Size = parseInt(Line.substr(Idx + 1, Line.length), 10);
 
                 // 24 = max file length of device supported
                 if (Name.length > 24 || isNaN(Size) || Size < 0 || Size > 32768)
@@ -1142,7 +1143,7 @@ export class TOTARequest extends TProxyShellRequest
         let Status = 0;
         if (Strs.length > 1)
         {
-            Status = parseInt(Strs[0]);
+            Status = parseInt(Strs[0], 10);
 
             if (Status === 0)
             {

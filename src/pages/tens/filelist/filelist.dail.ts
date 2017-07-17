@@ -46,12 +46,12 @@ class TContentCanvas
     constructor(private app: Svc.TApplication,private Canvas: HTMLCanvasElement,
         private OnSelection: EventEmitter<Svc.TScriptFile>)
     {
-        Canvas.addEventListener("touchstart", this.TouchHandler.bind(this));
-        Canvas.addEventListener("touchmove", this.TouchHandler.bind(this));
-        Canvas.addEventListener("touchcancel", this.TouchHandler.bind(this));
-        Canvas.addEventListener("touchend", this.TouchHandler.bind(this));
+        Canvas.addEventListener('touchstart', this.TouchHandler.bind(this));
+        Canvas.addEventListener('touchmove', this.TouchHandler.bind(this));
+        Canvas.addEventListener('touchcancel', this.TouchHandler.bind(this));
+        Canvas.addEventListener('touchend', this.TouchHandler.bind(this));
 
-        Canvas.addEventListener("click", this.Click.bind(this));
+        Canvas.addEventListener('click', this.Click.bind(this));
 
         let width = window.innerWidth;
         let height = window.innerHeight;
@@ -193,7 +193,7 @@ class TContentCanvas
 
             // minute
             Ctx.textAlign = 'right'
-            Ctx.textBaseline = "top"
+            Ctx.textBaseline = 'top'
             Ctx.font = this.MinuteFont.toString();
 
             Str = Math.trunc((ScriptFile.DurationSecond + 30) / 60).toString() + this.app.Translate('hint.min');

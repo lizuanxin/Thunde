@@ -89,11 +89,11 @@ export class FileListRecommendComp
         switch(FileId)
         {
         case '{00000000-0000-4000-4100-0000000FF001}':
-            return "assets/img/shoulders_recommend1.jpg";
+            return 'assets/img/shoulders_recommend1.jpg';
         case '{00000000-0000-4000-4100-0000000FF002}':
-            return "assets/img/shoulders_recommend2.jpg";
+            return 'assets/img/shoulders_recommend2.jpg';
         case '{00000000-0000-4000-4100-0000000FF003}':
-            return "assets/img/shoulders_recommend3.jpg";
+            return 'assets/img/shoulders_recommend3.jpg';
         default:
             return '';
         }

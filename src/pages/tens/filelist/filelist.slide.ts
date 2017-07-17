@@ -41,12 +41,12 @@ class TContentCanvas
     constructor(public app: Svc.TApplication, private Canvas: HTMLCanvasElement,
         private OnSelection: EventEmitter<number>)
     {
-        this.Canvas.addEventListener("touchstart", this.TouchHandler.bind(this));
-        this.Canvas.addEventListener("touchmove", this.TouchHandler.bind(this));
-        this.Canvas.addEventListener("touchcancel", this.TouchHandler.bind(this));
-        this.Canvas.addEventListener("touchend", this.TouchHandler.bind(this));
+        this.Canvas.addEventListener('touchstart', this.TouchHandler.bind(this));
+        this.Canvas.addEventListener('touchmove', this.TouchHandler.bind(this));
+        this.Canvas.addEventListener('touchcancel', this.TouchHandler.bind(this));
+        this.Canvas.addEventListener('touchend', this.TouchHandler.bind(this));
 
-        this.Canvas.addEventListener("click", this.Click.bind(this));
+        this.Canvas.addEventListener('click', this.Click.bind(this));
 
         let rect = this.Canvas.getBoundingClientRect();
         let width = rect.width * window.devicePixelRatio;
@@ -69,7 +69,7 @@ class TContentCanvas
             this.TextSize = this.TextSize * 2 * (this.ItemHeight / this.DisplayHeight)
             this.ItemHeight = Math.trunc(this.DisplayHeight / this.ShowItemCount);
         }
-        console.log("DisplayHeight:" + this.DisplayHeight + "ItemHeight:" + this.ItemHeight);
+        console.log('DisplayHeight:' + this.DisplayHeight + 'ItemHeight:' + this.ItemHeight);
 
         this.Ox = width / 2;
         this.Oy = Math.trunc(this.DisplayHeight / 2);
@@ -99,7 +99,7 @@ class TContentCanvas
 
         let CenterItemRect = this.CenterItemRect();
         let Count = this.ShowItemCount + Idx;
-        //console.log("ScrollingY:" + this.ScrollingY + "  Idx:" + Idx + "  ItemHeight" + this.ItemHeight + "  Count:" + Count + "  Offset:" + Offset);
+        // console.log("ScrollingY:" + this.ScrollingY + "  Idx:" + Idx + "  ItemHeight" + this.ItemHeight + "  Count:" + Count + "  Offset:" + Offset);
 
         // this.DrawRect(this.Oy - this.ItemHeight * 1.5);
         // this.DrawRect(this.Oy - this.ItemHeight * 0.5);
@@ -110,12 +110,12 @@ class TContentCanvas
             let Alpha = 1;
             let Font = this.FontSize(this.TextSize);
             let FontOffset = 0;
-            let FillStyle = "#ff0000";
+            let FillStyle = '#ff0000';
 
             if (Offset < CenterItemRect.top || Offset > CenterItemRect.bottom)
             {
                 Alpha = Offset / this.DisplayHeight;
-                FillStyle = "#000000";
+                FillStyle = '#000000';
                 FontOffset = this.TextSize * Alpha * Alpha;
 
                 if (Offset <= CenterItemRect.top)

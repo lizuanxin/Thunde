@@ -2,13 +2,13 @@ export let translate_en =
 {
     hint:
     {
-        e_usb_serial_plugin: "USB Device Error.",
-        e_usb_permission: "We don't have the Permission to use USB Device.",
+        e_usb_serial_plugin: 'USB Device Error.',
+        e_usb_permission: 'We don\'t have the Permission to use USB Device.',
         e_usb_otg: 'Your device report no USB OTG support, Our product may not porperly worked',
-        e_ble_plugin: "BLE Device Error.",
-        e_connect_timeout: "Connect Timeout.",
-        e_request_timeout: "Request Timeout.",
-        e_disconnected: "Device Disconnected Unexpectly.",
+        e_ble_plugin: 'BLE Device Error.',
+        e_connect_timeout: 'Connect Timeout.',
+        e_request_timeout: 'Request Timeout.',
+        e_disconnected: 'Device Disconnected Unexpectly.',
         e_ota_failure: 'Firmware upgrade failure.',
         e_invalid_file: 'Invalid File.',
 
@@ -206,10 +206,10 @@ export let translate_en =
 
     download_page:
     {
-        title: "Download default files",
-        set_default_file: " Can be set to the default file",
-        set: "set",
-        replace: "replace"
+        title: 'Download default files',
+        set_default_file: ' Can be set to the default file',
+        set: 'set',
+        replace: 'replace'
     }
 }
 
@@ -217,13 +217,13 @@ export let translate_zh =
 {
     hint:
     {
-        e_usb_serial_plugin: "USB 设备错误。",
-        e_usb_permission: "请授予权限使用USB",
+        e_usb_serial_plugin: 'USB 设备错误。',
+        e_usb_permission: '请授予权限使用USB',
         e_usb_otg: '因为您的手机未检测到 USB OTG, 本产品可能不能正确使用。',
-        e_ble_plugin: "BLE 设备错误。",
-        e_connect_timeout: "未能成功连接上设备。",
-        e_request_timeout: "请求超时。",
-        e_disconnected: "设备意外断开。",
+        e_ble_plugin: 'BLE 设备错误。',
+        e_connect_timeout: '未能成功连接上设备。',
+        e_request_timeout: '请求超时。',
+        e_disconnected: '设备意外断开。',
         e_ota_failure: '升级固件失败。',
         e_invalid_file: '模式文件不正确。',
 
@@ -408,9 +408,9 @@ export let translate_zh =
 
     download_page:
     {
-        title: "下载默认运行文件",
-        set_default_file: " 可以设置为默认模式",
-        set: "设置",
-        replace: "替换"
+        title: '下载默认运行文件',
+        set_default_file: ' 可以设置为默认模式',
+        set: '设置',
+        replace: '替换'
     }
 }

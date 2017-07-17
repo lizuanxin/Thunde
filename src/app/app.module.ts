@@ -11,7 +11,7 @@ import * as Cmp from '../components';
 import * as Svc from '../providers'
 
 let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
-    //iconMode: 'ios',
+    // iconMode: 'ios',
     activator: 'none',     // "ripple", "highlight"
     // pageTransition: 'ios-transition',
     backButtonText: '',

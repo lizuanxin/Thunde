@@ -56,26 +56,26 @@ export class DemoPage implements AfterViewInit
         let ele = this.animatedef.nativeElement,
             width = window.innerWidth,
             height = width * 1.5,
-            colorYellow = "#d3120b", colorLight = "#333", colorLightOpacity = 'rgba(0,0,0,.3)';
-            ele.children[ID.tips1].setAttribute("style",  "width: " + width * 0.14 + "px; height: " + width * 0.14 + "px; left: " + width * 0.39 + "px; top:" + height * 0.15 + "px");
-            ele.children[ID.tips2].setAttribute("style",  "width: " + width * 0.05 + "px; height: " + width * 0.05 + "px; left: " + width * 0.83 + "px; top:" + height * 0.455 + "px");
-            ele.children[ID.tips3].setAttribute("style",  "width: " + width * 0.14 + "px; height: " + width * 0.14 + "px; left: " + width * 0.62 + "px; top:" + height * 0.76 + "px");
-            ele.children[ID.electrode].setAttribute("style",  "font-size: 1.6rem; color: " + colorYellow + ";left: " + width * 0.62 + "px; top: " + height * 0.16 + "px");
-            ele.children[ID.power].setAttribute("style",  "transform:translateY(0); transform-origin: center bottom; font-size: 1.2rem; line-height:1.4rem; color: " + colorYellow + "; left: " + width * 0.85 + "px; top: " + height * 0.35 + "px;");
-            ele.children[ID.switch].setAttribute("style",  "font-size: 1.6rem; color: " + colorYellow + ";left: " + width * 0.18 + "px; top: " + height * 0.5 + "px");
-            ele.children[ID.strength].setAttribute("style",  "font-size: 1.6rem; color: " + colorYellow + ";left: " + width * 0.18 + "px; top: " + height * 0.82 + "px");
-            ele.children[ID.line1].setAttribute("style",  "z-index:0; transform-origin: left center;transform:scale(.5); font-size: 50vw; color: " + colorYellow + ";left: " + width * 0.5 + "px; top: " + -height * 0.08 + "px");
-            ele.children[ID.line2].setAttribute("style",  "z-index:0; transform-origin: right bottom; font-size: 50vw; color: " + colorYellow + ";left: " + width * 0.12 + "px; top: " + height * 0.38 + "px");
-            ele.children[ID.line3].setAttribute("style",  "z-index:0; transform-origin: right center; font-size: " + width * 0.68 + "px; color: " + colorYellow + ";left: " + width * 0.12 + "px; top: " + height * 0.50 + "px");
-            ele.children[ID.num1].setAttribute("style", "font-size: 2.8rem; color: " + colorYellow + ";left: " + width * 0.88 + "px; top: " + height * 0.06 + "px");
-            ele.children[ID.num2].setAttribute("style", "font-size: 2.8rem; color: " + colorYellow + ";left: " + width * 0.88 + "px; top: " + height * 0.5 + "px");
-            ele.children[ID.num3].setAttribute("style", "font-size: 2.8rem; color: " + colorYellow + ";left: " + -width * 0.04 + "px; top: " + height * 0.55 + "px");
-            ele.children[ID.num4].setAttribute("style", "font-size: 2.8rem; color: " + colorYellow + ";left: " + -width * 0.04 + "px; top: " + height * 0.87 + "px");
-            ele.children[ID.arrowPoint].setAttribute("style", "transform: rotate(-170deg); font-size: 1rem; color: " + colorLightOpacity + ";left: " + width * 0.74 + "px; top: " + height * 0.6 + "px");
-            ele.children[ID.key].setAttribute("style", "font-size: " + width * 0.5 + "px; color: " + colorLight + "; left: " + width * 0.36 + "px; top: " + height * 0.5 + "px");
-            ele.children[ID.body].setAttribute("style", "font-size:" + width * 0.67 + "px; color: " + colorLight + "; top:"  + -height * 0.07 + "px; ");
+            colorYellow = '#d3120b', colorLight = '#333', colorLightOpacity = 'rgba(0,0,0,.3)';
+            ele.children[ID.tips1].setAttribute('style',  'width: ' + width * 0.14 + 'px; height: ' + width * 0.14 + 'px; left: ' + width * 0.39 + 'px; top:' + height * 0.15 + 'px');
+            ele.children[ID.tips2].setAttribute('style',  'width: ' + width * 0.05 + 'px; height: ' + width * 0.05 + 'px; left: ' + width * 0.83 + 'px; top:' + height * 0.455 + 'px');
+            ele.children[ID.tips3].setAttribute('style',  'width: ' + width * 0.14 + 'px; height: ' + width * 0.14 + 'px; left: ' + width * 0.62 + 'px; top:' + height * 0.76 + 'px');
+            ele.children[ID.electrode].setAttribute('style',  'font-size: 1.6rem; color: ' + colorYellow + ';left: ' + width * 0.62 + 'px; top: ' + height * 0.16 + 'px');
+            ele.children[ID.power].setAttribute('style',  'transform:translateY(0); transform-origin: center bottom; font-size: 1.2rem; line-height:1.4rem; color: ' + colorYellow + '; left: ' + width * 0.85 + 'px; top: ' + height * 0.35 + 'px;');
+            ele.children[ID.switch].setAttribute('style',  'font-size: 1.6rem; color: ' + colorYellow + ';left: ' + width * 0.18 + 'px; top: ' + height * 0.5 + 'px');
+            ele.children[ID.strength].setAttribute('style',  'font-size: 1.6rem; color: ' + colorYellow + ';left: ' + width * 0.18 + 'px; top: ' + height * 0.82 + 'px');
+            ele.children[ID.line1].setAttribute('style',  'z-index:0; transform-origin: left center;transform:scale(.5); font-size: 50vw; color: ' + colorYellow + ';left: ' + width * 0.5 + 'px; top: ' + -height * 0.08 + 'px');
+            ele.children[ID.line2].setAttribute('style',  'z-index:0; transform-origin: right bottom; font-size: 50vw; color: ' + colorYellow + ';left: ' + width * 0.12 + 'px; top: ' + height * 0.38 + 'px');
+            ele.children[ID.line3].setAttribute('style',  'z-index:0; transform-origin: right center; font-size: ' + width * 0.68 + 'px; color: ' + colorYellow + ';left: ' + width * 0.12 + 'px; top: ' + height * 0.50 + 'px');
+            ele.children[ID.num1].setAttribute('style', 'font-size: 2.8rem; color: ' + colorYellow + ';left: ' + width * 0.88 + 'px; top: ' + height * 0.06 + 'px');
+            ele.children[ID.num2].setAttribute('style', 'font-size: 2.8rem; color: ' + colorYellow + ';left: ' + width * 0.88 + 'px; top: ' + height * 0.5 + 'px');
+            ele.children[ID.num3].setAttribute('style', 'font-size: 2.8rem; color: ' + colorYellow + ';left: ' + -width * 0.04 + 'px; top: ' + height * 0.55 + 'px');
+            ele.children[ID.num4].setAttribute('style', 'font-size: 2.8rem; color: ' + colorYellow + ';left: ' + -width * 0.04 + 'px; top: ' + height * 0.87 + 'px');
+            ele.children[ID.arrowPoint].setAttribute('style', 'transform: rotate(-170deg); font-size: 1rem; color: ' + colorLightOpacity + ';left: ' + width * 0.74 + 'px; top: ' + height * 0.6 + 'px');
+            ele.children[ID.key].setAttribute('style', 'font-size: ' + width * 0.5 + 'px; color: ' + colorLight + '; left: ' + width * 0.36 + 'px; top: ' + height * 0.5 + 'px');
+            ele.children[ID.body].setAttribute('style', 'font-size:' + width * 0.67 + 'px; color: ' + colorLight + '; top:'  + -height * 0.07 + 'px; ');
 
-        this.ready.nativeElement.setAttribute("style", "z-index: 0; position:absolute; left:0; right:0; bottom:20px; opacity: 0;");
+        this.ready.nativeElement.setAttribute('style', 'z-index: 0; position:absolute; left:0; right:0; bottom:20px; opacity: 0;');
     }
 
     AnimationFlow()
@@ -85,7 +85,7 @@ export class DemoPage implements AfterViewInit
 
         let Animation = () =>
         {
-            console.log("TypeMode:" + this.TypeMode);
+            console.log('TypeMode:' + this.TypeMode);
 
             if (this.TypeMode > 9) return;
 
@@ -94,8 +94,8 @@ export class DemoPage implements AfterViewInit
                 case 0:
                     setTimeout(() => {
                         ele.children[ID.body].style.opacity = 1;
-                        ele.children[ID.body].style.left = width * 0.05 + "px";
-                        ele.children[ID.body].style.top = -height * 0.07 + "px";
+                        ele.children[ID.body].style.left = width * 0.05 + 'px';
+                        ele.children[ID.body].style.top = -height * 0.07 + 'px';
                         Animation();
                     }, 150);
                     break;
@@ -103,15 +103,15 @@ export class DemoPage implements AfterViewInit
                 case 1:
                     setTimeout(() => {
                         this.ready.nativeElement.style.opacity = 1;
-                        this.ready.nativeElement.style.bottom = "30px";
+                        this.ready.nativeElement.style.bottom = '30px';
                         ele.children[ID.line1].style.opacity = 1;
-                        ele.children[ID.line1].style.transform = "scale(1)";
+                        ele.children[ID.line1].style.transform = 'scale(1)';
                         Animation();
                     }, 500);
 
                     setTimeout(() => {
                         ele.children[ID.electrode].style.opacity = 1;
-                        ele.children[ID.electrode].style.top = height * 0.12 + "px";
+                        ele.children[ID.electrode].style.top = height * 0.12 + 'px';
                         Animation();
                     }, 700);
                     break;
@@ -119,7 +119,7 @@ export class DemoPage implements AfterViewInit
                 case 2:
                     setTimeout(() => {
                         ele.children[ID.num1].style.opacity = 1;
-                        ele.children[ID.num1].style.top = height * 0.13 + "px";
+                        ele.children[ID.num1].style.top = height * 0.13 + 'px';
                         Animation();
                     }, 700);
                     break;
@@ -127,7 +127,7 @@ export class DemoPage implements AfterViewInit
                 case 3:
                     setTimeout(() => {
                         ele.children[ID.power].style.opacity = 1;
-                        ele.children[ID.power].style.transform = "translateY(0)";
+                        ele.children[ID.power].style.transform = 'translateY(0)';
                         Animation();
                     }, 700);
                     break;
@@ -142,11 +142,11 @@ export class DemoPage implements AfterViewInit
                 case 5:
                     setTimeout(() => {
                         ele.children[ID.arrowPoint].style.opacity = 1;
-                        ele.children[ID.arrowPoint].style.left = width * 0.64 + "px";
-                        ele.children[ID.arrowPoint].style.fontSize = "6rem";
+                        ele.children[ID.arrowPoint].style.left = width * 0.64 + 'px';
+                        ele.children[ID.arrowPoint].style.fontSize = '6rem';
                         ele.children[ID.key].style.opacity = 1;
-                        ele.children[ID.key].style.left = width * 0.3 + "px";
-                        ele.children[ID.key].style.top = height * 0.5 + "px";
+                        ele.children[ID.key].style.left = width * 0.3 + 'px';
+                        ele.children[ID.key].style.top = height * 0.5 + 'px';
                         Animation();
                     }, 700);
                     break;
@@ -157,7 +157,7 @@ export class DemoPage implements AfterViewInit
                         ele.children[ID.line2].style.transform = 'scale(1)';
 
                         ele.children[ID.switch].style.opacity = 1;
-                        ele.children[ID.switch].style.top = height * 0.48 + "px";
+                        ele.children[ID.switch].style.top = height * 0.48 + 'px';
                         Animation();
                     }, 700);
                     break;

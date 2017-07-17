@@ -26,9 +26,9 @@ export class TouPage implements OnInit, OnDestroy, AfterViewInit
     ngAfterViewInit()
     {
         this.Touch.Outer = document.getElementById('OuterHtml');
-        this.Touch.Outer.addEventListener("touchstart", this.TouchHandler.bind(this));
-        this.Touch.Outer.addEventListener("touchmove", this.TouchHandler.bind(this));
-        this.Touch.Outer.addEventListener("touchend", this.TouchHandler.bind(this));
+        this.Touch.Outer.addEventListener('touchstart', this.TouchHandler.bind(this));
+        this.Touch.Outer.addEventListener('touchmove', this.TouchHandler.bind(this));
+        this.Touch.Outer.addEventListener('touchend', this.TouchHandler.bind(this));
     }
 
     Submit()
@@ -71,7 +71,7 @@ export class TouPage implements OnInit, OnDestroy, AfterViewInit
             break;
         case 'touchmove':
             this.Touch.y = e.touches[0].pageY - this.Touch.Start_Y;
-            this.OffsetY;
+            // this.OffsetY;
             break;
         case 'touchend':
             setTimeout(() => this.Touch.y = 0);

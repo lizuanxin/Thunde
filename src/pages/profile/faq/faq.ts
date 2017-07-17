@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit} from '@angular/core';
 
 import {TypeInfo} from '../../../UltraCreation/Core'
 import * as Svc from '../../../providers';
