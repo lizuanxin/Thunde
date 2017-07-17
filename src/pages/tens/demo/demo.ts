@@ -6,9 +6,9 @@ import {TypeInfo} from '../../../UltraCreation/Core';
 import * as Svc from '../../../providers';
 import * as View from '../demo/demo.running';
 
-const ID = {'tips1':0, 'tips2':1, 'tips3':2, 'electrode':3, 'power':4, 'switch':5, 'strength':6,
-    'line1':7, 'line2':8, 'line3':9, 'num1':10, 'num2':11, 'num3':12, 'num4':13,
-    'arrowPoint':14, 'key':15, 'body':16};
+const ID = {'tips1': 0, 'tips2': 1, 'tips3': 2, 'electrode': 3, 'power': 4, 'switch': 5, 'strength': 6,
+    'line1': 7, 'line2': 8, 'line3': 9, 'num1': 10, 'num2': 11, 'num3': 12, 'num4': 13,
+    'arrowPoint': 14, 'key': 15, 'body': 16};
 
 @Component({selector: 'page-demo', templateUrl: 'demo.html'})
 export class DemoPage implements AfterViewInit
@@ -89,7 +89,7 @@ export class DemoPage implements AfterViewInit
 
             if (this.TypeMode > 9) return;
 
-            switch(this.TypeMode)
+            switch (this.TypeMode)
             {
                 case 0:
                     setTimeout(() => {

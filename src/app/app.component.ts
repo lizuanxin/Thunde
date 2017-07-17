@@ -32,7 +32,7 @@ export class MyApp
                         SplashScreen.hide();
                         StatusBar.overlaysWebView(true);
                         let StatusbarTransparent = (window as any).statusbarTransparent;
-                        if(StatusbarTransparent)
+                        if (StatusbarTransparent)
                             StatusbarTransparent.enable();
                         StatusBar.show();
                     }, 500);
