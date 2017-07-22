@@ -193,13 +193,13 @@ export class StartPage implements AfterViewInit
         Animation();
     }
 
-    TypeMode: number = 0;
+    App = window.App;
 
+    TypeMode: number = 0;
     @ViewChild('ready') ready: ElementRef;
     @ViewChild('animatedef') animatedef: ElementRef;
 
     IsShowingDeviceList: boolean = false;
     DeviceList: Array<Svc.IScanDiscovery> = [];
-
     DeviceScanning = false;
 }

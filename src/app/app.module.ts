@@ -44,7 +44,7 @@ let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
 
     providers: [
         {provide: ErrorHandler, useClass: IonicErrorHandler},
-        Svc.TApplication, Svc.TAssetService, Svc.TDistributeService,
+        Svc.TApplication, Svc.TAssetService,
     ],
 })
 export class AppModule {}

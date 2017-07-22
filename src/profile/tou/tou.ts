@@ -78,8 +78,11 @@ export class TouPage implements OnInit, OnDestroy, AfterViewInit
         }
     }
 
-    public IsFirstTime: boolean = true;
-    public Touch = new TouchParam();
+
+    App = window.App;
+
+    private IsFirstTime: boolean = true;
+    private Touch = new TouchParam();
 }
 
 class TouchParam

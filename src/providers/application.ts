@@ -81,7 +81,7 @@ export class TApplication extends TAppController
     static Initialize(): Promise<void>
     {
         return StorageEngine.Get('accepted terms')
-            .then(value => { this.AcceptedTerms = value === 'yes'; })
+            .then(value => {this.AcceptedTerms = value === 'yes'})
             .catch(err => { })
     }
 

@@ -62,12 +62,12 @@ export class HomePage implements OnInit
 
         if (this.DefaultFiles.length === 0)
         {
-            this.Asset.GetKey('def_filelist')
+            StorageEngine.Get('def_filelist')
                 .then(ary => this.DefaultFiles = ary as string[])
                 .catch(err => {});
         }
         else
-            this.Asset.SetKey('def_filelist', this.DefaultFiles).catch(err => {});
+            StorageEngine.Set('def_filelist', this.DefaultFiles).catch(err => {});
 
         App.EnableHardwareBackButton();
         this.CheckIsStillRunning();
@@ -166,6 +166,8 @@ export class HomePage implements OnInit
     {
         return App.Nav.push(TouPage);
     }
+
+    App = window.App;
 
     private DefaultFiles: Array<string> = []
     private Tabs: Array<TTabItem> = [];

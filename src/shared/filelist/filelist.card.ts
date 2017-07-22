@@ -19,7 +19,7 @@ import * as Svc from '../../providers';
             <ion-col col-3 align-self-center text-center (tap)="OnSelection.emit(f)">
                 <ion-row align-items-center justify-content-center>
                     <ion-col col-12 align-self-center text-center>
-                        <ion-icon app-icon class="border-icon">{{app.IconFont(f.Icon)}}</ion-icon>
+                        <ion-icon app-icon class="border-icon">{{App.IconFont(f.Icon)}}</ion-icon>
                     </ion-col>
                     <ion-col col-12 style="height:1.4vh">
                     </ion-col>
@@ -35,6 +35,8 @@ export class FileListCardComp
     constructor()
     {
     }
+
+    App = window.App;
 
     @Input() DefaultFiles: Array<string>;
     @Input() FileList: Svc.TScriptFileList;

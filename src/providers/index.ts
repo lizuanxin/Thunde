@@ -1,7 +1,6 @@
 export * from './intf'
 export * from './const_data';
 export * from './asset';
-export * from './distribute';
 export * from './localize';
 
 export * from './application';

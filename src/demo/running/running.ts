@@ -14,8 +14,7 @@ const DEMO_FILES = ['demo_friction', 'demo_kneading', 'demo_pressure'];
 @Component({selector: 'page-running', templateUrl: 'running.html'})
 export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 {
-    constructor(private Distribute: Svc.TDistributeService,
-        private view: ViewController, navParams: NavParams)
+    constructor(private view: ViewController, navParams: NavParams)
     {
         let DeviceId = navParams.get('DeviceId');
         this.Shell = Svc.Loki.TShell.Get(DeviceId);
@@ -25,8 +24,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
             let f = new Svc.TScriptFile();
             f.Name = FileName;
             this.DemoFiles.push(f);
-
-            Distribute.ReadScriptFile(f);
+            Svc.TAssetService.LoadScriptFile(f);
         }
         this.Shell.RefFile = this.DemoFiles[0];
     }
@@ -137,7 +135,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
         this.ModeGif = 'assets/img/' + FileName + '.gif';
         this.ModeInfo = FileName + '_info';
 
-        return this.Distribute.ReadScriptFile(ScriptFile)
+        return Svc.TAssetService.LoadScriptFile(ScriptFile)
             .then(() => this.Shell.CatFile(ScriptFile))
             .then(progress => progress.toPromise())
             .then(() => this.Shell.StartScriptFile(ScriptFile))

@@ -118,6 +118,8 @@ export class FileListBodyComp implements OnInit
         }
     }
 
+    App = window.App;
+
     private BodyCategories = new Array<TBodyCategory>();
     private CurrBodyCategory: TBodyCategory;
     private UsageIconIdx: number = 0;

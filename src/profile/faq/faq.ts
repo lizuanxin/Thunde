@@ -6,13 +6,13 @@ import * as Svc from '../../providers';
 @Component({selector: 'page-faq', templateUrl: 'faq.html'})
 export class FaqPage implements OnInit
 {
-    constructor(private Distribute: Svc.TDistributeService)
+    constructor()
     {
     }
 
     ngOnInit()
     {
-        this.Distribute.ReadFAQ('faq')
+        Svc.TAssetService.LoadFaq()
             .then(values => this.Items = values)
             .catch(err => console.log(err.message));
     }

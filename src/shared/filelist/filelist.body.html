@@ -5,7 +5,7 @@
                 nextButton:'.swiper-button-next', prevButton:'.swiper-button-prev', effect:'cube'}"
             (OnSlideChanged)="UsageIconChanged($event)">
                     <div class="swiper-wrapper" [ngStyle]="SetStyle(0)">
-                        <div class="swiper-slide" *ngFor="let i of CurrBodyCategory.UsageIcons"><ion-icon app-icon [ngStyle]="SetStyle(1)">{{app.IconFont(i)}}</ion-icon></div>
+                        <div class="swiper-slide" *ngFor="let i of CurrBodyCategory.UsageIcons"><ion-icon app-icon [ngStyle]="SetStyle(1)">{{App.IconFont(i)}}</ion-icon></div>
                     </div>
                     <div class="swiper-pagination"></div>
                     <div class="swiper-button-next"><ion-icon app-icon>&#xe918;</ion-icon></div>
@@ -19,14 +19,12 @@
         <ion-row nowrap class="row-body">
             <ion-col no-padding text-center [class.active]="CurrBodyCategory===b" *ngFor="let b of BodyCategories" (click)="SelectBodyCategory(b)" tappable>
                 <div class="button">
-                    <span app-icon [innerHTML]="+app.IconFont(b.Icon)"></span>
+                    <span app-icon [innerHTML]="+App.IconFont(b.Icon)"></span>
                 </div>
                 <div m-t-5 ion-text color="light">{{b.Name}}</div>
             </ion-col>
         </ion-row>
     </ion-col>
-
-
 </ion-row>
 <ion-row align-items-center p-swiper>
     <ion-col col-8 no-padding  [ngStyle]="SetStyle(2)">

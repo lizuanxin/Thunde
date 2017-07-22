@@ -1,9 +1,12 @@
 import {Injectable} from '@angular/core';
 
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
-import {TSqlQuery} from '../../UltraCreation/Storage';
+import {EAbort} from '../../UltraCreation/Core/Exception';
+import {THttpClient} from '../../UltraCreation/Core';
+import {TAssignable} from '../../UltraCreation/Core/Persistable';
+import {TUtf8Encoding} from '../../UltraCreation/Encoding';
+import {THashMd5} from '../../UltraCreation/Hash';
 
-import {TDistributeService} from '../distribute';
 import {const_data, IBodyPart, Loki} from '..'
 import {TCategory, TScriptFile, TScriptFileDesc} from './asset.scriptfile'
 
@@ -29,7 +32,7 @@ module Queries
 @Injectable()
 export class TAssetService
 {
-    constructor(private Distribute: TDistributeService)
+    constructor()
     {
         console.log('TAssetService construct');
 
@@ -55,6 +58,113 @@ export class TAssetService
             });
     }
 
+    static LoadTranslate(Name: string, ResponseType: XMLHttpRequestResponseType): Promise<any>
+    {
+        let Http = new THttpClient(ResponseType);
+        let Lang = App.Language;
+
+        return Http.Get('assets/i18n/' + Lang + '/' + Name).toPromise().then(res => res.Content)
+            .catch(err => console.log(Lang + ' of ' + Name + ' is not found.'))
+            .then(localize =>
+            {
+                if (Lang !== 'en')
+                {
+                    return Http.Get('assets/i18n/en/' + Name).toPromise().then(res => res.Content)
+                        .then(en => TAssignable.AssignProperties(en, localize))
+                }
+                else
+                    return localize;
+            })
+    }
+
+    static LoadScriptFile(ScriptFile: TScriptFile): Promise<TScriptFile>
+    {
+        let Http = new THttpClient('text', 'assets/loki/');
+
+        return Http.Get(ScriptFile.Name + '.lok').toPromise().then(res => res.Content as string)
+            .then(Content =>
+            {
+                let ContentBuffer = TUtf8Encoding.Encode(Content);
+                ScriptFile.ContentBuffer = ContentBuffer;
+
+                if (! TypeInfo.Assigned(ScriptFile.Md5))
+                {
+                    ScriptFile.Edit();
+                    ScriptFile.Md5 = THashMd5.Get(ContentBuffer).Print();
+                }
+
+                if (! TypeInfo.Assigned(ScriptFile.Duration) || ScriptFile.Duration === 0)
+                {
+                    let LokiFile = new Loki.TFile();
+                    LokiFile.LoadFrom(ContentBuffer);
+
+                    ScriptFile.Edit();
+                    ScriptFile.Duration = Math.trunc((LokiFile.TimeEst() + 500) / 1000);
+                }
+            })
+            .then(() => ScriptFile);
+    }
+
+    static LoadFirmware(Version: number): Promise<ArrayBuffer>
+    {
+        let Http = new THttpClient('json', 'assets/upgrade');
+
+        // 1XXXBBBB
+        let Major = Math.trunc(Version / 10000000);
+        let Rev = Version % 10000000;
+        let FileName: string;
+
+        switch (Major)
+        {
+        case 1:
+            if (Rev === 1)
+                FileName = 'UCtenQT2';      // USB version
+            else
+                FileName = 'UCtenQT1';      // BLE Version
+            break;
+        case 2:
+            if (Rev <= 4)                   // hardware 4.3k res
+                return Promise.reject(new EAbort());
+            if (Version === 20000006)       // do not upgrade 2.0.6 for now
+                return Promise.reject(new EAbort());
+
+            FileName = 'UCtenQT3';          // BLE Version
+            break;
+        case 3:
+            FileName = 'UCtenQT2'
+            break;
+
+        default:
+            return Promise.reject(new EAbort())
+        }
+
+        return Http.Get('Firmware.json').toPromise().then(res => res.Content)
+            .then(Info =>
+            {
+                let NewVersionStr = Info[FileName];
+                if (! TypeInfo.Assigned(NewVersionStr))
+                    return Promise.reject(new EAbort());
+
+                let NewVersion = NewVersionStr.split('.')
+                if (NewVersion.length !== 3)
+                    return Promise.reject(new EAbort());
+
+                let NewRev = parseInt(NewVersion[1], 10) * 10000 + parseInt(NewVersion[2], 10);
+                if (NewRev <= Rev)
+                    return Promise.reject(new EAbort());
+
+                Http.ResponseType = 'arraybuffer'
+                return Http.Get(FileName + '.bin').toPromise().then(res => res.Content);
+            })
+    }
+
+    static LoadFaq(): Promise<Array<{title: string, content: string}>>
+    {
+        return this.LoadTranslate('faq.json', 'json')
+    }
+
+/* instance */
+
     get Categories(): Array<TCategory>
     {
         return (this.constructor as typeof TAssetService)._Categories;
@@ -75,29 +185,9 @@ export class TAssetService
         return null;
     }
 
-    GetKey(Key: string): Promise<string | Object>
-    {
-        return StorageEngine.Get(Key)
-            .then(Value =>
-            {
-                if (Value.length > 0 && Value[0] === '{')
-                    return JSON.parse(Value)
-                else
-                    return Value;
-            });
-    }
-
-    SetKey(Key: string, Value: string | Object): Promise<void>
-    {
-        if (Value instanceof Object)
-            return StorageEngine.Set(Key, JSON.stringify(Value))
-        else
-            return StorageEngine.Set(Key, Value);
-    }
-
     async FileList(Category_Id: string): Promise<Array<TScriptFile>>
     {
-        let DataSet = await StorageEngine.ExecQuery(new TSqlQuery(Queries.GetFileList, [Category_Id]));
+        let DataSet = await StorageEngine.ExecQuery(Queries.GetFileList, [Category_Id]);
         let FileBodyList = await this.FileBodyList();
 
         let RetVal = new Array<TScriptFile>();
@@ -114,7 +204,7 @@ export class TAssetService
             if (TypeInfo.Assigned(BodyParts))
                 F.BodyParts = BodyParts;
 
-            await this.Distribute.ReadScriptFile(F);
+            await (this.constructor as typeof TAssetService).LoadScriptFile(F);
             if (F.IsEditing)
                 Saving.push(F);
 
@@ -142,7 +232,7 @@ export class TAssetService
     {
         if (this._FileBodyList.size === 0)
         {
-            let DataSet = await StorageEngine.ExecQuery(new TSqlQuery(Queries.GetFileBodyList));
+            let DataSet = await StorageEngine.ExecQuery(Queries.GetFileBodyList);
 
             while (! DataSet.Eof)
             {
@@ -163,7 +253,7 @@ export class TAssetService
 
     async FileDesc(ScriptFile: TScriptFile): Promise<void>
     {
-        let DataSet = await StorageEngine.ExecQuery(new TSqlQuery(Queries.GetFileDesc, [ScriptFile.Id]))
+        let DataSet = await StorageEngine.ExecQuery(Queries.GetFileDesc, [ScriptFile.Id])
         let Details = ScriptFile.Details;
 
         if (DataSet.RecordCount > 0)

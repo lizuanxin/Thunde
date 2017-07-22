@@ -131,7 +131,7 @@ export class TScriptFile extends TLangAsset implements IScriptFile
         if (! TypeInfo.Assigned(Ox))
             Ox = Radius;
         if (! TypeInfo.Assigned(Oy))
-            Oy= Radius;
+            Oy = Radius;
 
         let RestoreFillStyle = Ctx.fillStyle;
         let Turns = [1.75, this.DurationSecond / 3600];

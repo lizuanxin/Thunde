@@ -10,8 +10,7 @@ import * as Svc from '../../providers';
 @Component({selector: 'page-running', templateUrl: 'running.html'})
 export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 {
-    constructor(private Distibute: Svc.TDistributeService,
-        private view: ViewController, navParams: NavParams)
+    constructor(private view: ViewController, navParams: NavParams)
     {
         if (navParams.get('Resume') === true)
         {
@@ -149,7 +148,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
     private Start()
     {
         App.ShowLoading()
-            .then(() => this.Distibute.ReadScriptFile(this.ScriptFile))
+            .then(() => Svc.TAssetService.LoadScriptFile(this.ScriptFile))
             .then(() => this.Shell.CatFile(this.ScriptFile))
             .then(progress =>
             {

@@ -115,17 +115,6 @@ class TContentCanvas
 
     PaintTo(Canvas: HTMLCanvasElement, Ctx: CanvasRenderingContext2D)
     {
-        // if (App.SkinColor !== undefined)
-        // {
-        //     Ctx.strokeStyle = '#000000';
-        //     Ctx.fillStyle = '#F2F2F2';
-        // }
-        // else
-        // {
-        //     Ctx.strokeStyle = '#FFFFFF';
-        //     Ctx.fillStyle = '#222222';
-        // }
-
         Ctx.strokeStyle = '#222';
         Ctx.fillStyle = '#333';
 
