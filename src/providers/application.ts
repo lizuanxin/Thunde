@@ -7,6 +7,17 @@ import {TypeInfo} from '../UltraCreation/Core/TypeInfo'
 import {translate_en, translate_zh} from './localize'
 import {TShell} from './loki/shell'
 
+declare global
+{
+    /* extends Application to window global variable */
+    var App: TApplication | undefined;
+
+    interface Window
+    {
+        App: TApplication | undefined;
+    }
+};
+
 @Injectable()
 export class TApplication extends TAppController
 {
@@ -14,7 +25,9 @@ export class TApplication extends TAppController
     {
         super(Injector);
 
-        this.Skins = this.warm.concat(this.deep);
+        console.log('TApplication: initialize Application Global Variable')
+        window.App = this;
+
         this.AddLanguage('en', translate_en);
         this.AddLanguage('zh', translate_zh);
 
@@ -68,7 +81,7 @@ export class TApplication extends TAppController
     static Initialize(): Promise<void>
     {
         return StorageEngine.Get('accepted terms')
-            .then(value => { this.AcceptedTerms = value ==='yes'; })
+            .then(value => { this.AcceptedTerms = value === 'yes'; })
             .catch(err => { })
     }
 
@@ -128,66 +141,7 @@ export class TApplication extends TAppController
             style: 'toast-s1',  prefix_lang: 'hint.'});
     }
 
-    Skin(Page: string): string
-    {
-        if (Page)
-            return (this.constructor as typeof TApplication).SkinName + '-' + Page;
-        else
-            return (this.constructor as typeof TApplication).SkinName + '-default';
-    }
 
-    get SkinName(): string
-    {
-        return (this.constructor as typeof TApplication).SkinName;
-    }
-
-    SetSkin(Name: string): void
-    {
-        (this.constructor as typeof TApplication).SkinName = Name;
-    }
-
-    get SkinBorderColor(): string {
-        if (this.warm.indexOf((this.constructor as typeof TApplication).SkinName) === -1)
-            return 'border-light';
-        else
-            return '';
-    }
-
-    get SkinColor(): string
-    {
-        if (this.warm.indexOf((this.constructor as typeof TApplication).SkinName) === -1)
-            return 'text-light';
-        else
-            return '';
-    }
-
-    get SkinShadowColor(): string
-    {
-        if (this.warm.indexOf((this.constructor as typeof TApplication).SkinName) === -1)
-            return '#000000';
-        else
-            return '#FFFFFF';
-    }
-
-    get SkinClass(): string
-    {
-        let skinName = (this.constructor as typeof TApplication).SkinName;
-        return 'skin-' + skinName + '';
-    }
-
-    get SkinConFooter(): string
-    {
-        if (this.warm.indexOf((this.constructor as typeof TApplication).SkinName) === -1)
-            return 'light';
-        else
-            return 'dark';
-    }
-
-    public Skins: Array<string>;
-    private deep = ['abstract', 'BlackRed', 'spots'];
-    private warm = ['strengths'];
     private HardwareBackButtonDisabled = false;
-
     private static AcceptedTerms: boolean = false;
-    private static SkinName: string = 'skin';
 };

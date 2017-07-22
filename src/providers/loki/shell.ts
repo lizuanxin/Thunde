@@ -413,7 +413,7 @@ export class TShell extends TAbstractShell
     SetLinearTable(n: TLinearTable): Promise<void>
     {
         let Idx = 3;
-        switch(n)
+        switch (n)
         {
         case '5v':
             Idx = 1;
@@ -543,7 +543,7 @@ export class TShell extends TAbstractShell
                     let keyvalue = str.split('=');
                     if (keyvalue.length > 1)
                     {
-                        switch(keyvalue[0])
+                        switch (keyvalue[0])
                         {
                         case 'tick':
                             let ticking = parseInt(keyvalue[1], 10);
@@ -722,7 +722,7 @@ export class TShell extends TAbstractShell
             if (! TypeInfo.Assigned(this._BatteryLevel))
             {
                 this.BatteryRequest()
-                    .then((level: number)=>
+                    .then((level: number) =>
                     {
                         if (! TypeInfo.Assigned(this._BatteryLevel))
                             return this.VersionRequest();
@@ -745,7 +745,7 @@ export class TShell extends TAbstractShell
             return;
         }
 
-        switch(Params[1])
+        switch (Params[1])
         {
         case 'disconnect':
             // this.StopTicking();
@@ -836,7 +836,7 @@ export class TProxyBLEShell extends BLE.TShell implements IProxyShell
     }
 
     /// @override
-    protected OnConnectionTimeout():void
+    protected OnConnectionTimeout(): void
     {
         (this.Owner as TShell)._DeviceTimeout(this);
         // ignore timeout
@@ -884,7 +884,7 @@ export class TProxyUsbShell extends USB.TShell implements IProxyShell
     }
 
     /// @override
-    protected OnConnectionTimeout():void
+    protected OnConnectionTimeout(): void
     {
         (this.Owner as TShell)._DeviceTimeout(this);
         super.OnConnectionTimeout();
@@ -920,7 +920,7 @@ export class TCatRequest extends TProxyShellRequest
             .then(() =>
             {
                 if (TypeInfo.Assigned(this.Shell))
-                    return this.Shell.PromiseSend('>cat '+ FileName + ' -l=' + FileBuffer.byteLength)
+                    return this.Shell.PromiseSend('>cat ' + FileName + ' -l=' + FileBuffer.byteLength)
                 else
                     return Promise.reject(new EAbort())
             })

@@ -222,7 +222,7 @@ export class TFile extends TPersistable
             if (Idx === -1)
                 break;
 
-            switch(token.Type)
+            switch (token.Type)
             {
             case TTokenType.Version:
                 this._Version = token.Version;
@@ -419,7 +419,7 @@ export class TBlock extends TPersistable
 
     PushToken(token: TToken): void
     {
-        switch(token.Type)
+        switch (token.Type)
         {
         case TTokenType.Interval:
             this.Interval = token.Value;
@@ -516,7 +516,7 @@ enum TTokenType
     Interval        = ASCII.UPPER_I,
     Freq            = ASCII.UPPER_F,
     FreqT           = ASCII.UPPER_T,
-    Pulse         = ASCII.UPPER_P,
+    Pulse           = ASCII.UPPER_P,
     Cluster         = ASCII.UPPER_C
 }
 
@@ -528,11 +528,15 @@ class TToken
             throw new EInvalidFile();
         this._Type = View[Idx ++];
 
-        switch(this._Type)
+        switch (this._Type)
         {
         case TTokenType.BlockSingle:
             if (this._BlockDepth > 0)
                 this._BlockDepth --;
+            this._BlockDepth ++;
+            if (this._BlockDepth !== 1)
+                throw new EInvalidFile();
+            break;
         case TTokenType.BlockStart:
             this._BlockDepth ++;
             if (this._BlockDepth !== 1)
@@ -568,7 +572,7 @@ class TToken
             ValueStr += String.fromCharCode(View[Idx]);
         }
 
-        switch(this._Type)
+        switch (this._Type)
         {
         case TTokenType.Version:
             this._Value = parseInt(ValueStr, 10);   // version always base 10

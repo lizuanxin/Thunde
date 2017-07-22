@@ -195,12 +195,12 @@ export class TDistributeService
         if (! TypeInfo.Assigned(this._FaqTranslate))
         {
             // try using localize language faq
-            return HttpRequest(WebRoot + '/assets/translate/'+ this.app.Language + '/'+  FileName + '.json', 'GET', 'json')
+            return HttpRequest(WebRoot + '/assets/translate/' + this.app.Language + '/' +  FileName + '.json', 'GET', 'json')
                 .catch(err =>
                 {
                     // fallback to english
                     if (err instanceof EHttp)
-                        return HttpRequest(WebRoot + '/assets/translate/en/'+ FileName  + '.json', 'GET', 'json')
+                        return HttpRequest(WebRoot + '/assets/translate/en/' + FileName  + '.json', 'GET', 'json')
                     else
                         return Promise.reject(err);
                 })
