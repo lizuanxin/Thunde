@@ -84,7 +84,7 @@ export namespace const_data
         {Id: 'relax', Icon: 0xe917, Name: 'relax'},
         {Id: 'muscle_training', Icon: 0xe91e, Name: 'muscle_training'},
         {Id: 'fat_burning', Icon: 0xe905, Name: 'fat_burning'},
-        {Id: '{00000000-0000-4000-3000-FFFFFFFFFFFF}', Icon: 0xe94b, Name: 'recommend'},
+        {Id: 'recommend', Icon: 0xe94b, Name: 'recommend'},
     ]
 
     export const Category =
@@ -98,7 +98,7 @@ export namespace const_data
     export const ScriptFile: Array<IScriptFile> =
     [
         {Id: '{00000000-0000-4000-4000-000000000010}', Author: 'UltraCreation Team',
-            Category_Id: Category.relax.Id,  Mode_Id: null, Name: 'knock',
+            Category_Id: Category.relax.Id, Mode_Id: null, Name: 'knock',
             BodyParts: BodyCategory.all},
         {Id: '{00000000-0000-4000-4000-000000000011}', Author: 'UltraCreation Team',
             Category_Id: Category.relax.Id, Mode_Id: null, Name: 'press',
