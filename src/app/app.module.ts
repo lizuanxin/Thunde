@@ -5,9 +5,8 @@ import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular'
 import {TranslateModule} from '@ngx-translate/core';
 
 import {MyApp} from './app.component';
+import {HomeModule} from '../home';
 
-import * as View from '../pages'
-import * as Cmp from '../components';
 import * as Svc from '../providers'
 
 let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
@@ -31,20 +30,16 @@ let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
         BrowserModule,
         IonicModule.forRoot(MyApp, config),
         TranslateModule.forRoot(),
-
-        Cmp.ComponentModule,
-        View.TensModule, View.ProfileModule,
+        HomeModule,
     ],
     bootstrap: [IonicApp],
 
     declarations: [
         MyApp,
-        View.HomePage
     ],
 
     entryComponents: [
         MyApp,
-        View.HomePage,
     ],
 
     providers: [

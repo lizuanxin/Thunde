@@ -3,15 +3,15 @@ import {Component} from '@angular/core';
 import {SplashScreen} from '../UltraCreation/Native/SplashScreen';
 import {StatusBar} from '../UltraCreation/Native/StatusBar';
 
-import * as View from '../pages';
+import {HomePage} from '../home';
 import * as Svc from '../providers'
 
 @Component({template: `<ion-nav [root]="rootPage"></ion-nav>`})
 export class MyApp
 {
-    constructor(app: Svc.TApplication)
+    constructor(App: Svc.TApplication)
     {
-        app.Platform.ready().then((PlatformName) =>
+        App.Platform.ready().then((PlatformName) =>
         {
             StatusBar.hide();
             SplashScreen.show();
@@ -19,13 +19,13 @@ export class MyApp
             if (PlatformName === 'dom')
                 Svc.TGatt.BrowserFakeDevice = true;
 
-            if (app.IsIos)
+            if (App.IsIos)
                 StatusBar.styleBlackTranslucent();
 
             Svc.Initialization.Execute()
                 .then(() =>
                 {
-                    this.rootPage = View.HomePage;
+                    this.rootPage = HomePage;
 
                     setTimeout(() =>
                     {

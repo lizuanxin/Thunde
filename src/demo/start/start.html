@@ -1,0 +1,31 @@
+<ion-content no-scroll padding [ngClass]="app.Skin('light')">
+    <div Animate-Canvas #animatedef>
+        <div #tips1 class="tips" [class.animateTips]="TypeMode > 3"></div>
+        <div #tips2 class="tips" [class.animateTips]="TypeMode > 4"></div>
+        <div #tips3 class="tips" [class.animateTips]="TypeMode > 9"></div>
+        <div #electrode>{{'demo_play_page.electrode'|translate}}</div>
+        <div #power [innerHTML]="'demo_play_page.phone_power'|translate"></div>
+        <div #switch [innerHTML]="'demo_play_page.switch'|translate"></div>
+        <div #strength [innerHTML]="'demo_play_page.strength'|translate"></div>
+        <div><ion-icon app-icon #line1>&#xe92a;</ion-icon></div>
+        <div><ion-icon app-icon #line2>&#xe931;</ion-icon></div>
+        <div><ion-icon app-icon #line3>&#xe935;</ion-icon></div>
+        <div><ion-icon app-icon #num1>&#xe923;</ion-icon></div>
+        <div><ion-icon app-icon #num2>&#xe924;</ion-icon></div>
+        <div><ion-icon app-icon #num3>&#xe925;</ion-icon></div>
+        <div><ion-icon app-icon #num4>&#xe927;</ion-icon></div>
+        <div><ion-icon app-icon #arrowPoint>&#xe928;</ion-icon></div>
+        <div><ion-icon app-icon #key>&#xe921;</ion-icon></div>
+        <div><ion-icon #body app-icon>&#xe91f;</ion-icon></div>
+    </div>
+    <div absolute style="z-index:1;left:30px;bottom:30px; padding:20px 20px 0 0;font-size:5vw" (click)="App.Nav.pop()" tappable>{{'demo_play_page.skip'|translate}}</div>
+    <div text-center #ready class="animation" [ngStyle]="{opacity:0}">
+        <button clear  [ngStyle]="{fontSize:'4.2em',overflow:'visible'}" (click)="Go()" tappable>
+            <ion-icon app-icon color="color-primary">&#xe929;</ion-icon>
+        </button>
+    </div>
+</ion-content>
+<ion-backdrop my-backdrop *ngIf="DeviceScanning" (click)="DeviceScanning=false">
+    <scan-ble (OnSelection)="DeviceSelection($event)"></scan-ble>
+</ion-backdrop>
+

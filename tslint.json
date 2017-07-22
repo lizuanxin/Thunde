@@ -17,8 +17,7 @@
     "interface-over-type-literal": true,
     "label-position": true,
     "member-access": false,
-    "member-ordering": [
-      true
+    "member-ordering": [false
     ],
     "no-arg": true,
     "no-bitwise": false,
@@ -89,17 +88,6 @@
 
     "directive-selector": [false, "attribute", "app", "camelCase"],
     "component-selector": [false, "element", "app", "kebab-case"],
-    "use-input-property-decorator": true,
-    "use-output-property-decorator": true,
-    "use-host-property-decorator": true,
-    "no-input-rename": true,
-    "no-output-rename": true,
-    "use-life-cycle-interface": true,
-    "use-pipe-transform-interface": true,
-    "component-class-suffix": false,
-    "directive-class-suffix": true,
-    "no-access-missing-member": true,
-    "templates-use-public": true,
-    "invoke-injectable": true
+    "component-class-suffix": false
   }
 }
