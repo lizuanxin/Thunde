@@ -187,7 +187,7 @@ export class TShell extends TAbstractShell
     private Proxy: IProxyShell | undefined;
 
     private _Version: number;
-    private _BatteryLevel: number = 0;
+    private _BatteryLevel: number;
 
     private _Intensity: number = 0;
     private IntensityChanging: Promise<any> | undefined;

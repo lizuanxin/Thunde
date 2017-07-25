@@ -192,7 +192,7 @@ Profile ER Diagram
             'Id VARCHAR(38) NOT NULL PRIMARY KEY,' +
             'ObjectName VARCHAR(50) NOT NULL,' +
             'Name VARCHAR(100) NOT NULL,' +
-            'Owner VARCHAR(38) NULL,' +
+            'Owner VARCHAR(38),' +
             'Desc TEXT,' +
             'ExtraProp TEXT,' +                 // extra properties persist in json
             'Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP);',
