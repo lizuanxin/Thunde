@@ -1,5 +1,7 @@
 @ECHO OFF
 
+npm config set package-lock false
+
 IF NOT EXIST .\src\UltraCreation (
     svn checkout https://svn.code.sf.net/p/ultracreation/code/ .\src\UltraCreation
 )ELSE (

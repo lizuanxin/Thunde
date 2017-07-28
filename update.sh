@@ -1,3 +1,5 @@
+npm config set package-lock false
+
 if [ -d ./src/UltraCreation ];
 then
     svn update ./src/UltraCreation
