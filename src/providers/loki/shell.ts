@@ -86,10 +86,12 @@ export class TShell extends TAbstractShell
 
 /* USB only */
 
-    static StartOTG(): USB.OTG
+    static StartOTG(): void
     {
         this.UsbProxy = new TProxyUsbShell();
-        return USB.OTG.Start(USB_VENDOR, USB_PRODUCT, USB_MTU, USB_MIN_WRITE_INTERVAL);
+
+        USB.OTG.Start(USB_VENDOR, USB_PRODUCT, USB_MTU, USB_MIN_WRITE_INTERVAL)
+            .catch(err => console.log(err.message));
     }
 
     static get IsUsbPlugin(): boolean
