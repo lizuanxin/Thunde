@@ -1,12 +1,12 @@
 import {Subject} from 'rxjs/Subject';
-import {Observable} from 'rxjs/Observable'
+import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 import {EAbort} from '../../UltraCreation/Core/Exception';
 import {TUtf8Encoding} from '../../UltraCreation/Encoding/Utf8';
 import {THashCrc16} from '../../UltraCreation/Hash';
-import {TAbstractShell, TShellRequest, ERequestTimeout, EDisconnected} from '../../UltraCreation/Native/Abstract.Shell'
+import {TAbstractShell, TShellRequest, ERequestTimeout, EDisconnected} from '../../UltraCreation/Native/Abstract.Shell';
 
 import * as BLE from '../../UltraCreation/Native/BluetoothLE';
 import * as USB from '../../UltraCreation/Native/USB';
@@ -43,7 +43,7 @@ export class EUSBRestarting extends EAbort
 /* TShell */
 
 export enum TShellNotify
-    {Shutdown, Disconnected, NoLoad, Stopped, Intensity, HardwareError, LowBattery, Battery, Ticking};
+    {Shutdown, Disconnected, NoLoad, Stopped, Intensity, HardwareError, LowBattery, Battery, Ticking}
 export type TShellNotifyEvent = Subject<TShellNotify>;
 
 interface IScriptFile
@@ -53,7 +53,7 @@ interface IScriptFile
     Content?: string | null;
     ContentBuffer?: Uint8Array | null;
     Duration?: number | null;
-};
+}
 
 export class TShell extends TAbstractShell
 {
@@ -166,7 +166,7 @@ export class TShell extends TAbstractShell
     }
 
     static RunningInstance: TShell | undefined;
-    static DefaultFileList: Array<string> = []
+    static DefaultFileList: Array<string> = [];
     static Cached = new Map<string, TShell>();
     static LinearTable: TLinearTable = '4v';
     static UsbProxy: TProxyUsbShell;
@@ -231,7 +231,7 @@ export class TShell extends TAbstractShell
         if (TypeInfo.Assigned(this.Proxy))
             return this.Proxy.Connect();
         else
-            return Promise.reject(new EAbort())
+            return Promise.reject(new EAbort());
     }
 
     Disconnect(): Promise<void>
@@ -239,7 +239,7 @@ export class TShell extends TAbstractShell
         if (TypeInfo.Assigned(this.Proxy))
             return this.Proxy.Disconnect();
         else
-            return Promise.reject(new EAbort())
+            return Promise.reject(new EAbort());
     }
 
     Execute(Cmd: string, Timeout: number = 0, IsResponseCallback: (Line: string) => boolean): Promise<any>
@@ -247,7 +247,7 @@ export class TShell extends TAbstractShell
         if (TypeInfo.Assigned(this.Proxy))
             return this.Proxy.Execute(Cmd, Timeout, IsResponseCallback);
         else
-            return Promise.reject(new EAbort())
+            return Promise.reject(new EAbort());
     }
 
     RequestStart(RequestClass: typeof TShellRequest, Timeout: number = 0, ...args: any[]): Promise<TShellRequest>
@@ -255,7 +255,7 @@ export class TShell extends TAbstractShell
         if (TypeInfo.Assigned(this.Proxy))
             return this.Proxy.RequestStart(RequestClass, Timeout, this, ...args);
         else
-            return Promise.reject(new EAbort())
+            return Promise.reject(new EAbort());
     }
 
 /** shell functions */
@@ -273,7 +273,7 @@ export class TShell extends TAbstractShell
 
     FileMd5(FileName: string): Promise<string>
     {
-        return this.Execute('>md5 ' + FileName, REQUEST_TIMEOUT, Line => {return true});
+        return this.Execute('>md5 ' + FileName, REQUEST_TIMEOUT, Line => {return true; });
     }
 
     SetBluetoothName(Name: string): Promise<boolean>
@@ -345,8 +345,8 @@ export class TShell extends TAbstractShell
 
     StopOutput()
     {
-        this.StopTicking();
-        return this.Execute('>osto', REQUEST_TIMEOUT, Line => this.IsStatusRetVal(Line));
+        return this.Execute('>osto', REQUEST_TIMEOUT, Line => this.IsStatusRetVal(Line))
+            .then(() => this.StopTicking());
     }
 
     CatFile(s: IScriptFile): Promise<Observable<number>>
@@ -409,7 +409,7 @@ export class TShell extends TAbstractShell
                 return this._Intensity;
             })
             .catch(err => console.log(err.message))
-            .then(() => this.IntensityChanging = undefined)
+            .then(() => this.IntensityChanging = undefined);
     }
 
     SetLinearTable(n: TLinearTable): Promise<void>
@@ -446,7 +446,7 @@ export class TShell extends TAbstractShell
     {
         if (this._Ticking !== 0)
         {
-            let dt = new Date()
+            let dt = new Date();
             return Math.trunc((dt.getTime() -  this._Ticking) / 1000);
         }
         else
@@ -635,7 +635,7 @@ export class TShell extends TAbstractShell
                 this._Version = (parseInt(keyvalue[1], 10) * 1000 + parseInt(keyvalue[2], 10)) * 10000 + parseInt(keyvalue[3], 10);
                 console.log('firmware version: ' + this._Version);
                 return this._Version;
-            })
+            });
     }
 
     private StartTicking(Shift: number = 0): void
@@ -650,7 +650,7 @@ export class TShell extends TAbstractShell
             let Duration = (this.RefFile.Duration ? this.RefFile.Duration : 0);
             if (Duration <= this.Ticking && this.OnNotify.observers.length === 0)
                 this.Detach();
-        }, 1000)
+        }, 1000);
     }
 
     StopTicking(): void
@@ -671,7 +671,7 @@ export class TShell extends TAbstractShell
         if (strs.length > 1)
         {
             let Status = strs[0];
-            return ! isNaN(parseInt(Status, 10))
+            return ! isNaN(parseInt(Status, 10));
         }
         else
             return false;
@@ -707,7 +707,7 @@ export class TShell extends TAbstractShell
         if (Proxy !== this.Proxy)
             return;
 
-        this._DeviceNotification(Proxy, ['NOTIFY', 'disconnect'])
+        this._DeviceNotification(Proxy, ['NOTIFY', 'disconnect']);
     }
 
     // @private called from Proxy
@@ -750,38 +750,38 @@ export class TShell extends TAbstractShell
         switch (Params[1])
         {
         case 'disconnect':
-            // this.StopTicking();
-            this.OnNotify.next(TShellNotify.Disconnected);
+            this.StopTicking();
+            setTimeout(() => this.OnNotify.next(TShellNotify.Disconnected));
             this.Detach();
             break;
 
         case 'shutdown':
-            // this.StopTicking();
-            this.OnNotify.next(TShellNotify.Shutdown);
+            this.StopTicking();
+            setTimeout(() => this.OnNotify.next(TShellNotify.Shutdown));
             this.Detach();
             break;
 
         case 'noload':
-            // this.StopTicking();
-            this.OnNotify.next(TShellNotify.NoLoad);
+            this.StopTicking();
+            setTimeout(() => this.OnNotify.next(TShellNotify.NoLoad));
             this.Detach();
             break;
 
         case 'low': // battery':
-            // this.StopTicking();
-            this.OnNotify.next(TShellNotify.LowBattery);
+            this.StopTicking();
+            setTimeout(() => this.OnNotify.next(TShellNotify.LowBattery));
             this.Detach();
             break;
 
         case 'error': // stop':
-            // this.StopTicking();
-            this.OnNotify.next(TShellNotify.HardwareError);
+            this.StopTicking();
+            setTimeout(() => this.OnNotify.next(TShellNotify.HardwareError));
             this.Detach();
             break;
 
         case 'stop':
             this.StopTicking();
-            this.OnNotify.next(TShellNotify.Stopped);
+            setTimeout(() => (this.OnNotify.next(TShellNotify.Stopped)));
             break;
 
         case 'strength':
@@ -922,16 +922,16 @@ export class TCatRequest extends TProxyShellRequest
             .then(() =>
             {
                 if (TypeInfo.Assigned(this.Shell))
-                    return this.Shell.PromiseSend('>cat ' + FileName + ' -l=' + FileBuffer.byteLength)
+                    return this.Shell.PromiseSend('>cat ' + FileName + ' -l=' + FileBuffer.byteLength);
                 else
-                    return Promise.reject(new EAbort())
+                    return Promise.reject(new EAbort());
             })
             .then(() =>
             {
                 if (TypeInfo.Assigned(this.Shell))
-                    return this.Shell.ObserveSend(FileBuffer)
+                    return this.Shell.ObserveSend(FileBuffer);
                 else
-                    return Promise.reject(new EAbort())
+                    return Promise.reject(new EAbort());
             })
             .then((Observer: Observable<number>) =>
             {
@@ -1049,8 +1049,8 @@ export class TClearFileSystemRequest extends TProxyShellRequest
                 for (let File of this.FileList)
                 {
                     if (File.Size <= FILE_CLEAR_SIZE_LESS_THAN)
-                        this.DeletingFiles.push(File.Name)
-                };
+                        this.DeletingFiles.push(File.Name);
+                }
 
                 if (this.DeletingFiles.length > 0)
                 {

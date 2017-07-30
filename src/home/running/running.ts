@@ -1,7 +1,7 @@
 import {isDevMode, Component, OnInit, OnDestroy, ViewChild, AfterViewInit} from '@angular/core';
 import {NavParams, ViewController, Content} from 'ionic-angular';
 
-import {Subscription} from 'rxjs/Subscription'
+import {Subscription} from 'rxjs/Subscription';
 import 'rxjs/add/operator/toPromise';
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 
@@ -80,7 +80,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
                     if (this.Ticking >= this.ScriptFile.Duration)
                     {
                         this.Shell.StopOutput()
-                            .catch(err => App.ShowError(err).then(() => this.ClosePage()))
+                            .catch(err => App.ShowError(err).then(() => this.ClosePage()));
                         this.Completed = true;
                     }
                     break;
@@ -111,7 +111,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
     get CanvasClientHeight(): Object
     {
-        return {height: this.content.contentHeight * 0.7 + 'px'}
+        return {height: this.content.contentHeight * 0.7 + 'px'};
     }
 
     AdjustIntensity(Value: number)
@@ -136,7 +136,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
                 }
             })
             .then(() => this.Shell.Detach())
-            .catch(err => console.error(err))
+            .catch(err => console.error(err));
     }
 
     HideDownload()

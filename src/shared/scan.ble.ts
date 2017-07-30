@@ -1,8 +1,8 @@
 import {isDevMode, Component, OnInit, OnDestroy, Output, EventEmitter} from '@angular/core';
-import {Subscription} from 'rxjs/Subscription'
+import {Subscription} from 'rxjs/Subscription';
 
 import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
-import * as Svc from '../providers'
+import * as Svc from '../providers';
 
 @Component({
   selector: 'scan-ble',
@@ -54,7 +54,7 @@ export class ScanBleComp implements OnInit, OnDestroy
         else
         {
             if (App.IsAndroid)
-                Svc.Loki.TShell.EnableBLE().then(() => this.StartScan())
+                Svc.Loki.TShell.EnableBLE().then(() => this.StartScan());
             else
                 this.StartScan();
         }
@@ -72,15 +72,15 @@ export class ScanBleComp implements OnInit, OnDestroy
             return '';
 
         if (value >= -50)
-            return '&#xe926;'
+            return '&#xe926;';
         if (value < -50 && value >= -60)
-            return '&#xe92c;'
+            return '&#xe92c;';
         if (value < -60 && value >= -70)
-            return '&#xe92d;'
+            return '&#xe92d;';
         if (value < -70 && value >= -80)
-            return '&#xe92e;'
+            return '&#xe92e;';
         if (value < -80)
-            return '&#xe92f;'
+            return '&#xe92f;';
     }
 
     SelectionDevice(DeviceId: string)
@@ -95,7 +95,7 @@ export class ScanBleComp implements OnInit, OnDestroy
                     .then(() => Shell.Connect())
                     .then(() => Shell.StopOutput())
                     .catch(err => {})
-                    .then(() => this.OnSelection.emit(DeviceId))
+                    .then(() => this.OnSelection.emit(DeviceId));
             }
             else
             {
@@ -105,7 +105,7 @@ export class ScanBleComp implements OnInit, OnDestroy
                     .then(() => this.OnSelection.emit(DeviceId))
                     .catch(err => this.OnSelection.emit());
             }
-        })
+        });
     }
 
     private StartScan()

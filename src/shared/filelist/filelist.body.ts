@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewChild, Input, Output, EventEmitter} from '@angular/core';
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
-import {SwiperComp} from '../../UltraCreation/ng-ion/swiper'
+import {SwiperComp} from '../../UltraCreation/ng-ion/swiper';
 
-import * as Svc from '../../providers'
+import * as Svc from '../../providers';
 
 @Component({selector: 'filelist-body', templateUrl: 'filelist.body.html'})
 export class FileListBodyComp implements OnInit
@@ -110,10 +110,10 @@ export class FileListBodyComp implements OnInit
     {
         switch (n)
         {
-            case 0: return { height: Math.ceil(window.innerHeight * 0.34) + 'px' }
-            case 1: return { fontSize: Math.ceil(window.innerWidth * 0.40) + 'px' }
-            case 2: return { height: Math.ceil(window.innerHeight * 0.28) + 'px' }
-            case 3: return { fontSize: Math.ceil(window.innerWidth * 0.05) + 'px' }
+            case 0: return { height: Math.ceil(window.innerHeight * 0.34) + 'px' };
+            case 1: return { fontSize: Math.ceil(window.innerWidth * 0.40) + 'px' };
+            case 2: return { height: Math.ceil(window.innerHeight * 0.28) + 'px' };
+            case 3: return { fontSize: Math.ceil(window.innerWidth * 0.05) + 'px' };
             default: return {};
         }
     }
@@ -145,7 +145,7 @@ class TBodyCategory
                     for (let icon of JSON.parse(b.Desc as string))
                     {
                         this.UsageIcons.push(icon);
-                        this._UsageIconBodyPart.set(icon, b)
+                        this._UsageIconBodyPart.set(icon, b);
                     }
                 }
             }
@@ -156,11 +156,11 @@ class TBodyCategory
                 for (let icon of JSON.parse((arg as Svc.IBodyPart).Desc as string))
                 {
                     this.UsageIcons.push(icon);
-                    this._UsageIconBodyPart.set(icon, arg as Svc.IBodyPart)
+                    this._UsageIconBodyPart.set(icon, arg as Svc.IBodyPart);
                 }
             }
         }
-    };
+    }
 
     BodyPartOf(IconIdx: number): Svc.IBodyPart
     {

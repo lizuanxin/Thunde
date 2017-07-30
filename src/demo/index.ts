@@ -1,12 +1,12 @@
 import {NgModule} from '@angular/core';
 
 import {IonicPageModule} from 'ionic-angular';
-import {TranslateModule} from '@ngx-translate/core'
+import {TranslateModule} from '@ngx-translate/core';
 
-import {SharedModule} from '../shared'
+import {SharedModule} from '../shared';
 
-import {StartPage} from './start/start'
-import {DemoRunningPage} from './running/running'
+import {StartPage} from './start/start';
+import {DemoRunningPage} from './running/running';
 
 @NgModule({
     imports: [
@@ -28,4 +28,4 @@ export class DemoModule
 {
 }
 
-export {StartPage}
+export {StartPage};

@@ -38,7 +38,7 @@ export class StartPage implements AfterViewInit
 
             App.ShowLoading()
                 .then(() => App.Nav.pop({animate: false}))
-                .then(() => App.Nav.push(DemoRunningPage, params))
+                .then(() => App.Nav.push(DemoRunningPage, params));
         }
     }
 
@@ -133,7 +133,7 @@ export class StartPage implements AfterViewInit
 
                 case 4:
                     setTimeout(() => {
-                        ele.children[ID.num2].style.opacity = 1
+                        ele.children[ID.num2].style.opacity = 1;
                         Animation();
                     }, 700);
                     break;
@@ -189,7 +189,7 @@ export class StartPage implements AfterViewInit
             }
 
             this.TypeMode ++;
-        }
+        };
         Animation();
     }
 

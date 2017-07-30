@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, DoCheck, Input, Output, EventEmitter, ElementRef} from '@angular/core'
+import {Component, OnInit, OnDestroy, DoCheck, Input, Output, EventEmitter, ElementRef} from '@angular/core';
 
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 import {UITypes} from '../../UltraCreation/Graphic';
@@ -33,7 +33,7 @@ export class FileListDialComp implements OnInit, OnDestroy, DoCheck
     }
 
     @Input() DefaultFiles: Array<string>;
-    @Input() FileList: Svc.TScriptFileList
+    @Input() FileList: Svc.TScriptFileList;
     @Output() OnSelection = new EventEmitter<Svc.TScriptFile>();
 
     private Content: TContentCanvas | undefined;
@@ -181,8 +181,8 @@ class TContentCanvas
             Ctx.fillText(Str, x, Offset);
 
             // minute
-            Ctx.textAlign = 'right'
-            Ctx.textBaseline = 'top'
+            Ctx.textAlign = 'right';
+            Ctx.textBaseline = 'top';
             Ctx.font = this.MinuteFont.toString();
 
             Str = Math.trunc((ScriptFile.DurationSecond + 30) / 60).toString() + App.Translate('hint.min');
@@ -228,7 +228,7 @@ class TContentCanvas
         }
 
         if (ev.type === 'touchend')
-            this.RelativeO = null
+            this.RelativeO = null;
         else
             this.RelativeO = ev.touches[0];
     }

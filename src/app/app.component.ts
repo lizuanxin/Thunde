@@ -4,7 +4,7 @@ import {SplashScreen} from '../UltraCreation/Native/SplashScreen';
 import {StatusBar} from '../UltraCreation/Native/StatusBar';
 
 import {HomePage} from '../home';
-import * as Svc from '../providers'
+import * as Svc from '../providers';
 
 @Component({template: `<ion-nav [root]="rootPage"></ion-nav>`})
 export class MyApp

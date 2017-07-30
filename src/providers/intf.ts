@@ -28,4 +28,4 @@ export interface IScriptFile extends IObject
     Category_Id: string | null;
     Mode_Id: string | null;
     BodyParts: Array<IBodyPart> | null;
-};
+}

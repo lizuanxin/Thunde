@@ -64,7 +64,7 @@ class TContentCanvas
         this.ItemHeight = Math.trunc(this.Ctx.measureText('按').width * 2);
         if (this.ItemHeight * this.ShowItemCount > this.DisplayHeight)
         {
-            this.TextSize = this.TextSize * 2 * (this.ItemHeight / this.DisplayHeight)
+            this.TextSize = this.TextSize * 2 * (this.ItemHeight / this.DisplayHeight);
             this.ItemHeight = Math.trunc(this.DisplayHeight / this.ShowItemCount);
         }
         console.log('DisplayHeight:' + this.DisplayHeight + 'ItemHeight:' + this.ItemHeight);
@@ -196,7 +196,7 @@ class TContentCanvas
         }
 
         if (ev.type === 'touchend')
-            this.RelativeO = undefined
+            this.RelativeO = undefined;
         else
             this.RelativeO = ev.touches[0];
     }
@@ -236,16 +236,16 @@ class TContentCanvas
 
 interface ICanvasDrawOption
 {
-    x?: number,
-    y?: number,
-    radius?: number,
-    globalAlpha?: number,
-    angle?: number,
-    startAngle?: number,
-    endAngle?: number,
-    lineWidth?: number,
-    lineCap?: string,
-    font?: string,
-    strokeStyle?: any,
-    fillStyle?: string
+    x?: number;
+    y?: number;
+    radius?: number;
+    globalAlpha?: number;
+    angle?: number;
+    startAngle?: number;
+    endAngle?: number;
+    lineWidth?: number;
+    lineCap?: string;
+    font?: string;
+    strokeStyle?: any;
+    fillStyle?: string;
 }

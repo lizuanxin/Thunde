@@ -23,7 +23,7 @@ export class DownloadPage
             .then(() => this._Shell.SetDefaultFile(this.RefFile.Name as string, Idx))
             .then(() => this.FileList = this._Shell.DefaultFileList.filter(Iter => Iter.length > 0))
             .catch(err => console.error(err))
-            .then(() => App.HideLoading())
+            .then(() => App.HideLoading());
     }
 
     @Input() set Shell(v: Svc.Loki.TShell)
@@ -36,7 +36,7 @@ export class DownloadPage
         console.log(this.FileList);
     }
 
-    @Output() OnClose = new EventEmitter<void>()
+    @Output() OnClose = new EventEmitter<void>();
 
     private _Shell: Svc.Loki.TShell;
     private FileList: Array<string>;

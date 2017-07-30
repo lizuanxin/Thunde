@@ -1,7 +1,7 @@
 import {Component, AfterViewInit, OnDestroy} from '@angular/core';
 
 import {NavParams, ViewController} from 'ionic-angular';
-import {PowerManagement} from '../../UltraCreation/Native/PowerManagement'
+import {PowerManagement} from '../../UltraCreation/Native/PowerManagement';
 import * as Svc from '../../providers';
 
 @Component({
@@ -36,7 +36,7 @@ export class OtaPage implements AfterViewInit, OnDestroy
 {
     constructor(private view: ViewController, navParams: NavParams)
     {
-        this.Shell = navParams.get('Shell')
+        this.Shell = navParams.get('Shell');
         this.Firmware = navParams.get('Firmware');
     }
 

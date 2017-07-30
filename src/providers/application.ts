@@ -1,11 +1,11 @@
 import {Injectable, Injector} from '@angular/core';
 
-import {TAppController} from '../UltraCreation/ng-ion/appcontroller'
+import {TAppController} from '../UltraCreation/ng-ion/appcontroller';
 import * as USB from '../UltraCreation/Native/USB';
-import {TypeInfo} from '../UltraCreation/Core/TypeInfo'
+import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
 
-import {translate_en, translate_zh} from './localize'
-import {TShell} from './loki/shell'
+import {translate_en, translate_zh} from './localize';
+import {TShell} from './loki/shell';
 
 declare global
 {
@@ -16,7 +16,7 @@ declare global
     {
         App: TApplication | undefined;
     }
-};
+}
 
 @Injectable()
 export class TApplication extends TAppController
@@ -25,7 +25,7 @@ export class TApplication extends TAppController
     {
         super(Injector);
 
-        console.log('TApplication: initialize Application Global Variable')
+        console.log('TApplication: initialize Application Global Variable');
         window.App = this;
 
         this.AddLanguage('en', translate_en);
@@ -74,15 +74,15 @@ export class TApplication extends TAppController
 
                         this.Platform.exitApp();
                     }
-                })
-            })
+                });
+            });
     }
 
     static Initialize(): Promise<void>
     {
         return StorageEngine.Get('accepted terms')
-            .then(value => {this.AcceptedTerms = value === 'yes'})
-            .catch(err => { })
+            .then(value => {this.AcceptedTerms = value === 'yes'; })
+            .catch(err => { });
     }
 
     DisableHardwareBackButton()
@@ -120,7 +120,7 @@ export class TApplication extends TAppController
     ShowToast(MsgOrConfig: string | Object): Promise<any>
     {
         if (MsgOrConfig instanceof Object)
-            return super.ShowToast(MsgOrConfig)
+            return super.ShowToast(MsgOrConfig);
         else
             return super.ShowToast({message: MsgOrConfig, position: 'center', cssClass: 'toast-s1', duration: 1500});
     }
@@ -128,7 +128,7 @@ export class TApplication extends TAppController
     ShowLoading(MsgOrConfig?: string | Object): Promise<any>
     {
         if (MsgOrConfig instanceof Object)
-            return super.ShowLoading(MsgOrConfig)
+            return super.ShowLoading(MsgOrConfig);
         else
             return super.ShowLoading({spinner: 'crescent', content: MsgOrConfig, cssClass: 'loading-s1'});
     }
@@ -144,4 +144,4 @@ export class TApplication extends TAppController
 
     private HardwareBackButtonDisabled = false;
     private static AcceptedTerms: boolean = false;
-};
+}

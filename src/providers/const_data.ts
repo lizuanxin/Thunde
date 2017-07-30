@@ -1,4 +1,4 @@
-import {IMode, IBodyPart, ICategory, IScriptFile} from '.'
+import {IMode, IBodyPart, ICategory, IScriptFile} from '.';
 
 export namespace const_data
 {
@@ -10,7 +10,7 @@ export namespace const_data
     // do not use this: dummy for bluetens
     export const Modes: Array<IMode> =
     [
-    ]
+    ];
 
     export const BodyParts: Array<IBodyPart> =
     [
@@ -44,7 +44,7 @@ export namespace const_data
             Icon: 0xE902, Desc: JSON.stringify([0xE9B9])},
         {Id: 'foot',        Name: 'foot',
             Icon: 0xE90F, Desc: JSON.stringify([0xE9CB])},
-    ]
+    ];
 
     export const Body =
     {
@@ -63,7 +63,7 @@ export namespace const_data
         calf: BodyParts[12],
         ankle: BodyParts[13],
         foot: BodyParts[14],
-    }
+    };
 
     export const BodyCategory =
     {
@@ -77,7 +77,7 @@ export namespace const_data
 
         muscle: [Body.shoulder, Body.back, Body.upperarm, Body.buttock, Body.thigh, Body.calf],
         fat: [Body.abdomen, Body.buttock, Body.thigh, Body.upperarm]
-    }
+    };
 
     export const Categories: Array<ICategory> =
     [
@@ -85,7 +85,7 @@ export namespace const_data
         {Id: 'muscle_training', Icon: 0xe91e, Name: 'muscle_training'},
         {Id: 'fat_burning', Icon: 0xe905, Name: 'fat_burning'},
         {Id: 'recommend', Icon: 0xe94b, Name: 'recommend'},
-    ]
+    ];
 
     export const Category =
     {
@@ -93,7 +93,7 @@ export namespace const_data
         muscle_training: Categories[1],
         fat_burning: Categories[2],
         recommend: Categories[3],
-    }
+    };
 
     export const ScriptFile: Array<IScriptFile> =
     [
@@ -179,5 +179,5 @@ export namespace const_data
         {Id: '{00000000-0000-4000-4100-0000000FF003}', Author: 'UltraCreation Team',
             Category_Id: Category.recommend.Id, Mode_Id: null, Name: 'recommend3',
             BodyParts: [Body.back], Icon: null},
-        ]
+        ];
 }

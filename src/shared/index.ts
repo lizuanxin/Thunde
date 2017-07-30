@@ -1,8 +1,8 @@
 import {NgModule} from '@angular/core';
 import {IonicPageModule} from 'ionic-angular';
-import {TranslateModule} from '@ngx-translate/core'
+import {TranslateModule} from '@ngx-translate/core';
 
-import {SwiperComp} from '../UltraCreation/ng-ion/swiper'
+import {SwiperComp} from '../UltraCreation/ng-ion/swiper';
 import {FileListDialComp} from './filelist/filelist.dail';
 import {FileListBodyComp} from './filelist/filelist.body';
 import {FileListCardComp, FileListRecommendComp} from './filelist/filelist.card';

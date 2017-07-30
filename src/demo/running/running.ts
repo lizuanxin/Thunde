@@ -1,11 +1,11 @@
 import {Component, OnInit, AfterViewInit, OnDestroy} from '@angular/core';
 import {NavParams, ViewController} from 'ionic-angular';
 
-import {Subscription} from 'rxjs/Subscription'
+import {Subscription} from 'rxjs/Subscription';
 import 'rxjs/add/operator/toPromise';
 
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
-import {PowerManagement} from '../../UltraCreation/Native/PowerManagement'
+import {PowerManagement} from '../../UltraCreation/Native/PowerManagement';
 
 import * as Svc from '../../providers';
 
@@ -159,7 +159,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
                 .then(() => this.StartIndex(this.CurrentIdx))
                 .catch(err => App.ShowError(err).then(() => this.ClosePage()))
                 .then(() => App.HideLoading())
-                .then(() => this.Switching = undefined)
+                .then(() => this.Switching = undefined);
         }
         else
         {
@@ -170,7 +170,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
                 .then(() => this.Shell.StopOutput())
                 .catch(err => App.ShowError(err).then(() => this.ClosePage()))
                 .then(() => App.HideLoading())
-                .then(() => this.Switching = undefined)
+                .then(() => this.Switching = undefined);
         }
     }
 
@@ -189,7 +189,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
                 .then(() => this.StartIndex(this.CurrentIdx))
                 .catch(err => App.ShowError(err).then(() => this.ClosePage()))
                 .then(() => App.HideLoading())
-                .then(() => this.Switching = undefined)
+                .then(() => this.Switching = undefined);
         }
     }
 
@@ -218,7 +218,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
                 }
             })
             .then(() => this.Shell.Detach())
-            .catch(err => console.error(err))
+            .catch(err => console.error(err));
     }
 
     get Progress(): number
@@ -226,7 +226,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
         let f = this.DemoFiles[this.CurrentIdx];
 
         if (TypeInfo.Assigned(f))
-            return this.Ticking / f.DurationSecond * 100
+            return this.Ticking / f.DurationSecond * 100;
         else
             return 0;
     }
@@ -257,7 +257,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
     get TextStyle(): Object
     {
         let screenHeight = window.innerHeight;
-        return { height: screenHeight * 0.15 + 'px', overflowY: 'scroll', padding: '0' }
+        return { height: screenHeight * 0.15 + 'px', overflowY: 'scroll', padding: '0' };
     }
 
     App = window.App;

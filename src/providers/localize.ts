@@ -211,7 +211,7 @@ export let translate_en =
         set: 'set',
         replace: 'replace'
     }
-}
+};
 
 export let translate_zh =
 {
@@ -413,4 +413,4 @@ export let translate_zh =
         set: '设置',
         replace: '替换'
     }
-}
+};

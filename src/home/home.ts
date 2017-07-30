@@ -1,7 +1,7 @@
 import {isDevMode, Component, OnInit} from '@angular/core';
 import {NavParams} from 'ionic-angular';
 
-import {TypeInfo} from '../UltraCreation/Core/TypeInfo'
+import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
 import {RunningPage} from './running/running';
 import {TouPage} from '../profile/tou/tou';
 
@@ -34,7 +34,7 @@ export class HomePage implements OnInit
         this.Tabs.push(new TTabItem(1, Svc.const_data.Category.muscle_training));
         // this.Tabs.push(new TTabItem(2, Svc.const_data.Category.fat_burning));
 
-        let ProfileTab = new TTabItem(65536, 0xE94c)
+        let ProfileTab = new TTabItem(65536, 0xE94c);
         this.Tabs.push(ProfileTab);
 
         if (! App.AcceptedTerms)
@@ -104,7 +104,7 @@ export class HomePage implements OnInit
         {
             case 1: return 'sport';
             case 2: return 'thin';
-            default: return ''
+            default: return '';
         }
     }
 
@@ -124,7 +124,7 @@ export class HomePage implements OnInit
                 .catch(err => console.log(err))
                 .then(() => App.HideLoading())
                 .then(() => this.ActiveTab = Tab)
-                .catch(err => console.log(err))
+                .catch(err => console.log(err));
         }
         else
         {
@@ -169,7 +169,7 @@ export class HomePage implements OnInit
 
     App = window.App;
 
-    private DefaultFiles: Array<string> = []
+    private DefaultFiles: Array<string> = [];
     private Tabs: Array<TTabItem> = [];
     private ActiveTab: TTabItem;
 
@@ -194,7 +194,7 @@ class TTabItem
     get Name(): string
     {
         if (this.Index === 65536)
-            return 'profile_page.title'
+            return 'profile_page.title';
         else
             return 'category.' + (this.IconOrCategory as Svc.ICategory).Name;
     }

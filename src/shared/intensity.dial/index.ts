@@ -145,7 +145,7 @@ export class TContentCanvas
                     y: this.CenterY,
                     font: this.SetFontSize(0.38),
                     fillColor: 'rgba(0,0,0,.6)'
-                })
+                });
             });
     }
 
@@ -304,23 +304,23 @@ export class TContentCanvas
 
 interface ICanvasDrawOption
 {
-    x?: number,
-    y?: number,
-    radius?: number,
-    globalAlpha?: number,
-    angle?: number,
-    startAngle?: number,
-    endAngle?: number,
-    lineWidth?: number,
-    lineCap?: string,
-    font?: string,
-    strokeColor?: any,
-    fillColor?: string,
+    x?: number;
+    y?: number;
+    radius?: number;
+    globalAlpha?: number;
+    angle?: number;
+    startAngle?: number;
+    endAngle?: number;
+    lineWidth?: number;
+    lineCap?: string;
+    font?: string;
+    strokeColor?: any;
+    fillColor?: string;
     shadowBox?:
     {
         shadowOffsetX?: number,
         shadowOffsetY?: number,
         shadowBlur?: number,
         shadowColor?: string
-    }
+    };
 }

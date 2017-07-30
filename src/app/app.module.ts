@@ -1,13 +1,13 @@
 import {NgModule, ErrorHandler} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
-import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular'
+import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular';
 import {TranslateModule} from '@ngx-translate/core';
 
 import {MyApp} from './app.component';
 import {HomeModule} from '../home';
 
-import * as Svc from '../providers'
+import * as Svc from '../providers';
 
 let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
     // iconMode: 'ios',
