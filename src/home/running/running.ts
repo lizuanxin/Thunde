@@ -181,12 +181,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
     {
         if (this.Completed || TypeInfo.Assigned(this.ClosingTimerId))
             return;
-
-        this.ClosingTimerId = setTimeout(() =>
-        {
-            if (this.view === App.Nav.getActive())
-                App.Nav.pop();
-        }, 300);
+        this.ClosingTimerId = setTimeout(() => App.Nav.pop(), 300);
     }
 
     private UnsubscribeShellNotify(): void
