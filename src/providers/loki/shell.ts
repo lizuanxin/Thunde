@@ -5,34 +5,26 @@ import 'rxjs/add/operator/toPromise';
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 import {EAbort} from '../../UltraCreation/Core/Exception';
 import {TUtf8Encoding} from '../../UltraCreation/Encoding/Utf8';
-import {THashCrc16} from '../../UltraCreation/Hash';
-import {TAbstractShell, TShellRequest, ERequestTimeout, EDisconnected} from '../../UltraCreation/Native/Abstract.Shell';
+import {TAbstractShell, TShellRequest, ERequestTimeout} from '../../UltraCreation/Native/Abstract.Shell';
 
 import * as BLE from '../../UltraCreation/Native/BluetoothLE';
 import * as USB from '../../UltraCreation/Native/USB';
 
-export {ERequestTimeout};
+import {IShell, TLinearTable, IScriptFile} from './shell.intf';
+import {TListDefaultFile} from './shell.list_default';
+import {TCatRequest} from './shell.cat';
+import {TClearFileSystemRequest } from './shell.clear_fs';
+import {TOTARequest, EUSBRestarting} from './shell.ota';
 
-const FOR_BLUETENS = false;
+export {ERequestTimeout, EUSBRestarting};
+
 const REQUEST_TIMEOUT = 3000;
 
 const BLE_FILTER_NAMES: string[] = ['uctenqt3', 'thunderbolt', 'uctenqt1', 'quintic ble', 'ble hw1.0.0', '.blt', 'bluetensx'];
 const BLE_SCAN_TIMEOUT = 60000;
 export const BLE_CONNECTION_TIMEOUT = 5000;
 
-const FILE_CLEAR_EXCLUDES = ['DefaultFile', 'BLE_Name'];
-const FILE_CLEAR_SIZE_LESS_THAN = 4096;
-const FILE_CLEAR_MAX_COUNT = 64;
-
-const OTA_WINDOW_SIZE = 24;
-const OTA_SPLIT_PACKET_SIZE = 16;
-const OTA_PACKET_SIZE = OTA_SPLIT_PACKET_SIZE + 4;
-
-type TLinearTable = '5v' | '3.3v' | '4v';
 const DEF_LINEAR_TABLE = '4v';
-
-export class EUSBRestarting extends EAbort
-    {}
 
 /* TShell */
 
@@ -40,16 +32,7 @@ export enum TShellNotify
     {Shutdown, Disconnected, NoLoad, Stopped, Intensity, HardwareError, LowBattery, Battery, Ticking}
 export type TShellNotifyEvent = Subject<TShellNotify>;
 
-interface IScriptFile
-{
-    Name?: string | null;
-    Md5?: string | null;
-    Content?: string | null;
-    ContentBuffer?: Uint8Array | null;
-    Duration?: number | null;
-}
-
-export class TShell extends TAbstractShell
+export class TShell extends TAbstractShell implements IShell
 {
     /// @override
     static Get(DeviceId: string): TShell
@@ -261,9 +244,29 @@ export class TShell extends TAbstractShell
         return this.Execute('>rst', 10, Line => true).catch(err => {});
     }
 
-    FileMd5(FileName: string): Promise<string>
+    SetLinearTable(n: TLinearTable): Promise<void>
     {
-        return this.Execute('>md5 ' + FileName, REQUEST_TIMEOUT, Line => {return true; });
+        let Idx = 3;
+        switch (n)
+        {
+        case '5v':
+            Idx = 1;
+            break;
+        case '3.3v':
+            Idx = 2;
+            break;
+        default:
+            Idx = 3;
+            break;
+        }
+
+        return this.Execute('>sstab ' + Idx, REQUEST_TIMEOUT,
+            Line =>
+            {
+                console.log(Line);
+                return this.IsStatusRetVal(Line);
+            })
+            .then(value => {});
     }
 
     SetBluetoothName(Name: string): Promise<boolean>
@@ -304,6 +307,34 @@ export class TShell extends TAbstractShell
             });
     }
 
+    FileMd5(FileName: string): Promise<string>
+    {
+        return this.Execute('>md5 ' + FileName, REQUEST_TIMEOUT, Line => {return true; });
+    }
+
+    CatFile(s: IScriptFile): Promise<Observable<number>>
+    {
+        this.RefFile = s;
+        return this.RequestStart(TCatRequest, REQUEST_TIMEOUT, s.Name, s.ContentBuffer, s.Md5);
+    }
+
+    RemoveFile(FileName: string): Promise<void>
+    {
+        return this.Execute('>rm ' + FileName, REQUEST_TIMEOUT, Line => this.IsStatusRetVal(Line));
+    }
+
+    FormatFileSystem(): Promise<void>
+    {
+        return this.Execute('>fmt BBFS', REQUEST_TIMEOUT, Line => this.IsStatusRetVal(Line));
+    }
+
+    ClearFileSystem(ExcludeFiles: string[]): Promise<void>
+    {
+        return this.RequestStart(TClearFileSystemRequest, REQUEST_TIMEOUT, ExcludeFiles.concat(this.DefaultFileList))
+            .then(Request => Request.toPromise())
+            .then(() => {});
+    }
+
     StartScriptFile(s: IScriptFile): Promise<void>
     {
         return this.Execute('>ssta ' + s.Name, REQUEST_TIMEOUT, Line => this.IsStatusRetVal(Line))
@@ -337,29 +368,6 @@ export class TShell extends TAbstractShell
     {
         return this.Execute('>osto', REQUEST_TIMEOUT, Line => this.IsStatusRetVal(Line))
             .then(() => this.StopTicking());
-    }
-
-    CatFile(s: IScriptFile): Promise<Observable<number>>
-    {
-        this.RefFile = s;
-        return this.RequestStart(TCatRequest, REQUEST_TIMEOUT, s.Name, s.ContentBuffer, s.Md5);
-    }
-
-    RemoveFile(FileName: string): Promise<void>
-    {
-        return this.Execute('>rm ' + FileName, REQUEST_TIMEOUT, Line => this.IsStatusRetVal(Line));
-    }
-
-    FormatFileSystem(): Promise<void>
-    {
-        return this.Execute('>fmt BBFS', REQUEST_TIMEOUT, Line => this.IsStatusRetVal(Line));
-    }
-
-    ClearFileSystem(ExcludeFiles: string[]): Promise<void>
-    {
-        return this.RequestStart(TClearFileSystemRequest, REQUEST_TIMEOUT, ExcludeFiles.concat(this.DefaultFileList))
-            .then(Request => Request.toPromise())
-            .then(() => {});
     }
 
     SetIntensity(Value: number): void
@@ -400,31 +408,6 @@ export class TShell extends TAbstractShell
             })
             .catch(err => console.log(err.message))
             .then(() => this.IntensityChanging = undefined);
-    }
-
-    SetLinearTable(n: TLinearTable): Promise<void>
-    {
-        let Idx = 3;
-        switch (n)
-        {
-        case '5v':
-            Idx = 1;
-            break;
-        case '3.3v':
-            Idx = 2;
-            break;
-        default:
-            Idx = 3;
-            break;
-        }
-
-        return this.Execute('>sstab ' + Idx, REQUEST_TIMEOUT,
-            Line =>
-            {
-                console.log(Line);
-                return this.IsStatusRetVal(Line);
-            })
-            .then(value => {});
     }
 
     OTARequest(Firmware: ArrayBuffer): Promise<TShellRequest>
@@ -682,9 +665,6 @@ export class TShell extends TAbstractShell
                 this.StatusRequest())
             .then(() =>
             {
-                if (FOR_BLUETENS)
-                    return; // bluetens has no linear table
-
                 let SelfType = this.constructor as typeof TShell;
 
                 if (SelfType.LinearTable !== DEF_LINEAR_TABLE)
@@ -881,409 +861,4 @@ export class TProxyUsbShell extends USB.TShell implements IProxyShell
         (this.Owner as TShell)._DeviceTimeout(this);
         super.OnConnectionTimeout();
     }
-}
-
-/* TShellRequest */
-export abstract class TProxyShellRequest extends TShellRequest
-{
-    // TProxyShellRequest always has first Owner parameter
-    //  *NOTE*
-    //      this.Shell still derived from TShellRequest
-    abstract Start(Proxy: TShell, ...args: any[]): void;
-}
-
-/* TCatRequest */
-export class TCatRequest extends TProxyShellRequest
-{
-    /// @override
-    Start(Proxy: TShell, FileName: string, FileBuffer: Uint8Array, Md5: string): void
-    {
-        let Count = FileBuffer.byteLength;
-
-        Proxy.FileMd5(FileName)
-            .then(value =>
-            {
-                if (value.toUpperCase() === Md5)
-                    return Promise.reject(new EAbort());
-                else
-                    return Promise.resolve();
-            })
-            .then(() => Proxy.RemoveFile(FileName))
-            .then(() =>
-            {
-                if (TypeInfo.Assigned(this.Shell))
-                    return this.Shell.PromiseSend('>cat ' + FileName + ' -l=' + FileBuffer.byteLength);
-                else
-                    return Promise.reject(new EAbort());
-            })
-            .then(() =>
-            {
-                if (TypeInfo.Assigned(this.Shell))
-                    return this.Shell.ObserveSend(FileBuffer);
-                else
-                    return Promise.reject(new EAbort());
-            })
-            .then((Observer: Observable<number>) =>
-            {
-                return new Promise((resolve, reject) =>
-                {
-                    Observer.subscribe(
-                        Written =>
-                        {
-                            this.RefreshTimeout();
-                            this.next(Written / Count);
-                        },
-                        err => reject(err),
-                        () => resolve());
-                });
-            })
-            .catch(err =>
-            {
-                if (err instanceof EAbort)
-                    this.complete();
-                else
-                    this.error(err);
-            });
-    }
-
-    /// @override
-    Notification(Line: string)
-    {
-        let strs = Line.split(':');
-        // '3: end of cat'
-        if (strs.length > 1 && strs[0] === '3')
-            this.complete();
-    }
-}
-
-/* TListDefaultFile */
-export class TListDefaultFile extends TProxyShellRequest
-{
-    /// @override
-    Start(Proxy: TShell): void
-    {
-        if (FOR_BLUETENS)
-        {
-            this.Shell.PromiseSend('>sdef')
-                .catch(err => this.error(err));
-        }
-        else
-        {
-            this.Shell.PromiseSend('>dump DefaultFile')
-                .catch(err => this.error(err));
-        }
-    }
-
-    /// @override
-    Notification(Line: string)
-    {
-        let Strs = Line.split('=');
-        if (Strs.length > 1)
-        {
-            if (Strs[0] === 'sdef')
-            {
-                let Name = Strs[1].split(',')[0];
-                if (Name.length > 0)
-                    this.RetVal.push(Name);
-            }
-
-            this.RefreshTimeout();
-            return;
-        }
-
-        Strs = Line.split(':');
-        // error or '2: end of dump'
-        if (Strs.length > 1 && (Strs[0] === '32772' || Strs[0] === '2'))
-        {
-            this.next(this.RetVal);
-            this.complete();
-        }
-        else if (this.RetVal.indexOf(Strs[0]) === -1)
-        {
-            this.RefreshTimeout();
-            this.RetVal.push(Strs[0]);
-        }
-    }
-
-    RetVal: Array<string> = [];
-}
-
-/* TClearFileSystemRequest */
-
-export class TClearFileSystemRequest extends TProxyShellRequest
-{
-    /// @override
-    Start(Proxy: TShell, ExcludeFiles: Array<string>): void
-    {
-        this.Proxy = Proxy;
-        this.ExcludeFiles = ExcludeFiles;
-
-        this.Shell.PromiseSend('>ls')
-            .catch(err => this.error(err));
-    }
-
-    /// @override
-    Notification(Line: string)
-    {
-        if (TypeInfo.Assigned(this.Deleting))
-            return;
-
-        let strs = Line.split(':');
-        // '1: end of ls'
-        if (strs.length > 1 && strs[0] === '1')
-        {
-            this.Deleting = new Subject<void>();
-
-            if (TypeInfo.Assigned(this.FileList) && this.FileList.length < FILE_CLEAR_MAX_COUNT)
-            {
-                for (let File of this.FileList)
-                {
-                    if (File.Size <= FILE_CLEAR_SIZE_LESS_THAN)
-                        this.DeletingFiles.push(File.Name);
-                }
-
-                if (this.DeletingFiles.length > 0)
-                {
-                    this.SyncDeletingNext();
-                    (this.Deleting as Observable<void>).toPromise()
-                        .then(() => this.complete())
-                        .catch(err => this.error(err));
-                }
-                else
-                    this.complete();
-            }
-            else
-            {
-                this.Proxy.FormatFileSystem()
-                    .catch(err => console.log('clearing filesystem error: ' + err.message))
-                    .then(() => this.complete());
-            }
-
-            return;
-        }
-        // listing files:
-        //  this.FileList = null when some error happens, this will cause format later
-        else if (TypeInfo.Assigned(this.FileList))
-        {
-            let Idx = Line.indexOf(' ', 0);
-            let Name = Line.substr(0, Idx);
-            if (Name.length > 0)
-            {
-                let Size = parseInt(Line.substr(Idx + 1, Line.length), 10);
-
-                // 24 = max file length of device supported
-                if (Name.length > 24 || isNaN(Size) || Size < 0 || Size > 32768)
-                    this.FileList = null;
-                else if (FILE_CLEAR_EXCLUDES.indexOf(Name) === -1 && this.ExcludeFiles.indexOf(Name) === -1)
-                    this.FileList.push({Name: Name, Size: Size});
-            }
-            else
-                this.FileList = null;
-        }
-    }
-
-    private SyncDeletingNext()
-    {
-        let name = this.DeletingFiles.pop() as string;
-
-        this.Proxy.RemoveFile(name)
-            .then(() =>
-            {
-                if (this.DeletingFiles.length > 0)
-                    setTimeout(() => this.SyncDeletingNext(), 0);
-                else
-                    this.Deleting.complete();
-            })
-            .catch(err => console.log(err.message));
-    }
-
-    Proxy: TShell;
-    FileList: (Array<{Name: string, Size: number}>) | null = [];
-    ExcludeFiles: Array<string>;
-
-    Deleting: Subject<void>;
-    DeletingFiles = new Array<string>();
-}
-
-/* TOTARequest */
-
-export class TOTARequest extends TProxyShellRequest
-{
-    Start(Proxy: TShell, Firmware: ArrayBuffer): void
-    {
-        if (! Proxy.IsAttached)
-        {
-            this.error(new EDisconnected());
-            return;
-        }
-        this.NoConnectionTimeout();
-
-        this.FirmwareSize = Firmware.byteLength;
-        this.CRC = this.SplitPacket(Firmware);
-
-        this.Shell.PromiseSend('>ota -s=' + this.FirmwareSize + ' -c=' + this.CRC)
-            .catch(err => this.error(err));
-    }
-
-    Notification(Line: string)
-    {
-        console.log('OTA Notification: ' + Line);
-
-        this.RefreshTimeout();
-
-        let Strs = Line.split(':');
-        let Status = 0;
-        if (Strs.length > 1)
-        {
-            Status = parseInt(Strs[0], 10);
-
-            if (Status === 0)
-            {
-                if (this.Sent === 0)
-                    this.StartSendingPacket();
-                else
-                    this.complete();
-            }
-            else if ((Status & 0x8000) !== 0)
-            {
-                console.log('OTA error ' + Line);
-                this.error(new Error('e_ota_failure'));
-            }
-        }
-        else if (Line === 'crc error')
-        {
-            console.log('OTA crc error');
-            this.error(new Error('e_ota_failure'));
-        }
-        else if (Line.indexOf('jump') !== -1)
-        {
-            console.log('usb resetting...');
-            this.error(new EUSBRestarting());
-        }
-        else
-            this.HandleReponse(Line);
-    }
-
-    SplitPacket(Firmware: ArrayBuffer): number
-    {
-        let Count = Math.trunc((Firmware.byteLength + OTA_SPLIT_PACKET_SIZE - 1) / OTA_SPLIT_PACKET_SIZE);
-        this.PacketBuffer = new ArrayBuffer(Count * OTA_PACKET_SIZE);
-
-        let CRC = new THashCrc16();
-        for (let i = 0; i < Firmware.byteLength; i += OTA_SPLIT_PACKET_SIZE)
-        {
-            let ViewSRC: Uint8Array;
-            if (Firmware.byteLength - i > OTA_SPLIT_PACKET_SIZE)
-                ViewSRC = new Uint8Array(Firmware, i, OTA_SPLIT_PACKET_SIZE);
-            else
-                ViewSRC = new Uint8Array(Firmware, i, Firmware.byteLength - i);
-            CRC.Update(ViewSRC);
-
-            let Offset = i / OTA_SPLIT_PACKET_SIZE * OTA_PACKET_SIZE;
-            let DataView = new Uint8Array(this.PacketBuffer, Offset + 4, OTA_SPLIT_PACKET_SIZE);
-            DataView.set(ViewSRC);
-
-            let HeadView = new Uint16Array(this.PacketBuffer, Offset, 2);
-            HeadView[0] = i;
-            HeadView[1] = THashCrc16.Get(DataView).Value();
-        }
-
-        CRC.Final();
-        return CRC.Value();
-    }
-
-    private StartSendingPacket()
-    {
-        setTimeout(() =>
-        {
-            this.SendPacket(0, OTA_WINDOW_SIZE);
-            this.MonitorOutgoing(0);
-        }, 1000);
-    }
-
-    private SendPacket(Offset: number, Count: number)
-    {
-        if (this.isStopped)
-            return;
-        if (this.LastSentOffset === this.FirmwareSize)
-            return;
-        this.LastSentOffset = Offset + Count * OTA_SPLIT_PACKET_SIZE;
-
-        Offset = Offset / OTA_SPLIT_PACKET_SIZE * OTA_PACKET_SIZE;
-        let Size = Count * OTA_PACKET_SIZE;
-
-        if (Offset + Size > this.PacketBuffer.byteLength)
-        {
-            Size = this.PacketBuffer.byteLength - Offset;
-            Count = Size / OTA_PACKET_SIZE;
-            this.LastSentOffset = this.FirmwareSize;
-        }
-
-        let View = new Uint8Array(this.PacketBuffer, Offset, Size);
-
-        this.OutgoingCount += Count;
-
-        if (TypeInfo.Assigned(this.Shell))
-        {
-            this.Shell.PromiseSend(View)
-                .then(value => this.next(this.LastSentOffset / this.FirmwareSize))
-                .catch(err => this.error(err));
-        }
-    }
-
-    private HandleReponse(Line: string)
-    {
-        if (! this.isStopped)
-        {
-            if (this.OutgoingCount > 0)
-                this.OutgoingCount --;
-
-            // somehow android received error BLE notify packet, but it ok to continue
-            /*
-            let Offset = parseInt(Line);
-            if (isNaN(Offset))
-            {
-                this.error(new Error('NaN offset'));
-                return;
-            }
-            */
-
-            if (this.OutgoingCount < Math.trunc(OTA_WINDOW_SIZE / 4))
-                this.SendPacket(this.LastSentOffset, OTA_WINDOW_SIZE - this.OutgoingCount);
-        }
-    }
-
-    private MonitorOutgoing(LastCount: number)
-    {
-        if (! this.isStopped)
-        {
-            // for a long time OutgoingCount has not been changed=
-            if (LastCount <= OTA_WINDOW_SIZE / 4 && LastCount === this.OutgoingCount)
-            {
-                console.log('OTA reset outgoing counter');
-                // reset outgoing window
-                this.OutgoingCount = 0;
-                this.SendPacket(this.LastSentOffset, OTA_WINDOW_SIZE);
-            }
-
-            if (this.OutgoingCount > 0)
-                setTimeout(() => this.MonitorOutgoing(this.OutgoingCount), 1500);
-        }
-    }
-
-    private NoConnectionTimeout()
-    {
-        if (! this.isStopped)
-        {
-            this.Shell.RefreshConnectionTimeout();
-            setTimeout(() => this.NoConnectionTimeout(), 1000);
-        }
-    }
-
-    private PacketBuffer: ArrayBuffer;
-    private CRC: number;
-    private Sent: number = 0;
-    private LastSentOffset: number;
-    private FirmwareSize: number;
-    private OutgoingCount: number = 0;
 }
