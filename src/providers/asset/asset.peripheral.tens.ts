@@ -13,7 +13,7 @@ export class TTensPeripheral extends TConnectablePeripheral
     /// @override
     static ProductName = 'UltraCreation Tens';
     /// @override
-    static AdName = ['uctenqt3', 'thunderbolt', 'uctenqt1', '.blt', 'bluetensx']
+    static AdName = ['uctenqt3', 'thunderbolt', 'uctenqt1', '.blt', 'bluetensx'];
 
     /// @override
     get Icon_Id(): number
@@ -28,7 +28,7 @@ export class TTensPeripheral extends TConnectablePeripheral
         else
             return TShell.Get(this.Id as string);
     }
-};
+}
 
 /* TBluetens */
 
@@ -39,7 +39,7 @@ export class TBluetens extends TConnectablePeripheral
     /// @override
     static ProductName = 'UltraCreation Bluetens';
     /// @override
-    static AdName = ['bluetensx', 'bluetensq', 'bluetens.blt', 'bluetensq.blt']
+    static AdName = ['bluetensx', 'bluetensq', 'bluetens.blt', 'bluetensq.blt'];
 
     /// @override
     get Icon_Id(): number
@@ -54,7 +54,7 @@ export class TBluetens extends TConnectablePeripheral
         else
             return TShell.Get(this.Id as string);
     }
-};
+}
 
 PeripheralFactory.Register(TTensPeripheral);
 PeripheralFactory.Register(TBluetens);

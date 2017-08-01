@@ -7,13 +7,13 @@ import {TAssignable} from '../../UltraCreation/Core/Persistable';
 import {TUtf8Encoding} from '../../UltraCreation/Encoding';
 import {THashMd5} from '../../UltraCreation/Hash';
 
-import {const_data, IBodyPart, Loki} from '..'
-import {TCategory, TScriptFile, TScriptFileDesc} from './asset.scriptfile'
+import {const_data, IBodyPart, Loki} from '..';
+import {TCategory, TScriptFile, TScriptFileDesc} from './asset.scriptfile';
 
 module Queries
 {
     export const GetCategories = `SELECT Category.*, ObjectName, Name, Desc
-        FROM Asset INNER JOIN Category ON Category.Id = Asset.Id`
+        FROM Asset INNER JOIN Category ON Category.Id = Asset.Id`;
     export const GetFileList = `SELECT ScriptFile.*, ObjectName, Asset.Name, Asset.Desc
         FROM ScriptFile INNER JOIN Asset ON Asset.Id = ScriptFile.Id
         WHERE Category_Id = "?" ORDER BY Asset.Id`;
@@ -26,7 +26,7 @@ module Queries
         WHERE ScriptFile_Id = "?" ORDER BY Body.Id`;
     */
     export const GetFileDesc = `SELECT ScriptFileDesc.*, ObjectName, Asset.Name, Asset.Desc FROM ScriptFileDesc INNER JOIN Asset ON Asset.Id = ScriptFileDesc.Id
-        WHERE ScriptFile_Id= "?" ORDER BY Idx`
+        WHERE ScriptFile_Id= "?" ORDER BY Idx`;
 }
 
 @Injectable()
@@ -70,11 +70,11 @@ export class TAssetService
                 if (Lang !== 'en')
                 {
                     return Http.Get('assets/i18n/en/' + Name).toPromise().then(res => res.Content)
-                        .then(en => TAssignable.AssignProperties(en, localize))
+                        .then(en => TAssignable.AssignProperties(en, localize));
                 }
                 else
                     return localize;
-            })
+            });
     }
 
     static LoadScriptFile(ScriptFile: TScriptFile): Promise<TScriptFile>
@@ -131,11 +131,11 @@ export class TAssetService
             FileName = 'UCtenQT3';          // BLE Version
             break;
         case 3:
-            FileName = 'UCtenQT2'
+            FileName = 'UCtenQT2';
             break;
 
         default:
-            return Promise.reject(new EAbort())
+            return Promise.reject(new EAbort());
         }
 
         return Http.Get('Firmware.json').toPromise().then(res => res.Content)
@@ -145,7 +145,7 @@ export class TAssetService
                 if (! TypeInfo.Assigned(NewVersionStr))
                     return Promise.reject(new EAbort());
 
-                let NewVersion = NewVersionStr.split('.')
+                let NewVersion = NewVersionStr.split('.');
                 if (NewVersion.length !== 3)
                     return Promise.reject(new EAbort());
 
@@ -153,14 +153,14 @@ export class TAssetService
                 if (NewRev <= Rev)
                     return Promise.reject(new EAbort());
 
-                Http.ResponseType = 'arraybuffer'
+                Http.ResponseType = 'arraybuffer';
                 return Http.Get(FileName + '.bin').toPromise().then(res => res.Content);
-            })
+            });
     }
 
     static LoadFaq(): Promise<Array<{title: string, content: string}>>
     {
-        return this.LoadTranslate('faq.json', 'json')
+        return this.LoadTranslate('faq.json', 'json');
     }
 
 /* instance */
@@ -181,7 +181,7 @@ export class TAssetService
         {
             if (iter.Id === Id)
                 return iter;
-        };
+        }
         return null;
     }
 
@@ -222,7 +222,7 @@ export class TAssetService
                     Promises.push(conn.SaveObject(F).catch(err => console.log(err.message)));
                 }
                 Promise.all(Promises).catch(err => {}).then(() => conn.Release());
-            })
+            });
         }
 
         return RetVal;
@@ -253,7 +253,7 @@ export class TAssetService
 
     async FileDesc(ScriptFile: TScriptFile): Promise<void>
     {
-        let DataSet = await StorageEngine.ExecQuery(Queries.GetFileDesc, [ScriptFile.Id])
+        let DataSet = await StorageEngine.ExecQuery(Queries.GetFileDesc, [ScriptFile.Id]);
         let Details = ScriptFile.Details;
 
         if (DataSet.RecordCount > 0)
@@ -261,15 +261,15 @@ export class TAssetService
             while (! DataSet.Eof)
             {
                 let Desc = new TScriptFileDesc();
-                Desc.Assign(DataSet.Curr)
-                Details.push(Desc)
+                Desc.Assign(DataSet.Curr);
+                Details.push(Desc);
                 DataSet.Next();
             }
         }
         else if (TypeInfo.Assigned(ScriptFile.Content))
         {
             let f = new Loki.TFile();
-            f.LoadFrom(ScriptFile.Content)
+            f.LoadFrom(ScriptFile.Content);
 
             let Idx = 1;
             for (let Snap of f.Snap())
@@ -282,7 +282,7 @@ export class TAssetService
                 Desc.Desc = Snap.Print();
 
                 for (let d of Details)
-                    await StorageEngine.SaveObject(d)
+                    await StorageEngine.SaveObject(d);
                 Details.push(Desc);
             }
         }
