@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
-import {TypeInfo} from '../../UltraCreation/Core'
+import {TypeInfo} from '../../UltraCreation/Core';
 import * as Svc from '../../providers';
 
 @Component({selector: 'page-faq', templateUrl: 'faq.html'})

@@ -1,6 +1,5 @@
 import {Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
-
-import * as Demo from '../../demo'
+import * as Demo from '../../demo';
 
 @Component({selector: 'page-tou', templateUrl: 'tou.html'})
 export class TouPage implements OnInit, OnDestroy, AfterViewInit

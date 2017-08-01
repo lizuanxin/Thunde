@@ -24,8 +24,7 @@ export namespace Initialization
         else
             await Reconstruct();
 
-        await conn.Release();
-
+        conn.Release();
         await TApplication.Initialize();
         await TAssetService.Initialize();
         TShell.StartOTG();

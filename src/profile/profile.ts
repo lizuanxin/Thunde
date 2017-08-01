@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 
-import * as Demo from '../demo'
-import {TouPage} from './tou/tou'
-import {FaqPage} from './faq/faq'
+import * as Demo from '../demo';
+import {TouPage} from './tou/tou';
+import {FaqPage} from './faq/faq';
 
 @Component({selector: 'page-profile', templateUrl: 'profile.html'})
 export class ProfilePage implements OnInit
@@ -18,12 +18,12 @@ export class ProfilePage implements OnInit
 
     ShowFAQ(): Promise<any>
     {
-        return App.Nav.push(FaqPage)
+        return App.Nav.push(FaqPage);
     }
 
     ShowDemo(): Promise<any>
     {
-        return App.Nav.push(Demo.StartPage)
+        return App.Nav.push(Demo.StartPage);
     }
 
     ShowTOU(): Promise<any>

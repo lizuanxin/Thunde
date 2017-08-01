@@ -1,5 +1,5 @@
-import {TypeInfo, Exception, TPersistable} from '../../UltraCreation/Core'
-import {ASCII, TUtf8Encoding} from '../../UltraCreation/Encoding'
+import {TypeInfo, Exception, TPersistable} from '../../UltraCreation/Core';
+import {ASCII, TUtf8Encoding} from '../../UltraCreation/Encoding';
 
 export class EInvalidFile extends Exception
 {
@@ -7,7 +7,7 @@ export class EInvalidFile extends Exception
     {
         super('e_invalid_file');
     }
-};
+}
 
 const CURRENT_VERSION = 1;
 export const MAX_FREQ = 1200;
@@ -52,7 +52,7 @@ export class TRange implements IRange
             return false;
 
         if (! TypeInfo.Assigned(Truncate) || Truncate)
-            return Math.round(this.High) === Math.round(to.High) && Math.round(this.Low) === Math.round(to.Low)
+            return Math.round(this.High) === Math.round(to.High) && Math.round(this.Low) === Math.round(to.Low);
         else
             return this.High === to.High && this.Low === to.Low;
     }
@@ -171,7 +171,7 @@ export class TFile extends TPersistable
             let Est = Section.TimeEst();
             RetVal += Est;
             Precalc.push(Est);
-        };
+        }
         for (let Loopback of this.SectionLoopback)
             RetVal += Precalc[Loopback.Idx];
 
@@ -182,7 +182,7 @@ export class TFile extends TPersistable
     {
         let Snaps = new Array<ISnap>();
         for (let i = 0; i < this.Sections.length; i++)
-            Snaps.push(this.Sections[i].Snap())
+            Snaps.push(this.Sections[i].Snap());
 
         if (Snaps.length <= SNAP_JOIN_COUNT)
             return Snaps;
@@ -196,7 +196,7 @@ export class TFile extends TPersistable
             let Snap = Snaps[i];
 
             if (Prev.ClusterFreqRange.IsEqual(Snap.ClusterFreqRange) && Prev.PulseRange.IsEqual(Snap.PulseRange))
-                Prev.Join(Snap)
+                Prev.Join(Snap);
             else
                 RetVal.push(Snap);
 
@@ -275,10 +275,10 @@ export class TFile extends TPersistable
             {
                 // console.log(TTokenType[token.Type] + ' ' + token.Value.toString(16));
                 if (token.BlockDepth > 0)
-                    (Block as TBlock).PushToken(token)
+                    (Block as TBlock).PushToken(token);
                 else
-                    (Section as TSection).PushToken(token)
-            };
+                    (Section as TSection).PushToken(token);
+            }
         }
     }
 
@@ -295,7 +295,7 @@ interface ISectionLoopback
 {
     Idx: number;
     Section: TSection;
-};
+}
 
 export class TSection extends TPersistable
 {
@@ -347,7 +347,7 @@ export class TSection extends TPersistable
 
         default:
             throw new EInvalidFile();
-        };
+        }
     }
 
     Serialization(DigitBase: number): string
@@ -639,7 +639,7 @@ class TToken
             (Value >= ASCII.LOWER_A && Value <= ASCII.LOWER_F);
     }
 
-    private _Type: TTokenType
+    private _Type: TTokenType;
     private _Value: number;
 
     private _DigitBase: number = 10;
