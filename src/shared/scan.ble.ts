@@ -37,7 +37,7 @@ export class ScanBleComp implements OnInit, OnDestroy
 
         if (Svc.Loki.TShell.IsUsbPlugin)
         {
-            Svc.Loki.TShell.StartOTG();
+            // Svc.Loki.TShell.StartOTG();
             let Shell = Svc.Loki.TShell.Get('USB');
 
             App.ShowLoading()
