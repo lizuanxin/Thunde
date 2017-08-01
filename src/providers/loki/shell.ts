@@ -346,22 +346,9 @@ export class TShell extends TAbstractShell implements IShell
             .then(() =>
             {
                 this._Intensity = 1;
-                this.OnNotify.next(TShellNotify.Intensity);
+                setTimeout(() => this.OnNotify.next(TShellNotify.Intensity));
             })
             .then(() => this.StartTicking());
-            /*
-            .then(() =>
-            {
-                return new Promise<void>((resolve, reject) =>
-                {
-                    setTimeout(() =>
-                    {
-                        this.IntensityRequest().catch(err => {})
-                            .then(() => resolve());
-                    }, 500)
-                });
-            });
-            */
     }
 
     StopOutput()
@@ -403,7 +390,7 @@ export class TShell extends TAbstractShell implements IShell
             })
             .then(Line =>
             {
-                setTimeout(() => this.OnNotify.next(TShellNotify.Intensity), 0);
+                setTimeout(() => this.OnNotify.next(TShellNotify.Intensity));
                 return this._Intensity;
             })
             .catch(err => console.log(err.message))
@@ -567,7 +554,7 @@ export class TShell extends TAbstractShell implements IShell
             .then(Line =>
             {
                 this._BatteryLevel = parseInt(strs[0]);
-                setTimeout(() => this.OnNotify.next(TShellNotify.Battery), 0);
+                setTimeout(() => this.OnNotify.next(TShellNotify.Battery));
                 return this._BatteryLevel;
             })
         */
@@ -587,7 +574,7 @@ export class TShell extends TAbstractShell implements IShell
             .then(Line =>
             {
                 this._Intensity = parseInt(strs[1]);
-                setTimeout(() => this.OnNotify.next(TShellNotify.Intensity), 0);
+                setTimeout(() => this.OnNotify.next(TShellNotify.Intensity));
                 return this._Intensity;
             })
     }
@@ -618,7 +605,7 @@ export class TShell extends TAbstractShell implements IShell
 
         this.TickIntervalId = setInterval(() =>
         {
-            setTimeout(() => this.OnNotify.next(TShellNotify.Ticking), 0);
+            setTimeout(() => this.OnNotify.next(TShellNotify.Ticking));
 
             let Duration = (this.RefFile.Duration ? this.RefFile.Duration : 0);
             if (Duration <= this.Ticking && this.OnNotify.observers.length === 0)
@@ -757,14 +744,8 @@ export class TShell extends TAbstractShell implements IShell
         case 'strength':
             this._Intensity = parseInt(Params[2], 10);
             if (this._Intensity >= 0)
-            {
-                this.OnNotify.next(TShellNotify.Intensity);
-                break;
-            }
-            else
-            {
-                // continue to shutdown
-            }
+                setTimeout(() => this.OnNotify.next(TShellNotify.Intensity));
+            break;
         }
     }
 }
