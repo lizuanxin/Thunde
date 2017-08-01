@@ -37,7 +37,6 @@ export class StartPage implements AfterViewInit
             params.DeviceId = DeviceId;
 
             App.ShowLoading()
-                .then(() => App.Nav.pop({animate: false}))
                 .then(() => App.Nav.push(DemoRunningPage, params));
         }
     }
@@ -48,7 +47,6 @@ export class StartPage implements AfterViewInit
         App.ShowLoading()
             .then(() => this.DeviceScanning = true);
     }
-
 
     InitElementStyle()
     {

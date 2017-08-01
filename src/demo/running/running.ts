@@ -80,25 +80,18 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     ngAfterViewInit(): void
     {
-        // App.Nav.remove(1, App.Nav.getViews().length - 2);
-        /*
-        CloseViews(App).catch(err => {});
-
-        async function CloseViews(App: Svc.TApplication): Promise<void>
-        {
-            let views = App.Nav.getViews();
-            for (let i = 1; i < views.length - 1; i ++)
-                await views[i].dismiss().catch(err => {});
-        }
-        */
+        App.Nav.remove(1, App.ActiveView.index - 1)
+            .catch(err => console.error(err));
     }
 
     ngOnDestroy(): void
     {
-        PowerManagement.Release();
+        this.Shell.Shutdown()
+            .catch(() => {})
+            .then(() => this.Shell.Detach());
 
+        PowerManagement.Release();
         this.UnsubscribeShellNotify();
-        this.Shell.Detach();
     }
 
     private UnsubscribeShellNotify(): void
