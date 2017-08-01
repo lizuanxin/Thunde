@@ -1,11 +1,11 @@
-import {TypeInfo} from '../UltraCreation/Core'
-import {InitializeStorage, TSqliteEngine} from '../UltraCreation/Storage/Engine/cordova.sqlite'
+import {TypeInfo} from '../UltraCreation/Core';
+import {InitializeStorage, TSqliteEngine} from '../UltraCreation/Storage/Engine/cordova.sqlite';
 import {TSqlConnection, TSqlQuery} from '../UltraCreation/Storage/Storage.sql';
 
-import {const_data} from './const_data'
-import {TApplication} from './application'
-import {TAssetService} from './asset'
-import {TShell} from './loki'
+import {const_data} from './const_data';
+import {TApplication} from './application';
+import {TAssetService} from './asset';
+import {TShell} from './loki';
 
 export namespace Initialization
 {
@@ -14,10 +14,10 @@ export namespace Initialization
         const db_version = '27';
         let conn = await InitializeStorage(new TSqliteEngine('ThunderboltDB.sqlite')).GetConnection();
 
-        let DataSet = await conn.ExecQuery('SELECT name FROM sqlite_master WHERE type="table" AND name="Asset"')
+        let DataSet = await conn.ExecQuery('SELECT name FROM sqlite_master WHERE type="table" AND name="Asset"');
         if (DataSet.RecordCount === 1)
         {
-            let Value = await conn.Get('db_version').catch(err => 'destroying')
+            let Value = await conn.Get('db_version').catch(err => 'destroying');
             if (Value !== db_version)
                 await Reconstruct();
         }
@@ -57,7 +57,7 @@ export namespace Initialization
 
             let Icon: any;
             if (TypeInfo.Assigned(iter.Icon))
-                Icon = iter.Icon
+                Icon = iter.Icon;
             else
                 Icon = null;
             queries.push(new TSqlQuery(InsertMode, [iter.Id, Icon]));
@@ -76,7 +76,7 @@ export namespace Initialization
 
             let Icon: any;
             if (TypeInfo.Assigned(iter.Icon))
-                Icon = iter.Icon
+                Icon = iter.Icon;
             else
                 Icon = null;
             queries.push(new TSqlQuery(InsertBody, [iter.Id, Icon]));
@@ -95,7 +95,7 @@ export namespace Initialization
 
             let Icon: any;
             if (TypeInfo.Assigned(iter.Icon))
-                Icon = iter.Icon
+                Icon = iter.Icon;
             else
                 Icon = null;
             queries.push(new TSqlQuery(InsertCategory, [iter.Id, Icon]));
@@ -111,13 +111,13 @@ export namespace Initialization
         {
             let Icon: any;
             if (TypeInfo.Assigned(iter.Icon))
-                Icon = iter.Icon
+                Icon = iter.Icon;
             else
                 Icon = null;
 
             let Content: any;
             if (TypeInfo.Assigned(iter.Content))
-                Content = iter.Content
+                Content = iter.Content;
             else
                 Content = null;
 
@@ -273,7 +273,7 @@ Profile ER Diagram
     const InsertMode = 'INSERT OR REPLACE INTO Mode(Id, Icon) VALUES(?,?)';
     const InsertCategory = 'INSERT OR REPLACE INTO Category(Id, Icon) VALUES(?, ?)';
     const InsertScriptFile = 'INSERT OR REPLACE INTO ScriptFile(Id, Icon, Category_Id, Mode_Id, Author, Content) VALUES(?,?,?,?,?,?)';
-    const InsertScriptFile_Body = 'INSERT OR REPLACE INTO ScriptFile_Body(ScriptFile_Id, Body_Id) VALUES(?, ?)'
+    const InsertScriptFile_Body = 'INSERT OR REPLACE INTO ScriptFile_Body(ScriptFile_Id, Body_Id) VALUES(?, ?)';
 }
 
 /* drop tables
