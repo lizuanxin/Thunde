@@ -5,7 +5,6 @@ import {TSqlConnection, TSqlQuery} from '../UltraCreation/Storage/Storage.sql';
 import {const_data} from './const_data';
 import {TApplication} from './application';
 import {TAssetService} from './asset';
-import {TShell} from './loki';
 
 export namespace Initialization
 {
@@ -27,7 +26,7 @@ export namespace Initialization
         conn.Release();
         await TApplication.Initialize();
         await TAssetService.Initialize();
-        TShell.StartOTG();
+        // TShell.StartOTG();
 
         async function Reconstruct()
         {

@@ -14,7 +14,6 @@ import * as USB from '../../UltraCreation/Native/USB';
 export {ERequestTimeout};
 
 const FOR_BLUETENS = false;
-
 const REQUEST_TIMEOUT = 3000;
 
 const BLE_FILTER_NAMES: string[] = ['uctenqt3', 'thunderbolt', 'uctenqt1', 'quintic ble', 'ble hw1.0.0', '.blt', 'bluetensx'];
@@ -24,11 +23,6 @@ export const BLE_CONNECTION_TIMEOUT = 5000;
 const FILE_CLEAR_EXCLUDES = ['DefaultFile', 'BLE_Name'];
 const FILE_CLEAR_SIZE_LESS_THAN = 4096;
 const FILE_CLEAR_MAX_COUNT = 64;
-
-const USB_VENDOR = 0x10C4;
-const USB_PRODUCT = 0x0003;
-const USB_MTU = 64;
-const USB_MIN_WRITE_INTERVAL = 10;
 
 const OTA_WINDOW_SIZE = 24;
 const OTA_SPLIT_PACKET_SIZE = 16;
@@ -65,7 +59,11 @@ export class TShell extends TAbstractShell
         if (! TypeInfo.Assigned(RetVal))
         {
             if (DeviceId === 'USB')
+            {
+                if (! TypeInfo.Assigned(this.UsbProxy))
+                    this.UsbProxy = new TProxyUsbShell();
                 RetVal = new this(this.UsbProxy, DeviceId);
+            }
             else
                 RetVal = new this(TProxyBLEShell.Get(DeviceId, BLE_CONNECTION_TIMEOUT) as TProxyBLEShell, DeviceId);
 
@@ -85,14 +83,6 @@ export class TShell extends TAbstractShell
     }
 
 /* USB only */
-
-    static StartOTG(): void
-    {
-        this.UsbProxy = new TProxyUsbShell();
-
-        USB.OTG.Start(USB_VENDOR, USB_PRODUCT, USB_MTU, USB_MIN_WRITE_INTERVAL)
-            .catch(err => console.log(err.message));
-    }
 
     static get IsUsbPlugin(): boolean
     {
