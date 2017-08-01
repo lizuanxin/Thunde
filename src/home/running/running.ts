@@ -1,5 +1,5 @@
-import {isDevMode, Component, OnInit, OnDestroy, ViewChild, AfterViewInit} from '@angular/core';
-import {NavParams, ViewController, Content} from 'ionic-angular';
+import {isDevMode, Component, OnInit, OnDestroy, ViewChild, AfterViewInit, ChangeDetectorRef} from '@angular/core';
+import {NavParams, Content} from 'ionic-angular';
 
 import {Subscription} from 'rxjs/Subscription';
 import 'rxjs/add/operator/toPromise';
@@ -10,7 +10,7 @@ import * as Svc from '../../providers';
 @Component({selector: 'page-running', templateUrl: 'running.html'})
 export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 {
-    constructor(private view: ViewController, navParams: NavParams)
+    constructor(private ChangeDetector: ChangeDetectorRef, navParams: NavParams)
     {
         if (navParams.get('Resume') === true)
         {
@@ -67,7 +67,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
 
                 case Svc.Loki.TShellNotify.Intensity:
                     this.Intensity = this.Shell.Intensity;
-                    console.log('Intensity: ' + this.Intensity);
+                    this.ChangeDetector.detectChanges();
                     break;
 
                 case Svc.Loki.TShellNotify.Battery:
@@ -83,6 +83,8 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
                             .catch(err => App.ShowError(err).then(() => this.ClosePage()));
                         this.Completed = true;
                     }
+
+                    this.ChangeDetector.detectChanges();
                     break;
                 }
             },
@@ -127,13 +129,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
             .then(() =>
             {
                 if (! TypeInfo.Assigned(this.ClosingTimerId))
-                {
-                    this.ClosingTimerId = setTimeout(() =>
-                    {
-                        if (this.view === App.Nav.getActive())
-                            App.Nav.pop();
-                    }, 300);
-                }
+                    this.ClosingTimerId = setTimeout(() => App.Nav.pop(), 300);
             })
             .then(() => this.Shell.Detach())
             .catch(err => console.error(err));
