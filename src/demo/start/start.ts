@@ -1,7 +1,4 @@
 import {Component, AfterViewInit, ElementRef, ViewChild} from '@angular/core';
-import {NavParams} from 'ionic-angular';
-
-import {TypeInfo} from '../../UltraCreation/Core';
 import {DemoRunningPage} from '../running/running';
 
 import * as Svc from '../../providers';
@@ -13,7 +10,7 @@ const ID = {'tips1': 0, 'tips2': 1, 'tips3': 2, 'electrode': 3, 'power': 4, 'swi
 @Component({selector: 'page-demo-start', templateUrl: 'start.html'})
 export class StartPage implements AfterViewInit
 {
-    constructor(private navParams: NavParams)
+    constructor()
     {
     }
 
@@ -27,18 +24,12 @@ export class StartPage implements AfterViewInit
         setTimeout(() => this.AnimationFlow(), 200);
     }
 
-    DeviceSelection(DeviceId?: string)
+    DeviceSelection(Peri: Svc.TConnectablePeripheral)
     {
         this.DeviceScanning = false;
 
-        if (TypeInfo.Assigned(DeviceId))
-        {
-            let params = this.navParams.data;
-            params.DeviceId = DeviceId;
-
-            App.ShowLoading()
-                .then(() => App.Nav.push(DemoRunningPage, params));
-        }
+        App.ShowLoading()
+            .then(() => App.Nav.push(DemoRunningPage, Peri.Shell));
     }
 
     Go()

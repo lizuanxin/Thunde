@@ -26,6 +26,6 @@
     </div>
 </ion-content>
 <ion-backdrop my-backdrop *ngIf="DeviceScanning" (click)="DeviceScanning=false">
-    <scan-ble (OnSelection)="DeviceSelection($event)"></scan-ble>
+    <discover-peripheral (OnSelection)="DeviceSelection($event)"></discover-peripheral>
 </ion-backdrop>
 

@@ -9,8 +9,7 @@ import {FileListCardComp, FileListRecommendComp} from './filelist/filelist.card'
 import {FileListSlideComp} from './filelist/filelist.slide';
 
 import {IntensityDialComp} from './intensity.dial';
-
-import {ScanBleComp} from './scan.ble';
+import {DiscoverComp} from './discover/discover';
 
 @NgModule({
     imports: [
@@ -21,14 +20,14 @@ import {ScanBleComp} from './scan.ble';
         SwiperComp,
         FileListDialComp, FileListBodyComp, FileListCardComp, FileListSlideComp, FileListRecommendComp,
         IntensityDialComp,
-        ScanBleComp,
+        DiscoverComp,
     ],
     entryComponents: [
     ],
     exports: [
         SwiperComp, FileListDialComp, FileListBodyComp, FileListCardComp, FileListSlideComp, FileListRecommendComp,
         IntensityDialComp,
-        ScanBleComp,
+        DiscoverComp,
     ],
 })
 export class SharedModule

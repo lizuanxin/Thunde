@@ -29,6 +29,7 @@ export class TTensPeripheral extends TConnectablePeripheral
 
             Peri.ConnectId = 'USB';
             Peri.Name += ' USB';
+            Peri.Status.IsPNP = true;
             return Peri;
         }
         else

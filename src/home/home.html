@@ -53,5 +53,5 @@
 </ion-footer>
 
 <ion-backdrop my-backdrop *ngIf="DeviceScanning" (click)="DeviceScanning=false;App.EnableHardwareBackButton();">
-    <scan-ble (OnSelection)="DeviceSelection($event)"></scan-ble>
+     <discover-peripheral (OnSelection)="DeviceSelection($event)"></discover-peripheral>
 </ion-backdrop>

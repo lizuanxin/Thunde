@@ -20,7 +20,7 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
         else
         {
             this.ScriptFile = navParams.get('ScriptFile');
-            this.Shell = Svc.Loki.TShell.Get(navParams.get('DeviceId'));
+            this.Shell = navParams.get('Shell');
             this.Shell.RefFile = this.ScriptFile;
         }
     }

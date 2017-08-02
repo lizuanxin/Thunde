@@ -4,7 +4,6 @@ import 'rxjs/add/operator/toPromise';
 
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 import {EAbort} from '../../UltraCreation/Core/Exception';
-import {TUtf8Encoding} from '../../UltraCreation/Encoding/Utf8';
 import {TAbstractShell, TShellRequest, ERequestTimeout} from '../../UltraCreation/Native/Abstract.Shell';
 
 import * as BLE from '../../UltraCreation/Native/BluetoothLE';
@@ -19,9 +18,6 @@ import {TOTARequest, EUSBRestarting} from './shell.ota';
 export {ERequestTimeout, EUSBRestarting};
 
 const REQUEST_TIMEOUT = 3000;
-
-const BLE_FILTER_NAMES: string[] = ['uctenqt3', 'thunderbolt', 'uctenqt1', 'quintic ble', 'ble hw1.0.0', '.blt', 'bluetensx'];
-const BLE_SCAN_TIMEOUT = 60000;
 export const BLE_CONNECTION_TIMEOUT = 5000;
 
 const DEF_LINEAR_TABLE = '4v';
@@ -63,79 +59,6 @@ export class TShell extends TAbstractShell implements IShell
         }
 
         return RetVal;
-    }
-
-/* USB only */
-
-    static get IsUsbPlugin(): boolean
-    {
-        return TypeInfo.Assigned(this.UsbProxy) && this.UsbProxy.IsAttached;
-    }
-
-/** BLE only */
-
-    static EnableBLE(): Promise<boolean>
-    {
-        return BLE.Enable();
-    }
-
-    static get FakeDevice(): boolean
-    {
-        return BLE.TGatt.BrowserFakeDevice;
-    }
-
-    static set FakeDevice(v: boolean)
-    {
-        BLE.TGatt.BrowserFakeDevice = v;
-    }
-
-    static StartScan(): Subject<Array<BLE.IScanDiscovery>>
-    {
-        // BLE.TGatt.BrowserFakeDevice = true;
-        return BLE.TGattScaner.Start([], this.ScanFilter, BLE_SCAN_TIMEOUT);
-    }
-
-    static StopScan(): Promise<void>
-    {
-        return BLE.TGattScaner.Stop();
-    }
-
-    private static ScanFilter(Device: BLE.IScanDiscovery): boolean
-    {
-        let adv = Device.advertising;
-        let name: string | null = null;
-
-        if (! TypeInfo.Assigned(Device.name))
-            return false;
-
-        let view = BLE.TGatt.GetManufactoryData(adv);
-        if (TypeInfo.Assigned(view))
-        {
-            if (view.byteLength > 6)
-            {
-                let idx = 5;
-                for (; idx < view.byteLength; idx++)
-                {
-                    if (view[idx] === 0)
-                        break;
-                }
-
-                view = new Uint8Array(view.buffer, view.byteOffset + 6, idx - 6);
-                name = TUtf8Encoding.Decode(view).toLowerCase();
-            }
-            else
-                name = Device.name.toLowerCase();
-        }
-        else
-            name = Device.name.toLowerCase();
-
-        if (name.length > 4)
-        {
-            if (BLE_FILTER_NAMES.indexOf(name.substring(name.length - 4, name.length)) !== -1)
-                return true;
-        }
-
-        return BLE_FILTER_NAMES.indexOf(name) !== -1;
     }
 
     static RunningInstance: TShell | undefined;

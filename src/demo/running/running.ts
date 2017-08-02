@@ -16,8 +16,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 {
     constructor(private ChangeDetector: ChangeDetectorRef, navParams: NavParams)
     {
-        let DeviceId = navParams.get('DeviceId');
-        this.Shell = Svc.Loki.TShell.Get(DeviceId);
+        this.Shell = Svc.Loki.TShell.Get('Shell');
 
         for (let FileName of DEMO_FILES)
         {

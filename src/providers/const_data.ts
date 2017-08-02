@@ -2,8 +2,6 @@ import {IMode, IBodyPart, ICategory, IScriptFile} from '.';
 
 export namespace const_data
 {
-    export const DatabaseName           = 'ThunderboltDB';
-
     export const Anonymous =
         {Id: '{00000000-0000-4000-0000-000000000000}', Name: 'anonymous', Email: ''};
 

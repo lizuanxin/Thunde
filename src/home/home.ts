@@ -10,7 +10,7 @@ import * as Svc from '../providers';
 @Component({selector: 'page-home', templateUrl: 'home.html'})
 export class HomePage implements OnInit
 {
-    constructor(private navParams: NavParams, private Asset: Svc.TAssetService)
+    constructor(private Asset: Svc.TAssetService, private navParams: NavParams)
     {
         App.Platform.ready()
             .then(() =>
@@ -144,22 +144,16 @@ export class HomePage implements OnInit
             .catch(err => console.log(err.message));
     }
 
-    DeviceSelection(DeviceId?: string)
+    DeviceSelection(Peri: Svc.TConnectablePeripheral)
     {
         this.DeviceScanning = false;
 
-        if (TypeInfo.Assigned(DeviceId))
-        {
-            let params = this.navParams.data;
-            params.DeviceId = DeviceId;
-            params.Resume = false;
+        let params = this.navParams.data;
+        params.Shell = Peri.Shell;
 
-            App.ShowLoading()
-                .then(() => App.Nav.push(RunningPage, params))
-                .catch(err => console.log(err.message));
-        }
-        else
-            App.HideLoading().catch(err => console.log(err.message));
+        App.ShowLoading()
+            .then(() => App.Nav.push(RunningPage, params))
+            .catch(err => console.log(err.message));
     }
 
     private ShowTOU(): Promise<any>
