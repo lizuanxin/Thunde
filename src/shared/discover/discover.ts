@@ -14,6 +14,16 @@ export class DiscoverComp implements OnInit, OnDestroy
     ngOnInit(): void
     {
         this.PeripheralList = this.Discover.PeripheralList;
+
+        this.SingletonTimeoutId = setTimeout(() =>
+        {
+            if (this.PeripheralList.length === 0)
+            {
+                App.HideLoading();
+                this.IsShowPluginDevice = true;
+            }
+        }, 2000);
+
         this.ScanSub = this.Discover.Start().subscribe(Peripheral =>
         {
             if (Peripheral.Status.IsPNP)
@@ -37,7 +47,6 @@ export class DiscoverComp implements OnInit, OnDestroy
 
             if (this.PeripheralList.length > 1)
             {
-                this.IsShowDeviceList = true;
                 App.HideLoading();
 
                 if (TypeInfo.Assigned(this.SingletonTimeoutId))
@@ -80,5 +89,5 @@ export class DiscoverComp implements OnInit, OnDestroy
     private ScanSub: Subscription | undefined;
     private SingletonTimeoutId: any;
     private PeripheralList: Array<Svc.TPeripheral>;
-    private IsShowDeviceList: boolean = false;
+    private IsShowPluginDevice: boolean = false;
 }

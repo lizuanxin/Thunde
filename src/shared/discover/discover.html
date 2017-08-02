@@ -1,5 +1,5 @@
-<ion-list *ngIf="IsShowDeviceList" [class.fadein]="PeripheralList.length>0" margin-horizontal style="margin-top:13vh">
-    <ng-template [ngIf]="PeripheralList.length>0">
+<div margin-horizontal style="margin-top:13vh" class="fadein">
+    <ion-list *ngIf="PeripheralList.length>0">
         <ion-item device *ngFor="let peri of PeripheralList" (click)="SelectionDevice(peri);$event.stopPropagation()" tappable>
             <p><span ion-text color="dark">{{'home_page.title'|translate}}</span></p>
             <ion-icon app-icon *ngIf="peri.Status.RSSI<-80" item-right><span f-10>{{peri.Status.RSSI}}</span>&#xe92f;</ion-icon>
@@ -8,8 +8,10 @@
             <ion-icon app-icon *ngIf="peri.Status.RSSI<-50 && peri.Status.RSSI>=-60" item-right><span f-10>{{peri.Status.RSSI}}</span>&#xe92c;</ion-icon>
             <ion-icon app-icon *ngIf="peri.Status.RSSI>=-50" item-right><span f-10>{{peri.Status.RSSI}}</span>&#xe926;</ion-icon>
         </ion-item>
-    </ng-template>
-    <ion-item *ngIf="PeripheralList.length===0" [class.fadein]="PeripheralList.length===0">
-        <span>{{'hint.plug_device'|translate}}</span>
-    </ion-item>
-</ion-list>
+    </ion-list>
+    <ion-list *ngIf="IsShowPluginDevice" >
+        <ion-item device>
+            <span>{{'hint.plug_device'|translate}}</span>
+        </ion-item>
+    </ion-list>
+</div>

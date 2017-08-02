@@ -1,9 +1,9 @@
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 import {TAbstractShell} from '../../UltraCreation/Native/Abstract.Shell';
-
-import {TConnectablePeripheral, PeripheralFactory} from '.';
-import {TShell} from '../loki/shell';
 import * as USB from '../../UltraCreation/Native/USB';
+
+import {TConnectablePeripheral, PeripheralFactory} from '../shared_service';
+import {TShell} from '../loki/shell';
 
 const USB_VENDOR = 0x10C4;
 const USB_PRODUCT = 0x0003;
@@ -20,12 +20,13 @@ export class TTensPeripheral extends TConnectablePeripheral
     static ProductName = 'UltraCreation Tens';
     /// @override
     static AdName = ['uctenqt3', 'thunderbolt', 'uctenqt1'];
+
     /// @override
-    static LocalPNP = function (): TTensPeripheral | undefined
+    static LocalPNP(): TTensPeripheral | undefined
     {
         if (USB.OTG.IsAttached)
         {
-            let Peri = PeripheralFactory.Get('USB', TTensPeripheral);
+            let Peri = PeripheralFactory.Get('USB', TTensPeripheral) as TTensPeripheral;
 
             Peri.ConnectId = 'USB';
             Peri.Name += ' USB';
@@ -34,7 +35,7 @@ export class TTensPeripheral extends TConnectablePeripheral
         }
         else
             return undefined;
-    };
+    }
 
     /// @override
     get Icon_Id(): number
@@ -78,10 +79,9 @@ export class TBluetens extends TConnectablePeripheral
             return TShell.Get(this.Id as string);
     }
 }
-/* starting USB Otg */
-console.log('monitoring USB Otg');
-USB.OTG.Start(USB_VENDOR, USB_PRODUCT, USB_MTU, USB_MIN_WRITE_INTERVAL)
-    .catch(err => console.log(err.message));
+
+setTimeout(() => USB.OTG.Start(USB_VENDOR, USB_PRODUCT, USB_MTU, USB_MIN_WRITE_INTERVAL)
+    .catch(err => console.log(err.message)), 1000);
 
 PeripheralFactory.Register(TTensPeripheral);
 PeripheralFactory.Register(TBluetens);
