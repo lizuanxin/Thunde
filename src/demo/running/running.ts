@@ -1,8 +1,8 @@
 import {Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
-import {NavParams} from 'ionic-angular';
-
 import {Subscription} from 'rxjs/Subscription';
 import 'rxjs/add/operator/toPromise';
+
+import {NavParams} from 'ionic-angular';
 
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 import {PowerManagement} from '../../UltraCreation/Native/PowerManagement';
@@ -16,7 +16,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 {
     constructor(private ChangeDetector: ChangeDetectorRef, navParams: NavParams)
     {
-        this.Shell = Svc.Loki.TShell.Get('Shell');
+        this.Shell = navParams.get('Shell');
 
         for (let FileName of DEMO_FILES)
         {

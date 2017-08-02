@@ -29,7 +29,7 @@ export class StartPage implements AfterViewInit
         this.DeviceScanning = false;
 
         App.ShowLoading()
-            .then(() => App.Nav.push(DemoRunningPage, Peri.Shell));
+            .then(() => App.Nav.push(DemoRunningPage, {Shell: Peri.Shell}));
     }
 
     Go()

@@ -19,7 +19,7 @@ export class TTensPeripheral extends TConnectablePeripheral
     /// @override
     static ProductName = 'UltraCreation Tens';
     /// @override
-    static AdName = ['uctenqt3', 'thunderbolt', 'uctenqt1', '.blt', 'bluetensx'];
+    static AdName = ['uctenqt3', 'thunderbolt', 'uctenqt1'];
     /// @override
     static LocalPNP = function (): TTensPeripheral | undefined
     {
@@ -58,9 +58,11 @@ export class TBluetens extends TConnectablePeripheral
     /// @override
     static ClassName = 'Bluetens';
     /// @override
-    static ProductName = 'UltraCreation Bluetens';
+    static ProductName = 'Bluetens';
     /// @override
-    static AdName = ['bluetensx', 'bluetensq', 'bluetens.blt', 'bluetensq.blt'];
+    static AdName = ['bluetensx', 'bluetensq', 'bluetens'];
+    /// @override
+    static AdNameExpr?: RegExp = /.blt/g;
 
     /// @override
     get Icon_Id(): number
@@ -76,7 +78,6 @@ export class TBluetens extends TConnectablePeripheral
             return TShell.Get(this.Id as string);
     }
 }
-
 /* starting USB Otg */
 console.log('monitoring USB Otg');
 USB.OTG.Start(USB_VENDOR, USB_PRODUCT, USB_MTU, USB_MIN_WRITE_INTERVAL)
