@@ -192,6 +192,5 @@ export class StartPage implements AfterViewInit
     @ViewChild('animatedef') animatedef: ElementRef;
 
     IsShowingDeviceList: boolean = false;
-    DeviceList: Array<Svc.IScanDiscovery> = [];
     DeviceScanning = false;
 }

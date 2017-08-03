@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
+import {Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef, isDevMode} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 import 'rxjs/add/operator/toPromise';
 
@@ -114,7 +114,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 
         this.Shell.ClearFileSystem(DEMO_FILES)
             .then(() => this.StartIndex(0))
-            .catch(err => App.ShowError(err).then(() => Svc.TGatt.BrowserFakeDevice ? null : this.ClosePage()))
+            .catch(err => App.ShowError(err).then(() => isDevMode() ? null : this.ClosePage()))
             .then(() => App.HideLoading());
     }
 
@@ -132,7 +132,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
             .then(() => this.Shell.CatFile(ScriptFile))
             .then(progress => progress.toPromise())
             .then(() => this.Shell.StartScriptFile(ScriptFile))
-            .catch(err => App.ShowError(err).then(() => Svc.TGatt.BrowserFakeDevice ? null : this.ClosePage()))
+            .catch(err => App.ShowError(err).then(() => isDevMode() ? null : this.ClosePage()))
             .then(() => App.HideLoading())
             .then(() => App.EnableHardwareBackButton());
     }

@@ -16,9 +16,6 @@ export class MyApp
             StatusBar.hide();
             SplashScreen.show();
 
-            if (PlatformName === 'dom')
-                Svc.TGatt.BrowserFakeDevice = true;
-
             if (App.IsIos)
                 StatusBar.styleBlackTranslucent();
 
