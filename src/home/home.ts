@@ -144,12 +144,14 @@ export class HomePage implements OnInit
             .catch(err => console.log(err.message));
     }
 
-    DeviceSelection(Peri: Svc.TConnectablePeripheral)
+    DeviceSelection(Peripheral: Svc.TConnectablePeripheral | undefined)
     {
         this.DeviceScanning = false;
+        if (! TypeInfo.Assigned(Peripheral))
+            return;
 
         let params = this.navParams.data;
-        params.Shell = Peri.Shell;
+        params.Shell = Peripheral.Shell;
 
         App.ShowLoading()
             .then(() => App.Nav.push(RunningPage, params))

@@ -1,6 +1,7 @@
 import {Component, AfterViewInit, ElementRef, ViewChild} from '@angular/core';
 import {DemoRunningPage} from '../running/running';
 
+import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 import * as Svc from '../../providers';
 
 const ID = {'tips1': 0, 'tips2': 1, 'tips3': 2, 'electrode': 3, 'power': 4, 'switch': 5, 'strength': 6,
@@ -24,12 +25,14 @@ export class StartPage implements AfterViewInit
         setTimeout(() => this.AnimationFlow(), 200);
     }
 
-    DeviceSelection(Peri: Svc.TConnectablePeripheral)
+    DeviceSelection(Peripheral: Svc.TConnectablePeripheral | undefined)
     {
         this.DeviceScanning = false;
+        if (! TypeInfo.Assigned(Peripheral))
+            return;
 
         App.ShowLoading()
-            .then(() => App.Nav.push(DemoRunningPage, {Shell: Peri.Shell}));
+            .then(() => App.Nav.push(DemoRunningPage, {Shell: Peripheral.Shell}));
     }
 
     Go()
