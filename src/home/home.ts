@@ -1,5 +1,4 @@
 import {isDevMode, Component, OnInit} from '@angular/core';
-import {NavParams} from 'ionic-angular';
 
 import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
 import {RunningPage} from './running/running';
@@ -10,7 +9,7 @@ import * as Svc from '../providers';
 @Component({selector: 'page-home', templateUrl: 'home.html'})
 export class HomePage implements OnInit
 {
-    constructor(private Asset: Svc.TAssetService, private navParams: NavParams)
+    constructor(private Asset: Svc.TAssetService)
     {
         App.Platform.ready()
             .then(() =>
@@ -36,6 +35,10 @@ export class HomePage implements OnInit
 
         let ProfileTab = new TTabItem(65536, 0xE94c);
         this.Tabs.push(ProfileTab);
+
+        this.TabsIcons.set(0, {normal: 0xe951, active: 0xe952});
+        this.TabsIcons.set(1, {normal: 0xe94d, active: 0xe94e});
+        this.TabsIcons.set(65536, {normal: 0xe94f, active: 0xe950});
 
         if (! App.AcceptedTerms)
         {
@@ -88,6 +91,12 @@ export class HomePage implements OnInit
             return '';
     }
 
+    GetTabIcon(Index: number): string
+    {
+        let Icons = this.TabsIcons.get(Index);
+        return Index === this.ActiveTab.Index ? App.IconFont(Icons.active) : App.IconFont(Icons.normal);
+    }
+
     Resume()
     {
         if (! this.IsStillRunning)
@@ -96,16 +105,6 @@ export class HomePage implements OnInit
         App.ShowLoading()
             .then(() => App.Nav.push(RunningPage, {Resume: true}))
             .catch(err => console.log(err.message));
-    }
-
-    ActiveSwitch(): string
-    {
-        switch (this.ActiveTab.Index)
-        {
-            case 1: return 'sport';
-            case 2: return 'thin';
-            default: return '';
-        }
     }
 
     SelectTab(Tab: TTabItem): void
@@ -135,13 +134,25 @@ export class HomePage implements OnInit
 
     SelectFile(ScriptFile: Svc.TScriptFile)
     {
-        let params = this.navParams.data;
-        params.ScriptFile = ScriptFile;
-
         App.DisableHardwareBackButton();
-        App.ShowLoading()
-            .then(() => this.DeviceScanning = true)
-            .catch(err => console.log(err.message));
+
+        if (TypeInfo.Assigned(Svc.Loki.TShell.RunningInstance))
+        {
+            let Shell = Svc.Loki.TShell.RunningInstance;
+            return Shell.StopOutput()
+                .then(() => App.Nav.push(RunningPage, {Shell: Shell, ScriptFile: ScriptFile}));
+        }
+        else
+        {
+            this.SelectedFile = ScriptFile;
+            this.DeviceScanning = true;
+        }
+    }
+
+    Discovery()
+    {
+        this.DeviceScanning = false;
+        App.EnableHardwareBackButton();
     }
 
     DeviceSelection(Peripheral: Svc.TConnectablePeripheral | undefined)
@@ -150,11 +161,8 @@ export class HomePage implements OnInit
         if (! TypeInfo.Assigned(Peripheral))
             return;
 
-        let params = this.navParams.data;
-        params.Shell = Peripheral.Shell;
-
         App.ShowLoading()
-            .then(() => App.Nav.push(RunningPage, params))
+            .then(() => App.Nav.push(RunningPage, {Shell: Peripheral.Shell, ScriptFile: this.SelectedFile}))
             .catch(err => console.log(err.message));
     }
 
@@ -166,6 +174,9 @@ export class HomePage implements OnInit
     App = window.App;
 
     private DefaultFiles: Array<string> = [];
+    private SelectedFile: Svc.TScriptFile;
+
+    private TabsIcons: Map<number, {normal: number, active: number}> = new Map();
     private Tabs: Array<TTabItem> = [];
     private ActiveTab: TTabItem;
 

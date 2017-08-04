@@ -1,4 +1,4 @@
-import {isDevMode, Component, OnInit, OnDestroy, ViewChild, AfterViewInit, ChangeDetectorRef} from '@angular/core';
+import {isDevMode, Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef} from '@angular/core';
 import {NavParams, Content} from 'ionic-angular';
 
 import {Subscription} from 'rxjs/Subscription';
@@ -8,7 +8,7 @@ import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 import * as Svc from '../../providers';
 
 @Component({selector: 'page-running', templateUrl: 'running.html'})
-export class RunningPage implements OnInit, OnDestroy, AfterViewInit
+export class RunningPage implements OnInit, OnDestroy
 {
     constructor(private ChangeDetector: ChangeDetectorRef, navParams: NavParams)
     {
@@ -29,10 +29,11 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
     {
         if (this.Shell === Svc.Loki.TShell.RunningInstance)
         {
-            App.HideLoading();
-
             this.Ticking = this.Shell.Ticking;
             this.Intensity = this.Shell.Intensity;
+
+            App.HideLoading();
+            App.EnableHardwareBackButton();
         }
         else
             this.Start();
@@ -95,20 +96,6 @@ export class RunningPage implements OnInit, OnDestroy, AfterViewInit
     {
         this.UnsubscribeShellNotify();
         App.HideLoading();
-    }
-
-    ngAfterViewInit()
-    {
-        /*
-        CloseViews(this.app).catch(err => {});
-
-        async function CloseViews(App: Svc.TApplication): Promise<void>
-        {
-            let views = App.Nav.getViews();
-            for (let i = 1; i < views.length - 1; i ++)
-                await views[i].dismiss().catch(err => {});
-        }
-        */
     }
 
     get CanvasClientHeight(): Object
