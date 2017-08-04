@@ -136,7 +136,13 @@ export class RunningPage implements OnInit, OnDestroy
             .then(progress =>
             {
                 this.Downloading = true;
-                progress.subscribe(next => this.Ticking = this.ScriptFile.Duration * next, err => {}, () => {});
+                progress.subscribe(
+                    next =>
+                    {
+                        this.Ticking = this.ScriptFile.Duration * next;
+                        this.ChangeDetector.detectChanges();
+                    },
+                    err => {}, () => {});
 
                 return progress.toPromise()
                     .then(() =>

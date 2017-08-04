@@ -20,8 +20,6 @@ export class TCatRequest extends TProxyShellRequest
                     return Promise.resolve();
             })
             .then(() =>
-                Proxy.FileMd5(FileName))
-            .then(() =>
             {
                 if (TypeInfo.Assigned(this.Shell))
                     return this.Shell.PromiseSend('>cat ' + FileName + ' -l=' + FileBuffer.byteLength);
