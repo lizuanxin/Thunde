@@ -144,8 +144,11 @@ export class HomePage implements OnInit
         }
         else
         {
-            this.SelectedFile = ScriptFile;
-            this.DeviceScanning = true;
+            App.ShowLoading().then(() =>
+                {
+                    this.SelectedFile = ScriptFile;
+                    this.DeviceScanning = true;
+                });
         }
     }
 
