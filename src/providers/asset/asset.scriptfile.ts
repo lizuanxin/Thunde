@@ -3,7 +3,7 @@ import {TLangAsset} from '.';
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 import {HexConv} from '../../UltraCreation/Core/Conv';
 import {TBase64Encoding} from '../../UltraCreation/Encoding';
-import {TPersistPropRule} from '../../UltraCreation/Core/Persistable';
+import {TPersistRule} from '../../UltraCreation/Core/Persistable';
 
 import {IBodyPart, ICategory, IScriptFile} from '..';
 
@@ -58,10 +58,10 @@ export class TCategory extends TLangAsset implements ICategory
     }
 
     /* IPersistable */
-    DefinePropRules(PropRules: Array<TPersistPropRule>): void
+    DefinePropRules(PropRules: Array<TPersistRule>): void
     {
         super.DefinePropRules(PropRules);
-        PropRules.push(new TPersistPropRule('Category', ['Icon']));
+        PropRules.push(new TPersistRule('Category', ['Id'], ['Icon']));
     }
 
     Icon: number | null = null;
@@ -80,10 +80,11 @@ export class TScriptFile extends TLangAsset implements IScriptFile
     }
 
     /* IPersistable */
-    DefinePropRules(PropRules: Array<TPersistPropRule>): void
+    DefinePropRules(PropRules: Array<TPersistRule>): void
     {
         super.DefinePropRules(PropRules);
-        PropRules.push(new TPersistPropRule('ScriptFile', ['Category_Id', 'Mode_Id', 'Content', 'Md5', 'Duration', 'Author']));
+        PropRules.push(new TPersistRule('ScriptFile',
+            ['Id'], ['Category_Id', 'Mode_Id', 'Content', 'Md5', 'Duration', 'Author']));
     }
 
     get Md5Name(): string
@@ -194,10 +195,10 @@ export class TScriptFileDesc extends TLangAsset
     }
 
     /* IPersistable */
-    DefinePropRules(PropRules: Array<TPersistPropRule>): void
+    DefinePropRules(PropRules: Array<TPersistRule>): void
     {
         super.DefinePropRules(PropRules);
-        PropRules.push(new TPersistPropRule('ScriptFileDesc', ['ScriptFile_Id', 'Idx', 'Professional']));
+        PropRules.push(new TPersistRule('ScriptFileDesc', ['Id'], ['ScriptFile_Id', 'Idx', 'Professional']));
     }
 
     ScriptFile_Id: string | null = null;

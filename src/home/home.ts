@@ -162,7 +162,10 @@ export class HomePage implements OnInit
     {
         this.DeviceScanning = false;
         if (! TypeInfo.Assigned(Peripheral))
-            return;
+        {
+            App.HideLoading();
+            return App.EnableHardwareBackButton();
+        }
 
         App.ShowLoading()
             .then(() => App.Nav.push(RunningPage, {Shell: Peripheral.Shell, ScriptFile: this.SelectedFile}))
