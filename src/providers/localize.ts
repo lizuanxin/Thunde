@@ -18,12 +18,13 @@ export let translate_en =
         plug_device: 'Plugin your device...',
         shutdown: 'Thunderbolt has been shutdown.',
         low_battery: 'Battery is Low, Please recharge...',
-        disconnected: '',
+        disconnected: 'Thunderbolt has been disconnected',
         no_load: 'Apply all the electrodes.',
         hardware_error: 'Hardware error, Please contact Customer Service.',
 
         network_unavailable: 'Network Unavailable.',
         congratulations: 'Congratulations',
+        open_ble: 'Open bluetooth failed, Please open bluetooth in the setting page',
     },
 
     button:
@@ -58,7 +59,7 @@ export let translate_en =
         demo: 'Demo',
         appearance: 'Appearance',
         app_version: 'App Version',
-        company: 'Co., Ltd. GuiQi Technology (shenzhen)',
+        company: 'Ultra Creation Ltd.',
         address: 'address:',
         company_address: '深圳市南山区科技园科丰路8号金达科技中心',
         phone_number: 'phone:',
@@ -239,6 +240,7 @@ export let translate_zh =
 
         network_unavailable: '无网络',
         congratulations: '太棒啦！',
+        open_ble: '打开蓝牙失败, 请到手机设置界面, 手动打开蓝牙',
     },
 
     button:
