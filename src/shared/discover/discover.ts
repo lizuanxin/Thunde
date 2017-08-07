@@ -65,15 +65,6 @@ export class DiscoverComp implements OnInit, OnDestroy
                 this.Discover.ManualDiscover(Peripheral);
         }
 
-        this.SingletonTimeoutId = setTimeout(() =>
-        {
-            if (this.PeripheralList.length === 0)
-            {
-                App.HideLoading();
-                this.IsShowPluginDevice = true;
-            }
-        }, 2000);
-
         this.ScanSub = this.Discover.Start().subscribe(Peripheral =>
         {
             if (Peripheral.Status.IsPNP)
@@ -106,6 +97,15 @@ export class DiscoverComp implements OnInit, OnDestroy
                 }
             }
         });
+
+        this.SingletonTimeoutId = setTimeout(() =>
+        {
+            if (this.PeripheralList.length === 0)
+            {
+                App.HideLoading();
+                this.IsShowPluginDevice = true;
+            }
+        }, 3000);
     }
 
     SelectionDevice(Peripheral: Svc.TPeripheral | undefined): void
@@ -126,7 +126,10 @@ export class DiscoverComp implements OnInit, OnDestroy
     Error(Ident: string): void
     {
         setTimeout(() => this.OnSelection.next());
-        App.ShowToast(App.Translate(Ident));
+
+        App.EnableHardwareBackButton();
+        App.HideLoading()
+            .then(() => App.ShowToast(App.Translate(Ident)));
     }
 
     @Output() OnSelection = new EventEmitter<Svc.TPeripheral | undefined>();

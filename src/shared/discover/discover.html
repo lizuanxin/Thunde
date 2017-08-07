@@ -1,5 +1,5 @@
 <div margin-horizontal style="margin-top:13vh" class="fadein">
-    <ion-list *ngIf="PeripheralList.length>0">
+    <ion-list *ngIf="PeripheralList.length>1">
         <ion-item device *ngFor="let peri of PeripheralList" (click)="SelectionDevice(peri);$event.stopPropagation()" tappable>
             <p><span ion-text color="dark">{{'home_page.title'|translate}}</span></p>
             <ion-icon app-icon *ngIf="peri.Status.RSSI<-80" item-right><span f-10>{{peri.Status.RSSI}}</span>&#xe92f;</ion-icon>
