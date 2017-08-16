@@ -53,7 +53,7 @@
         "@types/swiper": "^3.4.3",
         "ajv": "^5.2.2",
         "elementtree": "^0.1.7",
-        "ionic": "3.7.0",
+        "ionic": "3.9.0",
         "lodash": "^4.17.4",
         "plist": "^2.1.0",
         "tslint-eslint-rules": "^4.1.1",
