@@ -58,9 +58,9 @@ export class TCategory extends TLangAsset implements ICategory
     }
 
     /* IPersistable */
-    DefinePropRules(PropRules: Array<TPersistRule>): void
+    DefineRules(PropRules: Array<TPersistRule>): void
     {
-        super.DefinePropRules(PropRules);
+        super.DefineRules(PropRules);
         PropRules.push(new TPersistRule('Category', ['Id'], ['Icon']));
     }
 
@@ -80,9 +80,9 @@ export class TScriptFile extends TLangAsset implements IScriptFile
     }
 
     /* IPersistable */
-    DefinePropRules(PropRules: Array<TPersistRule>): void
+    DefineRules(PropRules: Array<TPersistRule>): void
     {
-        super.DefinePropRules(PropRules);
+        super.DefineRules(PropRules);
         PropRules.push(new TPersistRule('ScriptFile',
             ['Id'], ['Category_Id', 'Mode_Id', 'Content', 'Md5', 'Duration', 'Author']));
     }
@@ -195,9 +195,9 @@ export class TScriptFileDesc extends TLangAsset
     }
 
     /* IPersistable */
-    DefinePropRules(PropRules: Array<TPersistRule>): void
+    DefineRules(PropRules: Array<TPersistRule>): void
     {
-        super.DefinePropRules(PropRules);
+        super.DefineRules(PropRules);
         PropRules.push(new TPersistRule('ScriptFileDesc', ['Id'], ['ScriptFile_Id', 'Idx', 'Professional']));
     }
 

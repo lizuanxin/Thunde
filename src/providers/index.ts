@@ -1,7 +1,9 @@
 export * from './intf';
 export * from './const_data';
-export * from './asset';
+
+export * from './shared_service';
 export * from './shared_service/asset.discover';
+export * from './asset';
 
 export * from './localize';
 
