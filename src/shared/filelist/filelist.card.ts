@@ -54,7 +54,7 @@ export class FileListCardComp
                         </ion-col>
                         <ion-col col-12>
                             <p style="display: flex;align-items: center;">
-                                <span f-1-2 ion-text color="dark">肩部|颈部</span>
+                                <span f-1-2 ion-text color="dark">{{'home_page.remommend_bodypart'|translate}}</span>
                                 <ion-icon *ngIf="DefaultFiles && DefaultFiles.indexOf(f.Name) !== -1" class="default-file">&#xe916;</ion-icon>
                             </p>
                             <p><span f-1-2>{{f.DurationMinute.toString()}}{{'hint.min'|translate}}</span></p>
@@ -76,11 +76,11 @@ export class FileListRecommendComp
         switch (FileId)
         {
         case '{00000000-0000-4000-4100-0000000FF001}':
-            return '办公室肩颈活力按摩';
+            return App.Translate('scriptfile.recommend1');
         case '{00000000-0000-4000-4100-0000000FF002}':
-            return '加班后肩颈疼痛舒缓按摩';
+            return App.Translate('scriptfile.recommend2');
         case '{00000000-0000-4000-4100-0000000FF003}':
-            return '低头族肩颈放松按摩';
+            return App.Translate('scriptfile.recommend3');
         default:
             return '';
         }

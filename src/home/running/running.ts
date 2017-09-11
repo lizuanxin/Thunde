@@ -132,6 +132,7 @@ export class RunningPage implements OnInit, OnDestroy
     {
         App.ShowLoading()
             .then(() => Svc.TAssetService.LoadScriptFile(this.ScriptFile))
+            .then(() => this.Shell.ClearFileSystem([this.ScriptFile.Name]))
             .then(() => this.Shell.CatFile(this.ScriptFile))
             .then(progress =>
             {

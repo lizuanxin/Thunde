@@ -4,7 +4,7 @@ import {TAppController} from '../UltraCreation/ng-ion/appcontroller';
 import * as USB from '../UltraCreation/Native/USB';
 import {TypeInfo} from '../UltraCreation/Core/TypeInfo';
 
-import {translate_en, translate_zh} from './localize';
+import {translate_en, translate_zh_cn, translate_zh_hk} from './localize';
 import {TShell} from './loki/shell';
 
 declare global
@@ -28,13 +28,7 @@ export class TApplication extends TAppController
         console.log('TApplication: initialize Application Global Variable');
         window.App = this;
 
-        this.AddLanguage('en', translate_en);
-        this.AddLanguage('zh', translate_zh);
-
-        /*
-        let codes = navigator.language.split('-');
-        this.Language = codes[0]; */
-
+        this.InitLanguage();
         console.log('TApplication construct');
 
         let ts = new Date().getTime();
@@ -83,6 +77,32 @@ export class TApplication extends TAppController
         return StorageEngine.Get('accepted terms')
             .then(value => {this.AcceptedTerms = value === 'yes'; })
             .catch(err => { });
+    }
+
+    private InitLanguage()
+    {
+        this.AddLanguage('en', translate_en);
+
+        let CurLanguage = this.Translation.getBrowserCultureLang().toLowerCase().replace('-', '_');
+        console.log('CurLanguage:' + CurLanguage);
+
+        switch (CurLanguage)
+        {
+            case 'zh_tw':
+            case 'zh_hk':
+                this.AddLanguage('zh_hk', translate_zh_hk);
+                this.Language = 'zh_hk';
+                break;
+
+            case 'zh_cn':
+                this.AddLanguage('zh_cn', translate_zh_cn);
+                this.Language = 'zh_cn';
+                break;
+
+            default:
+                this.Language = 'en';
+                break;
+        }
     }
 
     DisableHardwareBackButton()

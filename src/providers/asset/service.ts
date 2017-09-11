@@ -3,12 +3,13 @@ import {Injectable} from '@angular/core';
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 import {EAbort} from '../../UltraCreation/Core/Exception';
 import {THttpClient} from '../../UltraCreation/Core';
-import {TAssignable} from '../../UltraCreation/Core/Persistable';
 import {TUtf8Encoding} from '../../UltraCreation/Encoding';
 import {THashMd5} from '../../UltraCreation/Hash';
 
 import {const_data, IBodyPart, Loki} from '..';
 import {TCategory, TScriptFile, TScriptFileDesc} from './asset.scriptfile';
+
+import {Config} from '../config';
 
 module Queries
 {
@@ -58,23 +59,18 @@ export class TAssetService
             });
     }
 
-    static LoadTranslate(Name: string, ResponseType: XMLHttpRequestResponseType): Promise<any>
+    static async LoadTranslate(Name: string, ResponseType: XMLHttpRequestResponseType, Lang?: string, BaseUrl?: string): Promise<any>
     {
-        let Http = new THttpClient(ResponseType);
-        let Lang = App.Language;
+        if (! TypeInfo.Assigned(BaseUrl))
+            BaseUrl = Config.PATH_TRANSLATE;
+        let Http = new THttpClient(ResponseType, BaseUrl);
 
-        return Http.Get('assets/i18n/' + Lang + '/' + Name).toPromise().then(res => res.Content)
-            .catch(err => console.log(Lang + ' of ' + Name + ' is not found.'))
-            .then(localize =>
-            {
-                if (Lang !== 'en')
-                {
-                    return Http.Get('assets/i18n/en/' + Name).toPromise().then(res => res.Content)
-                        .then(en => TAssignable.AssignProperties(en, localize));
-                }
-                else
-                    return localize;
-            });
+        if (! TypeInfo.Assigned(Lang))
+            Lang = App.Language;
+
+        let LangPath = App.Language.replace('_', '/');
+        return Http.Get(LangPath + '/' + Name).toPromise().then(res => res.Content)
+            .catch(err => Http.Get('en/' + Name).toPromise().then(res => res.Content));
     }
 
     static LoadScriptFile(ScriptFile: TScriptFile): Promise<TScriptFile>
