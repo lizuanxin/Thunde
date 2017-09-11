@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="hk.com.ultracreation.thunderbolt" version="1.1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>小摩线</name>
-    <description>小摩线</description>
+    <name>Thunderbolt</name>
+    <description>Thunderbolt: the Tiny TENS + EMS that relieve you pains.</description>
     <author email="Thunderbolt@ultracreation.com.hk" href="http://ultracreation.com.hk/">UltraCreation Thunderbolt Team</author>
     <content src="index.html" />
     <access origin="*" />
@@ -109,4 +109,5 @@
     <plugin name="es6-promise-plugin" spec="^4.1.0" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
     <plugin name="ultracreation-usb-android" spec="git+https://github.com/disword/ultracreation-usb-android.git" />
+    <plugin name="cordova-plugin-localization-strings" spec="https://github.com/kelvinhokk/cordova-plugin-localization-strings.git" />
 </widget>
