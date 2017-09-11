@@ -1,0 +1,16 @@
+{
+	"locale": {
+		"ios": ["en"],
+		"android": ["en"]
+	},
+	"config_ios": {
+		"NSCameraUsageDescription": "Thunderbolt: the Tiny TENS + EMS that relieve you pains.",
+		"CFBundleDisplayName": "Thunderbolt",
+		"CFBundleName": "Thunderbolt"
+	},
+	"config_android": {
+		"app_name": "Thunderbolt"
+	},
+	"app": {
+	}
+}

@@ -1,0 +1,18 @@
+{
+	"locale": {
+		"ios": ["zh-Hans"],
+		"android": ["zh-rCN"]
+	},
+	"config_ios": {
+		"NSCameraUsageDescription": "小摩线可以缓解您的痛苦",
+		"CFBundleDisplayName": "小摩线",
+		"CFBundleName": "小摩线"
+	},
+	"config_android": {
+		"app_name": "小摩线"
+	},
+	"app": {
+        "launcher_name": "@string/app_name",
+        "activity_name": "@string/launcher_name"
+	}
+}
