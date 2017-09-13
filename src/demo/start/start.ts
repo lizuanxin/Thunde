@@ -47,7 +47,7 @@ export class StartPage implements AfterViewInit
         let ele = this.animatedef.nativeElement,
             width = window.innerWidth,
             height = width * 1.5,
-            colorYellow = '#d3120b', colorLight = '#333', colorLightOpacity = 'rgba(0,0,0,.3)';
+            colorYellow = '#fce76c', colorLight = '#333', colorLightOpacity = 'rgba(0,0,0,.3)';
             ele.children[ID.tips1].setAttribute('style',  'width: ' + width * 0.14 + 'px; height: ' + width * 0.14 + 'px; left: ' + width * 0.39 + 'px; top:' + height * 0.15 + 'px');
             ele.children[ID.tips2].setAttribute('style',  'width: ' + width * 0.05 + 'px; height: ' + width * 0.05 + 'px; left: ' + width * 0.83 + 'px; top:' + height * 0.455 + 'px');
             ele.children[ID.tips3].setAttribute('style',  'width: ' + width * 0.14 + 'px; height: ' + width * 0.14 + 'px; left: ' + width * 0.62 + 'px; top:' + height * 0.76 + 'px');

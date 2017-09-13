@@ -1,15 +1,15 @@
 <ion-header no-shadow no-border >
-  <ion-toolbar color="color-primary">
-    <ion-row align-items-center>
+  <ion-toolbar no-border color="color-primary">
+    <ion-row align-items-center text-light>
       <ion-col col-3 align-self-center text-center no-padding>
         <button ion-button clear icon-only color="light" tappable>
             <ion-icon app-icon>&#xe908;</ion-icon>
         </button>
       </ion-col>
-      <ion-col col-6 f-2-0 align-self-center text-center text-light no-padding>
+      <ion-col col-6 f-2-0 align-self-center text-center no-padding>
           {{'home_page.title'|translate}}
       </ion-col>
-      <ion-col *ngIf="IsStillRunning" col-3 align-self-center text-center text-light no-padding (click)="Resume()">
+      <ion-col *ngIf="IsStillRunning" col-3 align-self-center text-center no-padding (click)="Resume()">
           <div style="display: flex; flex-wrap:wrap; align-items:center; justify-content: start">
               <div style="display:flex;">
                 <div class="loader">
@@ -31,7 +31,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [ngSwitch]="ActiveTab.Index" no-scroll color="light">
+<ion-content [ngSwitch]="ActiveTab.Index" [class.no-scroll]="ActiveTab.Index !== 1" color="light">
     <filelist-recommend *ngSwitchCase="255" [FileList]="ActiveTab.FileList" (OnSelection)="SelectFile($event)"></filelist-recommend>
     <filelist-body *ngSwitchCase="0" [FileList]="ActiveTab.FileList" [DefaultFiles]="DefaultFiles" (OnSelection)="SelectFile($event)"></filelist-body>
     <filelist-card *ngSwitchCase="1" [FileList]="ActiveTab.FileList" [DefaultFiles]="DefaultFiles" (OnSelection)="SelectFile($event)"></filelist-card>
@@ -39,12 +39,12 @@
     <page-profile *ngSwitchCase="65536"></page-profile>
 </ion-content>
 
-<ion-footer no-shadow no-border>
+<ion-footer class="shadow-top big" no-border>
   <ion-toolbar transparent no-padding>
     <ion-row class="row-tab">
-      <ion-col text-center [class.state]="tab.Index===ActiveTab.Index" *ngFor="let tab of Tabs" (click)="SelectTab(tab)" tappable>
+      <ion-col text-center [class.active]="tab.Index===ActiveTab.Index" *ngFor="let tab of Tabs" (click)="SelectTab(tab)" tappable>
         <div class="button">
-          <ion-icon app-icon>{{App.IconFont(tab.Icon)}}</ion-icon>
+          <ion-icon app-icon [innerHTML]="GetTabIcon(tab.Index)"></ion-icon>
         </div>
        <span text-nowrap f-12>{{tab.Name|translate}}</span>
       </ion-col>
@@ -53,5 +53,5 @@
 </ion-footer>
 
 <ion-backdrop my-backdrop *ngIf="DeviceScanning" (click)="DeviceScanning=false;App.EnableHardwareBackButton();">
-     <discover-peripheral (OnSelection)="DeviceSelection($event)"></discover-peripheral>
+    <discover-peripheral (OnSelection)="DeviceSelection($event)"></discover-peripheral>
 </ion-backdrop>

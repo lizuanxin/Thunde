@@ -1,0 +1,32 @@
+.primary-shadow{
+    &.smaller-shadow{
+        @include BlockShadow(lighten(color($colors, color-primary, base), 26%), 0, 4, 8);
+    }
+    &.small-shadow{
+        @include BlockShadow(lighten(color($colors, color-primary, base), 26%), 0, 6, 10);
+    }
+    &.big-shadow{
+        @include BlockShadow(lighten(color($colors, color-primary, base), 26%), 0, 10, 40);
+    }
+    &.card-shadow{
+        @include BlockShadow(lighten(color($colors, color-primary, base), 26%), 0, 6, 30);
+    }
+}
+
+.primary-exc-shadow{
+    &.small-shadow{
+        @include BlockShadow(lighten(color($colors, color-primary-exc, base), 20%), 0, 6, 10);
+    }
+    &.big-shadow{
+        @include BlockShadow(lighten(color($colors, color-primary-exc, base), 20%), 0, 10, 40);
+    }
+}
+
+.shadow-top{
+    &.small{
+        @include BlockShadow(lighten(color($colors, dark, base), 80%), 0, -1, 0);
+    }
+    &.big{
+        @include BlockShadow(lighten(color($colors, color-primary, base), 30%), 0, -4, 6);
+    }
+}

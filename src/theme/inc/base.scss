@@ -89,62 +89,8 @@ ion-menu {
     }
 }
 
-[panel-shawdow]{
-    -webkit-box-shadow: 0 4px 4px 0 0 lighten(color($colors, color-primary, base), 20%);
-    -moz-box-shadow: 0 4px 4px 0 0 lighten(color($colors, color-primary, base), 20%);
-    box-shadow: 0 4px 4px 0 0 lighten(color($colors, color-primary, base), 20%);
-}
-
 .default-file{
     color: color($colors, color-primary, base);
     font-size: 5vw;
     margin-left:1vw
-}
-
-.card-view{
-    margin-top: 2vh;
-    .card-item{
-        margin: 1.4vh 6.8vw;
-        background-color: color($colors, light, base);
-        border-radius: 6px;
-        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
-        .wave-edge{
-            min-height: 23vh;
-            border-radius: 6px 0 0 6px;
-            display: -ms-flexbox;
-            display: -webkit-flex;
-            display: flex;
-            background: url(../assets/img/swipe-border.png) right top repeat-y;
-            background-size:contain;
-        }
-        .big-icon{
-            font-size:25vw;
-            margin:auto
-        }
-        .border-icon{
-            color: color($colors, gray, base);
-            font-size: 11vw;
-            margin: auto;
-            border-radius: 16%;
-            border: 1px solid lighten(color($colors, gray, base), 16%);
-        }
-        .nav-icon{
-            color: color($colors, color-primary, base);
-            font-size:12vw;
-            margin:auto;
-            border-radius:100%;
-            background-color: transparent !important;
-            background: transparent !important;
-            -webkit-box-shadow: 0 4px 4px 0 lighten(color($colors, color-primary, base), 40%);
-            -moz-box-shadow: 0 4px 4px 0 lighten(color($colors, color-primary, base), 40%);
-            box-shadow: 0 4px 4px 0 lighten(color($colors, color-primary, base), 40%);
-        }
-        .big-text{
-            font-size:5vw;
-        }
-        .little-text{
-            font-size:3.2vw;
-            color: lighten(color($colors, dark, base), 30%)
-        }
-    }
 }

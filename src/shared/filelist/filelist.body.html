@@ -1,33 +1,40 @@
-<ion-row style="padding-bottom:5vh;background:url(assets/img/bg_home_red.png) center bottom repeat-x;background-size:contain">
-    <ion-col col-12 no-padding>
-        <section ion-text color="light">
-            <swiper #BodySwiper [Config]="{pagination:'.swiper-pagination', paginationClickable: true,
-                nextButton:'.swiper-button-next', prevButton:'.swiper-button-prev', effect:'cube'}"
-            (OnSlideChanged)="UsageIconChanged($event)">
-                    <div class="swiper-wrapper" [ngStyle]="SetStyle(0)">
-                        <div class="swiper-slide" *ngFor="let i of CurrBodyCategory.UsageIcons"><ion-icon app-icon [ngStyle]="SetStyle(1)">{{App.IconFont(i)}}</ion-icon></div>
-                    </div>
-                    <div class="swiper-pagination"></div>
-                    <div class="swiper-button-next"><ion-icon app-icon>&#xe918;</ion-icon></div>
-                    <div class="swiper-button-prev"><ion-icon app-icon>&#xe918;</ion-icon></div>
-
-            </swiper>
-        </section>
-    </ion-col>
-
-    <ion-col col-10 offset-1 no-padding>
-        <ion-row nowrap class="row-body">
-            <ion-col no-padding text-center [class.active]="CurrBodyCategory===b" *ngFor="let b of BodyCategories" (click)="SelectBodyCategory(b)" tappable>
-                <div class="button">
-                    <span app-icon [innerHTML]="+App.IconFont(b.Icon)"></span>
+<ion-row no-padding>
+    <ion-col no-padding style="height:35vh">
+        <swiper #BodySwiper [Config]="
+            {
+                pagination: '.swiper-pagination',
+                effect: 'coverflow',
+                grabCursor: true,
+                centeredSlides: true,
+                slidesPerView: 3,
+                spaceBetween: 94,
+                coverflow:
+                {
+                    rotate: -0.2,
+                    stretch: 0,
+                    depth: 0,
+                    modifier: 1,
+                    slideShadows : false
+                }
+            }">
+                <div class="swiper-wrapper" [ngStyle]="SetStyle(0)">
+                    <div class="swiper-slide" *ngFor="let i of CurrBodyCategory.UsageIcons"><ion-icon app-icon class="bodypart" [ngStyle]="SetStyle(1)" text-light>{{app.IconFont(i)}}</ion-icon></div>
                 </div>
-                <div m-t-5 ion-text color="light">{{b.Name}}</div>
-            </ion-col>
-        </ion-row>
+                <div class="swiper-pagination" style="bottom:15px"></div>
+            </swiper>
     </ion-col>
 </ion-row>
-<ion-row align-items-center p-swiper>
-    <ion-col col-8 no-padding  [ngStyle]="SetStyle(2)">
+<ion-row nowrap class="row-body" no-padding justify-content-center align-items-center style="height:10vh;margin-top: -1vh">
+    <ion-col col-2 no-padding text-center [class.active]="CurrBodyCategory===b" *ngFor="let b of BodyCategories" (click)="SelectBodyCategory(b)" tappable>
+        <div class="button">
+            <span app-icon [innerHTML]="app.IconFont(b.Icon)"></span>
+        </div>
+        <div m-t-5 ion-text color="light">{{b.Name}}</div>
+    </ion-col>
+</ion-row>
+
+<ion-row align-items-center p-swiper class="shadow-top small">
+    <ion-col col-8 no-padding style="height:32vh">
         <swiper swiper-piker #FileSwiper [Config]="{effect: 'coverflow', direction: 'vertical',
             pagination: '.swiper-pagination', paginationType: 'progress', slidesPerView: 4, centeredSlides: true,
             coverflow: {rotate: 0, stretch: 0, depth: 0, modifier: 1, slideShadows : true}}">
@@ -35,7 +42,7 @@
                 <div class="swiper-slide" *ngFor="let f of FilteredFiles" [ngStyle]="SetStyle(3)">
                     {{f.Name_LangId|translate}}
                     <span class="timer">{{f.DurationMinute.toString()}}{{'hint.min'|translate}}</span>
-                    <ion-icon *ngIf="DefaultFiles && DefaultFiles.indexOf(f.Name) !== -1" app-icon style="font-size:4.8vw; margin-left:1vw">&#xe916;</ion-icon>
+                    <ion-icon *ngIf="DefaultFiles && DefaultFiles.indexOf(f.Name) !== -1" app-icon style="font-size:4.8vw; margin-left:1vw" class="star">&#xe916;</ion-icon>
                 </div>
             </div>
             <div class="swiper-pagination" style="left:10%"></div>

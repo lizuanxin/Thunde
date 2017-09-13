@@ -12,7 +12,7 @@ import * as USB from '../../UltraCreation/Native/USB';
 import {IShell, TLinearTable, IScriptFile} from './shell.intf';
 import {TListDefaultFile} from './shell.list_default';
 import {TCatRequest} from './shell.cat';
-import {TClearFileSystemRequest } from './shell.clear_fs';
+import {TClearFileSystemRequest} from './shell.clear_fs';
 import {TOTARequest, EUSBRestarting} from './shell.ota';
 
 export {ERequestTimeout, EUSBRestarting};
@@ -93,7 +93,7 @@ export class TShell extends TAbstractShell implements IShell
     private _Ticking: number = 0;
     private TickIntervalId: any = null;
 
-    private _DefaultFileList: Array<string> = [];
+    // private _DefaultFileList: Array<string> = ['shoulder', 'sore', 'pain'];
 
 /* TAbstractShell */
 
@@ -211,10 +211,10 @@ export class TShell extends TAbstractShell implements IShell
         })
         .then(() =>
         {
-            if (Idx < this.DefaultFileList.length)
-                this.DefaultFileList[Idx] = FileName;
+            if (Idx < (this.constructor as typeof TShell).DefaultFileList.length)
+                (this.constructor as typeof TShell).DefaultFileList[Idx] = FileName;
             else
-                this.DefaultFileList.push(FileName);
+                (this.constructor as typeof TShell).DefaultFileList.push(FileName);
         });
     }
 
@@ -224,7 +224,7 @@ export class TShell extends TAbstractShell implements IShell
             .then(Request => Request.toPromise() as Promise<Array<string>>)
             .then(List =>
             {
-                this._DefaultFileList = List;
+                // this._DefaultFileList = List;
                 (this.constructor as typeof TShell).DefaultFileList = List;
                 return List;
             });
@@ -253,7 +253,7 @@ export class TShell extends TAbstractShell implements IShell
 
     ClearFileSystem(ExcludeFiles: string[]): Promise<void>
     {
-        return this.RequestStart(TClearFileSystemRequest, REQUEST_TIMEOUT, ExcludeFiles.concat(this.DefaultFileList))
+        return this.RequestStart(TClearFileSystemRequest, REQUEST_TIMEOUT, ExcludeFiles.concat((this.constructor as typeof TShell).DefaultFileList))
             .then(Request => Request.toPromise())
             .then(() => {});
     }
@@ -412,10 +412,10 @@ export class TShell extends TAbstractShell implements IShell
         return this._BatteryLevel;
     }
 
-    get DefaultFileList(): Array<string>
-    {
-        return this._DefaultFileList;
-    }
+    // get DefaultFileList(): Array<string>
+    // {
+    //     return this._DefaultFileList;
+    // }
 
     private StatusRequest(): Promise<void>
     {

@@ -2,7 +2,7 @@ ion-list.list {
     // @include IonList('blue',#6490fb);
     @include IonList('gray',#828282);
     &[list-init]{
-        border-radius: 5px;
+        border-radius: 10px;
         .item{
             padding:0;
             background-color:transparent;
@@ -129,8 +129,8 @@ ion-list.list {
 ion-item,
 ion-item-divider {
     &[device]{
-        [item-right]{            
-            margin:0;            
+        [item-right]{
+            margin:0;
             [inner-icon]{
                 position:relative;
                 width:20px;
@@ -145,7 +145,7 @@ ion-item-divider {
                     }
                 }
             }
-            
+
         }
     }
     &.item {
@@ -187,7 +187,7 @@ div {
                 margin-right: 5px;
             }
         }
-        li {            
+        li {
             color:color($colors,dark,base);
             font-size: 1.4rem;
             letter-spacing: .2rem;

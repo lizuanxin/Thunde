@@ -21,7 +21,12 @@ export class DownloadPage
 
         App.ShowLoading()
             .then(() => this._Shell.SetDefaultFile(this.RefFile.Name as string, Idx))
-            .then(() => this.FileList = this._Shell.DefaultFileList.filter(Iter => Iter.length > 0))
+            .then(() =>
+            {
+                this.FileList = Svc.Loki.TShell.DefaultFileList.filter(Iter => Iter.length > 0);
+                return StorageEngine.Set('def_filelist', this.FileList).catch(err => {});
+            })
+            .then(() => this.OnClose.next())
             .catch(err => console.error(err))
             .then(() => App.HideLoading());
     }
@@ -30,7 +35,7 @@ export class DownloadPage
     {
         this._Shell = v;
 
-        this.FileList = v.DefaultFileList.filter(Iter => Iter.length > 0);
+        this.FileList = Svc.Loki.TShell.DefaultFileList.filter(Iter => Iter.length > 0);
         this.RefFile = v.RefFile as Svc.TScriptFile;
 
         console.log(this.FileList);

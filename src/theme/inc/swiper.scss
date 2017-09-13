@@ -2,6 +2,8 @@
 .swiper-button-next {
     ion-icon{
         -webkit-transform: rotate(180deg);
+        -o-transform: rotate(180deg);
+        transform: rotate(180deg);
     }
 }
 
@@ -12,12 +14,12 @@
     &.swiper-button-disabled {
         opacity: 0.25;
     }
-    ion-icon{        
+    ion-icon{
         font-size:3.6rem;
     }
 }
 .swiper-pagination-bullet{
-    background:color($colors,light,base);
+    background:color($colors, gray, base);
 }
 .swiper-wrapper{
     .swiper-slide{
@@ -26,6 +28,34 @@
         -webkit-align-items: center;
         align-items: center;
         justify-content: center;
+        &.swiper-slide-active{
+            ion-icon{
+                &.bodypart{
+                    margin-top:-50%;
+                    background-color: color($colors, color-primary, base);
+                    border-radius: 10px;
+                    padding: 10px;
+                    @include BlockShadow(lighten(color($colors, color-primary, base), 20%), 0, 0, 40);
+                }
+                &.star{
+                    color: color($colors, color-primary, base);
+                }
+            }
+        }
+        &.swiper-slide-prev,
+        &.swiper-slide-next{
+            ion-icon{
+                &.bodypart{
+                    margin-top:-50%;
+                    background-color: lighten(color($colors, color-primary, base), 20%);
+                    border-radius: 10px;
+                    padding: 10px;
+                    -webkit-transform:scale(0.88);
+                    -o-transform: scale(0.88);
+                    transform:scale(0.88);
+                }
+            }
+        }
     }
     .swiper-cube-shadow{
         display: none;
@@ -33,16 +63,16 @@
 }
 
 
-[swiper-piker]{    
+[swiper-piker]{
     .swiper-pagination-progress{
         background-color:rgba(0,0,0,.1);
         .swiper-pagination-progressbar{
-            background:darken(color($colors,color-primary-exc,base),25%);
+            background: color($colors,color-primary-exc,base);
         }
     }
-    .swiper-slide{  
-        position:relative;      
-        color:darken(color($colors,light,base),30%);         
+    .swiper-slide{
+        position:relative;
+        color:darken(color($colors,light,base),30%);
         -webkit-transform-origin: center center;
         transform-origin: center center;
         justify-content: flex-start;
@@ -54,9 +84,9 @@
             font-size:12px;
         }
         &.swiper-slide-active{
-            color:color($colors,color-primary,base); 
+            color: color($colors, dark, base);
         }
         .swiper-slide-shadow-top,.swiper-slide-shadow-bottom{display:none}
-    } 
+    }
 }
 

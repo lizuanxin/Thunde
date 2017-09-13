@@ -52,7 +52,7 @@
             transform: scaley(1); } }
 
 .line-scale-pulse-out > div{
-  background-color: #fff;
+  background-color: color($colors, light, base);
   width: 2px;
   height: 26px;
   border-radius: 1px;

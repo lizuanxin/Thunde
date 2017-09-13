@@ -28,7 +28,7 @@ export class HomePage implements OnInit
         if (isDevMode())
             console.log('develope mode....');
 
-        this.Tabs.push(new TTabItem(255, Svc.const_data.Category.recommend));
+        // this.Tabs.push(new TTabItem(255, Svc.const_data.Category.recommend));
         this.Tabs.push(new TTabItem(0, Svc.const_data.Category.relax));
         this.Tabs.push(new TTabItem(1, Svc.const_data.Category.muscle_training));
         // this.Tabs.push(new TTabItem(2, Svc.const_data.Category.fat_burning));
@@ -69,8 +69,6 @@ export class HomePage implements OnInit
                 .then(ary => this.DefaultFiles = ary as string[])
                 .catch(err => {});
         }
-        else
-            StorageEngine.Set('def_filelist', this.DefaultFiles).catch(err => {});
 
         App.EnableHardwareBackButton();
         this.CheckIsStillRunning();
@@ -145,17 +143,11 @@ export class HomePage implements OnInit
         else
         {
             App.ShowLoading().then(() =>
-                {
-                    this.SelectedFile = ScriptFile;
-                    this.DeviceScanning = true;
-                });
+            {
+                this.SelectedFile = ScriptFile;
+                this.DeviceScanning = true;
+            });
         }
-    }
-
-    Discovery()
-    {
-        this.DeviceScanning = false;
-        App.EnableHardwareBackButton();
     }
 
     DeviceSelection(Peripheral: Svc.TConnectablePeripheral | undefined)
@@ -164,9 +156,17 @@ export class HomePage implements OnInit
         if (! TypeInfo.Assigned(Peripheral))
             return;
 
+        let Shell = Peripheral.Shell;
+        App.DisableHardwareBackButton();
         App.ShowLoading()
-            .then(() => App.Nav.push(RunningPage, {Shell: Peripheral.Shell, ScriptFile: this.SelectedFile}))
-            .catch(err => console.log(err.message));
+            .then(() => Shell.Connect())
+            .then(() => App.Nav.push(RunningPage, {Shell: Shell, ScriptFile: this.SelectedFile}))
+            .catch(err =>
+            {
+                App.EnableHardwareBackButton();
+                App.HideLoading()
+                    .then(() => App.ShowError(err));
+            });
     }
 
     private ShowTOU(): Promise<any>

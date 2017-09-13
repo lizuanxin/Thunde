@@ -66,15 +66,21 @@ ion-row {
         ion-col {
             div.button{
                 background-color: transparent;
-                color: color($colors, light, base);               
+                color: color($colors, color-primary, base);
                 // border-color: color($colors, light, base);
-                @include square(76%,solid,1px,50%);
+                //@include square(76%,solid,1px,50%);
                 font-size: 8vw;
+                border-radius: 20%;
+                @include BlockShadow(lighten(color($colors, color-primary, base), 20%), 0, 4, 12);
+                span{
+                    padding: 6px;
+                }
             }
             &.active {
                 div.button{
-                    color: color($colors,color-primary-exc,base);
-                    background-color: color($colors, light, base);
+                    color: color($colors, light, base);
+                    background-color: color($colors, color-primary-exc, base);
+                    @include BlockShadow(lighten(color($colors, color-primary-exc, base), 20%), 0, 4, 12);
                 }
             }
         }
@@ -93,12 +99,23 @@ ion-row {
                     color: color($colors, light, base);
                 }
             }
+            &.active{
+                div.button {
+                    // @include gradient-liner(top, color($colors,color-primary-exc,base), color($colors,color-primary,base));
+                    ion-icon{
+                        color: color($colors, color-primary, base);
+                    }
+                }
+                span{
+                    color: lighten(color($colors, color-primary,base), 15%);
+                }
+            }
             div.button {
                 margin: auto;
                 width: 10vw;
-                padding-top: 5vw;
-                padding-bottom: 5vw;
-                font-size: 5vw;
+                padding-top: 4vw;
+                padding-bottom: 4vw;
+                font-size: 6vw;
                 border-radius: 50%;
                 height: 0;
                 line-height: 0;
@@ -120,6 +137,8 @@ ion-row {
                     color: #e02f5b;
                     ion-icon {
                         -webkit-transform: rotate(90deg);
+                        -o-transform: rotate(90deg);
+                        transform: rotate(90deg);
                         position: absolute;
                         left: 45%;
                         top: -10px;

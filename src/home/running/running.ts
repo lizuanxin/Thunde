@@ -38,9 +38,9 @@ export class RunningPage implements OnInit, OnDestroy
         else
             this.Start();
 
-        this.ShowDownloadBtn = this.Shell.DefaultFileList.indexOf(this.ScriptFile.Name) === -1;
+        this.ShowDownloadBtn = Svc.Loki.TShell.DefaultFileList.indexOf(this.ScriptFile.Name) === -1;
 
-        this.ShellNotifySubscription = this.Shell.OnNotify.subscribe(
+        this.ShellNotifySub = this.Shell.OnNotify.subscribe(
             Notify =>
             {
                 switch (Notify)
@@ -125,14 +125,15 @@ export class RunningPage implements OnInit, OnDestroy
     HideDownload()
     {
         this.ShowDownload = false;
-        this.ShowDownloadBtn = this.Shell.DefaultFileList.indexOf(this.ScriptFile.Name) === -1;
+        this.ShowDownloadBtn = Svc.Loki.TShell.DefaultFileList.indexOf(this.ScriptFile.Name) === -1;
     }
 
     private Start()
     {
         App.ShowLoading()
-            .then(() => Svc.TAssetService.LoadScriptFile(this.ScriptFile))
             .then(() => this.Shell.ClearFileSystem([this.ScriptFile.Name]))
+            .catch(() => this.Shell.FormatFileSystem())
+            .then(() => Svc.TAssetService.LoadScriptFile(this.ScriptFile))
             .then(() => this.Shell.CatFile(this.ScriptFile))
             .then(progress =>
             {
@@ -180,11 +181,18 @@ export class RunningPage implements OnInit, OnDestroy
 
     private UnsubscribeShellNotify(): void
     {
-        if (TypeInfo.Assigned(this.ShellNotifySubscription))
+        if (TypeInfo.Assigned(this.ShellNotifySub))
         {
-            this.ShellNotifySubscription.unsubscribe();
-            this.ShellNotifySubscription = undefined;
+            this.ShellNotifySub.unsubscribe();
+            this.ShellNotifySub = undefined;
         }
+    }
+
+    GoHome()
+    {
+        if (TypeInfo.Assigned(this.ClosingTimerId))
+            return;
+        this.ClosingTimerId = setTimeout(() => App.Nav.pop(), 300);
     }
 
     @ViewChild(Content) content: Content;
@@ -198,7 +206,7 @@ export class RunningPage implements OnInit, OnDestroy
     Completed: boolean = false;
 
     Shell: Svc.Loki.TShell;
-    private ShellNotifySubscription: Subscription | undefined;
+    private ShellNotifySub: Subscription | undefined;
 
     private Downloading = false;
     private ClosingTimerId: any = undefined;

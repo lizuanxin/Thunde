@@ -10,7 +10,7 @@ export namespace Initialization
 {
     export async function Execute(): Promise<void>
     {
-        const db_version = '27';
+        const db_version = '29';
         let conn = await InitializeStorage(new TSqliteEngine('ThunderboltDB.sqlite')).GetConnection();
 
         let DataSet = await conn.ExecQuery('SELECT name FROM sqlite_master WHERE type="table" AND name="Asset"');

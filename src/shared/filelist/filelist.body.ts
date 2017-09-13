@@ -7,7 +7,7 @@ import * as Svc from '../../providers';
 @Component({selector: 'filelist-body', templateUrl: 'filelist.body.html'})
 export class FileListBodyComp implements OnInit
 {
-    constructor()
+    constructor(public app: Svc.TApplication)
     {
     }
 
@@ -62,13 +62,8 @@ export class FileListBodyComp implements OnInit
         {
             this.CurrBodyCategory = b;
             this.BodySwiper.Update();
+            this._FilteredFiles = [];
         }
-    }
-
-    UsageIconChanged(Idx: number)
-    {
-        this.UsageIconIdx = Idx;
-        this._FilteredFiles = [];
     }
 
     get FilteredFiles(): Svc.TScriptFileList
@@ -78,22 +73,24 @@ export class FileListBodyComp implements OnInit
 
         if (this._FilteredFiles.length === 0)
         {
-            let BodyPart = this.CurrBodyCategory.BodyPartOf(this.UsageIconIdx);
+            let BodyPart = this.CurrBodyCategory.BodyPartOf(0);
             if (! TypeInfo.Assigned(BodyPart))
                 return this._FilteredFiles;
 
+            let Temp: Svc.TScriptFileList = [];
             for (let f of this._FileList)
             {
                 for (let b of f.BodyParts)
                 {
                     if (b.Id === BodyPart.Id)
                     {
-                        this._FilteredFiles.push(f);
+                        Temp.push(f);
                         break;
                     }
                 }
             }
 
+            this._FilteredFiles = Temp;
             this.FileSwiper.Update(true, 0);
         }
 
@@ -111,18 +108,15 @@ export class FileListBodyComp implements OnInit
         switch (n)
         {
             case 0: return { height: Math.ceil(window.innerHeight * 0.34) + 'px' };
-            case 1: return { fontSize: Math.ceil(window.innerWidth * 0.40) + 'px' };
-            case 2: return { height: Math.ceil(window.innerHeight * 0.28) + 'px' };
+            case 1: return { fontSize: Math.ceil(window.innerWidth * 0.3) + 'px' };
+            case 2: return { height: Math.ceil(window.innerHeight * 0.29) + 'px' };
             case 3: return { fontSize: Math.ceil(window.innerWidth * 0.05) + 'px' };
             default: return {};
         }
     }
 
-    App = window.App;
-
     private BodyCategories = new Array<TBodyCategory>();
     private CurrBodyCategory: TBodyCategory;
-    private UsageIconIdx: number = 0;
 
     private _FileList?: Svc.TScriptFileList;
     private _FilteredFiles: Svc.TScriptFileList = [];

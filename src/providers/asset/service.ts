@@ -2,9 +2,10 @@ import {Injectable} from '@angular/core';
 
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 import {EAbort} from '../../UltraCreation/Core/Exception';
-import {THttpClient} from '../../UltraCreation/Core';
+import {THttpClient} from '../../UltraCreation/Core/Http';
+import {TAssignable} from '../../UltraCreation/Core/Persistable';
 import {TUtf8Encoding} from '../../UltraCreation/Encoding';
-import {THashMd5} from '../../UltraCreation/Hash';
+import {THashMd5} from '../../UltraCreation/Hash/Md5';
 
 import {const_data, IBodyPart, Loki} from '..';
 import {TCategory, TScriptFile, TScriptFileDesc} from './asset.scriptfile';

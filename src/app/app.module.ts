@@ -1,6 +1,5 @@
 import {NgModule, ErrorHandler} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-
 import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular';
 import {TranslateModule} from '@ngx-translate/core';
 
@@ -44,7 +43,7 @@ let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
 
     providers: [
         {provide: ErrorHandler, useClass: IonicErrorHandler},
-        Svc.TApplication, Svc.TAssetService
+        Svc.TApplication, Svc.TAssetService,
     ],
 })
 export class AppModule {}

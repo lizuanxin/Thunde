@@ -32,7 +32,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
     {
         PowerManagement.Acquire();
 
-        this.ShellNotifySubscription = this.Shell.OnNotify.subscribe(
+        this.ShellNotifySub = this.Shell.OnNotify.subscribe(
             Notify =>
             {
                 switch (Notify)
@@ -95,10 +95,10 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     private UnsubscribeShellNotify(): void
     {
-        if (TypeInfo.Assigned(this.ShellNotifySubscription))
+        if (TypeInfo.Assigned(this.ShellNotifySub))
         {
-            this.ShellNotifySubscription.unsubscribe();
-            this.ShellNotifySubscription = undefined;
+            this.ShellNotifySub.unsubscribe();
+            this.ShellNotifySub = undefined;
         }
     }
 
@@ -247,6 +247,22 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
         return { height: screenHeight * 0.15 + 'px', overflowY: 'scroll', padding: '0' };
     }
 
+    get LeftButtonStyle(): Object
+    {
+        if (this.CurrentIdx === 1)
+            return {display: 'inline-flex', marginRight: '3vw'};
+        else
+            return {display: 'inline-flex', margin: 'auto'};
+    }
+
+    get RightButtonStyle(): Object
+    {
+        if (this.CurrentIdx === 1)
+            return {display: 'inline-flex', marginLeft: '3vw'};
+        else
+            return {display: 'inline-flex', margin: 'auto'};
+    }
+
     App = window.App;
 
     Completed: boolean = false;
@@ -260,7 +276,7 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     private DemoFiles: Array<Svc.TScriptFile> = [];
     private Shell: Svc.Loki.TShell;
-    private ShellNotifySubscription: Subscription | undefined;
+    private ShellNotifySub: Subscription | undefined;
 
     private ClosingTimerId: any = undefined;
     private Switching: Promise<void> | undefined;

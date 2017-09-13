@@ -1,18 +1,20 @@
 <ion-header no-shadow no-border>
-  <ion-toolbar color="color-primary">
-    <ion-buttons left>
-        <button ion-button icon-only color="light" [ngStyle]="{'margin':'0 6px','padding':'0 2px','min-width':'44px'}" tappable>
-            <ion-icon app-icon>&#xe908;</ion-icon>
-        </button>
-    </ion-buttons>
-    <ion-buttons right>
-        <button ion-button icon-only color="light" [ngStyle]="{'margin':'0 6px','padding':'0 2px','min-width':'44px'}" (click)="ClosePage()" tappable>
-            <ion-icon app-icon>&#xe936;</ion-icon>
-        </button>
-    </ion-buttons>
-    <ion-title text-center>
-        <span ion-text color="light">{{'home_page.title'|translate}}</span>
-    </ion-title>
+  <ion-toolbar no-border color="color-primary">
+      <ion-row align-items-center text-light>
+        <ion-col col-3 align-self-center text-center no-padding>
+            <button ion-button clear icon-only tappable>
+                <ion-icon text-light app-icon>&#xe908;</ion-icon>
+            </button>
+        </ion-col>
+        <ion-col col-6 f-2-0 align-self-center text-center no-padding>
+            {{'home_page.title'|translate}}
+        </ion-col>
+        <ion-col col-3 align-self-center text-center no-padding>
+            <button ion-button clear icon-only (click)="GoHome()" tappable>
+                <ion-icon text-light app-icon>&#xe936;</ion-icon>
+            </button>
+        </ion-col>
+    </ion-row>
   </ion-toolbar>
 </ion-header>
 
@@ -26,7 +28,7 @@
          </ion-col>
          <ion-col col-2 align-self-end text-end style="margin: auto">
             <button *ngIf="ShowDownloadBtn" clear (click)="ShowDownload=true" tappable>
-                <ion-icon app-icon color="color-primary-light" style="font-size: 8vw">&#xe94a;</ion-icon>
+                <ion-icon app-icon color="color-primary-exc" style="font-size: 8vw">&#xe94a;</ion-icon>
             </button>
         </ion-col>
      </ion-row>
@@ -58,7 +60,7 @@
 <ion-footer no-border no-shadow>
     <ion-toolbar transparent visible>
         <ion-row n-m-t-50>
-            <ion-col col-6 offset-3 text-center>
+            <ion-col col-8 offset-2 text-center>
                 <button ion-button block round (click)="Shutdown()" color="color-primary-light">
                     {{'button.shutdown'|translate}}
                 </button>

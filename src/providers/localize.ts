@@ -48,7 +48,6 @@ export let translate_en =
     home_page:
     {
         title: 'Thunderbolt',
-        remommend_bodypart: 'shoulder|neck'
     },
 
     profile_page:
@@ -229,7 +228,7 @@ export let translate_zh_cn =
     {
         e_usb_serial_plugin: 'USB 设备错误。',
         e_usb_permission: '请授予权限使用USB',
-        e_usb_otg: '因为您的手机未检测到 USB OTG, 本产品可能不能正确使用。',
+        e_usb_otg: '因为您的手机未检测到 USB OTG, 本产品可能不能正常使用。',
         e_ble_plugin: 'BLE 设备错误。',
         e_connect_timeout: '未能成功连接上设备。',
         e_request_timeout: '请求超时。',
@@ -244,7 +243,7 @@ export let translate_zh_cn =
         shutdown: '设备已关机。',
         low_battery: '电池电量低, 请充电',
         disconnected: '设备已断开。',
-        no_load: '贴好电极贴',
+        no_load: '请检查电极贴',
         hardware_error: '硬件故障, 请联系售后服务',
 
         network_unavailable: '无网络',
@@ -271,7 +270,6 @@ export let translate_zh_cn =
     home_page:
     {
         title: '小摩线',
-        remommend_bodypart: '肩部|颈部'
     },
 
     profile_page:
@@ -402,9 +400,9 @@ export let translate_zh_cn =
         sit_ups: '腰部及背部肌群肌肉',
 
     /* recommend */
-        recommend1: '办公室肩颈活力按摩',
-        recommend2: '加班后肩颈疼痛舒缓按摩',
-        recommend3: '低头族肩颈放松按摩'
+        recommend1: '分解脂肪, 有氧增肌',
+        recommend2: '分解脂肪, 有氧增肌',
+        recommend3: '分解脂肪, 有氧增肌'
     },
 
     tou_page:
@@ -413,12 +411,12 @@ export let translate_zh_cn =
         terms_conditions: `<div><h5 class="text-danger"><span>禁止!</span></h5><ul>
             <li>不应用于未经确诊的疼痛</li>
             <li>切勿于癌症伤口上使用本产品</li>
-            <li>不要在怀孕期間使用本产品</li>
+            <li>不要在怀孕期间使用本产品</li>
             <li>心脏病患者使用前需咨询医生指引。</li>
             <li>不宜应用在肿胀, 感染, 发炎区或皮疹(例如静脉炎, 血栓性静脉炎等)</li>
             <li>不建议贫血, 癲癇及糖尿病人使用</li>
             <li>使用心脏起搏器或任何植入式心震颤去除器的患者请勿使用.</li>
-            <li>勿靠近心脏使用。电极贴不应被放置在胸部(肋骨和胸骨附近), 尤其不可放置在兩胸大肌处。</li>
+            <li>勿靠近心脏使用。电极贴不应被放置在胸部(肋骨和胸骨附近), 尤其不可放置在两胸大肌处。</li>
             <li>禁止在头部, 面部, 口腔, 颈项前部, 靠近生殖器或內部使用</li>
             <li>严禁在睡眠期间使用本产品</li>
         </ul></div><br>
@@ -456,7 +454,7 @@ export let translate_zh_hk =
     {
         e_usb_serial_plugin: 'USB 設備錯誤。',
         e_usb_permission: '請授予USB使用許可權',
-        e_usb_otg: '因為您的手機未檢測到 USB OTG, 本產品可能不能正確使用。',
+        e_usb_otg: '因為您的手機未檢測到 USB OTG, 本產品可能不能正常使用。',
         e_ble_plugin: 'BLE 設備錯誤。',
         e_connect_timeout: '未能成功連接上設備。',
         e_request_timeout: '請求超時。',
@@ -498,7 +496,6 @@ export let translate_zh_hk =
     home_page:
     {
         title: '小摩線',
-        remommend_bodypart: '肩部|頸部'
     },
 
     profile_page:

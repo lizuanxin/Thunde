@@ -50,6 +50,8 @@ export class DiscoverComp implements OnInit, OnDestroy
             this.ScanSub = undefined;
         }
 
+        this.ClearTimeoutTasked();
+
         this.Discover.Stop();
     }
 
@@ -74,12 +76,11 @@ export class DiscoverComp implements OnInit, OnDestroy
 
             if (this.PeripheralList.length === 1)
             {
-                if (TypeInfo.Assigned(this.SingletonTimeoutId))
-                    clearTimeout(this.SingletonTimeoutId);
+                this.ClearTimeoutTasked();
 
                 this.SingletonTimeoutId = setTimeout(() =>
                 {
-                    this.SingletonTimeoutId = null;
+                    this.SingletonTimeoutId = undefined;
 
                     if (this.PeripheralList.length === 1)
                         this.SelectionDevice(this.PeripheralList[0]);
@@ -90,11 +91,7 @@ export class DiscoverComp implements OnInit, OnDestroy
             {
                 App.HideLoading();
 
-                if (TypeInfo.Assigned(this.SingletonTimeoutId))
-                {
-                    clearTimeout(this.SingletonTimeoutId);
-                    this.SingletonTimeoutId = null;
-                }
+                this.ClearTimeoutTasked();
             }
         });
 
@@ -116,6 +113,8 @@ export class DiscoverComp implements OnInit, OnDestroy
             this.ScanSub = undefined;
         }
 
+        this.ClearTimeoutTasked();
+
         this.Discover.Stop().then(() =>
         {
             this.PeripheralList = [];
@@ -123,7 +122,17 @@ export class DiscoverComp implements OnInit, OnDestroy
         });
     }
 
-    Error(Ident: string): void
+    private ClearTimeoutTasked()
+    {
+        if (TypeInfo.Assigned(this.SingletonTimeoutId))
+        {
+            clearTimeout(this.SingletonTimeoutId);
+            this.SingletonTimeoutId = undefined;
+            this.IsShowPluginDevice = false;
+        }
+    }
+
+    private Error(Ident: string): void
     {
         setTimeout(() => this.OnSelection.next());
 

@@ -24,6 +24,8 @@ ion-icon,
     vertical-align: middle;
     &[deg-180]{
         -webkit-transform: rotate(180deg);
+        -o-transform: rotate(180deg);
+        transform: rotate(180deg);
     }
 }
 
@@ -291,4 +293,40 @@ ion-icon {
 }
 .icon-favourite:before {
   content: "\e916";
+}
+.icon-massage:before {
+  content: "\e933";
+}
+.icon-massage_active:before {
+  content: "\e934";
+  color: #6599f7;
+}
+.icon-exercice:before {
+  content: "\e94d";
+}
+.icon-exercice_active:before {
+  content: "\e94e";
+  color: #6599f7;
+}
+.icon-profile:before {
+  content: "\e94f";
+}
+.icon-profile_active:before {
+  content: "\e950";
+  color: #6599f7;
+}
+.icon-relax:before {
+  content: "\e951";
+}
+.icon-relax_active:before {
+  content: "\e952";
+}
+.icon-abdominal_muscles:before {
+  content: "\e953";
+}
+.icon-burning_fat:before {
+  content: "\e954";
+}
+.icon-muscle_stretching:before {
+  content: "\e955";
 }

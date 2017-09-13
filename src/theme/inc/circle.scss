@@ -33,6 +33,7 @@ $box:360px;
         height: 8px;
         background: white;
         border-radius: 4px;
+        transform: rotate(266deg);
         -webkit-transform: rotate(266deg);
         box-shadow: 0 0 5px(rgba(255, 255, 255, 1))
     }
@@ -83,6 +84,7 @@ $box:360px;
         // clip:rect(0,300px,300px,0);
         // clip-path: circle(100px at 100px 100px);
         .linear {
+            transition: all .2s ease-in-out;
             -webkit-transition: all .2s ease-in-out;
             -moz-transition: all .2s ease-in-out;
             background: url(../assets/img/liner.png);

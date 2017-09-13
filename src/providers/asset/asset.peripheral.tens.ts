@@ -19,7 +19,7 @@ export class TTensPeripheral extends TConnectablePeripheral
     /// @override
     static ProductName = 'UltraCreation Tens';
     /// @override
-    static AdName = ['uctenqt3', 'thunderbolt', 'uctenqt1'];
+    static AdName = ['uctenqt3', 'thunderbolt', 'uctenqt1', 'miniq'];
 
     /// @override
     static LocalPNP(): TTensPeripheral | undefined

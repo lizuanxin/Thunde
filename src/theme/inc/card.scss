@@ -24,17 +24,82 @@
 
 ion-card{
     &[card-list-default]{
-        
+
         border-radius:6px;
         box-shadow: 0 1px 5px rgba(0,0,0,.2);
         ion-card-content{
             padding:0;
-            ion-item{                
+            ion-item{
                 background-color:transparent;
-                [item-left]{                    
-                    font-size:8rem;                    
+                [item-left]{
+                    font-size:8rem;
                 }
-            }            
+            }
+        }
+    }
+}
+
+
+.card-view{
+    margin-top: 3vh;
+    .card-item{
+        margin: 2vh 6.8vw;
+        background-color: color($colors, light, base);
+        border-radius: 6px;
+        .wave-edge{
+            min-height: 24vh;
+            border-radius: 6px 0 0 6px;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            background: url(../assets/img/swipe-border.png) right top repeat-y;
+            background-size:contain;
+            div[circle]{
+                width:20px;
+                height:20px;
+                border-radius: 50%;
+                position:absolute;
+                right:-10px;
+                background-color:white;
+                &[top]{
+                    top:-10px;
+
+                }
+                &[down]{
+                    bottom:-10px;
+
+                }
+
+            }
+        }
+        .big-icon{
+            font-size: 23vw;
+            margin:auto
+        }
+        .border-icon{
+            color: color($colors, gray, base);
+            font-size: 8vw;
+            margin: auto;
+            border-radius: 16%;
+            border: 1px solid lighten(color($colors, gray, base), 16%);
+        }
+        .nav-icon{
+            color: color($colors, color-primary, base);
+            font-size: 9vw;
+            margin:auto;
+            border-radius:100%;
+            background-color: transparent !important;
+        }
+        .big-text{
+            font-size:5vw;
+        }
+        .mid-text{
+            font-size:3.2vw;
+            color: lighten(color($colors, dark, base), 20%)
+        }
+        .little-text{
+            font-size:3.2vw;
+            color: lighten(color($colors, dark, base), 30%)
         }
     }
 }

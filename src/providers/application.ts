@@ -44,10 +44,9 @@ export class TApplication extends TAppController
                     }
                     console.log('Hardware GoBack');
 
-                    let nav = this.Instance.getActiveNav();
-                    if (nav.canGoBack())
+                    if (App.Nav.canGoBack())
                     {
-                        nav.pop();
+                        App.Nav.pop();
                         return;
                     }
 
@@ -70,13 +69,6 @@ export class TApplication extends TAppController
                     }
                 });
             });
-    }
-
-    static Initialize(): Promise<void>
-    {
-        return StorageEngine.Get('accepted terms')
-            .then(value => {this.AcceptedTerms = value === 'yes'; })
-            .catch(err => { });
     }
 
     private InitLanguage()
@@ -103,6 +95,13 @@ export class TApplication extends TAppController
                 this.Language = 'en';
                 break;
         }
+    }
+
+    static Initialize(): Promise<void>
+    {
+        return StorageEngine.Get('accepted terms')
+            .then(value => { this.AcceptedTerms = value === 'yes'; })
+            .catch(err => { });
     }
 
     DisableHardwareBackButton()

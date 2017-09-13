@@ -97,6 +97,16 @@
     }
 }
 
+ion-checkbox{
+    &.tou-checkbox{
+        &.checkbox-md {
+            .checkbox-icon{
+                margin-right: -16px;
+            }
+        }
+    }
+}
+
 .radian {
     position: absolute;
     top: 0;

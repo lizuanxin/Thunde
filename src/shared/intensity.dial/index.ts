@@ -106,7 +106,7 @@ export class TContentCanvas
                     startAngle: 0.501 * Math.PI,
                     endAngle: this.StartAngle,
                     lineWidth: width * 0.1,
-                    strokeColor: '#e51e21',
+                    strokeColor: '#6599f7',
                     shadowBox: {shadowOffsetX: 0, shadowOffsetY: width * 0.02, shadowBlur: width * 0.02, shadowColor: 'rgba(0, 0, 0, 0.1)'}
                 });
 
@@ -118,7 +118,7 @@ export class TContentCanvas
                     startAngle: this.EndAngle % (2 * Math.PI),
                     endAngle: 0.499 * Math.PI,
                     lineWidth: width * 0.1,
-                    strokeColor: '#e51e21',
+                    strokeColor: '#6599f7',
                     shadowBox: {shadowOffsetX: 0, shadowOffsetY: width * 0.02, shadowBlur: width * 0.02, shadowColor: 'rgba(0, 0, 0, 0.1)'}
                 });
 

@@ -15,7 +15,7 @@
                 color:white;
             }
         }
-        ion-item.item{            
+        ion-item.item{
             ion-label{
                 color:darken($value,20%)
             }
@@ -49,7 +49,7 @@
 
     &[text-dark],
     &.text-dark {
-        color: color($colors, dark, base);        
+        color: color($colors, dark, base);
     }
 
     &[text-success],
@@ -66,10 +66,10 @@
     &.text-orange {
         color: color($colors, orange, base);
     }
-    
+
     &[text-yellow] {
         color: #f4e827;
-    } 
+    }
 
 }
 
@@ -160,8 +160,8 @@
     }
 
     .skin-light{
-        background-color: color($colors,light,base);   
-     
+        background-color: color($colors,light,base);
+
     }
 
     .skin-thin{
@@ -171,28 +171,28 @@
             background-repeat: no-repeat;
             background-position-x: 36%;
             background-size: cover;
-        } 
+        }
     }
 
     .skin-default{
-        background-color: darken(color($colors,light,base),3%);         
+        background-color: darken(color($colors,light,base),3%);
     }
 
     .skin-demo{
-        background-color: darken(color($colors,color-primary-demo,base),2%);         
+        background-color: darken(color($colors,color-primary-demo,base),2%);
     }
 
     .skin-tou{
         background-color: color($colors,color-primary-tou,base);
-        color:color($colors,light,base);         
+        color:color($colors,light,base);
     }
 
     // .skin-home{
     //     background-color: color($DominantColor,D-Default,base);
     //     background-image:url(../assets/img/bg_home.png);
-    //     background-repeat:repeat-x; 
+    //     background-repeat:repeat-x;
     //     background-position: center top;
-    //     background-size:contain;  
+    //     background-size:contain;
     //     section{
     //         &[Flip-x]{
     //             color:color($colors,light,base);
@@ -200,7 +200,7 @@
     //     }
     //     [RSideTop]{
     //         color:color($colors,light,base);
-    //     }    
+    //     }
     // }
 
     .skin-sport{
@@ -317,7 +317,7 @@ $darkColor) {
     background-image: -webkit-linear-gradient($direction,$startColor,$endColor);
 }
 
-@mixin square ($width:100%, $outlineStyle:none, $outlineWidth:0, $borderRadius:0) 
+@mixin square ($width:100%, $outlineStyle:none, $outlineWidth:0, $borderRadius:0)
 {
     position: relative;
     display: flex;
@@ -397,4 +397,10 @@ $darkColor) {
             }
         }
     }
+}
+
+@mixin BlockShadow($color, $x:1, $y:1, $size:1){
+    -webkit-box-shadow: $x+px $y+px $size+px 0 $color;
+    -moz-box-shadow: $x+px $y+px $size+px 0 $color;
+    box-shadow: $x+px $y+px $size+px 0 $color;
 }
