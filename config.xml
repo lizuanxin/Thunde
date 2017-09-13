@@ -1,8 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="hk.com.ultracreation.thunderbolt" version="1.1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="hk.com.ultracreation.thunderbolt" version="1.1.3" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Thunderbolt</name>
-    <description>Thunderbolt: the Tiny TENS + EMS that relieve you pains.</description>
-    <author email="Thunderbolt@ultracreation.com.hk" href="http://ultracreation.com.hk/">UltraCreation Thunderbolt Team</author>
+    <description>
+        Thunderbolt: the Tiny TENS + EMS that relieve you pains.
+    </description>
+    <author email="thunderbolt@ultracreation.com.hk" href="http://ultracreation.com.hk/">UltraCreation Thunderbolt Team</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
@@ -64,6 +66,7 @@
         <splash height="1334" src="resources/ios/splash/Default-667h.png" width="750" />
         <splash height="2208" src="resources/ios/splash/Default-736h.png" width="1242" />
         <splash height="2048" src="resources/ios/splash/Default-Portrait@2x~ipad.png" width="1536" />
+        <splash height="2732" src="resources/ios/splash/Default-Portrait@~ipadpro.png" width="2048" />
         <splash height="1024" src="resources/ios/splash/Default-Portrait~ipad.png" width="768" />
         <splash height="960" src="resources/ios/splash/Default@2x~iphone.png" width="640" />
         <splash height="480" src="resources/ios/splash/Default~iphone.png" width="320" />
@@ -83,22 +86,14 @@
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="SplashScreenBackgroundColor" value="#4e8ef7" />
     <preference name="StatusBarOverlaysWebView" value="true" />
+    <preference name="StatusBarStyle" value="lightcontent" />
+    <preference name="xwalkVersion" value="xwalk_core_library:21.51.546.7" />
     <feature name="StatusBar">
         <param name="ios-package" onload="true" value="CDVStatusBar" />
         <param name="onload" value="false" />
     </feature>
     <engine name="android" spec="^5.2.2" />
-    <plugin name="cordova-plugin-ble-central" spec="^1.1.4">
-        <variable name="BLUETOOTH_USAGE_DESCRIPTION" value="Simulate Serial Communication" />
-    </plugin>
-    <plugin name="cordova-plugin-console" spec="^1.0.7" />
-    <plugin name="cordova-plugin-crosswalk-webview" spec="2.1.0">
-        <variable name="XWALK_VERSION" value="21+" />
-        <variable name="XWALK_LITEVERSION" value="xwalk_core_library_canary:17+" />
-        <variable name="XWALK_COMMANDLINE" value="--disable-pull-to-refresh-effect" />
-        <variable name="XWALK_MODE" value="embedded" />
-        <variable name="XWALK_MULTIPLEAPK" value="true" />
-    </plugin>
+    <plugin name="cordova-plugin-compat" spec="^1.1.0" />
     <plugin name="cordova-plugin-device" spec="^1.1.6" />
     <plugin name="cordova-plugin-powermanagement" spec="^1.0.5" />
     <plugin name="cordova-plugin-screen-orientation" spec="^2.0.1" />
@@ -109,5 +104,16 @@
     <plugin name="es6-promise-plugin" spec="^4.1.0" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
     <plugin name="ultracreation-usb-android" spec="git+https://github.com/disword/ultracreation-usb-android.git" />
+    <plugin name="cordova-plugin-ble-central" spec="^1.1.4">
+        <variable name="BLUETOOTH_USAGE_DESCRIPTION" value="Simulate Serial Communication" />
+    </plugin>
+    <plugin name="cordova-plugin-console" spec="^1.0.7" />
+    <plugin name="cordova-plugin-crosswalk-webview" spec="^2.1.0">
+        <variable name="XWALK_VERSION" value="21+" />
+        <variable name="XWALK_LITEVERSION" value="xwalk_core_library_canary:17+" />
+        <variable name="XWALK_COMMANDLINE" value="--disable-pull-to-refresh-effect" />
+        <variable name="XWALK_MODE" value="embedded" />
+        <variable name="XWALK_MULTIPLEAPK" value="true" />
+    </plugin>
     <plugin name="cordova-plugin-localization-strings" spec="https://github.com/kelvinhokk/cordova-plugin-localization-strings.git" />
 </widget>

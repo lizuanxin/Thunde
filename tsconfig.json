@@ -1,15 +1,5 @@
 {
     "compilerOptions": {
-        "strict": true,
-        "noImplicitAny": true,
-        "strictNullChecks": false,
-        "noImplicitThis": true,
-        "alwaysStrict": true,
-
-        "noUnusedLocals": true,
-        "noImplicitReturns": false,
-        "noFallthroughCasesInSwitch": false,
-
         "allowSyntheticDefaultImports": true,
         "declaration": false,
         "emitDecoratorMetadata": true,
