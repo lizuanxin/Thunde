@@ -4,12 +4,12 @@
 		"android": ["zh-rTW", "zh-rHK"]
 	},
 	"config_ios": {
-		"NSCameraUsageDescription": "小摩線可以緩解您的痛苦",
-		"CFBundleDisplayName": "小摩線",
-		"CFBundleName": "小摩線"
+		"NSCameraUsageDescription": "Thunderbolt可以緩解您的痛苦",
+		"CFBundleDisplayName": "Thunderbolt",
+		"CFBundleName": "Thunderbolt"
 	},
 	"config_android": {
-		"app_name": "小摩線"
+		"app_name": "Thunderbolt"
 	},
 	"app": {
         "launcher_name": "@string/app_name",
