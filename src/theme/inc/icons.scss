@@ -19,20 +19,11 @@
 
 ion-icon,
 .ion-icon {
-    font-style: normal;
     font-family: "Ionicons";
-    vertical-align: middle;
     &[deg-180]{
         -webkit-transform: rotate(180deg);
         -o-transform: rotate(180deg);
         transform: rotate(180deg);
-    }
-}
-
-$i:2;
-ion-icon {
-    &[app-icon] {
-        font-family: 'Thundericons';
     }
 }
 

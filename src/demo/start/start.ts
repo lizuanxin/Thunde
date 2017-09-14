@@ -86,7 +86,7 @@ export class StartPage implements AfterViewInit
                     setTimeout(() => {
                         ele.children[ID.body].style.opacity = 1;
                         ele.children[ID.body].style.left = width * 0.05 + 'px';
-                        ele.children[ID.body].style.top = -height * 0.07 + 'px';
+                        ele.children[ID.body].style.top = 8 + 'px';
                         Animation();
                     }, 150);
                     break;
