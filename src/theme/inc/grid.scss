@@ -65,15 +65,19 @@ ion-row {
     &.row-body {
         ion-col {
             div.button{
+                @include FlexBox(center);
                 background-color: transparent;
+                width:70%;
+                height:0;
+                margin:auto;
+                padding-top:35%;
+                padding-bottom:35%;
                 color: color($colors, color-primary, base);
-                // border-color: color($colors, light, base);
-                //@include square(76%,solid,1px,50%);
                 font-size: 8vw;
-                border-radius: 20%;
+                border-radius: 10px;
                 @include BlockShadow(lighten(color($colors, color-primary, base), 20%), 0, 4, 12);
                 span{
-                    padding: 6px;
+                    // padding: 6px;
                 }
             }
             &.active {
