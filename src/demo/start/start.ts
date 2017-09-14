@@ -50,18 +50,18 @@ export class StartPage implements AfterViewInit
             colorYellow = '#fce76c', colorLight = '#333', colorLightOpacity = 'rgba(0,0,0,.3)';
             ele.children[ID.tips1].setAttribute('style',  'width: ' + width * 0.14 + 'px; height: ' + width * 0.14 + 'px; left: ' + width * 0.39 + 'px; top:' + height * 0.15 + 'px');
             ele.children[ID.tips2].setAttribute('style',  'width: ' + width * 0.05 + 'px; height: ' + width * 0.05 + 'px; left: ' + width * 0.83 + 'px; top:' + height * 0.455 + 'px');
-            ele.children[ID.tips3].setAttribute('style',  'width: ' + width * 0.14 + 'px; height: ' + width * 0.14 + 'px; left: ' + width * 0.62 + 'px; top:' + height * 0.76 + 'px');
+            ele.children[ID.tips3].setAttribute('style',  'width: ' + width * 0.14 + 'px; height: ' + width * 0.14 + 'px; left: ' + width * 0.62 + 'px; top:' + height * 0.68 + 'px');
             ele.children[ID.electrode].setAttribute('style',  'font-size: 1.6rem; color: ' + colorYellow + ';left: ' + width * 0.62 + 'px; top: ' + height * 0.16 + 'px');
             ele.children[ID.power].setAttribute('style',  'transform:translateY(0); transform-origin: center bottom; font-size: 1.2rem; line-height:1.4rem; color: ' + colorYellow + '; left: ' + width * 0.85 + 'px; top: ' + height * 0.35 + 'px;');
             ele.children[ID.switch].setAttribute('style',  'font-size: 1.6rem; color: ' + colorYellow + ';left: ' + width * 0.18 + 'px; top: ' + height * 0.5 + 'px');
-            ele.children[ID.strength].setAttribute('style',  'font-size: 1.6rem; color: ' + colorYellow + ';left: ' + width * 0.18 + 'px; top: ' + height * 0.82 + 'px');
-            ele.children[ID.line1].setAttribute('style',  'z-index:0; transform-origin: left center;transform:scale(.5); font-size: 50vw; color: ' + colorYellow + ';left: ' + width * 0.5 + 'px; top: ' + -height * 0.08 + 'px');
-            ele.children[ID.line2].setAttribute('style',  'z-index:0; transform-origin: right bottom; font-size: 50vw; color: ' + colorYellow + ';left: ' + width * 0.12 + 'px; top: ' + height * 0.38 + 'px');
+            ele.children[ID.strength].setAttribute('style',  'font-size: 1.6rem; color: ' + colorYellow + ';left: ' + width * 0.18 + 'px; top: ' + height * 0.8 + 'px');
+            ele.children[ID.line1].setAttribute('style',  'z-index:0; transform-origin: left center;transform:scale(.5); font-size: 50vw; color: ' + colorYellow + ';left: ' + width * 0.5 + 'px; top: ' + -height * 0.015 + 'px');
+            ele.children[ID.line2].setAttribute('style',  'z-index:0; transform-origin: right bottom; font-size: 50vw; color: ' + colorYellow + ';left: ' + width * 0.12 + 'px; top: ' + height * 0.384 + 'px');
             ele.children[ID.line3].setAttribute('style',  'z-index:0; transform-origin: right center; font-size: ' + width * 0.68 + 'px; color: ' + colorYellow + ';left: ' + width * 0.12 + 'px; top: ' + height * 0.50 + 'px');
             ele.children[ID.num1].setAttribute('style', 'font-size: 2.8rem; color: ' + colorYellow + ';left: ' + width * 0.88 + 'px; top: ' + height * 0.06 + 'px');
             ele.children[ID.num2].setAttribute('style', 'font-size: 2.8rem; color: ' + colorYellow + ';left: ' + width * 0.88 + 'px; top: ' + height * 0.5 + 'px');
-            ele.children[ID.num3].setAttribute('style', 'font-size: 2.8rem; color: ' + colorYellow + ';left: ' + -width * 0.04 + 'px; top: ' + height * 0.55 + 'px');
-            ele.children[ID.num4].setAttribute('style', 'font-size: 2.8rem; color: ' + colorYellow + ';left: ' + -width * 0.04 + 'px; top: ' + height * 0.87 + 'px');
+            ele.children[ID.num3].setAttribute('style', 'font-size: 2.8rem; color: ' + colorYellow + ';left: ' + -width * 0.04 + 'px; top: ' + height * 0.49 + 'px');
+            ele.children[ID.num4].setAttribute('style', 'font-size: 2.8rem; color: ' + colorYellow + ';left: ' + -width * 0.04 + 'px; top: ' + height * 0.78 + 'px');
             ele.children[ID.arrowPoint].setAttribute('style', 'transform: rotate(-170deg); font-size: 1rem; color: ' + colorLightOpacity + ';left: ' + width * 0.74 + 'px; top: ' + height * 0.6 + 'px');
             ele.children[ID.key].setAttribute('style', 'font-size: ' + width * 0.5 + 'px; color: ' + colorLight + '; left: ' + width * 0.36 + 'px; top: ' + height * 0.5 + 'px');
             ele.children[ID.body].setAttribute('style', 'font-size:' + width * 0.67 + 'px; color: ' + colorLight + '; top:'  + -height * 0.07 + 'px; ');
@@ -86,7 +86,7 @@ export class StartPage implements AfterViewInit
                     setTimeout(() => {
                         ele.children[ID.body].style.opacity = 1;
                         ele.children[ID.body].style.left = width * 0.05 + 'px';
-                        ele.children[ID.body].style.top = 8 + 'px';
+                        ele.children[ID.body].style.top = height * 0.03 + 'px';
                         Animation();
                     }, 150);
                     break;
@@ -110,7 +110,7 @@ export class StartPage implements AfterViewInit
                 case 2:
                     setTimeout(() => {
                         ele.children[ID.num1].style.opacity = 1;
-                        ele.children[ID.num1].style.top = height * 0.13 + 'px';
+                        ele.children[ID.num1].style.top = height * 0.134 + 'px';
                         Animation();
                     }, 700);
                     break;
@@ -174,7 +174,7 @@ export class StartPage implements AfterViewInit
                 case 9:
                     setTimeout(() => {
                         ele.children[ID.strength].style.opacity = 1;
-                        ele.children[ID.strength].style.top = height * 0.84 + 'px';
+                        ele.children[ID.strength].style.top = height * 0.82 + 'px';
                         Animation();
                     }, 700);
                 break;
