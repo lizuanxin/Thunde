@@ -76,9 +76,6 @@ ion-row {
                 font-size: 8vw;
                 border-radius: 10px;
                 @include BlockShadow(lighten(color($colors, color-primary, base), 20%), 0, 4, 12);
-                span{
-                    // padding: 6px;
-                }
             }
             &.active {
                 div.button{
