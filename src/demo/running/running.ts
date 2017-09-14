@@ -104,18 +104,17 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     private Start()
     {
-        App.ShowLoading();
-
         let ScriptFile = this.DemoFiles[0];
         let FileName = ScriptFile.Name.toLowerCase();
 
         this.ModeGif = 'assets/img/' + FileName + '.gif';
         this.ModeInfo = FileName + '_info';
-
-        this.Shell.ClearFileSystem(DEMO_FILES)
+        App.ShowLoading()
+            .then(() => this.Shell.ClearFileSystem(DEMO_FILES))
             .then(() => this.StartIndex(0))
             .catch(err => App.ShowError(err).then(() => isDevMode() ? null : this.ClosePage()))
-            .then(() => App.HideLoading());
+            .then(() => App.HideLoading())
+            .then(() => App.EnableHardwareBackButton());
     }
 
     private StartIndex(Idx: number): Promise<void>
