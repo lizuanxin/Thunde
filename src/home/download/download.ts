@@ -10,11 +10,7 @@ export class DownloadPage
 
     Replace(FileName: string)
     {
-        let Idx: number;
-        if (this.FileList.length < 3)
-            Idx = this.FileList.length;
-        else
-            Idx = this.FileList.indexOf(FileName);
+        let Idx = this.FileList.indexOf(FileName);
 
         if (Idx < 0 || Idx > 2)
             Idx = 0;

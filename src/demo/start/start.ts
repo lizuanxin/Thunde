@@ -31,8 +31,17 @@ export class StartPage implements AfterViewInit
         if (! TypeInfo.Assigned(Peripheral))
             return;
 
+        let Shell = Peripheral.Shell;
+        App.DisableHardwareBackButton();
         App.ShowLoading()
-            .then(() => App.Nav.push(DemoRunningPage, {Shell: Peripheral.Shell}));
+            .then(() => Shell.Connect())
+            .then(() => App.Nav.push(DemoRunningPage, {Shell: Shell}))
+            .catch(err =>
+            {
+                App.EnableHardwareBackButton();
+                App.HideLoading()
+                    .then(() => App.ShowError(err));
+            });
     }
 
     Go()
