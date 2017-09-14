@@ -11,9 +11,6 @@ export class DownloadPage
     Replace(FileName: string)
     {
         let Idx = Svc.Loki.TShell.DefaultFileList.indexOf(FileName);
-        console.log('Idx:' + Idx);
-        console.log('DefaultFileList:' + Svc.Loki.TShell.DefaultFileList);
-
         if (Idx < 0 || Idx > 2)
             Idx = 0;
 
