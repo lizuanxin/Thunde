@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="hk.com.ultracreation.thunderbolt" version="1.1.4" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Thunderbolt</name>
+<widget id="hk.com.ultracreation.thunderbolt" version="1.1.5" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>小摩线</name>
     <description>
-        Thunderbolt: the Tiny TENS + EMS that relieve you pains.
+        小摩线: 可以缓解您的痛苦.
     </description>
     <author email="thunderbolt@ultracreation.com.hk" href="http://ultracreation.com.hk/">UltraCreation Thunderbolt Team</author>
     <content src="index.html" />
