@@ -73,8 +73,8 @@ export class TApplication extends TAppController
 
     private InitLanguage()
     {
-        this.AddLanguage('en', translate_en);
-
+        // this.AddLanguage('en', translate_en);
+        this.AddLanguage('zh_cn', translate_zh_cn);
         let CurLanguage = this.Translation.getBrowserCultureLang().toLowerCase().replace('-', '_');
         console.log('CurLanguage:' + CurLanguage);
 
@@ -86,13 +86,13 @@ export class TApplication extends TAppController
                 this.Language = 'zh_hk';
                 break;
 
-            case 'zh_cn':
-                this.AddLanguage('zh_cn', translate_zh_cn);
-                this.Language = 'zh_cn';
-                break;
+            // case 'zh_cn':
+            //     this.AddLanguage('zh_cn', translate_zh_cn);
+            //     this.Language = 'zh_cn';
+            //     break;
 
             default:
-                this.Language = 'en';
+                this.Language = 'zh_cn';
                 break;
         }
     }

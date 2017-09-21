@@ -71,7 +71,7 @@ export class TAssetService
 
         let LangPath = App.Language.replace('_', '/');
         return Http.Get(LangPath + '/' + Name).toPromise().then(res => res.Content)
-            .catch(err => Http.Get('en/' + Name).toPromise().then(res => res.Content));
+            .catch(err => Http.Get('zh/cn/' + Name).toPromise().then(res => res.Content));
     }
 
     static LoadScriptFile(ScriptFile: TScriptFile): Promise<TScriptFile>
