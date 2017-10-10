@@ -10,22 +10,22 @@ $box:360px;
     margin: auto;
     border-radius: 50%;
     position: relative;
-    @each $bg in $background-list {
-        @if($bg=='spots' or $bg=='nature' or $bg=='strengths') {
-            &.circle-#{$bg} {
-                li {
-                    background: rgba(0, 0, 0, .3);
-                }
-            }
-        }
-        @else {
-            &.circle-#{$bg} {
-                li {
-                    background: rgba(255, 255, 255, .3);
-                }
-            }
-        }
-    }
+    // @each $bg in $background-list {
+    //     @if($bg=='spots' or $bg=='nature' or $bg=='strengths') {
+    //         &.circle-#{$bg} {
+    //             li {
+    //                 background: rgba(0, 0, 0, .3);
+    //             }
+    //         }
+    //     }
+    //     @else {
+    //         &.circle-#{$bg} {
+    //             li {
+    //                 background: rgba(255, 255, 255, .3);
+    //             }
+    //         }
+    //     }
+    // }
     .point {
         position: absolute;
         top: 0;
