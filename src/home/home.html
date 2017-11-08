@@ -9,7 +9,7 @@
       <ion-col col-6 f-2-0 align-self-center text-center no-padding>
           {{'home_page.title'|translate}}
       </ion-col>
-      <ion-col *ngIf="IsStillRunning" col-3 align-self-center text-center no-padding (click)="Resume()">
+      <ion-col *ngIf="IsStillRunning" col-3 align-self-center text-center no-padding (click)="Resume()" tappable>
           <div style="display: flex; flex-wrap:wrap; align-items:center; justify-content: start">
               <div style="display:flex;">
                 <div class="loader">
@@ -52,6 +52,6 @@
   </ion-toolbar>
 </ion-footer>
 
-<ion-backdrop my-backdrop *ngIf="DeviceScanning" (click)="DeviceScanning=false;App.EnableHardwareBackButton();">
+<ion-backdrop my-backdrop *ngIf="DeviceScanning" (click)="DeviceScanning=false;App.EnableHardwareBackButton();" tappable>
     <discover-peripheral (OnSelection)="DeviceSelection($event)"></discover-peripheral>
 </ion-backdrop>

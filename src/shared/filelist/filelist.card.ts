@@ -26,7 +26,7 @@ import * as Svc from '../../providers';
                 </ion-row>
                 <span class="little-text">{{f.DurationMinute.toString()}}{{'hint.min'|translate}}</span>
             </ion-col>
-            <ion-col col-2 align-self-center text-center (tap)="OnSelection.emit(f)">
+            <ion-col col-2 align-self-center text-center (tap)="OnSelection.emit(f)" tappable>
                 <ion-row align-items-center justify-content-center>
                     <ion-col col-12 align-self-center text-center>
                         <ion-icon app-icon class="border-icon">{{App.IconFont(f.Icon)}}</ion-icon>

@@ -1,6 +1,6 @@
 <div style="padding-top:5.6vh; color: white">
     <ion-buttons left>
-        <button ion-button icon-only clear color="light" (click)="OnClose.emit()" [ngStyle]="{'margin':'0 6px','padding':'0 2px','min-width':'44px'}">
+        <button ion-button icon-only clear color="light" (click)="OnClose.emit()" [ngStyle]="{'margin':'0 6px','padding':'0 2px','min-width':'44px'}" tappable>
             <ion-icon app-icon>&#xe92b;</ion-icon>
         </button>
     </ion-buttons>
@@ -9,7 +9,7 @@
             <span>'{{RefFile.Name_LangId|translate}}' {{'download_page.set_default_file'|translate}} </span>
         </ion-col>
         <ion-col *ngIf="FileList.length<3" col-12 align-self-end text-end style="padding:0 14vw">
-            <button ion-button color="color-primary" style="border-radius:22px;" f-1-0 (click)="Replace('')">{{'download_page.set'|translate}}</button>
+            <button ion-button color="color-primary" style="border-radius:22px;" f-1-0 (click)="Replace('')" tappable>{{'download_page.set'|translate}}</button>
         </ion-col>
     </ion-row>
     <ion-row justify-content-center align-item-center style="padding:0 14vw; margin-top:4vh;" *ngFor="let name of FileList" >
@@ -19,7 +19,7 @@
                     <span f-1-6 style="text-align: left">{{'scriptfile.'+name|translate}}</span>
                 </ion-col>
                 <ion-col col-4 align-self-end text-end style="margin: auto">
-                    <button ion-button style="text-align: right; border-radius:22px;" color="color-primary" f-1-6 (click)="Replace(name)">{{'download_page.replace'|translate}}</button>
+                    <button ion-button style="text-align: right; border-radius:22px;" color="color-primary" f-1-6 (click)="Replace(name)" tappable>{{'download_page.replace'|translate}}</button>
                 </ion-col>
             </ion-row>
         </ion-col>
