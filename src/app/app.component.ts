@@ -16,9 +16,6 @@ export class MyApp
             StatusBar.hide();
             SplashScreen.show();
 
-            if (App.IsIos)
-                StatusBar.styleBlackTranslucent();
-
             Svc.Initialization.Execute()
                 .then(() =>
                 {
@@ -27,10 +24,21 @@ export class MyApp
                     setTimeout(() =>
                     {
                         SplashScreen.hide();
-                        StatusBar.overlaysWebView(true);
-                        let StatusbarTransparent = (window as any).statusbarTransparent;
-                        if (StatusbarTransparent)
-                            StatusbarTransparent.enable();
+                        
+                        if (App.IsIos)
+                        {
+                            StatusBar.overlaysWebView(false);
+                            StatusBar.backgroundColorByHexString('#6590f7');
+                            // StatusBar.styleBlackTranslucent();
+                            // StatusBar.overlaysWebView(true);
+                        }
+                        else
+                        {
+                            StatusBar.overlaysWebView(true);
+                            let StatusbarTransparent = (window as any).statusbarTransparent;
+                            if (StatusbarTransparent)
+                                StatusbarTransparent.enable();
+                        }
                         StatusBar.show();
                     }, 500);
                 });

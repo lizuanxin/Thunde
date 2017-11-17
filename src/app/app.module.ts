@@ -15,7 +15,7 @@ let config = {  // http://ionicframework.com/docs/v2/api/config/Config/
     backButtonText: '',
     pageTransitionDelay: 0,
     swipeBackEnabled: false,
-    // statusbarPadding: true,
+    statusbarPadding: false,
     // animate: false,
     platforms: {
       android: {

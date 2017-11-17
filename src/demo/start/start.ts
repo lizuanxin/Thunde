@@ -1,6 +1,7 @@
 import {Component, AfterViewInit, ElementRef, ViewChild} from '@angular/core';
 import {DemoRunningPage} from '../running/running';
 
+import {StatusBar} from '../../UltraCreation/Native/StatusBar';
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 import * as Svc from '../../providers';
 
@@ -13,6 +14,8 @@ export class StartPage implements AfterViewInit
 {
     constructor()
     {
+        if (App.IsIos)
+            StatusBar.backgroundColorByHexString('#99d3d3d3');
     }
 
     ngOnInit()
@@ -23,6 +26,13 @@ export class StartPage implements AfterViewInit
     {
         this.InitElementStyle();
         setTimeout(() => this.AnimationFlow(), 200);
+    }
+
+    Skip()
+    {
+        if (App.IsIos)
+            StatusBar.backgroundColorByHexString('#6590f7');
+        App.Nav.pop()
     }
 
     DeviceSelection(Peripheral: Svc.TConnectablePeripheral | undefined)

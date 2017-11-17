@@ -1,4 +1,6 @@
 import {Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
+
+import {StatusBar} from '../../UltraCreation/Native/StatusBar';
 import * as Demo from '../../demo';
 
 @Component({selector: 'page-tou', templateUrl: 'tou.html'})
@@ -6,6 +8,8 @@ export class TouPage implements OnInit, OnDestroy, AfterViewInit
 {
     constructor()
     {
+        if (App.IsIos)
+            StatusBar.backgroundColorByHexString('#99d3d3d3');
     }
 
     ngOnInit()
@@ -18,6 +22,8 @@ export class TouPage implements OnInit, OnDestroy, AfterViewInit
 
     ngOnDestroy()
     {
+        if (App.IsIos)
+            StatusBar.backgroundColorByHexString('#6590f7');
         App.EnableHardwareBackButton();
     }
 

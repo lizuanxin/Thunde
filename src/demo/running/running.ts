@@ -1,9 +1,9 @@
 import {Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef, isDevMode} from '@angular/core';
+import {NavParams} from 'ionic-angular';
 import {Subscription} from 'rxjs/Subscription';
 import 'rxjs/add/operator/toPromise';
 
-import {NavParams} from 'ionic-angular';
-
+import {StatusBar} from '../../UltraCreation/Native/StatusBar';
 import {TypeInfo} from '../../UltraCreation/Core/TypeInfo';
 import {PowerManagement} from '../../UltraCreation/Native/PowerManagement';
 
@@ -85,6 +85,9 @@ export class DemoRunningPage implements OnInit, AfterViewInit, OnDestroy
 
     ngOnDestroy(): void
     {
+        if (App.IsIos)
+            StatusBar.backgroundColorByHexString('#6590f7');
+
         this.Shell.Shutdown()
             .catch(() => {})
             .then(() => this.Shell.Detach());
